@@ -11,7 +11,7 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -36,3 +36,10 @@ jobs:
       - name: Run the html conversion creation
         run: |
              jupyter nbconvert --to html --output=index --output-dir="docs/" 5301_Final_Report.ipynb
+      - name: Commit file changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Generate html for website from notebook
+          file_pattern: 'docs/'
+          push_options: '--force'
+          add_options: '-u'
