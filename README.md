@@ -1,6 +1,8 @@
-# DTSC 5301 Final Report
+# DTSC 5301 and STAT 5000 Final Report
 
 The final project for Data Science as a Field: Find a dataset (ideally) related to the domain area that you chose for the final presentation, and answer a question that interests you using Python.
+
+ANd STAT 5000
 
 <span style="background-color: Green">Website link: [https://cuboulder-ds.github.io/DTSC-5301-Final-Report/](https://cuboulder-ds.github.io/DTSC-5301-Final-Report/)</span>
 
