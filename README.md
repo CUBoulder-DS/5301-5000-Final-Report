@@ -4,7 +4,7 @@ The final project for Data Science as a Field: Find a dataset (ideally) related 
 
 AND STAT 5000
 
-<span style="background-color: Green">Website link: [https://cuboulder-ds.github.io/DTSC-5301-Final-Report/](https://cuboulder-ds.github.io/DTSC-5301-Final-Report/)](https://cuboulder-ds.github.io/5301-5000-Final-Report/)</span>
+<span style="background-color: Green">Website link: [https://cuboulder-ds.github.io/5301-5000-Final-Report/](https://cuboulder-ds.github.io/5301-5000-Final-Report/)</span>
 
 ## Directory Structure
 
