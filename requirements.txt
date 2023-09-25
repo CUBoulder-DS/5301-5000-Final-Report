@@ -2,3 +2,4 @@ jupyter
 nbconvert
 pandas
 matplotlib
+kaleido
