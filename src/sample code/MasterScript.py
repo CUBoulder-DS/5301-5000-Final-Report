@@ -524,7 +524,7 @@ if __name__ == '__main__':
             for file in glob(os.path.join(path,EXT))
         ]
         #print(len(all_jpg),len(all_jpg_path))
-        present_files = pd.DataFrame({'img_paths':all_jpg_path,'file':all_jpg})
+        present_files = pd.DataFrame({'img_path':all_jpg_path,'file':all_jpg})
         present_files.to_csv(os.path.join(args.out_csv),index=False)
     
 
