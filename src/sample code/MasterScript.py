@@ -114,8 +114,9 @@ class fairface:
 
         Returns:
             np.ndarray: an opened, pre-processed/cropped image focused on a face for categorization models.
+            none (if save is enabled) -> saves the np.ndarray to the specified path in this instance's 
+            self.__save_detections_at variable.
         """
-        #print(os.path.join(img_path))
         img = dlib.load_rgb_image(os.path.join(img_path))
         old_height, old_width, _ = img.shape
         if old_width > old_height:
@@ -145,7 +146,9 @@ class fairface:
                 return images
 
     def analyze(self,image,mode='fair7',enforce_detection=True):
-        """_summary_
+        """evaluates an input image on either the fair7 or fair4 model. defaults to fair7.
+enables analysis and classification with or without preprocessing (defaults to preprocessing enabled).
+if pre-processing is enabled, calls to detect_face and gets its return data for classifying the image. 
 
         Args:
             image (str): relative filepath to an image from the current directory
@@ -155,54 +158,13 @@ class fairface:
         Returns:
             result (pandas DataFrame): a dataframe with the respective predictions and calculations from the selected FairFace model on the provided image.
         """
-        indices={'race_start':0,'race_end':0,'gen_start':0,'gen_end':0,'age':0}
         race_scores,gender_scores,age_scores=[],[],[]
         race_pred,gender_pred,age_pred = [],[],[]
         face_names = []
         face_names.append(image)
-        race_dict={}
-        gender_dict = {0:'Male',1:'Female'}
-        age_dict = {
-            0:'0-2',
-            1:'3-9',
-            2:'10-19',
-            3:'20-29',
-            4:'30-39',
-            5:'40-49',
-            6:'50-59',
-            7:'60-69',
-            8:'70+'
-        }
-        if mode == 'fair7':
-            #print('fair7')
-            #outputs = self.__model_fair_7(image)
-            race_dict = {
-                0:'White',
-                1:'Black',
-                2:'Latino_Hispanic',
-                3:'East Asian',
-                4:'Southeast Asian',
-                5:'Indian',
-                6:'Middle Eastern'
-            }
-            indices={'race_start':0,'race_end':7,'gen_start':7,'gen_end':9,'age_start':9,'age_end':18}
-        elif mode == 'fair4':
-            #print('fair4')
-            #outputs = self.__model_fair_4(image)
-            race_dict = {
-                0:'White',
-                1:'Black',
-                2:'Asian',
-                3:'Indian',
-            }
-            indices={}
-        else:
-            print("unsupported mode.")
-
         if enforce_detection:
             image = self.__trans(self.detect_face(image)[0])
         else:
-            #print(os.path.join(image))
             image = self.__trans(dlib.load_rgb_image(os.path.join(image)))
         
         image=image.view(1,3,224,224)
@@ -219,7 +181,6 @@ class fairface:
         outputs = np.squeeze(outputs)
         race_outputs,gender_outputs,age_outputs=[],[],[]
         race_score,gender_score,age_score=0,0,0
-        #print("Outputs: ", outputs)
         gender_outputs = outputs[7:9]
         age_outputs = outputs[9:18]
         if mode=='fair7':
@@ -238,7 +199,6 @@ class fairface:
         race_scores.append(race_score)
         age_scores.append(age_score)
         gender_scores.append(gender_score)
-        #print(face_names,race_pred,gender_pred,age_pred,race_scores,gender_scores,age_scores)
         result = pd.DataFrame(
                [face_names,
                 [race_pred],
@@ -255,12 +215,33 @@ class fairface:
                 'race_scores_fair',
                 'gender_scores_fair',
                 'age_scores_fair']
-        #result[['race','gender','age']] = '','',''
-        #print(result)
-        result['race_preds_fair'] = result.apply(lambda row: race_dict[row['race_preds_fair']],axis=1)
-        result['gender_preds_fair']=result.apply(lambda row: gender_dict[row['gender_preds_fair']],axis=1)
-        result['age_preds_fair']=result.apply(lambda row: age_dict[row['age_preds_fair']],axis=1)
-        
+        if mode == 'fair7':
+            race_src = [result['race_preds_fair']==0,result['race_preds_fair']==1,
+                        result['race_preds_fair']==2,result['race_preds_fair']==3,
+                        result['race_preds_fair']==4,result['race_preds_fair']==5,
+                        result['race_preds_fair']==6]
+            race_dst = ['White','Black','Latino_Hispanic',
+                        'East Asian','Southeast Asian','Indian',
+                        'Middle Eastern']
+        elif mode == 'fair4':
+            race_src = [result['race_preds_fair']==0,result['race_preds_fair']==1,
+                        result['race_preds_fair']==2,result['race_preds_fair']==3]
+            race_dst = ['White','Black','Asian','Indian']
+        else:
+            print("unsupported mode.")
+
+        gen_src = [result['gender_preds_fair']==0,result['gender_preds_fair']==1]
+        gen_dst = ['Male','Female']
+        age_src = [result['age_preds_fair']==0,result['age_preds_fair']==1,
+                   result['age_preds_fair']==2,result['age_preds_fair']==3,
+                   result['age_preds_fair']==4,result['age_preds_fair']==5,
+                   result['age_preds_fair']==6,result['age_preds_fair']==7,
+                   result['age_preds_fair']==8]
+        age_dst = ['0-2','3-9','10-19','20-29','30-39','40-49','50-59','60-69','70+']
+        result['race_preds_fair']=np.select(race_src,race_dst,result['race_preds_fair'])
+        result['gender_preds_fair']=np.select(gen_src,gen_dst,result['gender_preds_fair'])
+        result['age_preds_fair']=np.select(age_src,age_dst,result['age_preds_fair'])
+
         return result[['face_name_align',
                 'race_preds_fair',
                 'gender_preds_fair',
@@ -273,7 +254,7 @@ class fairface:
         """debugging function to ensure the correct available device(s) (cpu,gpu) are available and used
 
         Returns:
-            _type_: _description_
+            torch.device: either cpu or cuda:0
         """
         return self.__map_location
 
@@ -281,7 +262,7 @@ class fairface:
         """debugging function to ensure the correct available device(s) (cpu,gpu) are available and used
 
         Returns:
-            _type_: _description_
+            torch.device: either torch_directml device, or cuda:0
         """
         return self.__device
 
@@ -290,9 +271,9 @@ class fairface:
         for i, img in enumerate(img_paths):
             self.detect_face(img)
         img_names = [os.path.join(img_paths, x) for x in os.listdir(img_paths)]
-        for img in img_names:
-            self.analyze_face(self.__save_detections_at+'/'+img)
-        return 0
+        # for img in img_names:
+        #     self.analyze(self.__save_detections_at+'/'+img)
+        # return 0
 
     def _rect_to_bb(self,rect):
         """function was present and undocumented in original script
@@ -315,41 +296,7 @@ class fairface:
         return (x, y, w, h)        
     
 
-
-
-
-# %% [markdown]
-# If seeking to use both models, they must be imported and instantiated.
-# 
-# 
-
 # %%
-#create an instance of the fairface class
-#class may benefit from being turned into a singleton
-#or an importable module.
-#FairFace = fairface()
-#from deepface import DeepFace
-
-# %%
-
-# def create_image_csv(target_folder):
-#     pass
-""" 
-bins = [0, 3, 10, 20, 30, 40, 50, 60, 70, np.inf]
-group_names = ["0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130"]
-
-for df in [df_utk_1, df_utk_2, df_utk_3]:
-    # Create bins for the age ranges
-    df["src_age_grp"] = pd.cut(df['src_age'], bins, right=False, labels=group_names)
-    # Convert timestamp to python pandas native timestamp
-    df["src_timestamp"] = pd.to_datetime(df["src_timestamp"], format="%Y%m%d%H%M%S%f")
-    # Remove rows with invalid data
-    df.drop(df[(df["src_gender"] == "0") | (df["src_race"] == "0")].index, inplace=True)
-    # Re-categorize the categories since the invalid "0" was removed
-    df["src_gender"] = df["src_gender"].cat.remove_unused_categories()
-    df["src_race"] = df["src_race"].cat.remove_unused_categories()
-"""
-
 
 def normalize_output(model,data):
     """
@@ -401,7 +348,6 @@ def normalize_output(model,data):
     data[["pred_age_lower","pred_age_upper"]] = data['pred_age_grp'].str.split('-',expand=True).astype(int) #convert to int somehow
     
     data = data[['file','pred_race','pred_gender','pred_age_grp','pred_age_lower','pred_age_upper']]
-    #print(data)
     return data
 
 
@@ -426,52 +372,45 @@ def batch_analyze(model, in_csv, out_csv, preprocess=True):
         for index,record in enumerate(files):
             if index % 100 == 0:
                 print('{}/{}'.format(index,len(files)))
-            #print(record)
             curr = FairFace.analyze(os.path.join(record),mode='fair7',enforce_detection=preprocess)
-            #curr[['pred_model','file']]="",""
             if len(result)==0:
                 result = curr
             else:
                 result = pd.concat([result,curr])
     else:
         from deepface import DeepFace
-        #print(preprocess)
+        import time
+        #probably need to introduce a cool-down period
         if preprocess=='True':
             backend=input('select DeepFace Detector Backend: ')
-        #cat_model=input('select DeepFace model: ')
         for index,record in enumerate(files):
-            #DeepFace.analyze(img_path=image_path,enforce_detection=False,silent=True)[0]
-            #print(record)
             if index % 100 == 0:
                 print('{}/{}'.format(index,len(files)))
+                if index > 0:
+                    print('sleeping / cooldown for 45 seconds')
+                    time.sleep(45)
+
             try:
                 if preprocess=='False':
                     curr = DeepFace.analyze(img_path=record,enforce_detection=False,actions=['age','gender','race'],silent=True)
                 else:
                     curr = DeepFace.analyze(img_path=record,enforce_detection=True,actions=['age','gender','race'],silent=True,detector_backend=backend)
-                #print("Post-analysis:",curr)
                 curr=curr[0]
                 del curr['gender']
                 del curr['race']
                 del curr['region']
                 curr['file'] = record
-                #print(curr)
                 curr = pd.DataFrame(curr,index=[0])
-                #print(curr)
-                #print(result)
                 if len(result) == 0:
                     result = pd.DataFrame(curr)
                 else:
                     result = pd.concat([result,curr])
-                #print(result,'\n\n\n\n\n')
             except:
                 print("error processing {}".format(record))
-    #normalize_output(model,result)
-    #print(result)
+    result.to_csv(os.path.join('non_normalized_'+model+'_'+out_csv))
     result=normalize_output(model,result)
     result['pred_model'] = model
     result.to_csv(os.path.join(out_csv))
-    #print(result)
 
 
 # %% [markdown]
@@ -496,12 +435,19 @@ from glob import glob
 if __name__ == '__main__':
     example_text = '''
 examples:
-    python MasterScript.py --fp part3 --out_csv UTKpart3.csv #generate a CSV for iteration
+    #generate a CSV for iteration from jpg files in folder 'path3' in the current directory & save as UTKpart3.csv
+    python MasterScript.py --fp part3 --out_csv UTKpart3.csv 
+    python MasterScript.py -f part3 -o UTKpart3.csv
+
+    #evalutate contents of UTKpart3.csv using FairFace without pre-processing and save output to FF_UTKpart3_no_preproc.csv
     python MasterScript.py --in_csv UTKpart3.csv --model FairFace --preproc False --out_csv FF_UTKpart3_no_preproc.csv
-    #evalutates contents of UTKpart3.csv using FairFace without pre-processing
+    python MasterScript.py -i UTKpart3.csv -m FairFace -p False -o FF_UTKpart3_no_preproc.csv
+    
+    #evaulate contents of UTKpart3.csv using DeepFace with preprocessing enabled (requires specifying facial detection backend of mtcnn or opencv for DeepFace)
+    # and save output to DF_UTKpart3_preproc[mtcnn|opencv].csv
     python MasterScript.py --in_csv UTKpart3.csv --model DeepFace --preproc True --out_Csv DF_UTKpart3_preproc[mtcnn|opencv].csv
-    #evaulates contents of UTKpart3.csv using DeepFace with preprocessing enabled (requires specifying facial detection backend of mtcnn or opencv for DeepFace)
-    '''
+    python MasterScript.py -i UTKpart3.csv -m DeepFace -p True -o DF_UTKpart3_preproc[mtcnn|opencv].csv
+'''
     parser = argparse.ArgumentParser(
         prog='python MasterScript.py',
         description='script to iterate through images using FairFace or DeepFace',
@@ -509,22 +455,24 @@ examples:
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     #in_csv arg
-    parser.add_argument('--in_csv',dest='in_csv',action='store',
+    parser.add_argument('-i','--in_csv',dest='in_csv',action='store',
                         help='csv containing filepaths to input images to categorize'
                         )
     #out_csv arg
-    parser.add_argument('--out_csv',dest='out_csv',action='store',
+    parser.add_argument('-o','--out_csv',dest='out_csv',action='store',
                         help='filename in which to store model output'
                         )
     #model arg
-    parser.add_argument('--model',dest='model',action='store',
+    parser.add_argument('-m','--model',dest='model',action='store',
                         help='FairFace or DeepFace'
                         )
     #preprocess arg
-    parser.add_argument('--preproc',dest='preproc',action='store',
+    parser.add_argument('-p','--preproc',dest='preproc',action='store',
                         help='True or False - preprocess images before evaluating'
                         )
-    parser.add_argument('--fp',dest='PATH',action='store',
+    #fp arg - allows you to generate an input CSV file to use within this script
+    #depends on having a folder in the same root that contains .jpg files.
+    parser.add_argument('-f','--fp',dest='PATH',action='store',
                     help='folder containing images for processing'
                     )
     args=parser.parse_args()
@@ -539,9 +487,6 @@ examples:
             for path, subdirs, files in os.walk(args.PATH)
             for file in glob(os.path.join(path,EXT))
         ]
-        #print(len(all_jpg),len(all_jpg_path))
         present_files = pd.DataFrame({'img_paths':all_jpg_path,'file':all_jpg})
         present_files.to_csv(os.path.join(args.out_csv),index=False)
     
-
-
