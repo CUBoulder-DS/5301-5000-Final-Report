@@ -433,13 +433,13 @@ def batch_analyze(model, in_csv, out_csv, preprocess=True):
                 result = pd.concat([result,curr])
     else:
         from deepface import DeepFace
-        print(preprocess)
+        #print(preprocess)
         if preprocess=='True':
             backend=input('select DeepFace Detector Backend: ')
         #cat_model=input('select DeepFace model: ')
         for index,record in enumerate(files):
             #DeepFace.analyze(img_path=image_path,enforce_detection=False,silent=True)[0]
-            print(record)
+            #print(record)
             try:
                 if preprocess=='False':
                     curr = DeepFace.analyze(img_path=record,enforce_detection=False,actions=['age','gender','race'],silent=True)
