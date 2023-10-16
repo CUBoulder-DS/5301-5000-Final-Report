@@ -424,6 +424,8 @@ def batch_analyze(model, in_csv, out_csv, preprocess=True):
     if model == 'FairFace':
         FairFace=fairface()
         for index,record in enumerate(files):
+            if index % 100 == 0:
+                print('{}/{}'.format(index,len(files)))
             #print(record)
             curr = FairFace.analyze(os.path.join(record),mode='fair7',enforce_detection=preprocess)
             #curr[['pred_model','file']]="",""
@@ -440,6 +442,8 @@ def batch_analyze(model, in_csv, out_csv, preprocess=True):
         for index,record in enumerate(files):
             #DeepFace.analyze(img_path=image_path,enforce_detection=False,silent=True)[0]
             #print(record)
+            if index % 100 == 0:
+                print('{}/{}'.format(index,len(files)))
             try:
                 if preprocess=='False':
                     curr = DeepFace.analyze(img_path=record,enforce_detection=False,actions=['age','gender','race'],silent=True)
@@ -487,11 +491,23 @@ def batch_analyze(model, in_csv, out_csv, preprocess=True):
 
 # %%
 #turns this into a command-line script so that it can be called as follows:
-
-from glob import glob,iglob
+from glob import glob
 "python MasterScript.py --in_csv [input csv file path] --out_csv [desired output csv file path and name] --model [DeepFace|FairFace] --preproc [True|False]"
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    example_text = '''
+examples:
+    python MasterScript.py --fp part3 --out_csv UTKpart3.csv #generate a CSV for iteration
+    python MasterScript.py --in_csv UTKpart3.csv --model FairFace --preproc False --out_csv FF_UTKpart3_no_preproc.csv
+    #evalutates contents of UTKpart3.csv using FairFace without pre-processing
+    python MasterScript.py --in_csv UTKpart3.csv --model DeepFace --preproc True --out_Csv DF_UTKpart3_preproc[mtcnn|opencv].csv
+    #evaulates contents of UTKpart3.csv using DeepFace with preprocessing enabled (requires specifying facial detection backend of mtcnn or opencv for DeepFace)
+    '''
+    parser = argparse.ArgumentParser(
+        prog='python MasterScript.py',
+        description='script to iterate through images using FairFace or DeepFace',
+        epilog=example_text,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     #in_csv arg
     parser.add_argument('--in_csv',dest='in_csv',action='store',
                         help='csv containing filepaths to input images to categorize'
@@ -524,7 +540,7 @@ if __name__ == '__main__':
             for file in glob(os.path.join(path,EXT))
         ]
         #print(len(all_jpg),len(all_jpg_path))
-        present_files = pd.DataFrame({'img_path':all_jpg_path,'file':all_jpg})
+        present_files = pd.DataFrame({'img_paths':all_jpg_path,'file':all_jpg})
         present_files.to_csv(os.path.join(args.out_csv),index=False)
     
 
