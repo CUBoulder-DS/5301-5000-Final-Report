@@ -488,6 +488,7 @@ def batch_analyze(model, in_csv, out_csv, preprocess=True):
 # %%
 #turns this into a command-line script so that it can be called as follows:
 
+from glob import glob,iglob
 "python MasterScript.py --in_csv [input csv file path] --out_csv [desired output csv file path and name] --model [DeepFace|FairFace] --preproc [True|False]"
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -507,8 +508,24 @@ if __name__ == '__main__':
     parser.add_argument('--preproc',dest='preproc',action='store',
                         help='True or False - preprocess images before evaluating'
                         )
+    parser.add_argument('--fp',dest='PATH',action='store',
+                    help='folder containing images for processing'
+                    )
     args=parser.parse_args()
-    batch_analyze(args.model,args.in_csv,args.out_csv,args.preproc)
+    if args.PATH is None:
+        batch_analyze(args.model,args.in_csv,args.out_csv,args.preproc)
+    else:
+        EXT = "*.jpg"
+        all_jpg_path = [file 
+                for path,subdir, files in os.walk(args.PATH)
+                for file in glob(os.path.join(path,EXT))]
+        all_jpg = [os.path.basename(file)
+            for path, subdirs, files in os.walk(args.PATH)
+            for file in glob(os.path.join(path,EXT))
+        ]
+        #print(len(all_jpg),len(all_jpg_path))
+        present_files = pd.DataFrame({'img_paths':all_jpg_path,'file':all_jpg})
+        present_files.to_csv(os.path.join(args.out_csv),index=False)
     
 
 
