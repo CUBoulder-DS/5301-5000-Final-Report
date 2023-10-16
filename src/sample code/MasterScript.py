@@ -487,6 +487,6 @@ examples:
             for path, subdirs, files in os.walk(args.PATH)
             for file in glob(os.path.join(path,EXT))
         ]
-        present_files = pd.DataFrame({'img_paths':all_jpg_path,'file':all_jpg})
+        present_files = pd.DataFrame({'img_path':all_jpg_path,'file':all_jpg})
         present_files.to_csv(os.path.join(args.out_csv),index=False)
     
