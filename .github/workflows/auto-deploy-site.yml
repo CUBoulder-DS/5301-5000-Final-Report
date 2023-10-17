@@ -35,7 +35,7 @@ jobs:
       # The only step/code that matters/was customized
       - name: Run the html conversion creation
         run: |
-             jupyter nbconvert --to html --output=index --output-dir="docs/" 5301_Final_Report.ipynb
+             jupyter nbconvert --to html --output-dir="docs/" 5301_Final_Report.ipynb
       - name: Commit file changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
