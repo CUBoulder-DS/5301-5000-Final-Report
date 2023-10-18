@@ -298,6 +298,7 @@ if pre-processing is enabled, calls to detect_face and gets its return data for 
 
 # %%
 
+
 def normalize_output(model,data):
     """
     format the output from batch_analyze in a standard fashion for comparison
@@ -318,7 +319,7 @@ def normalize_output(model,data):
     """
     if model == 'FairFace':       
         #normalize race to those output by UTK
-        data.columns=['file','pred_race','pred_gender','pred_age_grp','race_scores','gender_scores','age_scores']
+        data.columns=['img_path','pred_race','pred_gender','pred_age_grp','race_scores','gender_scores','age_scores']
         data=data.drop(labels=['race_scores','gender_scores','age_scores'],axis=1)
         race_src = [data['pred_race']=='East Asian',data['pred_race']=='Southeast Asian',
                     data['pred_race']=='Latino_Hispanic',data['pred_race']=='White',
@@ -329,10 +330,11 @@ def normalize_output(model,data):
 
     else:
         #normalize race to those output by UTK
-        data.columns=['age','pred_gender','pred_race','file']
+        #print(data)
+        data.columns=['age','pred_gender','pred_race','img_path']
         #asian, white, middle eastern, indian, latino and black
         race_src = [data['pred_race']=='asian',data['pred_race']=='white',data['pred_race']=='middle eastern',
-                    data['pred_race']=='indian',data['pred_race']=='latino',data['pred_race']=='black']
+                    data['pred_race']=='indian',data['pred_race']=='latino hispanic',data['pred_race']=='black']
         race_dest = ['Asian','White','Other','Indian','Other','Black']
         data['pred_race'] = np.select(race_src,race_dest,data['pred_race'])
         #remap predicted genders
@@ -347,7 +349,7 @@ def normalize_output(model,data):
 
     data[["pred_age_lower","pred_age_upper"]] = data['pred_age_grp'].str.split('-',expand=True).astype(int) #convert to int somehow
     
-    data = data[['file','pred_race','pred_gender','pred_age_grp','pred_age_lower','pred_age_upper']]
+    data = data[['img_path','pred_race','pred_gender','pred_age_grp','pred_age_lower','pred_age_upper']]
     return data
 
 
@@ -365,36 +367,47 @@ def batch_analyze(model, in_csv, out_csv, preprocess=True):
         out_csv (_type_): relative path location and name in which to store output for this evaluation
         preprocess (bool, optional): if true, facial detection is performed on each image within the given model before it performs image classification. Defaults to True.
     """
-    files = pd.read_csv(os.path.join(in_csv))['img_path']
+    master = pd.read_csv(os.path.join(in_csv))
+    files = master['img_path']
+    #files = pd.read_csv(os.path.join(in_csv))['img_path']
     result=[]
+    if preprocess=="True":
+        preprocess = True 
+    else:
+        preprocess = False 
     if model == 'FairFace':
         FairFace=fairface()
         for index,record in enumerate(files):
             if index % 100 == 0:
                 print('{}/{}'.format(index,len(files)))
-            curr = FairFace.analyze(os.path.join(record),mode='fair7',enforce_detection=preprocess)
-            if len(result)==0:
-                result = curr
-            else:
-                result = pd.concat([result,curr])
+            try:
+                curr = FairFace.analyze(os.path.join(record),mode='fair7',enforce_detection=preprocess)
+                if len(result)==0:
+                    result = curr
+                else:
+                    result = pd.concat([result,curr])
+            except Exception as e:
+                print("error processing file: {} using {}".format(record,model))
+                print(e)
+                continue
     else:
         from deepface import DeepFace
         import time
         #probably need to introduce a cool-down period
-        if preprocess=='True':
+        if preprocess:
             backend=input('select DeepFace Detector Backend: ')
         for index,record in enumerate(files):
             if index % 100 == 0:
                 print('{}/{}'.format(index,len(files)))
                 if index > 0:
                     print('sleeping / cooldown for 45 seconds')
-                    time.sleep(45)
+                    #time.sleep(45)
 
             try:
-                if preprocess=='False':
-                    curr = DeepFace.analyze(img_path=record,enforce_detection=False,actions=['age','gender','race'],silent=True)
-                else:
+                if preprocess:
                     curr = DeepFace.analyze(img_path=record,enforce_detection=True,actions=['age','gender','race'],silent=True,detector_backend=backend)
+                else:
+                    curr = DeepFace.analyze(img_path=record,enforce_detection=False,actions=['age','gender','race'],silent=True)
                 curr=curr[0]
                 del curr['gender']
                 del curr['race']
@@ -405,13 +418,40 @@ def batch_analyze(model, in_csv, out_csv, preprocess=True):
                     result = pd.DataFrame(curr)
                 else:
                     result = pd.concat([result,curr])
-            except:
-                print("error processing {}".format(record))
+            except Exception as e:
+                print("error processing file: {} using {}".format(record,model))
+                print(e)
     result.to_csv(os.path.join('non_normalized_'+model+'_'+out_csv))
     result=normalize_output(model,result)
     result['pred_model'] = model
-    result.to_csv(os.path.join(out_csv))
+    master=master.merge(result,how='left',on='img_path')
+    #result.to_csv(os.path.join(out_csv))
+    master.to_csv(os.path.join(out_csv))
+    print("Evaluated images listed in {} using {} (preprocessing = {}); outputs stored in {}.".format(in_csv,model,preprocess,out_csv))
+    print("Non-normalized output stored in non_normalized_{}_{}".format(model,out_csv))
 
+
+def parse_to_readable(in_df):
+    # all_jpg = [file t
+    #         for path, subdir, files in os.walk(in_path)
+    #         for file in glob(os.path.join(path,'*.jpg'))]
+    # in_df = pd.DataFrame({'jpgs': all_jpg})
+    #in_df['file']=(in_df['jpgs'].str.split('\\')).str[-1]
+    #in_df=in_df.drop(labels=['jpgs'],axis=1)
+    in_df[['src_age','src_gender','src_race','src_timestamp']] = in_df['file'].str.split("_",expand=True)
+    # specify conditions for integer value to text race
+    race_int = [in_df['src_race']=='0',in_df['src_race']=='1',in_df['src_race']=='2',in_df['src_race']=='3',in_df['src_race']=='4']
+    race_str = ['White','Black','Asian','Indian','Other']
+    #specify conditions for integer value to text gender
+    gen_int=[in_df['src_gender']=='0',in_df['src_gender']=='1']
+    gen_str=['Male','Female']
+    #add race and gender columns given specified conditions above 
+    in_df['src_race']=np.select(race_int,race_str,default=in_df['src_race'])
+    in_df['src_gender']=np.select(gen_int,gen_str,default=in_df['src_gender'])
+    in_df['src_age'] = in_df['src_age'].str.split('/').str[-1]
+    in_df['src_timestamp'] = in_df['src_timestamp'].str.split('.').str[0]
+    #in_df = in_df[in_df['src_timestamp'] is not None]
+    #in_df.to_csv(out_file)
 
 # %% [markdown]
 # The below section allows this to be run via command line as follows:
@@ -475,9 +515,24 @@ examples:
     parser.add_argument('-f','--fp',dest='PATH',action='store',
                     help='folder containing images for processing'
                     )
+    
+    parser.add_argument('-s','--sleep',dest='sleep',action='store',
+                        help='enable sleep between 100 iterations (deepface only)')
+    # parser.add_argument('-d','--dnld',dest='download',action='store',
+    #                 help='download file/folder dependencies to current directory.')
     args=parser.parse_args()
+    # if args.download:
+    #     import requests
+    #     urls = ["","",""]
+    #     for u in urls:
+    #         r=requests.get(u, allow_redirects=True)
+    #         open('facebook.ico', 'wb').write(r.content)
+    if args.sleep:
+        args.sleep = True
+
     if args.PATH is None:
         batch_analyze(args.model,args.in_csv,args.out_csv,args.preproc)
+    
     else:
         EXT = "*.jpg"
         all_jpg_path = [file 
@@ -488,5 +543,6 @@ examples:
             for file in glob(os.path.join(path,EXT))
         ]
         present_files = pd.DataFrame({'img_path':all_jpg_path,'file':all_jpg})
+        parse_to_readable(present_files)
         present_files.to_csv(os.path.join(args.out_csv),index=False)
-    
+        print("All jpg files in {} (and sub-folders) output to {}".format(args.PATH,args.out_csv))
