@@ -36,9 +36,16 @@ jobs:
       - name: Run the html conversion creation
         run: |
              jupyter nbconvert --to html --output-dir="docs/" 5301_Final_Report.ipynb
+      - name: Install R dependency
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages:
+            any::knitr
+            any::rmarkdown
       - name: Install and run Quarto conversion
+        # Don't need the following line, but it was a good one:
+        # sudo sh -c "echo \"install.packages('rmarkdown', repos='http://cran.us.r-project.org')\nq()\" | R --no-save"
         run: |
-             sudo sh -c "echo \"install.packages('rmarkdown', repos='http://cran.us.r-project.org')\nq()\" | R --no-save"
              TEMP_DEB="$(mktemp)" &&
              wget -O "$TEMP_DEB" 'https://github.com/quarto-dev/quarto-cli/releases/download/v1.3.450/quarto-1.3.450-linux-amd64.deb' &&
              sudo dpkg -i "$TEMP_DEB"
