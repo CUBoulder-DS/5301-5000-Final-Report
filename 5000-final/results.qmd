@@ -7,19 +7,38 @@ library(tidyverse)
 ```
 
 <!-- BJ !-->
-This is where all the plots will go!!!! 
+This is where all the plots will go!!!! Here are some examples of plot layout:
 
-```{r}
+::: {.panel-tabset}
 
-library(tidyverse)
-# Example code that's running
+## Tabbed example output
+```{r  ex2}
+#| label: fig-sec4-ex2
+#| fig-cap: ANother example caption
+#| fig-subcap: 
+#|   - Subcap
+#|   - Subcap 2
+#| layout-ncol: 2
 
 f <- 1:10
-f
+## Tabbed example output
 ggplot() + 
   geom_line(aes(x=f, y=f^2))
+
+ggplot() + 
+  geom_line(aes(x=f, y=1/f))
 ```
 
+## Example outout
+```{r ex1}
+#| label: fig-sec4-ex1
+#| fig-cap: A caption for generated figure
+# Example code that's running
+f <- 1:10
+f
+
+```
+:::
 
 ::: callout-note
 ## From the report requirements

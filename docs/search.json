@@ -46,7 +46,7 @@
     "href": "results.html",
     "title": "4  Results",
     "section": "",
-    "text": "This is where all the plots will go!!!!\n\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\n\n\n\n\n\n\n\n\n\n\nFrom the report requirements\n\n\n\nDescribe the results of your analysis using visualizations, descriptive statistics, tables and similar.\nDon’t focus too much on the implications in this section – that’s what the next section is for. Just present the numbers/graphs."
+    "text": "This is where all the plots will go!!!! Here are some examples of plot layout:\n\nTabbed example outputExample outout\n\n\n\n\n\n\n\n\n\n(a) Subcap\n\n\n\n\n\n\n\n(b) Subcap 2\n\n\n\n\nFigure 4.1: ANother example caption\n\n\n\n\n\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\n\n\n\n\n\n\n\n\n\n\nFrom the report requirements\n\n\n\nDescribe the results of your analysis using visualizations, descriptive statistics, tables and similar.\nDon’t focus too much on the implications in this section – that’s what the next section is for. Just present the numbers/graphs."
   },
   {
     "objectID": "conclusions.html",
