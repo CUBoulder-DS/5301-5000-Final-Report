@@ -38,6 +38,7 @@ jobs:
              jupyter nbconvert --to html --output-dir="docs/" 5301_Final_Report.ipynb
       - name: Install and run Quarto conversion
         run: |
+             echo -e "install.packages(c('rmarkdown', 'tidyverse'), repos='http://cran.us.r-project.org')\nq()" | r --no-save
              TEMP_DEB="$(mktemp)" &&
              wget -O "$TEMP_DEB" 'https://github.com/quarto-dev/quarto-cli/releases/download/v1.3.450/quarto-1.3.450-linux-amd64.deb' &&
              sudo dpkg -i "$TEMP_DEB"
