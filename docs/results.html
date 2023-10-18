@@ -6,14 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Patrick Connelly">
-<meta name="author" content="Grace Cooper">
-<meta name="author" content="Bhavana Jonnalagadda">
-<meta name="author" content="Carl Klein">
-<meta name="author" content="Piya (Leo) Ngamkam">
-<meta name="author" content="Dhairya Veera">
 
-<title>Bias in Facial Classification ML Models</title>
+<title>Bias in Facial Classification ML Models - 4&nbsp; Results</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -26,26 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -54,7 +29,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./intro.html" rel="next">
+<link href="./conclusions.html" rel="next">
+<link href="./methods.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -112,7 +88,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Abstract</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./results.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Results</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -134,7 +110,7 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Abstract</span></a>
   </div>
 </li>
@@ -158,7 +134,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./results.html" class="sidebar-item-text sidebar-link">
+  <a href="./results.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Results</span></span></a>
   </div>
 </li>
@@ -179,41 +155,21 @@ div.csl-indent {
 </nav>
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a>
-  <ul class="collapse">
-  <li><a href="#how-we-should-write-this-report" id="toc-how-we-should-write-this-report" class="nav-link" data-scroll-target="#how-we-should-write-this-report">How we should write this report</a></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content column-body" id="quarto-document-content">
+<main class="content column-page-right" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Bias in Facial Classification ML Models</h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Results</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Authors</div>
-    <div class="quarto-title-meta-contents">
-             <p>Patrick Connelly </p>
-             <p>Grace Cooper </p>
-             <p>Bhavana Jonnalagadda </p>
-             <p>Carl Klein </p>
-             <p>Piya (Leo) Ngamkam </p>
-             <p>Dhairya Veera </p>
-          </div>
-  </div>
     
   
     
@@ -222,43 +178,16 @@ div.csl-indent {
 
 </header>
 
-
-<section id="abstract" class="level1 unnumbered">
-<h1 class="unnumbered">Abstract</h1><p><img src="cover.png" title="Bias in Facial Classification ML Models" class="quarto-cover-image img-fluid"></p>
-<p>Here is where we will put the abstract.</p>
 <!-- BJ !-->
-<p>Features of Quarto:</p>
-<section id="how-we-should-write-this-report" class="level2">
-<h2 class="anchored" data-anchor-id="how-we-should-write-this-report">How we should write this report</h2>
-<ul>
-<li>See <span class="citation" data-cites="karkkainenfairface">Karkkainen and Joo (<a href="references.html#ref-karkkainenfairface" role="doc-biblioref">2021</a>)</span> , that is an example on how to cite a bibliography.</li>
-<li>Sections/title headings are automatically numbered.</li>
-<li>Any changes you make, make sure to make a comment of your initials at the top of your work (INCLUDING written text) like so:</li>
-</ul>
-<pre><code>&lt;!-- BJ !--&gt;
-Blah blah etc ....
-
-OR
-#BJ
-r_var &lt;- ...</code></pre>
-<ul>
-<li>Make sure to add a unique name to all code cells, and to also enable the following (the quarto way) (In order for a figure to be cross-referenceable, its label must start with the fig- prefix):</li>
-</ul>
+<p>This is where all the plots will go!!!!</p>
 <div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+</div>
 <div class="cell-output-display">
-<div id="fig-sec1-unique-name" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="index_files/figure-html/fig-sec1-unique-name-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;1: A caption for generated figure</figcaption>
-</figure>
+<p><img src="results_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</div>
-<ul>
-<li><p>You can then refer to figures like this <code>@fig-sec1-unique-name</code> <a href="#fig-sec1-unique-name">Figure&nbsp;<span>1</span></a></p></li>
-<li><p>Format tables doing the following <a href="https://quarto.org/docs/reference/cells/cells-knitr.html#tables">Link here</a></p></li>
-<li><p>Do all your r work initially in your own custom <code>.rmd</code> file in this directory, so that it can be copy-pasted over later into the appropriate section (written descriptions/words can go straight into the <code>.qmd</code> files though). For example, Bhav’s work is in <code>5000-final/BJ_work.rmd</code>.</p></li>
-</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -269,19 +198,12 @@ From the report requirements
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A 3-5 summary of the paper. It should address the research question, the methods, and the conclusions of your analysis.</p>
-<p><em>“A good recipe for an abstract is: first sentence: specify the general area of the paper and encourage the reader; second sentence: specify the dataset and methods at a general level; third sentence: specify the headline result; and a fourth sentence about implications.”</em></p>
+<p>Describe the results of your analysis using visualizations, descriptive statistics, tables and similar.</p>
+<p>Don’t focus too much on the implications in this section – that’s what the next section is for. Just present the numbers/graphs.</p>
 </div>
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-karkkainenfairface" class="csl-entry" role="listitem">
-Karkkainen, Kimmo, and Jungseock Joo. 2021. <span>“FairFace: Face Attribute Dataset for Balanced Race, Gender, and Age for Bias Measurement and Mitigation.”</span> In <em>Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision</em>, 1548–58.
-</div>
-</div>
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -517,12 +439,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-body">
+<nav class="page-navigation column-page-right">
   <div class="nav-page nav-page-previous">
+      <a href="./methods.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Methods</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./intro.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./conclusions.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Conclusions</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

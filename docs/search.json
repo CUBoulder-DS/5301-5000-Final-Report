@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Bias in Facial Classification ML Models",
+    "section": "",
+    "text": "Abstract\nHere is where we will put the abstract.\nFeatures of Quarto:"
+  },
+  {
+    "objectID": "index.html#how-we-should-write-this-report",
+    "href": "index.html#how-we-should-write-this-report",
+    "title": "Bias in Facial Classification ML Models",
+    "section": "How we should write this report",
+    "text": "How we should write this report\n\nSee Karkkainen and Joo (2021) , that is an example on how to cite a bibliography.\nSections/title headings are automatically numbered.\nAny changes you make, make sure to make a comment of your initials at the top of your work (INCLUDING written text) like so:\n\n&lt;!-- BJ !--&gt;\nBlah blah etc ....\n\nOR\n#BJ\nr_var &lt;- ...\n\nMake sure to add a unique name to all code cells, and to also enable the following (the quarto way) (In order for a figure to be cross-referenceable, its label must start with the fig- prefix):\n\n\n\n\n\n\nFigure 1: A caption for generated figure\n\n\n\n\n\nYou can then refer to figures like this @fig-sec1-unique-name Figure 1\nFormat tables doing the following Link here\nDo all your r work initially in your own custom .rmd file in this directory, so that it can be copy-pasted over later into the appropriate section (written descriptions/words can go straight into the .qmd files though). For example, Bhav’s work is in 5000-final/BJ_work.rmd.\n\n\n\n\n\n\n\nFrom the report requirements\n\n\n\nA 3-5 summary of the paper. It should address the research question, the methods, and the conclusions of your analysis.\n“A good recipe for an abstract is: first sentence: specify the general area of the paper and encourage the reader; second sentence: specify the dataset and methods at a general level; third sentence: specify the headline result; and a fourth sentence about implications.”\n\n\n\n\n\n\nKarkkainen, Kimmo, and Jungseock Joo. 2021. “FairFace: Face Attribute Dataset for Balanced Race, Gender, and Age for Bias Measurement and Mitigation.” In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision, 1548–58."
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "1  Introduction",
+    "section": "",
+    "text": "From the report requirements\n\n\n\nThis section introduces your problem to a non-expert audience, describes the context and history of the problem.\nFor example, if your overall project topic is on Diabetes Prevention and Prediction, then you would use the Introduction to introduce what diabetes is, who it affects, why prevention is important, history on diabetes prevention, etc.\nSome questions that you could answer in the introduction:\n\nWhat is the “research question”? why is it interesting or worth answering?\nWhat is the relevant background information for readers to understand your project? Assume that your audience\nis not an expert in the application field.\nIs there any prior research on your topic that might be helpful for the audience?\n\nThe goal of the introduction it to capture the audience’s interest in your paper. An introduction that starts with “Diabetes kills over 87 thousand people each year and in many cases may be preventable” is more engaging than “This paper is about diabetes prevention”.\nThe introduction should be 2-4 paragraphs long."
+  },
+  {
+    "objectID": "data.html",
+    "href": "data.html",
+    "title": "2  Data",
+    "section": "",
+    "text": "We describe the data here. Note that the default global setting for Quarto is set to NOT output the code into the rendered document, aka only including the results of any R code.\nWe should include a print of the head of the dataframe of our data, along with some sample images!!\n\n\n\n\n\n\nFrom the report requirements\n\n\n\nThis section should describe the data you’ll be using. Answer at least all of the following questions:\n\nHow was the data collected?\nWhat are the sources and influences of bias in the data?\nWhat are the important features (=columns) that you are using in your analysis? What do they mean?\n\nFeel free to add anything else that you think is necessary for understanding the paper and the context of the problem."
+  },
+  {
+    "objectID": "methods.html#a-subsection",
+    "href": "methods.html#a-subsection",
+    "title": "3  Methods",
+    "section": "3.1 A Subsection",
+    "text": "3.1 A Subsection"
+  },
+  {
+    "objectID": "methods.html#another-subsection",
+    "href": "methods.html#another-subsection",
+    "title": "3  Methods",
+    "section": "3.2 Another subsection",
+    "text": "3.2 Another subsection\n\n3.2.1 Sub-sub section\n\n\n\n\n\n\nFrom the report requirements\n\n\n\nAlso can be called “Analyses”\nThis section might contain several subsections as needed.\n\nAt least one subsection should describe the exploratory data analysis you did.\nWhat modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)\nDescribe the analyses you did to answer the question of interest. Explain why you believe these methods are appropriate.\n\nSome methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data."
+  },
+  {
+    "objectID": "results.html",
+    "href": "results.html",
+    "title": "4  Results",
+    "section": "",
+    "text": "This is where all the plots will go!!!!\n\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\n\n\n\n\n\n\n\n\n\n\nFrom the report requirements\n\n\n\nDescribe the results of your analysis using visualizations, descriptive statistics, tables and similar.\nDon’t focus too much on the implications in this section – that’s what the next section is for. Just present the numbers/graphs."
+  },
+  {
+    "objectID": "conclusions.html",
+    "href": "conclusions.html",
+    "title": "5  Conclusions",
+    "section": "",
+    "text": "From the report requirements\n\n\n\n\nSummarize what the paper has done, and discuss the implications of your Results.\nExplicitly connect the results to the research question.\nDiscuss how you would you extend this research\n\nLike the introduction, this section should be written with a non-expert in mind. A person should be able to read Introduction+Conclusion and get a rough idea of the meaning and significance of your paper"
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Karkkainen, Kimmo, and Jungseock Joo. 2021. “FairFace: Face\nAttribute Dataset for Balanced Race, Gender, and Age for Bias\nMeasurement and Mitigation.” In Proceedings of the IEEE/CVF\nWinter Conference on Applications of Computer Vision, 1548–58."
+  }
+]

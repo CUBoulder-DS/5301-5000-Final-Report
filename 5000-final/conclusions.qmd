@@ -1,0 +1,19 @@
+# Conclusions
+
+```{r setup, include=FALSE}
+#| include: false
+
+library(tidyverse)
+```
+
+::: callout-note
+## From the report requirements
+
+-   Summarize what the paper has done, and discuss the implications of your Results.
+
+-   Explicitly connect the results to the research question.
+
+-   Discuss how you would you extend this research
+
+Like the introduction, this section should be written with a **non-expert** in mind. A person should be able to read Introduction+Conclusion and get a rough idea of the meaning and significance of your paper
+:::

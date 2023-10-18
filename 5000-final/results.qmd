@@ -1,0 +1,31 @@
+# Results
+
+```{r setup, include=FALSE}
+#| include: false
+
+library(tidyverse)
+```
+
+<!-- BJ !-->
+This is where all the plots will go!!!! 
+
+```{r}
+
+library(tidyverse)
+# Example code that's running
+
+f <- 1:10
+f
+ggplot() + 
+  geom_line(aes(x=f, y=f^2))
+```
+
+
+::: callout-note
+## From the report requirements
+
+Describe the results of your analysis using visualizations, descriptive statistics, tables and similar.
+
+Don't focus too much on the implications in this section -- that's what the next section is for. Just present the numbers/graphs.
+
+:::

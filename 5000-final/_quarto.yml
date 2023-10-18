@@ -1,0 +1,60 @@
+project:
+  type: book
+  output-dir: "../docs"
+
+book:
+  title: "Bias in Facial Classification ML Models"
+  author:
+    - "Patrick Connelly"
+    - "Grace Cooper"
+    - "Bhavana Jonnalagadda"
+    - "Carl Klein"
+    - "Piya (Leo) Ngamkam"
+    - "Dhairya Veera"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - data.qmd
+    - methods.qmd
+    - results.qmd
+    - conclusions.qmd
+    - references.qmd
+  downloads: [pdf]
+  references: references.bib # Unsure if needed
+  output-file: STAT_5000_Final_Report # PDF filename
+  cover-image: cover.png # Do we need a cover?
+  repo-url: "https://github.com/CUBoulder-DS/5301-5000-Final-Report"
+  page-navigation: true
+  navbar:
+    pinned: true
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: flatly
+    page-layout: full
+    smooth-scroll: true
+    number-sections: true
+    citations-hover: true
+  pdf:
+    documentclass: scrreprt
+    number-depth: 4
+    header-includes: # dont need?
+      - \usepackage{float}
+      - \floatplacement{table}{H}
+      - \floatplacement{image}{H}
+    geometry:
+      - margin=0.5in
+
+## Extra settings
+
+# Don't include code in the report
+execute:
+  echo: false
+  panel: tabset
+  freeze: auto
+
+latex-clean: true # delete latex files after rendering
+latex-auto-mk: true
+#
