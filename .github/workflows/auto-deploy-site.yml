@@ -61,6 +61,6 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Generate html for website from notebook
-          file_pattern: 'docs/'
+          file_pattern: 'docs/**'
           push_options: '--force'
           add_options: '-u'
