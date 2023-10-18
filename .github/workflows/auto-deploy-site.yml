@@ -5,6 +5,9 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+    paths:
+      - '5301_Final_Report.ipynb'
+      - 'docs/*'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -32,10 +35,28 @@ jobs:
         uses: py-actions/py-dependency-install@v4
         with:
           path: "requirements.txt"
-      # The only step/code that matters/was customized
+      # The only steps/code that matters/was customized
       - name: Run the html conversion creation
         run: |
-             jupyter nbconvert --to html --output=index --output-dir="docs/" 5301_Final_Report.ipynb
+             jupyter nbconvert --to html --output-dir="docs/" 5301_Final_Report.ipynb
+      # - uses: r-lib/actions/setup-r@v2
+      # - name: Install R dependency
+      #   uses: r-lib/actions/setup-r-dependencies@v2
+      #   with:
+      #     cache: true
+      #     packages:
+      #       any::knitr
+      #       any::rmarkdown
+      # - name: Install and run Quarto conversion
+      #   # Don't need the following line, but it was a good one:
+      #   # sudo sh -c "echo \"install.packages('rmarkdown', repos='http://cran.us.r-project.org')\nq()\" | R --no-save"
+      #   run: |
+      #        TEMP_DEB="$(mktemp)" &&
+      #        wget -O "$TEMP_DEB" 'https://github.com/quarto-dev/quarto-cli/releases/download/v1.3.450/quarto-1.3.450-linux-amd64.deb' &&
+      #        sudo dpkg -i "$TEMP_DEB"
+      #        rm -f "$TEMP_DEB"
+      #        cd 5000-final
+      #        quarto render
       - name: Commit file changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:

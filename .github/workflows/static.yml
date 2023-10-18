@@ -3,11 +3,14 @@ name: Deploy static content to Pages
 
 on:
   # Run every time and only after the static site build runs
-  workflow_run:
-    workflows: ["Convert the project notebook into a github-pages site"]
-    branches: [main]
-    types: 
-      - completed
+  push:
+    paths:
+      - 'docs/**'
+  # workflow_run:
+  #   workflows: ["Convert the project notebook into a github-pages site"]
+  #   branches: [main]
+  #   types: 
+  #     - completed
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

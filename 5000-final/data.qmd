@@ -1,0 +1,19 @@
+# Data
+
+We describe the data here. Note that the default global setting for Quarto is set to NOT output the code into the rendered document, aka only including the results of any R code.
+
+**We should include a print of the head of the dataframe of our data, along with some sample images!!**
+
+::: callout-note
+## From the report requirements
+
+This section should describe the data you'll be using. Answer **at least** **all** of the following questions:
+
+-   How was the data collected?
+
+-   What are the sources and influences of bias in the data?
+
+-   What are the important features (=columns) that you are using in your analysis? What do they mean?
+
+Feel free to add anything else that you think is necessary for understanding the paper and the context of the problem.
+:::

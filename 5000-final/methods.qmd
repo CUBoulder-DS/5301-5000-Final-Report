@@ -1,0 +1,30 @@
+# Methods
+
+```{r setup, include=FALSE}
+#| include: false
+
+library(tidyverse)
+```
+
+<!-- BJ !-->
+## A Subsection
+
+## Another subsection
+
+### Sub-sub section
+
+::: callout-note
+## From the report requirements
+
+Also can be called "Analyses"
+
+This section might contain several subsections as needed.
+
+-   At least one subsection should describe the exploratory data analysis you did.
+
+-   What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)
+
+-   Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.**
+
+Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data.
+:::
