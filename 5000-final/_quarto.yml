@@ -52,7 +52,6 @@ format:
 # Don't include code in the report
 execute:
   echo: false
-  panel: tabset
   freeze: auto
 
 latex-clean: true # delete latex files after rendering
