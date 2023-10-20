@@ -7,11 +7,185 @@ library(tidyverse)
 ```
 
 <!-- BJ !-->
-## A Subsection
+## The Big Picture
 
-## Another subsection
+- Is Bias Prevalant in facial recognition machine learning models?
+- Can one model be shown to have statistically significant less bias than the other?
+- Does one model outperform the other in a statistically significant manner, in all aspects?
+- Does one model outperform the other in a statistically significant manner, in certain aspects?
+  - This is where we can dive into "conventional" bias.
+  
+::: callout-note
+## Thoughts on Bias
 
-### Sub-sub section
+We need to be careful how we define and use bias. Statistical bias is essentially error, and we could be crossing our definitions between statistical bias and conventional bias.
+:::
+
+
+## Measuring Performance
+
+There are four main measures of performance when evaluating a model:
+- **Accuracy**
+- **Precision**
+- **Recall**
+- **F1-Score**
+
+Each of these performance measures has their own place in evaluating models, however, to begin to explain the differences between these models we should start with concepts of positive and negative outcomes.
+
+- **True Positive:** predicted positive, was actually positive (correct)
+- **False Positive:** predicted positive, was actually negative (incorrect)
+- **True Negative:** predicted negative, was actually negative (correct)
+- **False Negative:** predicted negative, was actually positive (incorrect)
+
+These outcomes can be visualized on a confusion matrix. In the image below, green are correct predictions while red are incorrect predictions.
+
+![confusion_matrix](images/confusion_matrix.png)
+
+
+### Accuracy
+
+**Accuracy** is the ratio of correct predictions to all predictions. In other words, the total of the green squares divided by the entire matrix. This is arguably the most common concept of measuring performance.
+
+$Accuracy = \frac{TP+TN}{TP+TN+FP+FN}$
+
+
+### Precision
+
+**Precision** is the ratio of true positives to the total number of positives (true positive + true negative).
+
+$Precision = \frac{TP}{TP+FP}$
+
+
+### Recall
+
+**Recall** is the ratio of true positives to the number of total correct predictions (true positive + false negative).
+
+$Recall = \frac{TP}{TP+FN}$
+
+
+### F1-Score
+
+**F1-Score** is known as the harmonic mean between precision and recall. **Precision** and **Recall** are useful in their own rights, but the f1-Score is useful in the fact it’s a balanced combination of both precision and recall.
+
+
+F1-Score $= \frac{2 * Precision * Recall}{Precision + Recall}$
+
+
+## Conditional Peformance
+
+Just as with the exploratory analysis on the data set prior to running either model, it's helpful to garner an understanding of what the results were using basic statistics and metrics. By calculating metrics in a cascading fashion, starting with the overall performance and then zeroing in on subgroups, we can get an idea if and where bias is worth investigating.
+
+
+### Performance - Overall
+
+- Confusion Matrix / Performance Measures for Fairface (Fairface Results)
+- Confusion Matrix / Performance Measures for Deepface (Deepface Results)
+
+
+### Performance - Main Demographics
+
+- Age Group
+  - Fairface Results
+  - Deepface Results
+- Gender
+  - Fairface Results
+  - Deepface Results
+- Race
+  - Fairface Results
+  - Deepface Results
+  
+  
+### Performance - Demographics' Subgroups
+
+- Age Group (9 groups)
+  - Fairface Results
+  - Deepface Results
+- Gender (2 groups)
+  - Fairface Results
+  - Deepface Results
+- Race (5 groups)
+  - Fairface Results
+  - Deepface Results
+
+
+## Hypothesis Testing
+
+Now that we have an idea how each of these models performed in general and across localized subsets, let's see if our models truly have statistically significant results and if bias is present.
+
+Our tests will focus on proportions, and will discover if there is statistically significant differences between and within the models.
+
+
+### Proportion Test
+
+The **Proportion Test** will be useful when measuring difference in overall performance and single categories between models.
+
+The *hypothesis test* we'll be using is:
+
+- $H_0: \pi_2 - \pi_1 = 0$
+- $H_A: \pi_2 - \pi_1 \neq 0$
+
+
+A look at the test statistic:
+$Z = \frac{p_2 - p_1 - \pi_0}{\sqrt{p^*(1-p^*)(\frac{1}{n_1}+\frac{1}{n_2})}}$, where
+
+the *pooled proportion*, $p^*$ is calculated as
+
+$p^* = \frac{x_1 + x_2}{n_1 + n_2}$
+
+
+A look at the code:
+```{r, eval = FALSE}
+prop.test(x = c(x1, x2), n = c(n1, n2), alternative = 'two.sided', conf.level = 0.95)
+```
+- x: vector of successes and failures
+- n: vector of counts of trials (can be ignored if x is a matrix or a table)
+- alternative: we can change if we have a specific equality to test
+- conf.level: 0.95 is the default (not pertinent to specify)
+
+We can also build **confidence intervals**. We have 95% confidence that the true difference between the props lies within the following: 
+```{r, eval = FALSE}
+c(-1, 1) * qnorm(0.975) * sqrt(p.hat1 * (1-p.hat1)/n1 + p.hat2*(1 - p.hat2)/n2)
+```
+
+### Chi-Squared Test
+
+The **Chi-squared Test** will be useful when testing across k-levels of a categorical variable. For instance, this could be useful when testing proportion within a demographic for a singe model (i.e. accuracy across race in Fairface).
+
+
+The *hypothesis test* we'll be using is:
+
+*Equivalent Proportions (test for uniformity):*
+- $H_0: \pi_1 = \pi_2 = ... = \pi_n = \pi$
+- $H_A: H_0$ is incorrect (at least one of the proportions is not equivalent)
+
+
+A look at the test statistic:
+$\chi^2 = \sum_{i=1}^{k} \frac{(O_i - E_i)^2}{E_i}$, where
+
+$O_i$ is the observed count, and
+
+$E_i$ is the expected count.
+
+
+A look at the code:
+```{r, eval = FALSE}
+chisq.test(x)
+```
+
+Imagine using this test across the categories of race. A test which favored $H_A$ could give credence to bias.
+
+The standard is using the **Chi-squared Test** in testing for uniformity, however we can test specific proportions for each category. Here's a preview in R:
+
+```{r, eval = FALSE}
+chisq.test(x, p = c())
+```
+
+A possible use case of the non-uniform **Chi-squared Test** could be to test if the proportion of inaccuracies follows the proportion of each demographic subcategory. For instance, does inaccuracy across race follow the proportions of race in the sample?
+
+
+### Non Parametric Cohort
+
+
 
 ::: callout-note
 ## From the report requirements
@@ -28,3 +202,4 @@ This section might contain several subsections as needed.
 
 Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data.
 :::
+
