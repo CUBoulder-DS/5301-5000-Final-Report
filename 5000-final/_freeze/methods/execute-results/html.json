@@ -1,5 +1,5 @@
 {
-  "hash": "a3d7e216fcf78e14d97d9a9414e8530a",
+  "hash": "cef014e1d40ca341d809d279b9d8c5a4",
   "result": {
     "markdown": "# Methods\n\n\n\n\n\n<!-- BJ !-->\n## A Subsection\n\n## Another subsection\n\n### Sub-sub section\n\n::: callout-note\n## From the report requirements\n\nAlso can be called \"Analyses\"\n\nThis section might contain several subsections as needed.\n\n-   At least one subsection should describe the exploratory data analysis you did.\n\n-   What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)\n\n-   Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.**\n\nSome methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data.\n:::\n",
     "supporting": [
