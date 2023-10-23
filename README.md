@@ -4,13 +4,17 @@ The final project for Data Science as a Field and STAT 5000.
 
 <span style="background-color: Green">Website link: [https://cuboulder-ds.github.io/5301-5000-Final-Report/](https://cuboulder-ds.github.io/5301-5000-Final-Report/)</span>
 
-## How to update the Quarto STAT 5000 website and PDF
+## How to generally do work for Quarto STAT 5000 website and PDF
 
 1. Install Quarto and `install.packages("rmarkdown")` if you haven't already.
-2. cd into the `5000-final` folder
-3. Run `quarto render` on the CLI/bash
-4. Do a git pull, commit and push (do force push if needed)
-5. Github will automatically turn the `docs/` folder file changes into the website
+2. Whenever you do git pull, always rebase: `git pull --rebase`.
+3. Make a branch for any major work that will affect the actual report files (aka the `.qmd` files), and start your branch name with initials, e.g. `BJ_work1`.
+4. ALWAYS keep your git updated, do `git pull` always before any commiting, pushing, branches, etc.
+5. When pushing, do a force push.
+6. cd into the `5000-final` folder
+7. Run `quarto render` on the CLI/bash
+8. Do a git pull, commit and push (do force push if needed)
+9. Github will automatically turn the `docs/` folder file changes into the website
 
 ## How the website generation works
 

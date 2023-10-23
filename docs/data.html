@@ -40,6 +40,11 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<meta name="shinylive:serviceworker_dir" content=".">
+<script src="site_libs/quarto-contrib/shinylive-0.2.1/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="site_libs/quarto-contrib/shinylive-0.2.1/shinylive/run-python-blocks.js" type="module"></script>
+<link href="site_libs/quarto-contrib/shinylive-0.2.1/shinylive/shinylive.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -180,6 +185,183 @@ ul.task-list li input[type="checkbox"] {
 
 <p>We describe the data here. Note that the default global setting for Quarto is set to NOT output the code into the rendered document, aka only including the results of any R code.</p>
 <p><strong>We should include a print of the head of the dataframe of our data, along with some sample images!!</strong></p>
+<!-- {{< include _CK_data_EDA_shiny.qmd >}} -->
+<!-- :::{.column-screen-inset} -->
+<!-- ```{shinylive-r} -->
+<!-- ## file: _CK_data_EDA_shiny.qmd -->
+<!-- ``` -->
+<!-- ::: -->
+<pre class="shinylive-r" data-engine="r"><code>#| standalone: true
+
+# libraries
+library(shiny)
+# library(tidyverse)
+library(ggplot2) # Plotting
+library(readr) # read_csv
+library(shinythemes)
+library(dplyr) # rename, etc
+library(DT)
+library(shinylive)
+
+# data
+# location of data
+utk_1 &lt;- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart1.csv"
+utk_2 &lt;- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart2.csv"
+utk_3 &lt;- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart3.csv"
+# download data
+df_1 &lt;- read_csv(utk_1, col_select = c(src_age, src_race, src_gender))
+df_2 &lt;- read_csv(utk_2, col_select = c(src_age, src_race, src_gender))
+df_3 &lt;- read_csv(utk_3, col_select = c(src_age, src_race, src_gender))
+# combine data
+df &lt;- rbind(df_1, df_2, df_3)
+# clean data
+mydata &lt;- df %&gt;%
+  filter(src_age != '0' &amp; src_race != '0' &amp; src_gender != '0') %&gt;%
+  rename(Age = src_age, Race = src_race, Gender = src_gender) 
+
+# attach allows use of column names without calling full table
+attach(mydata)
+
+# server input
+server = function(input, output, session) {
+
+  # underlying data datatable
+  output$originalData &lt;- DT::renderDataTable(DT::datatable(mydata))
+  
+  output$underlyingDownload = downloadHandler(
+    filename = "underlying.csv",
+    content = function(file) {
+      write.csv(mydata.new(), file)
+    }
+  )
+  
+  # checkbox selection for race
+  output$raceSelect &lt;- renderPrint({ input$checkGroupRace })
+  
+  # checkbox selection for gender
+  output$genderSelect &lt;- renderPrint({ input$checkGroupGender })
+  
+  # selectbox for race, gender or none
+  output$subDensity &lt;- renderPrint({ input$subDensitySelect })
+  
+  # slider for age
+  output$ageRange &lt;- renderPrint({ input$sliderAge })
+  
+  # slider for alpha
+  output$alphaRange &lt;- renderPrint({ input$sliderAlpha })
+  
+  # plot
+  output$densityPlot = renderPlot({
+    # age filter
+    gdata &lt;- mydata %&gt;%
+      filter(Age &gt;= input$sliderAge[1] &amp; Age &lt;= input$sliderAge[2])
+    
+    # gender filter
+    if (length(input$checkGroupGender) == 0) {
+      gdata &lt;- gdata
+    } else if (length(input$checkGroupGender) == 1 &amp; input$checkGroupGender[1] == 'Female') {
+      gdata &lt;- gdata %&gt;%
+        filter(Gender == 'Female')
+    } else if (length(input$checkGroupGender) == 1 &amp; input$checkGroupGender[1] == 'Male') {
+      gdata &lt;- gdata %&gt;%
+        filter(Gender == 'Male')
+    }
+    
+    # race filter
+    races &lt;- c('Asian', 'Black', 'Indian', 'Other', 'White')
+    if (length(input$checkGroupRace) == 0 | length(input$checkGroupRace) == 5) {
+      gdata &lt;- gdata
+    } else {
+      gdata &lt;- gdata %&gt;%
+        filter(Race %in% races[which(races %in% input$checkGroupRace)])
+    }
+    
+    # filter for just age, or add gender or race curves
+    if (input$subDensitySelect == 'None') {
+      ggplot(gdata) +
+        geom_density(aes(Age))
+    } else if (input$subDensitySelect == 'Gender') {
+      ggplot(gdata) +
+        geom_density(aes(Age, fill = Gender), alpha = input$sliderAlpha)
+    } else {
+      ggplot(gdata) +
+        geom_density(aes(Age, fill = Race), alpha = input$sliderAlpha)
+    }
+  })
+}
+
+ui = navbarPage(
+  # theme
+  # theme = shinytheme("cerulean"),
+  
+  # title
+  title = "Bias in Facial Classification",
+  
+  # tab - theme settings
+  tabPanel("Select Theme Setting", themeSelector()),
+  
+  # tab - exploratory analysis
+  tabPanel("Exploratory Analysis",
+           fluidRow(
+             # Race selection
+             column(4,
+                    checkboxGroupInput("checkGroupRace", label = h3("Race Selection"), 
+                                       choices = list("Asian" = 'Asian',
+                                                      "Black" = 'Black',
+                                                      "Indian" = 'Indian',
+                                                      "Other" = 'Other',
+                                                      "White" = 'White'),
+                                       selected = c('Asian', 'Black', 'Indian', 'Other', 'White'))),
+             # Gender selection
+             column(4,
+                    checkboxGroupInput("checkGroupGender", label = h3("Gender Selection"), 
+                                       choices = list("Female" = 'Female',
+                                                      "Male" = 'Male'),
+                                       selected = c('Male', 'Female'))),
+             # subDensity selection
+             column(4,
+                    selectInput("subDensitySelect", label = h3("Sub Filter"), 
+                                       choices = list("Race" = 'Race',
+                                                      "Gender" = 'Gender',
+                                                      "None" = 'None'),
+                                       selected = 'None'))
+             ),
+           fluidRow(
+             # Age selection
+             column(6,
+                    sliderInput("sliderAge", label = h3("Age Range"), min = 1, 
+                                max = 135, value = c(15, 90))),
+             # Alpha selection
+             column(6,
+                    sliderInput("sliderAlpha", label = h3("Alpha Range"), min = 0, 
+                                max = 1, value = 0.2)
+             )),
+           
+           # plot
+           plotOutput("densityPlot")),
+  
+  # tab - statistical testing
+  tabPanel("Statistical Testing"),
+  
+  # tab - feature testing
+  tabPanel("Feature Testing"),
+  
+  # tab - youtube video
+  tabPanel("YouTube Video",
+           "Replace with our group's YouTube Video?",
+           tags$iframe(src='https://www.youtube.com/embed/XZo4xyJXCak?si=Uw897KUFEtIr_QMN',
+                       width = '900', height = '900')),
+  
+  # tab - underlying data
+  tabPanel("Underlying Data",
+           # table output 
+           DT::dataTableOutput("originalData"),
+           # table download
+           downloadButton(outputId = "underlyingDownload", label = "Download Table"))
+  
+)
+
+shinyApp(ui = ui, server = server)</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
