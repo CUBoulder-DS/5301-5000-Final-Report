@@ -74,7 +74,16 @@ This section might contain several subsections as needed.
     ### Specific Permutations
 
     With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:
+```{r}
+library(tidyverse)
+names <- c("Detection","Detection Model","Image Source")
+det <- c("Enabled","Enabled","Enabled","Enabled","Enabled","Enabled","Enabled","Enabled","Disabled","Disabled")
+det_mod <- c("FairFace=Dlib; DeepFace=OpenCV","FairFace=Dlib; DeepFace=OpenCV","FairFace=Dlib; DeepFace=mtcnn","FairFace=Dlib; DeepFace=mtcnn","FairFace=Dlib; DeepFace=fastmtcnn","FairFace=Dlib; DeepFace=fastmtcnn","FairFace=Dlib;DeepFace=ssd","FairFace=Dlib;DeepFace=ssd","FairFace,DeepFace=None","FairFace,DeepFace=None")
+img_src <- c("Pre-cropped","In-The-Wild","Pre-cropped","In-The-Wild","Pre-cropped","In-The-Wild","Pre-cropped","In-The-Wild","Pre-cropped","In-The-Wild")
+tib <- tibble("Detection"=det,"Detection_Model"=det_mod,"Image_Source"=img_src)
+knitr::kable(tib,format='html')
 
+```
     **Detection**       **Detection Model**                                         **Image source**
     Enabled         Fairface=Dlib; DeepFace=[opencv,mtcnn,fastmtcnn,ssd]    Pre-cropped, in-the-wild
     Disabled        None                                                    Pre-cropped, in-the-wild
