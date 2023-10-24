@@ -35,7 +35,7 @@ This section might contain several subsections as needed.
 
     "[age] is an integer from 0 to 116, indicating the age"
 
-    ### Standardizing output from FairFace
+    ### From FairFace
 
     **Race**: The FairFace classification model had two options - one for "fair7" and one for "fair4."  The latter provided predictions of race in the following categories:  [White, Black, Asian, Indian].  Of key note, the model omitted "Other" categories as listed in the race category for the UTK dataset.  However, the "fair7" model provides predictions across [White, Black, Latino_Hispanic, East Asian, Southeast Asian, Indian, Middle Eastern].  We elected to use the the fair7 model, and to refactor the output categories to match those of the UTK dataset. Namely, we refactored instances of Middle Eastern and Latino_Hispanic as "Other," and instances of "East Asian" and "Southeast Asian" as "Asian"
 
@@ -43,7 +43,7 @@ This section might contain several subsections as needed.
 
     **Gender**: no change to outputs of "Male" and "Female."
 
-    ### Standardizing output from DeepFace
+    ### From DeepFace
 
     **Race**: Racial categorical output from DeepFace includes the following categories []
 
@@ -61,25 +61,25 @@ This section might contain several subsections as needed.
 
     ### DeepFace Analysis Options
 
-        DeepFace has a robust degree of avaialble settings when performing facial categorization and recognition.  These include enforcing facial detection prior to classification of an image, as well as 8 different facial detection models to detect a face prior to categorization.  The default of these settings is OpenCV detection with detection enabled.  Other detection backends include ssd, dlib, mtcnn, retinaface, mediapipe, yolov8, yunet, and fastmtcnn.  
+    DeepFace has a robust degree of avaialble settings when performing facial categorization and recognition.  These include enforcing facial detection prior to classification of an image, as well as 8 different facial detection models to detect a face prior to categorization.  The default of these settings is OpenCV detection with detection enabled.  Other detection backends include ssd, dlib, mtcnn, retinaface, mediapipe, yolov8, yunet, and fastmtcnn.  
         
-        In a Python 3.8 environment, attempting to run detections using dlib, retinaface, mediapipe, yolov8, and yunet failed to run, or failed to install the appropriate models directly from source during exeuction.  Repairing any challenges or issues with the core functionality of DeepFace and FairFace's code is outside the scope of our work, and as such, we have excluded any of these non-functioning models from our permutation evaluation.
+    In a Python 3.8 environment, attempting to run detections using dlib, retinaface, mediapipe, yolov8, and yunet failed to run, or failed to install the appropriate models directly from source during exeuction.  Repairing any challenges or issues with the core functionality of DeepFace and FairFace's code is outside the scope of our work, and as such, we have excluded any of these non-functioning models from our permutation evaluation.
 
     ### FairFace Analysis Options
 
-        The default script from FairFace provided no options via its command line script to change settings.  It uses dlib/resnet34 models for facial detection and image pre-processing, and uses its own fair4 and fair7 models for categorization.  There are no other options or flags that can be set by a user when processing a batch of images. 
+    The default script from FairFace provided no options via its command line script to change settings.  It uses dlib/resnet34 models for facial detection and image pre-processing, and uses its own fair4 and fair7 models for categorization.  There are no other options or flags that can be set by a user when processing a batch of images. 
         
-        We converted the simple script to a class in Python without addressing any feature bugs or errors in the underlying code.  This change provided us some additional options when performing the analysis of an input image using FairFace - namely, the ability to analyze and categorize an image with or without facial detection, similar to the functionality of DeepFace.  FairFace remains limited in the fact that is only detection model backend is built in dlib, but this change gives us more options when considering what type of images to use and what settings to use on both models before generating our final dataset for analysis.
+    We converted the simple script to a class in Python without addressing any feature bugs or errors in the underlying code.  This change provided us some additional options when performing the analysis of an input image using FairFace - namely, the ability to analyze and categorize an image with or without facial detection, similar to the functionality of DeepFace.  FairFace remains limited in the fact that is only detection model backend is built in dlib, but this change gives us more options when considering what type of images to use and what settings to use on both models before generating our final dataset for analysis.
 
     ### Specific Permutations
 
-        With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:
+    With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:
 
-        Detection       Detection Model                                         Image source
-        Enabled         Fairface=Dlib; DeepFace=[opencv,mtcnn,fastmtcnn,ssd]    Pre-cropped, in-the-wild
-        Disabled        None                                                    Pre-cropped, in-the-wild
+    **Detection**       **Detection Model**                                         **Image source**
+    Enabled         Fairface=Dlib; DeepFace=[opencv,mtcnn,fastmtcnn,ssd]    Pre-cropped, in-the-wild
+    Disabled        None                                                    Pre-cropped, in-the-wild
 
-        For 8 total comparisons across a subset of X sampled images from UTK.
+    For 8 total comparisons across a subset of X sampled images from UTK.
     <!--End PC!-->
     ### Permutation sample results (LN & DV)
 
