@@ -1,5 +1,9 @@
 # Data Exploration
 
+---
+format: html
+---
+
 ```{r setup, include = FALSE}
 #| include: false
 library(tidyverse)
