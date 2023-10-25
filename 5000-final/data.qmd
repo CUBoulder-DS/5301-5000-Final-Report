@@ -24,7 +24,27 @@ We describe the data here. Note that the default global setting for Quarto is se
 
 <!-- CK -->
 
+```{r, echo = FALSE, message = FALSE}
+# library(tidyverse)
+# data
+# location of data
+# utk_1 <- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart1.csv"
+# utk_2 <- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart2.csv"
+# utk_3 <- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart3.csv"
+# download data
+# df_1 <- read_csv(utk_1, col_select = c(src_age, src_race, src_gender))
+# df_2 <- read_csv(utk_2, col_select = c(src_age, src_race, src_gender))
+# df_3 <- read_csv(utk_3, col_select = c(src_age, src_race, src_gender))
+# combine data
+# df <- rbind(df_1, df_2, df_3)
+# clean data
+# mydata <- df %>%
+#   filter(src_age != '0' & src_race != '0' & src_gender != '0') %>%
+#   rename(Age = src_age, Race = src_race, Gender = src_gender)
 
+# attach allows use of column names without calling full table
+# attach(mydata)
+```
 
 ```{shinylive-r}
 #| standalone: true
@@ -37,22 +57,22 @@ library(DT)
 
 # data
 # location of data
-# utk_1 <- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart1.csv"
-# utk_2 <- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart2.csv"
-# utk_3 <- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart3.csv"
-# # download data
-# df_1 <- read_csv(utk_1, col_select = c(src_age, src_race, src_gender))
-# df_2 <- read_csv(utk_2, col_select = c(src_age, src_race, src_gender))
-# df_3 <- read_csv(utk_3, col_select = c(src_age, src_race, src_gender))
-# # combine data
-# df <- rbind(df_1, df_2, df_3)
-# # clean data
-# mydata <- df %>%
-#   filter(src_age != '0' & src_race != '0' & src_gender != '0') %>%
-#   rename(Age = src_age, Race = src_race, Gender = src_gender)
-# 
-# # attach allows use of column names without calling full table
-# attach(mydata)
+utk_1 <- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart1.csv"
+utk_2 <- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart2.csv"
+utk_3 <- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart3.csv"
+# download data
+df_1 <- read_csv(utk_1, col_select = c(src_age, src_race, src_gender))
+df_2 <- read_csv(utk_2, col_select = c(src_age, src_race, src_gender))
+df_3 <- read_csv(utk_3, col_select = c(src_age, src_race, src_gender))
+# combine data
+df <- rbind(df_1, df_2, df_3)
+# clean data
+mydata <- df %>%
+  filter(src_age != '0' & src_race != '0' & src_gender != '0') %>%
+  rename(Age = src_age, Race = src_race, Gender = src_gender)
+
+# attach allows use of column names without calling full table
+attach(mydata)
 
 # server
 server <- function(input, output, session) {

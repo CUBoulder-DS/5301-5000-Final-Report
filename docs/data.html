@@ -202,22 +202,22 @@ library(DT)
 
 # data
 # location of data
-# utk_1 &lt;- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart1.csv"
-# utk_2 &lt;- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart2.csv"
-# utk_3 &lt;- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart3.csv"
-# # download data
-# df_1 &lt;- read_csv(utk_1, col_select = c(src_age, src_race, src_gender))
-# df_2 &lt;- read_csv(utk_2, col_select = c(src_age, src_race, src_gender))
-# df_3 &lt;- read_csv(utk_3, col_select = c(src_age, src_race, src_gender))
-# # combine data
-# df &lt;- rbind(df_1, df_2, df_3)
-# # clean data
-# mydata &lt;- df %&gt;%
-#   filter(src_age != '0' &amp; src_race != '0' &amp; src_gender != '0') %&gt;%
-#   rename(Age = src_age, Race = src_race, Gender = src_gender)
-# 
-# # attach allows use of column names without calling full table
-# attach(mydata)
+utk_1 &lt;- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart1.csv"
+utk_2 &lt;- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart2.csv"
+utk_3 &lt;- "https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/UTK/UTKpart3.csv"
+# download data
+df_1 &lt;- read_csv(utk_1, col_select = c(src_age, src_race, src_gender))
+df_2 &lt;- read_csv(utk_2, col_select = c(src_age, src_race, src_gender))
+df_3 &lt;- read_csv(utk_3, col_select = c(src_age, src_race, src_gender))
+# combine data
+df &lt;- rbind(df_1, df_2, df_3)
+# clean data
+mydata &lt;- df %&gt;%
+  filter(src_age != '0' &amp; src_race != '0' &amp; src_gender != '0') %&gt;%
+  rename(Age = src_age, Race = src_race, Gender = src_gender)
+
+# attach allows use of column names without calling full table
+attach(mydata)
 
 # server
 server &lt;- function(input, output, session) {
