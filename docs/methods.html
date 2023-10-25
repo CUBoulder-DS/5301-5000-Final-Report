@@ -125,7 +125,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Exploration</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -162,10 +162,25 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#a-subsection" id="toc-a-subsection" class="nav-link active" data-scroll-target="#a-subsection"><span class="header-section-number">3.1</span> A Subsection</a></li>
-  <li><a href="#another-subsection" id="toc-another-subsection" class="nav-link" data-scroll-target="#another-subsection"><span class="header-section-number">3.2</span> Another subsection</a>
+  <li><a href="#the-big-picture" id="toc-the-big-picture" class="nav-link active" data-scroll-target="#the-big-picture"><span class="header-section-number">3.1</span> The Big Picture</a></li>
+  <li><a href="#measuring-performance" id="toc-measuring-performance" class="nav-link" data-scroll-target="#measuring-performance"><span class="header-section-number">3.2</span> Measuring Performance</a>
   <ul class="collapse">
-  <li><a href="#sub-sub-section" id="toc-sub-sub-section" class="nav-link" data-scroll-target="#sub-sub-section"><span class="header-section-number">3.2.1</span> Sub-sub section</a></li>
+  <li><a href="#accuracy" id="toc-accuracy" class="nav-link" data-scroll-target="#accuracy"><span class="header-section-number">3.2.1</span> Accuracy</a></li>
+  <li><a href="#precision" id="toc-precision" class="nav-link" data-scroll-target="#precision"><span class="header-section-number">3.2.2</span> Precision</a></li>
+  <li><a href="#recall" id="toc-recall" class="nav-link" data-scroll-target="#recall"><span class="header-section-number">3.2.3</span> Recall</a></li>
+  <li><a href="#f1-score" id="toc-f1-score" class="nav-link" data-scroll-target="#f1-score"><span class="header-section-number">3.2.4</span> F1-Score</a></li>
+  </ul></li>
+  <li><a href="#conditional-peformance" id="toc-conditional-peformance" class="nav-link" data-scroll-target="#conditional-peformance"><span class="header-section-number">3.3</span> Conditional Peformance</a>
+  <ul class="collapse">
+  <li><a href="#performance---overall" id="toc-performance---overall" class="nav-link" data-scroll-target="#performance---overall"><span class="header-section-number">3.3.1</span> Performance - Overall</a></li>
+  <li><a href="#performance---main-demographics" id="toc-performance---main-demographics" class="nav-link" data-scroll-target="#performance---main-demographics"><span class="header-section-number">3.3.2</span> Performance - Main Demographics</a></li>
+  <li><a href="#performance---demographics-subgroups" id="toc-performance---demographics-subgroups" class="nav-link" data-scroll-target="#performance---demographics-subgroups"><span class="header-section-number">3.3.3</span> Performance - Demographics’ Subgroups</a></li>
+  </ul></li>
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">3.4</span> Hypothesis Testing</a>
+  <ul class="collapse">
+  <li><a href="#proportion-test" id="toc-proportion-test" class="nav-link" data-scroll-target="#proportion-test"><span class="header-section-number">3.4.1</span> Proportion Test</a></li>
+  <li><a href="#chi-squared-test" id="toc-chi-squared-test" class="nav-link" data-scroll-target="#chi-squared-test"><span class="header-section-number">3.4.2</span> Chi-Squared Test</a></li>
+  <li><a href="#non-parametric-cohort" id="toc-non-parametric-cohort" class="nav-link" data-scroll-target="#non-parametric-cohort"><span class="header-section-number">3.4.3</span> Non Parametric Cohort</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -191,13 +206,172 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <!-- BJ !-->
-<section id="a-subsection" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="a-subsection"><span class="header-section-number">3.1</span> A Subsection</h2>
+<!-- CK !-->
+<section id="the-big-picture" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="the-big-picture"><span class="header-section-number">3.1</span> The Big Picture</h2>
+<ul>
+<li>Is bias prevalent in facial recognition machine learning models?</li>
+<li>Can one model be shown to have statistically significant less bias than the other?</li>
+<li>Does one model outperform the other in a statistically significant manner, in all aspects?</li>
+<li>Does one model outperform the other in a statistically significant manner, in certain aspects?
+<ul>
+<li>This is where we can dive into “conventional” bias</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Thoughts on Bias
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We need to be careful how we define and use bias. Statistical bias is essentially error, and we could be crossing our definitions between statistical bias and conventional bias.</p>
+</div>
+</div>
 </section>
-<section id="another-subsection" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="another-subsection"><span class="header-section-number">3.2</span> Another subsection</h2>
-<section id="sub-sub-section" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored"><span class="header-section-number">3.2.1</span> Sub-sub section</h3>
+<section id="measuring-performance" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="measuring-performance"><span class="header-section-number">3.2</span> Measuring Performance</h2>
+<p>There are four main measures of performance when evaluating a model:</p>
+<ul>
+<li><strong>Accuracy</strong></li>
+<li><strong>Precision</strong></li>
+<li><strong>Recall</strong></li>
+<li><strong>F1-Score</strong></li>
+</ul>
+<p>Each of these performance measures has their own place in evaluating models, however, to begin to explain the differences between these models we should start with concepts of positive and negative outcomes.</p>
+<ul>
+<li><strong>True Positive:</strong> predicted positive, was actually positive (correct)</li>
+<li><strong>False Positive:</strong> predicted positive, was actually negative (incorrect)</li>
+<li><strong>True Negative:</strong> predicted negative, was actually negative (correct)</li>
+<li><strong>False Negative:</strong> predicted negative, was actually positive (incorrect)</li>
+</ul>
+<p>These outcomes can be visualized on a confusion matrix. In the image below, green are correct predictions while red are incorrect predictions.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/confusion_matrix.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">confusion_matrix</figcaption>
+</figure>
+</div>
+<section id="accuracy" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="accuracy"><span class="header-section-number">3.2.1</span> Accuracy</h3>
+<p><strong>Accuracy</strong> is the ratio of correct predictions to all predictions. In other words, the total of the green squares divided by the entire matrix. This is arguably the most common concept of measuring performance.</p>
+<p><span class="math inline">\(Acccuracy = \frac{TP+TN}{TP + TN + FN}\)</span></p>
+</section>
+<section id="precision" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="precision"><span class="header-section-number">3.2.2</span> Precision</h3>
+<p><strong>Precision</strong> is the ratio of true positives to the total number of positives (true positive + true negative).</p>
+<p><span class="math inline">\(Precision = \frac{TP}{TP+FP}\)</span></p>
+</section>
+<section id="recall" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="recall"><span class="header-section-number">3.2.3</span> Recall</h3>
+<p><strong>Recall</strong> is the ratio of true positives to the number of total correct predictions (true positive + false negative).</p>
+<p><span class="math inline">\(Recall = \frac{TP}{TP+FN}\)</span></p>
+</section>
+<section id="f1-score" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="f1-score"><span class="header-section-number">3.2.4</span> F1-Score</h3>
+<p><strong>F1-Score</strong>* is known as the harmonic mean between precision and recall. <strong>Precision</strong> and <strong>Recall</strong> are useful in their own rights, but the f1-Score is useful in the fact it’s a balanced combination of both precision and recall.</p>
+<p>F1-Score <span class="math inline">\(= \frac{2 * Precision * Recall}{Precision + Recall}\)</span></p>
+</section>
+</section>
+<section id="conditional-peformance" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="conditional-peformance"><span class="header-section-number">3.3</span> Conditional Peformance</h2>
+<p>Just as with the exploratory analysis on the data set prior to running either model, it’s helpful to garner an understanding of what the results were using basic statistics and metrics. By calculating metrics in a cascading fashion, starting with the overall performance and then zeroing in on subgroups, we can get an idea if and where bias is worth investigating.</p>
+<section id="performance---overall" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="performance---overall"><span class="header-section-number">3.3.1</span> Performance - Overall</h3>
+<ul>
+<li>Confusion Matrix / Performance Measures for Fairface (Fairface Results)</li>
+<li>Confusion Matrix / Performance Measures for Deepface (Deepface Results)</li>
+</ul>
+</section>
+<section id="performance---main-demographics" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="performance---main-demographics"><span class="header-section-number">3.3.2</span> Performance - Main Demographics</h3>
+<ul>
+<li>Age Group
+<ul>
+<li>Fairface Results</li>
+<li>Deepface Results</li>
+</ul></li>
+<li>Gender
+<ul>
+<li>Fairface Results</li>
+<li>Deepface Results</li>
+</ul></li>
+<li>Race
+<ul>
+<li>Fairface Results</li>
+<li>Deepface Results</li>
+</ul></li>
+</ul>
+</section>
+<section id="performance---demographics-subgroups" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="performance---demographics-subgroups"><span class="header-section-number">3.3.3</span> Performance - Demographics’ Subgroups</h3>
+<ul>
+<li>Age Group (9 groups)
+<ul>
+<li>Fairface Results</li>
+<li>Deepface Resultseepface Results</li>
+</ul></li>
+<li>Gender (2 groups)
+<ul>
+<li>Fairface Results</li>
+<li>Deepface Results</li>
+</ul></li>
+<li>Race (5 groups)
+<ul>
+<li>Fairface Results</li>
+<li>Deepface Results</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="hypothesis-testing" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">3.4</span> Hypothesis Testing</h2>
+<p>Now that we have an idea how each of these models performed in general and across localized subsets, let’s see if our models truly have statistically significant results and if bias is present.</p>
+<p>Our tests will focus on proportions, and will discover if there is statistically significant differences between and within the models.</p>
+<section id="proportion-test" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="proportion-test"><span class="header-section-number">3.4.1</span> Proportion Test</h3>
+<p>The <strong>Proportion Test</strong> will be useful when measuring difference in overall performance and single categories between models.</p>
+<p>The <em>hypothesis test</em> we’ll be using is:</p>
+<ul>
+<li><p><span class="math inline">\(H_0: \pi_2 - \pi_1 = 0\)</span></p></li>
+<li><p><span class="math inline">\(H_A: \pi_2 - \pi_1 \neq 0\)</span></p></li>
+</ul>
+<p>A look at the test statistic:</p>
+<p><span class="math inline">\(Z = \frac{p_2 - p_1 - \pi_0}{\sqrt{p^*(1-p^*)(\frac{1}{n_1}+\frac{1}{n_2})}}\)</span>, where</p>
+<p>the <em>pooled proportion</em>, <span class="math inline">\(p^*\)</span> is calculated as</p>
+<p><span class="math inline">\(p^* = \frac{x_1 + x_2}{n_1 + n_2}\)</span></p>
+<p>A look at the code:</p>
+<ul>
+<li><p>x: vector of successes and failures</p></li>
+<li><p>n: vector of counts of trials (can be ignored if x is a matrix or a table)</p></li>
+<li><p>alternative: we can change if we have a specific equality to test</p></li>
+<li><p>conf.level: 0.95 is the default (not pertinent to specify)</p></li>
+</ul>
+<p>We can also build <strong>confidence intervals</strong>. We have 95% confidence that the true difference between the props lies within the following:</p>
+</section>
+<section id="chi-squared-test" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="chi-squared-test"><span class="header-section-number">3.4.2</span> Chi-Squared Test</h3>
+<p>The <strong>Chi-squared Test</strong> will be useful when testing across k-levels of a categorical variable. For instance, this could be useful when testing proportion within a demographic for a singe model (i.e.&nbsp;accuracy across race in Fairface).</p>
+<p>The <em>hypothesis test</em> we’ll be using is:</p>
+<p><em>Equivalent Proportions (test for uniformity):</em></p>
+<ul>
+<li><p><span class="math inline">\(H_0: \pi_1 = \pi_2 = … = \pi_n = \pi\)</span></p></li>
+<li><p><span class="math inline">\(H_A: H_0\)</span> is incorrect (at least one of the proportions is not equivalent)</p></li>
+</ul>
+<p>A look at the test statistic:</p>
+<p><span class="math inline">\(\chi^2 = \sum_{i=1}^{k} \frac{(O_i - E_i)^2}{E_i}\)</span>, where</p>
+<p><span class="math inline">\(O_i\)</span> is the observed count, and</p>
+<p><span class="math inline">\(E_i\)</span> is the expected count.</p>
+<p>A look at the code:</p>
+<p>Imagine using this test across the categories of race. A test which favored <span class="math inline">\(H_A\)</span> could give credence to bias.</p>
+<p>The standard is using the <strong>Chi-squared Test</strong> in testing for uniformity, however we can test specific proportions for each category. Here’s a preview in R:</p>
+<p>A possible use case of the non-uniform <strong>Chi-Squared Test</strong> could be to test if the proportion of inaccuracies follows the proportion of each demographic subcategory. For instance, does inaccuracy across race follow the proportions of race in the sample?</p>
+</section>
+<section id="non-parametric-cohort" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored"><span class="header-section-number">3.4.3</span> Non Parametric Cohort</h3>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -210,39 +384,42 @@ From the report requirements
 <div class="callout-body-container callout-body">
 <p>Also can be called “Analyses”</p>
 <p>This section might contain several subsections as needed.</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD - At least one subsection should describe the exploratory data analysis you did. - What modifications were necessary to make the dataset ready for analysis? (e.g.&nbsp;dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc) - Describe the analyses you did to answer the question of interest. <strong>Explain why you believe these methods are appropriate.</strong> ||||||| feac3d2 - At least one subsection should describe the exploratory data analysis you did.</p>
 <ul>
+<li><p>What modifications were necessary to make the dataset ready for analysis? (e.g.&nbsp;dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)</p></li>
+<li><h1 id="describe-the-analyses-you-did-to-answer-the-question-of-interest.-explain-why-you-believe-these-methods-are-appropriate." data-number="4"><span class="header-section-number">4</span> Describe the analyses you did to answer the question of interest. <strong>Explain why you believe these methods are appropriate.</strong></h1></li>
 <li><p>At least one subsection should describe the exploratory data analysis you did.</p></li>
 <li><p>What modifications were necessary to make the dataset ready for analysis? (e.g.&nbsp;dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)</p>
 <!--PC!-->
-<h2 id="standardizing-output" data-number="3.3" class="anchored" data-anchor-id="sub-sub-section"><span class="header-section-number">3.3</span> Standardizing output</h2>
+<h2 id="standardizing-output" data-number="4.1" class="anchored" data-anchor-id="non-parametric-cohort"><span class="header-section-number">4.1</span> Standardizing output</h2>
 <p>The model outputs for both FairFace and DeepFace do not conform to the categories provided within the University of Tennessee - Knoxville (UTK) dataset. We elected to take the outputs from each model and modify them based upon the categories specified in the UTK dataset, namely:</p>
 <p>“[race] is an integer from 0 to 4, denoting White, Black, Asian, Indian, and Others (like Hispanic, Latino, Middle Eastern).”</p>
 <p>“[gender] is either 0 (male) or 1 (female)”</p>
 <p>“[age] is an integer from 0 to 116, indicating the age”</p>
-<h3 id="from-fairface" data-number="3.3.1" class="anchored"><span class="header-section-number">3.3.1</span> From FairFace</h3>
+<h3 id="from-fairface" data-number="4.1.1" class="anchored"><span class="header-section-number">4.1.1</span> From FairFace</h3>
 <p><strong>Race</strong>: The FairFace classification model had two options - one for “fair7” and one for “fair4.” The latter provided predictions of race in the following categories: [White, Black, Asian, Indian]. Of key note, the model omitted “Other” categories as listed in the race category for the UTK dataset. However, the “fair7” model provides predictions across [White, Black, Latino_Hispanic, East Asian, Southeast Asian, Indian, Middle Eastern]. We elected to use the the fair7 model, and to refactor the output categories to match those of the UTK dataset. Namely, we refactored instances of Middle Eastern and Latino_Hispanic as “Other,” and instances of “East Asian” and “Southeast Asian” as “Asian”</p>
 <p><strong>Age</strong>: FairFace only provides a predicted age range as opposed to a specific, single, predicted age as a string. To enable comparison of actual values to the predicted values, we maintained this column as a categorical variable, and split it into a lower and upper bound of predicted age as an integer. This split will allow us to determine whether or not the prediction correctly binned the age (i.e.&nbsp;<span class="math inline">\(lowerBound \leq actualAge \leq upperBound\)</span>), and if not - how far outside of those bounds the actual age lay.</p>
 <p><strong>Gender</strong>: no change to outputs of “Male” and “Female.”</p>
-<h3 id="from-deepface" data-number="3.3.2" class="anchored"><span class="header-section-number">3.3.2</span> From DeepFace</h3>
+<h3 id="from-deepface" data-number="4.1.2" class="anchored"><span class="header-section-number">4.1.2</span> From DeepFace</h3>
 <p><strong>Race</strong>: Racial categorical output from DeepFace includes the following categories []</p>
 <p><strong>Age</strong>: DeepFace provides a prediction of a single, specific, predicted age. We elected to match the predicted age to be the same range as would be predicted by Fair Face. For example, if DeepFace predicts an age like “19,” we assign it the same matching category as it would have in FairFace - “10-19.” From there, we also split this category into an upper and lower bound. In spite of the fact that DeepFace does not provide any bounds or ranges on its age prediction outputs, to have a similar and fair comparison of both models, we give it those same upper and lower bounds for equitable comparison.</p>
 <p><strong>Gender</strong>: DeepFace outputs are “Man” and “Woman”, and we refactor those values to “Male” and “Female” respectively.</p>
-<h2 id="evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" data-number="3.4" class="anchored"><span class="header-section-number">3.4</span> Evaluating Permutations of Inputs and Models for Equitable Evaluation</h2>
+<h2 id="evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" data-number="4.2" class="anchored"><span class="header-section-number">4.2</span> Evaluating Permutations of Inputs and Models for Equitable Evaluation</h2>
 <p>Aside from the differences in the outputs of each model in terms of age, race, and gender, there are also substantial differences between FairFace and DeepFace in terms of their available settings when attempting to categorize an image in each of these categories.</p>
 <p>The need for this permutation evaluation rose from some initial scripting and testing of these models on a small sample of images from another facial dataset (the Asian Face Age Dataset). We immediately grew concerned with DeepFace’s performance using default settings (namely, enforcing requirement to detect a face prior to categorization, and using OpenCV as the default detection backend). Running these initial scripting tests, we encountered a failure rate in DeepFace of approximately 70% in identifying and categorizing an image of a face.</p>
 <p>We performed further exploratory analysis on both models in light of these facts, and sought some specific permutations of settings to determine what settings may provide the most fair and equitable comparison of the models prior to proceeding to further analysis.</p>
-<h3 id="deepface-analysis-options" data-number="3.4.1" class="anchored"><span class="header-section-number">3.4.1</span> DeepFace Analysis Options</h3>
+<h3 id="deepface-analysis-options" data-number="4.2.1" class="anchored"><span class="header-section-number">4.2.1</span> DeepFace Analysis Options</h3>
 <p>DeepFace has a robust degree of avaialble settings when performing facial categorization and recognition. These include enforcing facial detection prior to classification of an image, as well as 8 different facial detection models to detect a face prior to categorization. The default of these settings is OpenCV detection with detection enabled. Other detection backends include ssd, dlib, mtcnn, retinaface, mediapipe, yolov8, yunet, and fastmtcnn.</p>
 <p>In a Python 3.8 environment, attempting to run detections using dlib, retinaface, mediapipe, yolov8, and yunet failed to run, or failed to install the appropriate models directly from source during exeuction. Repairing any challenges or issues with the core functionality of DeepFace and FairFace’s code is outside the scope of our work, and as such, we have excluded any of these non-functioning models from our permutation evaluation.</p>
-<h3 id="fairface-analysis-options" data-number="3.4.2" class="anchored"><span class="header-section-number">3.4.2</span> FairFace Analysis Options</h3>
+<h3 id="fairface-analysis-options" data-number="4.2.2" class="anchored"><span class="header-section-number">4.2.2</span> FairFace Analysis Options</h3>
 <p>The default script from FairFace provided no options via its command line script to change settings. It uses dlib/resnet34 models for facial detection and image pre-processing, and uses its own fair4 and fair7 models for categorization. There are no other options or flags that can be set by a user when processing a batch of images.</p>
 <p>We converted the simple script to a class in Python without addressing any feature bugs or errors in the underlying code. This change provided us some additional options when performing the analysis of an input image using FairFace - namely, the ability to analyze and categorize an image with or without facial detection, similar to the functionality of DeepFace. FairFace remains limited in the fact that is only detection model backend is built in dlib, but this change gives us more options when considering what type of images to use and what settings to use on both models before generating our final dataset for analysis.</p>
-<h3 id="specific-permutations" data-number="3.4.3" class="anchored"><span class="header-section-number">3.4.3</span> Specific Permutations</h3>
+<h3 id="specific-permutations" data-number="4.2.3" class="anchored"><span class="header-section-number">4.2.3</span> Specific Permutations</h3>
 <p>With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:</p>
 <p><strong>Detection</strong> <strong>Detection Model</strong> <strong>Image source</strong> Enabled Fairface=Dlib; DeepFace=[opencv,mtcnn,fastmtcnn,ssd] Pre-cropped, in-the-wild Disabled None Pre-cropped, in-the-wild</p>
 <p>For 8 total comparisons across a subset of X sampled images from UTK. <!--End PC!--> ### Permutation sample results (LN &amp; DV)</p>
 <p>(enforcement of facial detection, detection backend model, and cropped images vs.&nbsp;faces in-the-wild)</p></li>
-<li><p>Describe the analyses you did to answer the question of interest. <strong>Explain why you believe these methods are appropriate.</strong></p></li>
+<li><p>Describe the analyses you did to answer the question of interest. <strong>Explain why you believe these methods are appropriate.</strong> &gt;&gt;&gt;&gt;&gt;&gt;&gt; d1ea1b4bc252c28fc569327e08036166d004f57a</p></li>
 </ul>
 <p>Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data.</p>
 </div>
@@ -489,7 +666,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
       <a href="./data.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Exploration</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

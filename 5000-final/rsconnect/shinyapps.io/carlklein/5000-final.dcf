@@ -1,0 +1,12 @@
+name: 5000-final
+title: 5000-final
+username: carlklein
+account: carlklein
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10304379
+bundleId: 7848491
+url: https://carlklein.shinyapps.io/5000-final/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
