@@ -1,13 +1,8 @@
-# Data Exploration
-
 ---
 format: html
 ---
+# Data Exploration
 
-```{r setup, include = FALSE}
-#| include: false
-library(tidyverse)
-```
 
 We describe the data here. Note that the default global setting for Quarto is set to NOT output the code into the rendered document, aka only including the results of any R code.
 
@@ -26,7 +21,7 @@ We describe the data here. Note that the default global setting for Quarto is se
 <!-- CK -->
 
 ```{=html}
-<iframe width="1000" height="1000" src="http://carlklein.shinyapps.io/5000-final" title="Shiny App"></iframe>
+<iframe id="Shiny App" src="https://carlklein.shinyapps.io/5000-final/" style="border: none; width: 100%; height: 720px" frameborder="0"></iframe>
 ```
 
 ::: callout-note
