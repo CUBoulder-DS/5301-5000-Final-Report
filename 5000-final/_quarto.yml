@@ -40,12 +40,13 @@ format:
   pdf:
     documentclass: scrreprt
     number-depth: 4
+    geometry:
+      - margin=0.5in
+    link-citations: true
     header-includes: # dont need?
       - \usepackage{float}
       - \floatplacement{table}{H}
       - \floatplacement{image}{H}
-    geometry:
-      - margin=0.5in
 
 ## Extra settings
 
