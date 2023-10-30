@@ -415,11 +415,88 @@ From the report requirements
 <p>The default script from FairFace provided no options via its command line script to change settings. It uses dlib/resnet34 models for facial detection and image pre-processing, and uses its own fair4 and fair7 models for categorization. There are no other options or flags that can be set by a user when processing a batch of images.</p>
 <p>We converted the simple script to a class in Python without addressing any feature bugs or errors in the underlying code. This change provided us some additional options when performing the analysis of an input image using FairFace - namely, the ability to analyze and categorize an image with or without facial detection, similar to the functionality of DeepFace. FairFace remains limited in the fact that is only detection model backend is built in dlib, but this change gives us more options when considering what type of images to use and what settings to use on both models before generating our final dataset for analysis.</p>
 <h3 id="specific-permutations" data-number="4.2.3" class="anchored"><span class="header-section-number">4.2.3</span> Specific Permutations</h3>
-<p>With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:</p>
-<p><strong>Detection</strong> <strong>Detection Model</strong> <strong>Image source</strong> Enabled Fairface=Dlib; DeepFace=[opencv,mtcnn,fastmtcnn,ssd] Pre-cropped, in-the-wild Disabled None Pre-cropped, in-the-wild</p>
-<p>For 8 total comparisons across a subset of X sampled images from UTK. <!--End PC!--> ### Permutation sample results (LN &amp; DV)</p>
-<p>(enforcement of facial detection, detection backend model, and cropped images vs.&nbsp;faces in-the-wild)</p></li>
-<li><p>Describe the analyses you did to answer the question of interest. <strong>Explain why you believe these methods are appropriate.</strong> &gt;&gt;&gt;&gt;&gt;&gt;&gt; d1ea1b4bc252c28fc569327e08036166d004f57a</p></li>
+<p>With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Detection</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Detection_Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Image_Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib; DeepFace=OpenCV</td>
+<td style="text-align: left;">Pre-cropped</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib; DeepFace=OpenCV</td>
+<td style="text-align: left;">In-The-Wild</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib; DeepFace=mtcnn</td>
+<td style="text-align: left;">Pre-cropped</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib; DeepFace=mtcnn</td>
+<td style="text-align: left;">In-The-Wild</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib; DeepFace=fastmtcnn</td>
+<td style="text-align: left;">Pre-cropped</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib; DeepFace=fastmtcnn</td>
+<td style="text-align: left;">In-The-Wild</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib;DeepFace=ssd</td>
+<td style="text-align: left;">Pre-cropped</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib;DeepFace=ssd</td>
+<td style="text-align: left;">In-The-Wild</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Disabled</td>
+<td style="text-align: left;">FairFace,DeepFace=None</td>
+<td style="text-align: left;">Pre-cropped</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Disabled</td>
+<td style="text-align: left;">FairFace,DeepFace=None</td>
+<td style="text-align: left;">In-The-Wild</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<pre><code>**Detection**       **Detection Model**                                         **Image source**
+Enabled         Fairface=Dlib; DeepFace=[opencv,mtcnn,fastmtcnn,ssd]    Pre-cropped, in-the-wild
+Disabled        None                                                    Pre-cropped, in-the-wild
+
+For 8 total comparisons across a subset of X sampled images from UTK.
+&lt;!--End PC!--&gt;
+### Permutation sample results (LN &amp; DV)
+
+
+
+(enforcement of facial detection, detection backend model, and cropped images vs. faces in-the-wild)</code></pre>
+<ul>
+<li>Describe the analyses you did to answer the question of interest. <strong>Explain why you believe these methods are appropriate.</strong> &gt;&gt;&gt;&gt;&gt;&gt;&gt; d1ea1b4bc252c28fc569327e08036166d004f57a</li>
 </ul>
 <p>Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data.</p>
 </div>
