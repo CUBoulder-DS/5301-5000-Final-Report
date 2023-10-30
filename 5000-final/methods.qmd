@@ -188,20 +188,24 @@ Also can be called "Analyses"
 
 This section might contain several subsections as needed.
 
-<<<<<<< HEAD
 - At least one subsection should describe the exploratory data analysis you did.
 - What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)
 - Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.**
-||||||| feac3d2
 -   At least one subsection should describe the exploratory data analysis you did.
 
 -   What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)
 
 -   Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.**
-=======
+
 -   At least one subsection should describe the exploratory data analysis you did.
 
 -   What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)
+
+
+-   Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.**
+
+Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data.
+:::
 
     <!--PC!-->
     ## Standardizing output
@@ -275,8 +279,3 @@ knitr::kable(tib,format='html')
 
     (enforcement of facial detection, detection backend model, and cropped images vs. faces in-the-wild)
 
--   Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.**
->>>>>>> d1ea1b4bc252c28fc569327e08036166d004f57a
-
-Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data.
-:::
