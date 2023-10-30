@@ -6,15 +6,18 @@ library(tidyverse)
 ```
 
 <!-- BJ !-->
+
 <!-- CK !-->
+
+@karkkainenfairface
 
 ## The Big Picture
 
-- Is bias prevalent in facial recognition machine learning models?
-- Can one model be shown to have statistically significant less bias than the other?
-- Does one model outperform the other in a statistically significant manner, in all aspects?
-- Does one model outperform the other in a statistically significant manner, in certain aspects?
-  - This is where we can dive into "conventional" bias
+-   Is bias prevalent in facial recognition machine learning models?
+-   Can one model be shown to have statistically significant less bias than the other?
+-   Does one model outperform the other in a statistically significant manner, in all aspects?
+-   Does one model outperform the other in a statistically significant manner, in certain aspects?
+    -   This is where we can dive into "conventional" bias
 
 ::: callout-note
 ## Thoughts on Bias
@@ -26,17 +29,17 @@ We need to be careful how we define and use bias. Statistical bias is essentiall
 
 There are four main measures of performance when evaluating a model:
 
-- **Accuracy**
-- **Precision**
-- **Recall**
-- **F1-Score**
+-   **Accuracy**
+-   **Precision**
+-   **Recall**
+-   **F1-Score**
 
 Each of these performance measures has their own place in evaluating models, however, to begin to explain the differences between these models we should start with concepts of positive and negative outcomes.
 
-- **True Positive:** predicted positive, was actually positive (correct)
-- **False Positive:** predicted positive, was actually negative (incorrect)
-- **True Negative:** predicted negative, was actually negative (correct)
-- **False Negative:** predicted negative, was actually positive (incorrect)
+-   **True Positive:** predicted positive, was actually positive (correct)
+-   **False Positive:** predicted positive, was actually negative (incorrect)
+-   **True Negative:** predicted negative, was actually negative (correct)
+-   **False Negative:** predicted negative, was actually positive (incorrect)
 
 These outcomes can be visualized on a confusion matrix. In the image below, green are correct predictions while red are incorrect predictions.
 
@@ -62,7 +65,7 @@ $Recall = \frac{TP}{TP+FN}$
 
 ### F1-Score
 
-**F1-Score*** is known as the harmonic mean between precision and recall. **Precision** and **Recall** are useful in their own rights, but the f1-Score is useful in the fact it's a balanced combination of both precision and recall.
+**F1-Score**\* is known as the harmonic mean between precision and recall. **Precision** and **Recall** are useful in their own rights, but the f1-Score is useful in the fact it's a balanced combination of both precision and recall.
 
 F1-Score $= \frac{2 * Precision * Recall}{Precision + Recall}$
 
@@ -72,32 +75,32 @@ Just as with the exploratory analysis on the data set prior to running either mo
 
 ### Performance - Overall
 
-- Confusion Matrix / Performance Measures for Fairface (Fairface Results)
-- Confusion Matrix / Performance Measures for Deepface (Deepface Results)
+-   Confusion Matrix / Performance Measures for Fairface (Fairface Results)
+-   Confusion Matrix / Performance Measures for Deepface (Deepface Results)
 
 ### Performance - Main Demographics
 
-- Age Group
-  - Fairface Results
-  - Deepface Results
-- Gender
-  - Fairface Results
-  - Deepface Results
-- Race
-  - Fairface Results
-  - Deepface Results
-  
+-   Age Group
+    -   Fairface Results
+    -   Deepface Results
+-   Gender
+    -   Fairface Results
+    -   Deepface Results
+-   Race
+    -   Fairface Results
+    -   Deepface Results
+
 ### Performance - Demographics' Subgroups
 
-- Age Group (9 groups)
-  - Fairface Results
-  - Deepface Resultseepface Results
-- Gender (2 groups)
-  - Fairface Results
-  - Deepface Results
-- Race (5 groups)
-  - Fairface Results
-  - Deepface Results
+-   Age Group (9 groups)
+    -   Fairface Results
+    -   Deepface Resultseepface Results
+-   Gender (2 groups)
+    -   Fairface Results
+    -   Deepface Results
+-   Race (5 groups)
+    -   Fairface Results
+    -   Deepface Results
 
 ## Hypothesis Testing
 
@@ -111,9 +114,9 @@ The **Proportion Test** will be useful when measuring difference in overall perf
 
 The *hypothesis test* we'll be using is:
 
-- $H_0: \pi_2 - \pi_1 = 0$
+-   $H_0: \pi_2 - \pi_1 = 0$
 
-- $H_A: \pi_2 - \pi_1 \neq 0$
+-   $H_A: \pi_2 - \pi_1 \neq 0$
 
 A look at the test statistic:
 
@@ -129,13 +132,13 @@ A look at the code:
 prop.test(x = c(x1, x2), n = c(n1, n2), alternative = 'two.sided', conf.level = 0.95)
 ```
 
-- x: vector of successes and failures
+-   x: vector of successes and failures
 
-- n: vector of counts of trials (can be ignored if x is a matrix or a table)
+-   n: vector of counts of trials (can be ignored if x is a matrix or a table)
 
-- alternative: we can change if we have a specific equality to test
+-   alternative: we can change if we have a specific equality to test
 
-- conf.level: 0.95 is the default (not pertinent to specify)
+-   conf.level: 0.95 is the default (not pertinent to specify)
 
 We can also build **confidence intervals**. We have 95% confidence that the true difference between the props lies within the following:
 
@@ -151,9 +154,9 @@ The *hypothesis test* we'll be using is:
 
 *Equivalent Proportions (test for uniformity):*
 
-- $H_0: \pi_1 = \pi_2 = … = \pi_n = \pi$
+-   $H_0: \pi_1 = \pi_2 = … = \pi_n = \pi$
 
-- $H_A: H_0$ is incorrect (at least one of the proportions is not equivalent)
+-   $H_A: H_0$ is incorrect (at least one of the proportions is not equivalent)
 
 A look at the test statistic:
 
@@ -188,9 +191,6 @@ Also can be called "Analyses"
 
 This section might contain several subsections as needed.
 
-- At least one subsection should describe the exploratory data analysis you did.
-- What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)
-- Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.**
 -   At least one subsection should describe the exploratory data analysis you did.
 
 -   What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)
@@ -201,62 +201,70 @@ This section might contain several subsections as needed.
 
 -   What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)
 
+-   Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.**
+
+-   At least one subsection should describe the exploratory data analysis you did.
+
+-   What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)
 
 -   Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.**
 
 Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data.
 :::
 
-    <!--PC!-->
-    ## Standardizing output
+```         
+<!--PC!-->
+## Standardizing output
 
-    The model outputs for both FairFace and DeepFace do not conform to the categories provided within the University of Tennessee - Knoxville (UTK) dataset.  We elected to take the outputs from each model and modify them based upon the categories specified in the UTK dataset, namely:
+The model outputs for both FairFace and DeepFace do not conform to the categories provided within the University of Tennessee - Knoxville (UTK) dataset.  We elected to take the outputs from each model and modify them based upon the categories specified in the UTK dataset, namely:
 
-    "[race] is an integer from 0 to 4, denoting White, Black, Asian, Indian, and Others (like Hispanic, Latino, Middle Eastern)."
+"[race] is an integer from 0 to 4, denoting White, Black, Asian, Indian, and Others (like Hispanic, Latino, Middle Eastern)."
 
-    "[gender] is either 0 (male) or 1 (female)"
+"[gender] is either 0 (male) or 1 (female)"
 
-    "[age] is an integer from 0 to 116, indicating the age"
+"[age] is an integer from 0 to 116, indicating the age"
 
-    ### From FairFace
+### From FairFace
 
-    **Race**: The FairFace classification model had two options - one for "fair7" and one for "fair4."  The latter provided predictions of race in the following categories:  [White, Black, Asian, Indian].  Of key note, the model omitted "Other" categories as listed in the race category for the UTK dataset.  However, the "fair7" model provides predictions across [White, Black, Latino_Hispanic, East Asian, Southeast Asian, Indian, Middle Eastern].  We elected to use the the fair7 model, and to refactor the output categories to match those of the UTK dataset. Namely, we refactored instances of Middle Eastern and Latino_Hispanic as "Other," and instances of "East Asian" and "Southeast Asian" as "Asian"
+**Race**: The FairFace classification model had two options - one for "fair7" and one for "fair4."  The latter provided predictions of race in the following categories:  [White, Black, Asian, Indian].  Of key note, the model omitted "Other" categories as listed in the race category for the UTK dataset.  However, the "fair7" model provides predictions across [White, Black, Latino_Hispanic, East Asian, Southeast Asian, Indian, Middle Eastern].  We elected to use the the fair7 model, and to refactor the output categories to match those of the UTK dataset. Namely, we refactored instances of Middle Eastern and Latino_Hispanic as "Other," and instances of "East Asian" and "Southeast Asian" as "Asian"
 
-    **Age**: FairFace only provides a predicted age range as opposed to a specific, single, predicted age as a string.  To enable comparison of actual values to the predicted values, we maintained this column as a categorical variable, and split it into a lower and upper bound of predicted age as an integer.  This split will allow us to determine whether or not the prediction correctly binned the age (i.e. $lowerBound \leq actualAge \leq upperBound$), and if not - how far outside of those bounds the actual age lay.
+**Age**: FairFace only provides a predicted age range as opposed to a specific, single, predicted age as a string.  To enable comparison of actual values to the predicted values, we maintained this column as a categorical variable, and split it into a lower and upper bound of predicted age as an integer.  This split will allow us to determine whether or not the prediction correctly binned the age (i.e. $lowerBound \leq actualAge \leq upperBound$), and if not - how far outside of those bounds the actual age lay.
 
-    **Gender**: no change to outputs of "Male" and "Female."
+**Gender**: no change to outputs of "Male" and "Female."
 
-    ### From DeepFace
+### From DeepFace
 
-    **Race**: Racial categorical output from DeepFace includes the following categories []
+**Race**: Racial categorical output from DeepFace includes the following categories []
 
-    **Age**: DeepFace provides a prediction of a single, specific, predicted age.  We elected to match the predicted age to be the same range as would be predicted by Fair Face. For example, if DeepFace predicts an age like "19," we assign it the same matching category as it would have in FairFace - "10-19." From there, we also split this category into an upper and lower bound.  In spite of the fact that DeepFace does not provide any bounds or ranges on its age prediction outputs, to have a similar and fair comparison of both models, we give it those same upper and lower bounds for equitable comparison.
+**Age**: DeepFace provides a prediction of a single, specific, predicted age.  We elected to match the predicted age to be the same range as would be predicted by Fair Face. For example, if DeepFace predicts an age like "19," we assign it the same matching category as it would have in FairFace - "10-19." From there, we also split this category into an upper and lower bound.  In spite of the fact that DeepFace does not provide any bounds or ranges on its age prediction outputs, to have a similar and fair comparison of both models, we give it those same upper and lower bounds for equitable comparison.
 
-    **Gender**: DeepFace outputs are "Man" and "Woman", and we refactor those values to "Male" and "Female" respectively.
+**Gender**: DeepFace outputs are "Man" and "Woman", and we refactor those values to "Male" and "Female" respectively.
 
-    ## Evaluating Permutations of Inputs and Models for Equitable Evaluation
+## Evaluating Permutations of Inputs and Models for Equitable Evaluation
+
+Aside from the differences in the outputs of each model in terms of age, race, and gender, there are also substantial differences between FairFace and DeepFace in terms of their available settings when attempting to categorize an image in each of these categories.
+
+The need for this permutation evaluation rose from some initial scripting and testing of these models on a small sample of images from another facial dataset (the Asian Face Age Dataset).  We immediately grew concerned with DeepFace's performance using default settings (namely, enforcing requirement to detect a face prior to categorization, and using OpenCV as the default detection backend).  Running these initial scripting tests, we encountered a failure rate in DeepFace of approximately 70% in identifying and categorizing an image of a face.
+
+We performed further exploratory analysis on both models in light of these facts, and sought some specific permutations of settings to determine what settings may provide the most fair and equitable comparison of the models prior to proceeding to further analysis.
+
+### DeepFace Analysis Options
+
+DeepFace has a robust degree of avaialble settings when performing facial categorization and recognition.  These include enforcing facial detection prior to classification of an image, as well as 8 different facial detection models to detect a face prior to categorization.  The default of these settings is OpenCV detection with detection enabled.  Other detection backends include ssd, dlib, mtcnn, retinaface, mediapipe, yolov8, yunet, and fastmtcnn.  
     
-    Aside from the differences in the outputs of each model in terms of age, race, and gender, there are also substantial differences between FairFace and DeepFace in terms of their available settings when attempting to categorize an image in each of these categories.
+In a Python 3.8 environment, attempting to run detections using dlib, retinaface, mediapipe, yolov8, and yunet failed to run, or failed to install the appropriate models directly from source during exeuction.  Repairing any challenges or issues with the core functionality of DeepFace and FairFace's code is outside the scope of our work, and as such, we have excluded any of these non-functioning models from our permutation evaluation.
 
-    The need for this permutation evaluation rose from some initial scripting and testing of these models on a small sample of images from another facial dataset (the Asian Face Age Dataset).  We immediately grew concerned with DeepFace's performance using default settings (namely, enforcing requirement to detect a face prior to categorization, and using OpenCV as the default detection backend).  Running these initial scripting tests, we encountered a failure rate in DeepFace of approximately 70% in identifying and categorizing an image of a face.
+### FairFace Analysis Options
 
-    We performed further exploratory analysis on both models in light of these facts, and sought some specific permutations of settings to determine what settings may provide the most fair and equitable comparison of the models prior to proceeding to further analysis.
+The default script from FairFace provided no options via its command line script to change settings.  It uses dlib/resnet34 models for facial detection and image pre-processing, and uses its own fair4 and fair7 models for categorization.  There are no other options or flags that can be set by a user when processing a batch of images. 
+    
+We converted the simple script to a class in Python without addressing any feature bugs or errors in the underlying code.  This change provided us some additional options when performing the analysis of an input image using FairFace - namely, the ability to analyze and categorize an image with or without facial detection, similar to the functionality of DeepFace.  FairFace remains limited in the fact that is only detection model backend is built in dlib, but this change gives us more options when considering what type of images to use and what settings to use on both models before generating our final dataset for analysis.
 
-    ### DeepFace Analysis Options
+### Specific Permutations
 
-    DeepFace has a robust degree of avaialble settings when performing facial categorization and recognition.  These include enforcing facial detection prior to classification of an image, as well as 8 different facial detection models to detect a face prior to categorization.  The default of these settings is OpenCV detection with detection enabled.  Other detection backends include ssd, dlib, mtcnn, retinaface, mediapipe, yolov8, yunet, and fastmtcnn.  
-        
-    In a Python 3.8 environment, attempting to run detections using dlib, retinaface, mediapipe, yolov8, and yunet failed to run, or failed to install the appropriate models directly from source during exeuction.  Repairing any challenges or issues with the core functionality of DeepFace and FairFace's code is outside the scope of our work, and as such, we have excluded any of these non-functioning models from our permutation evaluation.
+With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:
+```
 
-    ### FairFace Analysis Options
-
-    The default script from FairFace provided no options via its command line script to change settings.  It uses dlib/resnet34 models for facial detection and image pre-processing, and uses its own fair4 and fair7 models for categorization.  There are no other options or flags that can be set by a user when processing a batch of images. 
-        
-    We converted the simple script to a class in Python without addressing any feature bugs or errors in the underlying code.  This change provided us some additional options when performing the analysis of an input image using FairFace - namely, the ability to analyze and categorize an image with or without facial detection, similar to the functionality of DeepFace.  FairFace remains limited in the fact that is only detection model backend is built in dlib, but this change gives us more options when considering what type of images to use and what settings to use on both models before generating our final dataset for analysis.
-
-    ### Specific Permutations
-
-    With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:
 ```{r}
 library(tidyverse)
 names <- c("Detection","Detection Model","Image Source")
@@ -267,15 +275,17 @@ tib <- tibble("Detection"=det,"Detection_Model"=det_mod,"Image_Source"=img_src)
 knitr::kable(tib,format='html')
 
 ```
-    **Detection**       **Detection Model**                                         **Image source**
-    Enabled         Fairface=Dlib; DeepFace=[opencv,mtcnn,fastmtcnn,ssd]    Pre-cropped, in-the-wild
-    Disabled        None                                                    Pre-cropped, in-the-wild
 
-    For 8 total comparisons across a subset of X sampled images from UTK.
-    <!--End PC!-->
-    ### Permutation sample results (LN & DV)
+```         
+**Detection**       **Detection Model**                                         **Image source**
+Enabled         Fairface=Dlib; DeepFace=[opencv,mtcnn,fastmtcnn,ssd]    Pre-cropped, in-the-wild
+Disabled        None                                                    Pre-cropped, in-the-wild
+
+For 8 total comparisons across a subset of X sampled images from UTK.
+<!--End PC!-->
+### Permutation sample results (LN & DV)
 
 
 
-    (enforcement of facial detection, detection backend model, and cropped images vs. faces in-the-wild)
-
+(enforcement of facial detection, detection backend model, and cropped images vs. faces in-the-wild)
+```
