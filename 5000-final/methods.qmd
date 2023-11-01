@@ -27,6 +27,10 @@ We need to be careful how we define and use bias. Statistical bias is essentiall
 
 ## Measuring Performance
 
+::: callout-note
+This performance section is important in choosing the correct models to ensure data integrity, however for the actual statistical tests, we'll focused on more common statistics like mean and proportion.
+:::
+
 There are four main measures of performance when evaluating a model:
 
 -   **Accuracy**
@@ -69,14 +73,17 @@ $Recall = \frac{TP}{TP+FN}$
 
 F1-Score $= \frac{2 * Precision * Recall}{Precision + Recall}$
 
-## Conditional Peformance
+## Statistical Testing
 
-Just as with the exploratory analysis on the data set prior to running either model, it's helpful to garner an understanding of what the results were using basic statistics and metrics. By calculating metrics in a cascading fashion, starting with the overall performance and then zeroing in on subgroups, we can get an idea if and where bias is worth investigating.
+Just as with the exploratory analysis on the data set prior to running either model, it's helpful to garner an understanding of what the results were using basic statistics and metrics. By calculating statistics in a cascading fashion, starting with the overall and then zeroing in on subgroups, we can get an idea if and where bias is worth investigating.
 
-### Performance - Overall
+### Overall
 
--   Confusion Matrix / Performance Measures for Fairface (Fairface Results)
--   Confusion Matrix / Performance Measures for Deepface (Deepface Results)
+-   Compare the mean age of the input to the mean age of the Deepface output
+-   Bin the input ages, compare bins between the input and the output of both models
+-   Bin the input ages, compare bins between the output of both models
+
+*Note: We can think of the binned data as categorical variables or as a small subset of discrete numerical data by ordering the bins.*
 
 ### Performance - Main Demographics
 
@@ -108,9 +115,64 @@ Now that we have an idea how each of these models performed in general and acros
 
 Our tests will focus on proportions, and will discover if there is statistically significant differences between and within the models.
 
+### Difference in Means Test
+
+The **Difference in Means Test** will be useful when measuring differences between the mean of ages. Whether that be the aggregate data means or means of demographic subsets.
+
+Depending on the relationship between the data, there are different variants of this test.
+
+#### Unpaired / Independent Samples: Unpooled Variances
+
+This test is best for independent and separate groups.
+
+The *hypothesis test* is:
+
+-   $H_0: \mu_2 - \mu_1 = 0$
+
+-   $H_A: \mu_2 - \mu_1 \neq 0$
+
+A look at the test statistic:
+
+$T = \frac{\bar{x_2} - \bar{x_1} - \mu_o}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}$
+
+and has degrees of freedom, $v$, where
+
+$v = \frac{(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2})^2}{(\frac{s_1^2}{n_1})^2/(n_1-1) + (\frac{s_2^2}{n_2})^2/(n_2-1)}$
+
+#### Unpaired / Independent Samples: Pooled Variances
+
+We can improve the precision of a test if we can assume the equivalence of variances.
+
+A look at the different test statistic:
+
+-   $T = \frac{\bar{x_2} - \bar{x_1} - \mu_0}{\sqrt{s_p^2(\frac{1}{n_1} + \frac{1}{n_2})}}$,
+
+with degrees of freedom $v = n_1 + n_2 -2$,
+
+and where $s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}$ is known as the *pooled estimate of variance*.
+
+#### Paired/Dependent Samples
+
+In the previous tests, we were considering independent samples. In this case, we'll be considering the samples have a dependency between them. This is a common test for "before" and "after" type testing.
+
+We can simplify the *hypothesis test* for this kind of sampling relationship to:
+
+-   $H_0: \mu_2 - \mu_1 = \mu_d = 0$
+
+-   $H_A: \mu_d \neq 0$
+
+With the test statistic being:
+
+$T = \frac{\bar{d} - \mu_0}{\frac{s_d}{\sqrt{n}}}$,
+
+where $\bar{d}$ is the mean of the pairwise differences and $s_d$ is the sample standard deviation of the pairwise differences.
+
+The degrees of freedom for this test are $df = n-1$.
+
+
 ### Proportion Test
 
-The **Proportion Test** will be useful when measuring difference in overall performance and single categories between models.
+The **Proportion Test** will be useful when measuring differences of categories between models.
 
 The *hypothesis test* we'll be using is:
 
