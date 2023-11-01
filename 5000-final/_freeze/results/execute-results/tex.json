@@ -1,9 +1,9 @@
 {
-  "hash": "13cb2b7a00d96e41111c9c7839781fa1",
+  "hash": "ad52cc07441b654444a0ef0b9f43b3ac",
   "result": {
     "markdown": "# Results\n\n\n\n\n\n\n\n<!-- BJ !-->\n\nThis is where all the plots will go!!!! Here are some examples of plot layout:\n\n::: panel-tabset\n## Tabbed example output\n\n\n\n::: {#fig-sec4-ex2 .cell layout-ncol=\"2\"}\n::: {.cell-output-display}\n![Subcap](results_files/figure-pdf/fig-sec4-ex2-1.pdf){#fig-sec4-ex2-1}\n:::\n\n::: {.cell-output-display}\n![Subcap 2](results_files/figure-pdf/fig-sec4-ex2-2.pdf){#fig-sec4-ex2-2}\n:::\n\nANother example caption\n:::\n\n\n\n## Example outout\n\n\n\n::: {.cell}\n::: {.cell-output .cell-output-stdout}\n```\n [1]  1  2  3  4  5  6  7  8  9 10\n```\n:::\n:::\n\n\n:::\n\n::: callout-note\n## From the report requirements\n\nDescribe the results of your analysis using visualizations, descriptive statistics, tables and similar.\n\nDon't focus too much on the implications in this section -- that's what the next section is for. Just present the numbers/graphs.\n:::\n",
     "supporting": [
-      "results_files/figure-pdf"
+      "results_files\\figure-pdf"
     ],
     "filters": [
       "rmarkdown/pagebreak.lua"

@@ -189,17 +189,18 @@ div.csl-indent {
   <li><a href="#recall" id="toc-recall" class="nav-link" data-scroll-target="#recall"><span class="header-section-number">3.2.3</span> Recall</a></li>
   <li><a href="#f1-score" id="toc-f1-score" class="nav-link" data-scroll-target="#f1-score"><span class="header-section-number">3.2.4</span> F1-Score</a></li>
   </ul></li>
-  <li><a href="#conditional-peformance" id="toc-conditional-peformance" class="nav-link" data-scroll-target="#conditional-peformance"><span class="header-section-number">3.3</span> Conditional Peformance</a>
+  <li><a href="#statistical-testing" id="toc-statistical-testing" class="nav-link" data-scroll-target="#statistical-testing"><span class="header-section-number">3.3</span> Statistical Testing</a>
   <ul class="collapse">
-  <li><a href="#performance---overall" id="toc-performance---overall" class="nav-link" data-scroll-target="#performance---overall"><span class="header-section-number">3.3.1</span> Performance - Overall</a></li>
+  <li><a href="#overall" id="toc-overall" class="nav-link" data-scroll-target="#overall"><span class="header-section-number">3.3.1</span> Overall</a></li>
   <li><a href="#performance---main-demographics" id="toc-performance---main-demographics" class="nav-link" data-scroll-target="#performance---main-demographics"><span class="header-section-number">3.3.2</span> Performance - Main Demographics</a></li>
   <li><a href="#performance---demographics-subgroups" id="toc-performance---demographics-subgroups" class="nav-link" data-scroll-target="#performance---demographics-subgroups"><span class="header-section-number">3.3.3</span> Performance - Demographics’ Subgroups</a></li>
   </ul></li>
   <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">3.4</span> Hypothesis Testing</a>
   <ul class="collapse">
-  <li><a href="#proportion-test" id="toc-proportion-test" class="nav-link" data-scroll-target="#proportion-test"><span class="header-section-number">3.4.1</span> Proportion Test</a></li>
-  <li><a href="#chi-squared-test" id="toc-chi-squared-test" class="nav-link" data-scroll-target="#chi-squared-test"><span class="header-section-number">3.4.2</span> Chi-Squared Test</a></li>
-  <li><a href="#non-parametric-cohort" id="toc-non-parametric-cohort" class="nav-link" data-scroll-target="#non-parametric-cohort"><span class="header-section-number">3.4.3</span> Non Parametric Cohort</a></li>
+  <li><a href="#difference-in-means-test" id="toc-difference-in-means-test" class="nav-link" data-scroll-target="#difference-in-means-test"><span class="header-section-number">3.4.1</span> Difference in Means Test</a></li>
+  <li><a href="#proportion-test" id="toc-proportion-test" class="nav-link" data-scroll-target="#proportion-test"><span class="header-section-number">3.4.2</span> Proportion Test</a></li>
+  <li><a href="#chi-squared-test" id="toc-chi-squared-test" class="nav-link" data-scroll-target="#chi-squared-test"><span class="header-section-number">3.4.3</span> Chi-Squared Test</a></li>
+  <li><a href="#non-parametric-cohort" id="toc-non-parametric-cohort" class="nav-link" data-scroll-target="#non-parametric-cohort"><span class="header-section-number">3.4.4</span> Non Parametric Cohort</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -254,6 +255,19 @@ Thoughts on Bias
 </section>
 <section id="measuring-performance" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="measuring-performance"><span class="header-section-number">3.2</span> Measuring Performance</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This performance section is important in choosing the correct models to ensure data integrity, however for the actual statistical tests, we’ll focused on more common statistics like mean and proportion.</p>
+</div>
+</div>
 <p>There are four main measures of performance when evaluating a model:</p>
 <ul>
 <li><strong>Accuracy</strong></li>
@@ -296,15 +310,17 @@ Thoughts on Bias
 <p>F1-Score <span class="math inline">\(= \frac{2 * Precision * Recall}{Precision + Recall}\)</span></p>
 </section>
 </section>
-<section id="conditional-peformance" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="conditional-peformance"><span class="header-section-number">3.3</span> Conditional Peformance</h2>
-<p>Just as with the exploratory analysis on the data set prior to running either model, it’s helpful to garner an understanding of what the results were using basic statistics and metrics. By calculating metrics in a cascading fashion, starting with the overall performance and then zeroing in on subgroups, we can get an idea if and where bias is worth investigating.</p>
-<section id="performance---overall" class="level3" data-number="3.3.1">
-<h3 data-number="3.3.1" class="anchored" data-anchor-id="performance---overall"><span class="header-section-number">3.3.1</span> Performance - Overall</h3>
+<section id="statistical-testing" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="statistical-testing"><span class="header-section-number">3.3</span> Statistical Testing</h2>
+<p>Just as with the exploratory analysis on the data set prior to running either model, it’s helpful to garner an understanding of what the results were using basic statistics and metrics. By calculating statistics in a cascading fashion, starting with the overall and then zeroing in on subgroups, we can get an idea if and where bias is worth investigating.</p>
+<section id="overall" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="overall"><span class="header-section-number">3.3.1</span> Overall</h3>
 <ul>
-<li>Confusion Matrix / Performance Measures for Fairface (Fairface Results)</li>
-<li>Confusion Matrix / Performance Measures for Deepface (Deepface Results)</li>
+<li>Compare the mean age of the input to the mean age of the Deepface output</li>
+<li>Bin the input ages, compare bins between the input and the output of both models</li>
+<li>Bin the input ages, compare bins between the output of both models</li>
 </ul>
+<p><em>Note: We can think of the binned data as categorical variables or as a small subset of discrete numerical data by ordering the bins.</em></p>
 </section>
 <section id="performance---main-demographics" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="performance---main-demographics"><span class="header-section-number">3.3.2</span> Performance - Main Demographics</h3>
@@ -351,9 +367,50 @@ Thoughts on Bias
 <h2 data-number="3.4" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">3.4</span> Hypothesis Testing</h2>
 <p>Now that we have an idea how each of these models performed in general and across localized subsets, let’s see if our models truly have statistically significant results and if bias is present.</p>
 <p>Our tests will focus on proportions, and will discover if there is statistically significant differences between and within the models.</p>
-<section id="proportion-test" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="proportion-test"><span class="header-section-number">3.4.1</span> Proportion Test</h3>
-<p>The <strong>Proportion Test</strong> will be useful when measuring difference in overall performance and single categories between models.</p>
+<section id="difference-in-means-test" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="difference-in-means-test"><span class="header-section-number">3.4.1</span> Difference in Means Test</h3>
+<p>The <strong>Difference in Means Test</strong> will be useful when measuring differences between the mean of ages. Whether that be the aggregate data means or means of demographic subsets.</p>
+<p>Depending on the relationship between the data, there are different variants of this test.</p>
+<section id="unpaired-independent-samples-unpooled-variances" class="level4" data-number="3.4.1.1">
+<h4 data-number="3.4.1.1" class="anchored" data-anchor-id="unpaired-independent-samples-unpooled-variances"><span class="header-section-number">3.4.1.1</span> Unpaired / Independent Samples: Unpooled Variances</h4>
+<p>This test is best for independent and separate groups.</p>
+<p>The <em>hypothesis test</em> is:</p>
+<ul>
+<li><p><span class="math inline">\(H_0: \mu_2 - \mu_1 = 0\)</span></p></li>
+<li><p><span class="math inline">\(H_A: \mu_2 - \mu_1 \neq 0\)</span></p></li>
+</ul>
+<p>A look at the test statistic:</p>
+<p><span class="math inline">\(T = \frac{\bar{x_2} - \bar{x_1} - \mu_o}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}\)</span></p>
+<p>and has degrees of freedom, <span class="math inline">\(v\)</span>, where</p>
+<p><span class="math inline">\(v = \frac{(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2})^2}{(\frac{s_1^2}{n_1})^2/(n_1-1) + (\frac{s_2^2}{n_2})^2/(n_2-1)}\)</span></p>
+</section>
+<section id="unpaired-independent-samples-pooled-variances" class="level4" data-number="3.4.1.2">
+<h4 data-number="3.4.1.2" class="anchored" data-anchor-id="unpaired-independent-samples-pooled-variances"><span class="header-section-number">3.4.1.2</span> Unpaired / Independent Samples: Pooled Variances</h4>
+<p>We can improve the precision of a test if we can assume the equivalence of variances.</p>
+<p>A look at the different test statistic:</p>
+<ul>
+<li><span class="math inline">\(T = \frac{\bar{x_2} - \bar{x_1} - \mu_0}{\sqrt{s_p^2(\frac{1}{n_1} + \frac{1}{n_2})}}\)</span>,</li>
+</ul>
+<p>with degrees of freedom <span class="math inline">\(v = n_1 + n_2 -2\)</span>,</p>
+<p>and where <span class="math inline">\(s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}\)</span> is known as the <em>pooled estimate of variance</em>.</p>
+</section>
+<section id="paireddependent-samples" class="level4" data-number="3.4.1.3">
+<h4 data-number="3.4.1.3" class="anchored" data-anchor-id="paireddependent-samples"><span class="header-section-number">3.4.1.3</span> Paired/Dependent Samples</h4>
+<p>In the previous tests, we were considering independent samples. In this case, we’ll be considering the samples have a dependency between them. This is a common test for “before” and “after” type testing.</p>
+<p>We can simplify the <em>hypothesis test</em> for this kind of sampling relationship to:</p>
+<ul>
+<li><p><span class="math inline">\(H_0: \mu_2 - \mu_1 = \mu_d = 0\)</span></p></li>
+<li><p><span class="math inline">\(H_A: \mu_d \neq 0\)</span></p></li>
+</ul>
+<p>With the test statistic being:</p>
+<p><span class="math inline">\(T = \frac{\bar{d} - \mu_0}{\frac{s_d}{\sqrt{n}}}\)</span>,</p>
+<p>where <span class="math inline">\(\bar{d}\)</span> is the mean of the pairwise differences and <span class="math inline">\(s_d\)</span> is the sample standard deviation of the pairwise differences.</p>
+<p>The degrees of freedom for this test are <span class="math inline">\(df = n-1\)</span>.</p>
+</section>
+</section>
+<section id="proportion-test" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="proportion-test"><span class="header-section-number">3.4.2</span> Proportion Test</h3>
+<p>The <strong>Proportion Test</strong> will be useful when measuring differences of categories between models.</p>
 <p>The <em>hypothesis test</em> we’ll be using is:</p>
 <ul>
 <li><p><span class="math inline">\(H_0: \pi_2 - \pi_1 = 0\)</span></p></li>
@@ -372,8 +429,8 @@ Thoughts on Bias
 </ul>
 <p>We can also build <strong>confidence intervals</strong>. We have 95% confidence that the true difference between the props lies within the following:</p>
 </section>
-<section id="chi-squared-test" class="level3" data-number="3.4.2">
-<h3 data-number="3.4.2" class="anchored" data-anchor-id="chi-squared-test"><span class="header-section-number">3.4.2</span> Chi-Squared Test</h3>
+<section id="chi-squared-test" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="chi-squared-test"><span class="header-section-number">3.4.3</span> Chi-Squared Test</h3>
 <p>The <strong>Chi-squared Test</strong> will be useful when testing across k-levels of a categorical variable. For instance, this could be useful when testing proportion within a demographic for a singe model (i.e.&nbsp;accuracy across race in Fairface).</p>
 <p>The <em>hypothesis test</em> we’ll be using is:</p>
 <p><em>Equivalent Proportions (test for uniformity):</em></p>
@@ -390,8 +447,8 @@ Thoughts on Bias
 <p>The standard is using the <strong>Chi-squared Test</strong> in testing for uniformity, however we can test specific proportions for each category. Here’s a preview in R:</p>
 <p>A possible use case of the non-uniform <strong>Chi-Squared Test</strong> could be to test if the proportion of inaccuracies follows the proportion of each demographic subcategory. For instance, does inaccuracy across race follow the proportions of race in the sample?</p>
 </section>
-<section id="non-parametric-cohort" class="level3" data-number="3.4.3">
-<h3 data-number="3.4.3" class="anchored" data-anchor-id="non-parametric-cohort"><span class="header-section-number">3.4.3</span> Non Parametric Cohort</h3>
+<section id="non-parametric-cohort" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="non-parametric-cohort"><span class="header-section-number">3.4.4</span> Non Parametric Cohort</h3>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
