@@ -32,7 +32,7 @@ server = function(input, output, session) {
   output$underlyingDownload = downloadHandler(
     filename = "underlying.csv",
     content = function(file) {
-      write.csv(mydata.new(), file)
+      write.csv(mydata, file)
     }
   )
   
@@ -93,13 +93,10 @@ server = function(input, output, session) {
 
 ui = navbarPage(
   # theme
-  # theme = shinytheme("cerulean"),
+  theme = shinytheme("flatly"),
   
   # title
   title = "Bias in Facial Classification",
-  
-  # tab - theme settings
-  tabPanel("Select Theme Setting", themeSelector()),
   
   # tab - exploratory analysis
   tabPanel("Exploratory Analysis",
@@ -140,18 +137,6 @@ ui = navbarPage(
            
            # plot
            plotOutput("densityPlot")),
-  
-  # tab - statistical testing
-  tabPanel("Statistical Testing"),
-  
-  # tab - feature testing
-  # tabPanel("Feature Testing"),
-  
-  # tab - youtube video
-  # tabPanel("YouTube Video",
-  #          "Replace with our group's YouTube Video?",
-  #          tags$iframe(src='https://www.youtube.com/embed/XZo4xyJXCak?si=Uw897KUFEtIr_QMN',
-  #                      width = '900', height = '900')),
   
   # tab - underlying data
   tabPanel("Underlying Data",

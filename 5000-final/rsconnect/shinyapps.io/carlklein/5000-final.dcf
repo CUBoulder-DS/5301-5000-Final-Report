@@ -5,7 +5,7 @@ account: carlklein
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10304379
-bundleId: 7848491
+bundleId: 7876233
 url: https://carlklein.shinyapps.io/5000-final/
 version: 1
 asMultiple: FALSE
