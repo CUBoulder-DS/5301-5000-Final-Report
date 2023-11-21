@@ -51,3 +51,22 @@ This section should describe the data you'll be using. Answer **at least** **all
 
 Feel free to add anything else that you think is necessary for understanding the paper and the context of the problem.
 :::
+
+## Data Selection (UTK Dataset) - LN DV
+
+Motivation - has there been progress against bias?
+
+Reference Articles from Ethics Class - Joy B's work, etc.  Lots of disparity back in 2018, how much of that still exists with free models?
+
+## Selected Models (LN DV)
+
+### FairFace 
+
+Motivation as to how / why we came across this
+
+### DeepFace
+
+Motivation as to how / why we came across this
+
+
+### Permutation Analysis Information
