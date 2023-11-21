@@ -87,9 +87,39 @@ get_proportion_subset <- function(df,filter_column,filter_value,evaluate_column,
     select(prop) %>% unlist() %>% unname()
 }
 
+r_groups <- c("Asian","Black","Indian","Other","White")
+a_groups <- c("0-2","3-9","10-19","20-29","30-39","40-49","50-59","60-69","70-130")
+g_groups <- c("Male","Female")
+
 #examples - 
 #give the proportion of black people in the source data
 get_proportion(master_src,'src_race','Black')
 #filters on black being the predicted race, then gets the proportion of predicted gender for females.
 get_proportion_subset(FF_results,'pred_race','Black','pred_gender','Female')
+
+source_race_props <- sapply(r_groups,get_proportion,df=master_src,evaluate_column="src_race")
+source_age_props <- sapply(a_groups,get_proportion,df=master_src,evaluate_column="src_age_grp")
+source_gen_props <- sapply(g_groups,get_proportion,df=master_src,evaluate_column="src_gender")
+
+DF_pred_race_props <- sapply(r_groups,get_proportion,df=DF_results,evaluate_column="pred_race")
+DF_pred_age_props <-sapply(a_groups,get_proportion,df=DF_results,evaluate_column="pred_age_grp")
+DF_pred_gen_props <-sapply(g_groups,get_proportion,df=DF_results,evaluate_column="pred_gender")
+
+FF_pred_race_props <- sapply(r_groups,get_proportion,df=FF_results,evaluate_column="pred_race")
+FF_pred_age_props <-sapply(a_groups,get_proportion,df=FF_results,evaluate_column="pred_age_grp")
+FF_pred_gen_props <-sapply(g_groups,get_proportion,df=FF_results,evaluate_column="pred_gender")
+```
+
+```{r}
+source_gen_props['Female']
+
+source_race_props['Asian']
+
+source_race_props
+FF_pred_race_props
+DF_pred_race_props
+
+source_gen_props
+FF_pred_gen_props
+DF_pred_gen_props
 ```
