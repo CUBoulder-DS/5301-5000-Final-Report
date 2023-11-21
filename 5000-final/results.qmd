@@ -49,3 +49,47 @@ Describe the results of your analysis using visualizations, descriptive statisti
 
 Don't focus too much on the implications in this section -- that's what the next section is for. Just present the numbers/graphs.
 :::
+```{r}
+#pull in the master data frame for use
+master_df <- read_csv('https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv')
+
+#get the deepface-only results
+DF_results <- master_df %>% filter(pred_model=='DeepFace') %>% drop_na(pred_gender)
+DF_results
+
+#get the fairface-only results
+FF_results <- master_df %>% filter(pred_model=='FairFace') %>% drop_na(pred_gender)
+#FF_results
+
+#isolate the source information
+master_src <- master_df %>% filter(!duplicated(file)) %>% select(file,src_age,src_age_grp,src_gender,src_race)
+```
+
+```{r}
+
+#some example functions for getting proportions
+
+get_proportion <- function(df,evaluate_column,evaluate_value){
+  df %>% group_by(!!as.symbol(evaluate_column)) %>%
+    summarise(n=n())%>%
+    mutate(prop=n/sum(n))%>%
+    filter(!!as.symbol(evaluate_column)==evaluate_value)%>%
+    select(prop)%>%unlist()%>% unname()
+}
+
+#fiters down to a specific group, first, then 
+get_proportion_subset <- function(df,filter_column,filter_value,evaluate_column,evaluate_value){
+  df %>% filter(!!as.symbol(filter_column) == filter_value) %>%
+    group_by(!!as.symbol(evaluate_column)) %>%
+    summarise(n=n()) %>%
+    mutate(prop = n/sum(n)) %>%
+    filter(!!as.symbol(evaluate_column)==evaluate_value) %>%
+    select(prop) %>% unlist() %>% unname()
+}
+
+#examples - 
+#give the proportion of black people in the source data
+get_proportion(master_src,'src_race','Black')
+#filters on black being the predicted race, then gets the proportion of predicted gender for females.
+get_proportion_subset(FF_results,'pred_race','Black','pred_gender','Female')
+```
