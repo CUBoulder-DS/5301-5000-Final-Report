@@ -642,9 +642,9 @@ for (age in pull(age_bins)) {
 }</code></pre>
 <blockquote>
 <p>The returned <em>result_matrix</em> contains every combination of
-demographics and sub-demographics hypothesis testing. If there is a
-result that is “NA”, it most likely means the sub-demographic and it’s
-conditionals had a proportion of 0.</p>
+demographics and sub-demographics hypothesis testing, at 432 hypotheses
+tested. If there is a result that is “NA”, it most likely means the
+sub-demographic and it’s conditionals had a proportion of 0.</p>
 </blockquote>
 </div>
 <div id="hypothesis-testing" class="section level2">
@@ -806,6 +806,47 @@ many combinations of these parameters and reporting back on any
 significant findings. The results of any combination of these test can
 be found in the <em>results_matrix</em>.</p>
 </div>
+</div>
+<div id="interesting-results" class="section level2">
+<h2>Interesting Results</h2>
+<p>If we separate our results between the desired significance levels,
+we might find some interesting results.</p>
+<pre class="r"><code>result_matrix %&gt;%
+  filter(fairface_p_value &gt; 0.01)</code></pre>
+<pre><code>## # A tibble: 364 × 11
+##    test_prop test_age test_gender test_race source_prop fairface_n fairface_prop
+##    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;        
+##  1 age_bins  70-130   Female      White     0.10547710… 4539       0.0599250936…
+##  2 genders   70-130   Female      White     0.55580608… 397        0.6851385390…
+##  3 races     70-130   Female      White     0.77272727… 408        0.6666666666…
+##  4 age_bins  70-130   Female      Asian     0.03398558… 1895       0.0274406332…
+##  5 races     70-130   Female      Asian     0.10344827… 408        0.1274509803…
+##  6 age_bins  70-130   Female      Black     0.02206213… 1851       0.0064829821…
+##  7 genders   70-130   Female      Black     0.36029411… 30         0.4          
+##  8 age_bins  70-130   Female      Indian    0.01549942… 1100       0.0236363636…
+##  9 genders   70-130   Female      Indian    0.5         48         0.5416666666…
+## 10 races     70-130   Female      Indian    0.04231974… 408        0.0637254901…
+## # ℹ 354 more rows
+## # ℹ 4 more variables: fairface_p_value &lt;chr&gt;, deepface_n &lt;chr&gt;,
+## #   deepface_prop &lt;chr&gt;, deepface_p_value &lt;chr&gt;</code></pre>
+<pre class="r"><code>result_matrix %&gt;%
+  filter(deepface_p_value &gt; 0.01)</code></pre>
+<pre><code>## # A tibble: 219 × 11
+##    test_prop test_age test_gender test_race source_prop fairface_n fairface_prop
+##    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;        
+##  1 age_bins  10-19    Female      White     0.11467693… 4539       0.0687376074…
+##  2 genders   10-19    Female      White     0.55371900… 644        0.4844720496…
+##  3 races     10-19    Female      White     0.54918032… 779        0.4005134788…
+##  4 age_bins  10-19    Female      Asian     0.04016477… 1895       0.0358839050…
+##  5 genders   10-19    Female      Asian     0.66101694… 128        0.53125      
+##  6 races     10-19    Female      Asian     0.07991803… 779        0.0872913992…
+##  7 age_bins  10-19    Female      Other     0.13163481… 2173       0.0731707317…
+##  8 races     10-19    Female      Other     0.12704918… 779        0.2041078305…
+##  9 age_bins  10-19    Female      All       0.08471486… 11558      0.0673992040…
+## 10 genders   10-19    Female      All       0.58026159… 1461       0.5331964407…
+## # ℹ 209 more rows
+## # ℹ 4 more variables: fairface_p_value &lt;chr&gt;, deepface_n &lt;chr&gt;,
+## #   deepface_prop &lt;chr&gt;, deepface_p_value &lt;chr&gt;</code></pre>
 </div>
 
 

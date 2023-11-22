@@ -251,7 +251,7 @@ for (age in pull(age_bins)) {
 }
 ```
 
->The returned *result_matrix* contains every combination of demographics and sub-demographics hypothesis testing. If there is a result that is "NA", it most likely means the sub-demographic and it's conditionals had a proportion of 0.
+>The returned *result_matrix* contains every combination of demographics and sub-demographics hypothesis testing, at 432 hypotheses tested. If there is a result that is "NA", it most likely means the sub-demographic and it's conditionals had a proportion of 0.
 
 
 ## Hypothesis Testing
@@ -385,3 +385,19 @@ result_matrix %>%
 
 
 These were two specific hypothesis tests, however, we'll be testing many combinations of these parameters and reporting back on any significant findings. The results of any combination of these test can be found in the *results_matrix*.
+
+
+## Interesting Results
+
+If we separate our results between the desired significance levels, we might find some interesting results.
+
+```{r}
+result_matrix %>%
+  filter(fairface_p_value > 0.01)
+```
+
+```{r}
+result_matrix %>%
+  filter(deepface_p_value > 0.01)
+```
+
