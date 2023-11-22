@@ -96,12 +96,16 @@ prop_test <- function(p, p_hat, n) {
 ```{r}
 # function by PC
 get_proportion <- function(df, evaluate_column, evaluate_value) {
-  df %>%
-    group_by(!!as.symbol(evaluate_column)) %>%
-    summarise(n=n()) %>%
-    mutate(prop=n/sum(n)) %>%
-    filter(!!as.symbol(evaluate_column)==evaluate_value) %>%
-    select(prop) %>% unlist() %>% unname()
+  x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value)%>% count() %>% unlist() %>% unname()
+  if (x==0){
+    0
+  } else {
+    result <- df %>% group_by(!!as.symbol(evaluate_column)) %>%
+      summarise(n=n())%>%
+      mutate(prop=n/sum(n))%>%
+      filter(!!as.symbol(evaluate_column)==evaluate_value)%>%
+      select(prop)%>%unlist()%>% unname()
+  }
 }
 ```
 
@@ -399,5 +403,19 @@ result_matrix %>%
 ```{r}
 result_matrix %>%
   filter(deepface_p_value > 0.01)
+```
+```{r}
+result_matrix %>% filter(deepface_prop == 0 & test_prop!='races') %>% select(test_prop,test_age,test_gender,test_race,source_prop,deepface_n,deepface_prop,deepface_p_value)
+```
+
+
+```{r}
+result_matrix %>% filter(test_prop=='genders',test_age=='All',test_race!='All') %>% 
+  select(test_prop,test_gender,test_race,fairface_p_value,deepface_p_value)
+```
+
+```{r}
+result_matrix %>% filter(test_prop=='age_bins',test_gender=='All',test_race!='All') %>% 
+  select(test_prop,test_age,test_race,fairface_p_value,deepface_p_value)
 ```
 
