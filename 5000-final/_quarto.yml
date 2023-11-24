@@ -39,7 +39,6 @@ format:
     citations-hover: true
     grid:
       body-width: 1000px
-      margin-width: 150px
       sidebar-width: 150px
   pdf:
     documentclass: scrreprt

@@ -8,16 +8,16 @@ library(tidyverse)
 
 <!-- BJ !-->
 
-```{r load_data}
+```{r load_data, include=FALSE}
 # master dataframe url
 output_name <- 'https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv'
 
 # entire master dataframe
-output_df <- read_csv(output_name) %>% 
+output_df <- read_csv(output_name, show_col_types = FALSE) %>% 
   select(-c(img_path, file)) %>%
   mutate_if(is.character, as.factor) 
 
-# Get chr columns as factors ordered as they should
+# Get chr columns as factors, re-ordered as they should
 output_df$src_age_grp = factor(output_df$src_age_grp, 
                                levels = c("0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130"))
 output_df$pred_age_grp = factor(output_df$pred_age_grp, 
@@ -135,7 +135,7 @@ plot_category("src_race", "correct_race")
 
 <!-- PC? !-->
 
-```{r}
+```{r, include=FALSE}
 #pull in the master data frame for use
 master_df <- read_csv('https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv', show_col_types = FALSE)
 
