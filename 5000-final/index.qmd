@@ -18,7 +18,7 @@ Features of Quarto:
 
 ## How we should write this report
 
--   See @karkkainenfairface , that is an example on how to cite a bibliography.
+-   See @fairface , that is an example on how to cite a bibliography.
 -   Sections/title headings are automatically numbered.
 -   Any changes you make, make sure to make a comment of your initials at the top of your work (INCLUDING written text) like so:
 

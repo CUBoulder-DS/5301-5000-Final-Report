@@ -62,6 +62,8 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -123,7 +125,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Exploration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -155,11 +157,17 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#output-from-deepface-and-fairface" id="toc-output-from-deepface-and-fairface" class="nav-link active" data-scroll-target="#output-from-deepface-and-fairface"><span class="header-section-number">4.1</span> Output from DeepFace and FairFace</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content column-body" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -179,7 +187,20 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <!-- BJ !-->
-<p>This is where all the plots will go!!!! Here are some examples of plot layout:</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+Rows: 48204 Columns: 15
+── Column specification
+──────────────────────────────────────────────────────── Delimiter: "," chr
+(9): img_path, file, src_age_grp, src_gender, src_race, pred_model, pred... dbl
+(6): ...1, src_age, src_timestamp, pred_age_DF_only, pred_age_lower, pre...
+ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
+Specify the column types or set `show_col_types = FALSE` to quiet this message.
+• `` -&gt; `...1`</code></pre>
+</div>
+</div>
+<!-- BJ !-->
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Tabbed example output</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Example outout</a></li></ul>
 <div class="tab-content">
@@ -231,8 +252,286 @@ From the report requirements
 <p>Don’t focus too much on the implications in this section – that’s what the next section is for. Just present the numbers/graphs.</p>
 </div>
 </div>
+<!-- BJ !-->
+<section id="output-from-deepface-and-fairface" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="output-from-deepface-and-fairface"><span class="header-section-number">4.1</span> Output from DeepFace and FairFace</h2>
+<p>The two models, DeepFace and FairFace, were run on the dataset described previously. In <a href="#fig-output-hists">Figure&nbsp;<span>4.2</span></a>, one can see the results of the predictions done by each model, by each factor that was considered: age, gender, and race. Note that the histogram distributions match the correct (source dataset) distributions, so we can see exactly the difference between what was provided and what was predicted, along with how well each model did on each category within each factor.</p>
+<div id="fig-output-hists" class="cell quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-output-hists-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="results_files/figure-html/fig-output-hists-1.png" class="img-fluid figure-img" data-ref-parent="fig-output-hists" width="672"></p>
+<figcaption class="figure-caption">(a) Gender predictions</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-output-hists-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="results_files/figure-html/fig-output-hists-2.png" class="img-fluid figure-img" data-ref-parent="fig-output-hists" width="672"></p>
+<figcaption class="figure-caption">(b) Age predictions</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-output-hists-3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="results_files/figure-html/fig-output-hists-3.png" class="img-fluid figure-img" data-ref-parent="fig-output-hists" width="672"></p>
+<figcaption class="figure-caption">(c) Race predictions</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;4.2: Histograms of the output from DeepFace and FairFace, with correct vs incorrect values colored. Note that the distributions match the correct (source dataset) distributions.</figcaption><p></p>
+</figure>
+</div>
+<!-- PC? !-->
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...1`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 24,053 × 15
+    ...1 img_path    file  src_age src_age_grp src_gender src_race src_timestamp
+   &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;            &lt;dbl&gt;
+ 1     0 "part1\\10… 100_…     100 70-130      Female     White          2.02e16
+ 2     1 "part1\\10… 100_…     100 70-130      Female     Asian          2.02e16
+ 3     2 "part1\\10… 100_…     100 70-130      Female     Asian          2.02e16
+ 4     3 "part1\\10… 101_…     101 70-130      Female     Asian          2.02e16
+ 5     4 "part1\\10… 10_0…      10 3-9         Male       White          2.02e16
+ 6     5 "part1\\10… 10_0…      10 3-9         Male       White          2.02e16
+ 7     6 "part1\\10… 10_0…      10 3-9         Male       White          2.02e16
+ 8     7 "part1\\10… 10_0…      10 3-9         Male       White          2.02e16
+ 9     8 "part1\\10… 10_0…      10 3-9         Male       White          2.02e16
+10     9 "part1\\10… 10_0…      10 3-9         Male       White          2.02e16
+# ℹ 24,043 more rows
+# ℹ 7 more variables: pred_model &lt;chr&gt;, pred_race &lt;chr&gt;, pred_gender &lt;chr&gt;,
+#   pred_age_DF_only &lt;dbl&gt;, pred_age_grp &lt;chr&gt;, pred_age_lower &lt;dbl&gt;,
+#   pred_age_upper &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1487843
+[1] 0.1891129
+[1] 0.1670816
+[1] 0.07094847
+[1] 0.4240727</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.088001
+[1] 0.05688325
+[1] 0.06978674
+[1] 0.3238735
+[1] 0.1802755
+[1] 0.08725417
+[1] 0.09231599
+[1] 0.04908306
+[1] 0.05252676</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5219899
+[1] 0.4780101</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2408847
+[1] 0.1479233
+[1] 0.06111504
+[1] 0.1743649
+[1] 0.375712</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02062113
+[1] 0.3987029
+[1] 0.4047312
+[1] 0.1467177
+[1] 0.02681578
+[1] 0.002411342</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6166798
+[1] 0.3833202</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1448259
+[1] 0.1652484
+[1] 0.1030675
+[1] 0.2014445
+[1] 0.3854136</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.07629405
+[1] 0.06645635
+[1] 0.06064505
+[1] 0.3480138
+[1] 0.1762899
+[1] 0.1023619
+[1] 0.0930638
+[1] 0.04906397
+[1] 0.02781122</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5202358
+[1] 0.4797642</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "p.0-2"    "p.3-9"    "p.10-19"  "p.20-29"  "p.30-39"  "p.40-49"  "p.50-59" 
+[8] "p.60-69"  "p.70-130"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">p.Male</td>
+<td style="text-align: right;">0.6942686</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p.Female</td>
+<td style="text-align: right;">0.7058243</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">p.Male</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p.Female</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">p.Asian</td>
+<td style="text-align: right;">0.5064370</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p.Black</td>
+<td style="text-align: right;">0.0000503</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">p.Indian</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p.Other</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">p.White</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">p.Asian</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p.Black</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">p.Indian</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p.Other</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">p.White</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><span class="math display">\[
+\frac{\sqrt{n_M}\cdot(\bar{p}_M-p_S)}{\sqrt{p_S\cdot(1-P_S)}}
+\]</span></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Female 
+0.4780101 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Asian 
+0.1487843 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Asian      Black     Indian      Other      White 
+0.14878433 0.18911294 0.16708157 0.07094847 0.42407269 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Asian     Black    Indian     Other     White 
+0.1448259 0.1652484 0.1030675 0.2014445 0.3854136 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Asian      Black     Indian      Other      White 
+0.24088471 0.14792334 0.06111504 0.17436494 0.37571197 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Male    Female 
+0.5219899 0.4780101 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Male    Female 
+0.5202358 0.4797642 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Male    Female 
+0.6166798 0.3833202 </code></pre>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -468,7 +767,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
       <a href="./methods.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Methods</span></span>

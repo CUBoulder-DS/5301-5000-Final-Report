@@ -9,7 +9,7 @@ library(tidyverse)
 
 <!-- CK !-->
 
-@karkkainenfairface
+@fairface
 
 ## The Big Picture
 

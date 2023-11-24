@@ -1,19 +1,32 @@
-# Data Exploration
+---
+format: 
+  html:
+    # page-layout: full
+    grid:
+      body-width: 1000px
+      margin-width: 150px
+      sidebar-width: 150px
+---
+
+# Data
 
 
 We describe the data here. Note that the default global setting for Quarto is set to NOT output the code into the rendered document, aka only including the results of any R code.
 
 **We should include a print of the head of the dataframe of our data, along with some sample images!!**
 
-<!-- {{< include _CK_data_EDA_shiny.qmd >}} -->
+## Exploration of Source Data
 
-<!-- :::{.column-screen-inset} -->
-<!-- ```{shinylive-r} -->
+::: {#fig-faces layout-ncol=3}
 
-<!-- ## file: _CK_data_EDA_shiny.qmd -->
-<!-- ``` -->
-<!-- ::: -->
+![Age=6, Gender=F, Race=Indian](../data/UTK/sample_images/6_1_3_20161220223052131.jpg){#fig-img1}
 
+![Age=38, Gender=M, Race=White](../data/UTK/sample_images/38_0_0_20170105172756958.jpg){#fig-img2}
+
+![Age=80, Gender=M, Race=Asian](../data/UTK/sample_images/80_0_2_20170111201008732.jpg){#fig-img3}
+
+Example face images from the UTK dataset [@utkDataset] with their associated given labels.
+:::
 
 <!-- CK -->
 

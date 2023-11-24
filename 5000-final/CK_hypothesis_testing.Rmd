@@ -6,11 +6,13 @@ output: html_document
 ---
 
 **Load library**
-```{r, message = FALSE}
+
+```{r setup, message = FALSE, include=FALSE}
 library(tidyverse)
 ```
 
 **Load data**
+
 ```{r}
 # output data
 # master dataframe url
@@ -43,6 +45,7 @@ source_df <- output_df %>%
 ```
 
 **Separate out the categories**
+
 ```{r}
 # categories from the data
 age_bins <- source_df %>%
@@ -65,14 +68,13 @@ races <- races %>% rbind('All')
 
 ## Two-Tailed Single Sample Proportion Test
 
-- **Description**: *prop_test* will return the p-value associated with a two-tailed single sample proportion test.
-- **Input**:
-  - *p*: proportion that is initially assumed to be true (prior belief)
-  - *p_hat*: calculated sample proportion given the required conditions
-  - *n*: sample size given the required conditions
-- **Output**:
-  - *p_value*: p-value associated with the hypothesis test
-
+-   **Description**: *prop_test* will return the p-value associated with a two-tailed single sample proportion test.
+-   **Input**:
+    -   *p*: proportion that is initially assumed to be true (prior belief)
+    -   *p_hat*: calculated sample proportion given the required conditions
+    -   *n*: sample size given the required conditions
+-   **Output**:
+    -   *p_value*: p-value associated with the hypothesis test
 
 ```{r}
 prop_test <- function(p, p_hat, n) {
@@ -84,14 +86,13 @@ prop_test <- function(p, p_hat, n) {
 
 ## Function to get Proportion Given Certain Parameters
 
-- **Description**: *get_proportion* will return the proportion associated for a value within a given category.
-- **Input**:
-  - *df*: dataframe to calculate proportion frame
-  - *evaluate_column*: column which contains the value desired for the proportion
-  - *evaluate_value*: value within the specified column for which the proportion is desired
-- **Output**:
-  - *proportion*: desired proportion
-
+-   **Description**: *get_proportion* will return the proportion associated for a value within a given category.
+-   **Input**:
+    -   *df*: dataframe to calculate proportion frame
+    -   *evaluate_column*: column which contains the value desired for the proportion
+    -   *evaluate_value*: value within the specified column for which the proportion is desired
+-   **Output**:
+    -   *proportion*: desired proportion
 
 ```{r}
 # function by PC
@@ -110,6 +111,7 @@ get_proportion <- function(df, evaluate_column, evaluate_value) {
 ```
 
 **Example**:
+
 ```{r}
 # return the proportion of females from the source data
 example <- get_proportion(source_df, 'src_gender', 'Female')
@@ -118,29 +120,28 @@ example
 
 ## Function to Produce All Pertinent Information for Hypothesis Tests Across All DataFrames
 
-- **Description**: *run_prop_tests* will return an array containing all pertinent information regarding the desired proportion hypothesis test.
-- **Input**:
-  - *source_df*: the input dataframe (the data in which the null hypotheses will be built off, i.e. the prior belief data)
-  - *fairface_df*: the output dataframe ran through the fairface model
-  - *deepface_df*: the output dataframe ran through the deepface model
-  - *test_prop*: choose a demographic from "age_bins", "genders", or "races" **(MUST CHOOSE ONE)**
-  - *test_age*: specify a sub-demographic from "0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130", or "All"
-  - *test_gender*: specify a sub-demographic from "Female", "Male", or "All"
-  - *test_race*: specify a sub-demographic from "Asian", "Black", "Indian", "Other", "White", or "All"
-  - **NOTE: AT LEAST ONE OF THE SUB-DEMOGRAPHIC SPECIFICATIONS MUST NOT BE "All"!**
-- **Output**: a vector containing the following:
-  - *test_prop*: restating the main demographic for which the proportion is tested from
-  - *test_age*: restating the desired age sub-demographic
-  - *test_gender*: restating the desired gender sub-demographic
-  - *test_race*: restating the desired race sub-demographic
-  - *source_prop*: the calculated source proportion for the sub-demographic (the prior belief)
-  - *fairface_n*: the number of datapoints in the fairface dataframe associated with the main demographic
-  - *fairface_prop*: the calculated fairface proportion for the sub-demographic
-  - *fairface_p_value*: the p-value associated with hypothesis test for the fairface model
-  - *deepface_n*: the number of datapoints in the deepface dataframe associated with the main demographic
-  - *deepface_prop*: the calculated deepface proportion for the sub-demographic
-  - *deepface_p_value*: the p-value associated with hypothesis test for the deepface model
-
+-   **Description**: *run_prop_tests* will return an array containing all pertinent information regarding the desired proportion hypothesis test.
+-   **Input**:
+    -   *source_df*: the input dataframe (the data in which the null hypotheses will be built off, i.e. the prior belief data)
+    -   *fairface_df*: the output dataframe ran through the fairface model
+    -   *deepface_df*: the output dataframe ran through the deepface model
+    -   *test_prop*: choose a demographic from "age_bins", "genders", or "races" **(MUST CHOOSE ONE)**
+    -   *test_age*: specify a sub-demographic from "0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130", or "All"
+    -   *test_gender*: specify a sub-demographic from "Female", "Male", or "All"
+    -   *test_race*: specify a sub-demographic from "Asian", "Black", "Indian", "Other", "White", or "All"
+    -   **NOTE: AT LEAST ONE OF THE SUB-DEMOGRAPHIC SPECIFICATIONS MUST NOT BE "All"!**
+-   **Output**: a vector containing the following:
+    -   *test_prop*: restating the main demographic for which the proportion is tested from
+    -   *test_age*: restating the desired age sub-demographic
+    -   *test_gender*: restating the desired gender sub-demographic
+    -   *test_race*: restating the desired race sub-demographic
+    -   *source_prop*: the calculated source proportion for the sub-demographic (the prior belief)
+    -   *fairface_n*: the number of datapoints in the fairface dataframe associated with the main demographic
+    -   *fairface_prop*: the calculated fairface proportion for the sub-demographic
+    -   *fairface_p_value*: the p-value associated with hypothesis test for the fairface model
+    -   *deepface_n*: the number of datapoints in the deepface dataframe associated with the main demographic
+    -   *deepface_prop*: the calculated deepface proportion for the sub-demographic
+    -   *deepface_p_value*: the p-value associated with hypothesis test for the deepface model
 
 ```{r}
 run_prop_tests <- function(source_df, fairface_df, deepface_df, test_prop, test_age, test_gender, test_race) {
@@ -255,8 +256,7 @@ for (age in pull(age_bins)) {
 }
 ```
 
->The returned *result_matrix* contains every combination of demographics and sub-demographics hypothesis testing, at 432 hypotheses tested. If there is a result that is "NA", it most likely means the sub-demographic and it's conditionals had a proportion of 0.
-
+> The returned *result_matrix* contains every combination of demographics and sub-demographics hypothesis testing, at 432 hypotheses tested. If there is a result that is "NA", it most likely means the sub-demographic and it's conditionals had a proportion of 0.
 
 ## Hypothesis Testing
 
@@ -274,25 +274,25 @@ We'll be testing across different subsets contained within the data, as listed b
 
 ### Demographics' Subgroups
 
-+ Age Group (9 groups)
-  + 0-2
-  + 3-9
-  + 10-19
-  + 20-29
-  + 30-39
-  + 40-49
-  + 50-59
-  + 60-69
-  + 70-130
-+ Gender (2 groups)
-  + Female
-  + Male
-+ Race (5 groups)
-  + Asian
-  + Black
-  + Indian
-  + Other
-  + White
+-   Age Group (9 groups)
+    -   0-2
+    -   3-9
+    -   10-19
+    -   20-29
+    -   30-39
+    -   40-49
+    -   50-59
+    -   60-69
+    -   70-130
+-   Gender (2 groups)
+    -   Female
+    -   Male
+-   Race (5 groups)
+    -   Asian
+    -   Black
+    -   Indian
+    -   Other
+    -   White
 
 ### The General Proportion Tests
 
@@ -316,9 +316,9 @@ $= P(|Z| > \frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}})$,
 
 where
 
-- $n$: output data subset size
-- $\hat{p}$: output data subset proportion
-- $p$: source data subset proportion
+-   $n$: output data subset size
+-   $\hat{p}$: output data subset proportion
+-   $p$: source data subset proportion
 
 ### Notation
 
@@ -331,7 +331,6 @@ Let $G$ be gender, then $G \in \{Female, Male\} = \{F, M\}$
 Let $A$ be age, then $A \in \{[0,2], [3,9], [10,19], [20,29], [30,39], [40,49], [50,59], [60,69], [70,130]\} = \{1, 2, 3, 4, 5, 6, 7, 8, 9\}$
 
 Let $D$ be the dataset, then $D \in \{Source, Fairface, Deepface\} = \{D_0, D_f, D_d\}$
-
 
 ### More Specific Proportion Tests
 
@@ -351,9 +350,9 @@ $P(|Z| > \frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}})$,
 
 where
 
-- $p = p_{F|D_0}$: proportion of females from the source data
-- $\hat{p} = p_{F|D_f}$: proportion of females from the fairface output
-- $n = n_{F \cup M|D_f}$: number of data points in the gender subset form the fairface output
+-   $p = p_{F|D_0}$: proportion of females from the source data
+-   $\hat{p} = p_{F|D_f}$: proportion of females from the fairface output
+-   $n = n_{F \cup M|D_f}$: number of data points in the gender subset form the fairface output
 
 Using the *result_matrix*, we can return all of the pertinent testing information from both fairface and deepface.
 
@@ -375,9 +374,9 @@ $P(|Z| > \frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}})$,
 
 where
 
-- $p = p_{F|D_0 \cap B}$: proportion of females from the source data, given they were black
-- $\hat{p} = p_{F|D_f \cap B}$: proportion of females from the fairface output, given they were black
-- $n = n_{F \cup M|D_f \cap B}$: number of data points in the gender subset form the fairface output, given they were black.
+-   $p = p_{F|D_0 \cap B}$: proportion of females from the source data, given they were black
+-   $\hat{p} = p_{F|D_f \cap B}$: proportion of females from the fairface output, given they were black
+-   $n = n_{F \cup M|D_f \cap B}$: number of data points in the gender subset form the fairface output, given they were black.
 
 again, using the *result_matrix*, we can return all of the pertinent testing information from both fairface and deepface.
 
@@ -387,9 +386,7 @@ result_matrix %>%
   select(c(source_prop, fairface_prop, fairface_p_value, deepface_prop, deepface_p_value))
 ```
 
-
 These were two specific hypothesis tests, however, we'll be testing many combinations of these parameters and reporting back on any significant findings. The results of any combination of these test can be found in the *results_matrix*.
-
 
 ## Interesting Results
 
@@ -404,10 +401,10 @@ result_matrix %>%
 result_matrix %>%
   filter(deepface_p_value > 0.01)
 ```
+
 ```{r}
 result_matrix %>% filter(deepface_prop == 0 & test_prop!='races') %>% select(test_prop,test_age,test_gender,test_race,source_prop,deepface_n,deepface_prop,deepface_p_value)
 ```
-
 
 ```{r}
 result_matrix %>% filter(test_prop=='genders',test_age=='All',test_race!='All') %>% 
@@ -418,4 +415,3 @@ result_matrix %>% filter(test_prop=='genders',test_age=='All',test_race!='All') 
 result_matrix %>% filter(test_prop=='age_bins',test_gender=='All',test_race!='All') %>% 
   select(test_prop,test_age,test_race,fairface_p_value,deepface_p_value)
 ```
-

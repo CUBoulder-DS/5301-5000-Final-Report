@@ -1,30 +1,103 @@
 ---
 title: "Bhav's work"
 author: "Bhavana Jonnalagadda"
-date: "2023-10-18"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
+<!-- Setup !-->
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
 ```
 
-## R Markdown
+## Load Data
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r load_data}
+# master dataframe url
+output_name <- 'https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv'
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# entire master dataframe
+output_df <- read_csv(output_name) %>% 
+  select(-c(img_path, file)) %>%
+  mutate_if(is.character, as.factor) 
 
-```{r cars}
-summary(cars)
+# Get chr columns as factors ordered as they should
+output_df$src_age_grp = factor(output_df$src_age_grp, 
+                               levels = c("0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130"))
+output_df$pred_age_grp = factor(output_df$pred_age_grp, 
+                               levels = c("0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130"))
+output_df$src_race = factor(output_df$src_race, levels=c("White", "Black", "Asian", "Indian", "Other"))
+output_df$pred_race = factor(output_df$pred_race, levels=c("White", "Black", "Asian", "Indian", "Other"))
+
+# Add correctness columns
+output_df = output_df %>% 
+  mutate(correct_gender = (src_gender == pred_gender), 
+         correct_age = (src_age_grp == pred_age_grp), 
+         correct_race = (src_race == pred_race))
+  
+
+# fairface dataframe
+# exclude the indexing column and deepface only column
+fairface_df <- output_df %>%
+  filter(pred_model == 'FairFace') %>%
+  select(-c(...1, pred_age_DF_only)) %>%
+  drop_na()
+
+# deepface dataframe
+# exclude the indexing column
+deepface_df <- output_df %>%
+  filter(pred_model == 'DeepFace') %>%
+  select(-...1) %>%
+  drop_na()
+
+# source dataframe
+# use one of the models (since the data is doubled)
+# include only the source ("src") columns
+source_df <- output_df %>%
+  filter(pred_model == 'FairFace') %>%
+  select(c(src_age, src_age_grp, src_gender, src_race, src_timestamp)) %>%
+  drop_na()
+
+output_df
+fairface_df
+deepface_df
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+# fairface_df$pred_gender == fairface_df$src_gender
+output_df
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r plot_hists}
+#| label: fig-output-hists
+#| fig-cap: Histograms of the output from DeepFace and FairFace, with correct vs incorrect values colored. Note that the distributions match the correct (source dataset) distributions.
+#| fig-subcap: 
+#|   - Gender predictions
+#|   - Age predictions
+#|   - Race predictions
+#| layout-ncol: 2
+#| layout-nrow: 2
+
+plot_category = function(src, correct) {
+  num_cats = length(levels(output_df[[src]]))
+  
+  plot = ggplot() +
+    geom_bar(mapping=aes(x=as.numeric(interaction(output_df[["pred_model"]], output_df[[src]])),
+                         fill=interaction(output_df[["pred_model"]], output_df[[correct]]))) +
+    scale_x_continuous("Age", breaks=seq(1.5, 2*num_cats, 2), labels=levels(output_df[[src]]), limits=c(0,2*num_cats + 1)) +
+    scale_fill_manual("Model and Correctness",
+                      values = c("orangered", "firebrick", "springgreen", "green4"),
+                      labels = c("DeepFace, incorrect", "FairFace, incorrect", "DeepFace, correct", "FairFace, correct"))
+  
+  return(plot)
+}
+
+
+plot_category("src_gender", "correct_gender")
+plot_category("src_age_grp", "correct_age")
+plot_category("src_race", "correct_race")
+```
+

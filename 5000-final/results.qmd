@@ -8,7 +8,54 @@ library(tidyverse)
 
 <!-- BJ !-->
 
-This is where all the plots will go!!!! Here are some examples of plot layout:
+```{r load_data}
+# master dataframe url
+output_name <- 'https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv'
+
+# entire master dataframe
+output_df <- read_csv(output_name) %>% 
+  select(-c(img_path, file)) %>%
+  mutate_if(is.character, as.factor) 
+
+# Get chr columns as factors ordered as they should
+output_df$src_age_grp = factor(output_df$src_age_grp, 
+                               levels = c("0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130"))
+output_df$pred_age_grp = factor(output_df$pred_age_grp, 
+                               levels = c("0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130"))
+output_df$src_race = factor(output_df$src_race, levels=c("White", "Black", "Asian", "Indian", "Other"))
+output_df$pred_race = factor(output_df$pred_race, levels=c("White", "Black", "Asian", "Indian", "Other"))
+
+# Add correctness columns
+output_df = output_df %>% 
+  mutate(correct_gender = (src_gender == pred_gender), 
+         correct_age = (src_age_grp == pred_age_grp), 
+         correct_race = (src_race == pred_race))
+  
+
+# fairface dataframe
+# exclude the indexing column and deepface only column
+fairface_df <- output_df %>%
+  filter(pred_model == 'FairFace') %>%
+  select(-c(...1, pred_age_DF_only)) %>%
+  drop_na()
+
+# deepface dataframe
+# exclude the indexing column
+deepface_df <- output_df %>%
+  filter(pred_model == 'DeepFace') %>%
+  select(-...1) %>%
+  drop_na()
+
+# source dataframe
+# use one of the models (since the data is doubled)
+# include only the source ("src") columns
+source_df <- output_df %>%
+  filter(pred_model == 'FairFace') %>%
+  select(c(src_age, src_age_grp, src_gender, src_race, src_timestamp)) %>%
+  drop_na()
+```
+
+<!-- BJ !-->
 
 ::: panel-tabset
 ## Tabbed example output
@@ -49,9 +96,48 @@ Describe the results of your analysis using visualizations, descriptive statisti
 
 Don't focus too much on the implications in this section -- that's what the next section is for. Just present the numbers/graphs.
 :::
+
+<!-- BJ !-->
+
+## Output from DeepFace and FairFace
+
+The two models, DeepFace and FairFace, were run on the dataset described previously. In @fig-output-hists, one can see the results of the predictions done by each model, by each factor that was considered: age, gender, and race. Note that the histogram distributions match the correct (source dataset) distributions, so we can see exactly the difference between what was provided and what was predicted, along with how well each model did on each category within each factor.
+
+```{r plot_hists}
+#| label: fig-output-hists
+#| fig-cap: Histograms of the output from DeepFace and FairFace, with correct vs incorrect values colored. Note that the distributions match the correct (source dataset) distributions.
+#| fig-subcap: 
+#|   - Gender predictions
+#|   - Age predictions
+#|   - Race predictions
+#| layout-ncol: 2
+#| layout-nrow: 2
+
+plot_category = function(src, correct) {
+  num_cats = length(levels(output_df[[src]]))
+  
+  plot = ggplot() +
+    geom_bar(mapping=aes(x=as.numeric(interaction(output_df[["pred_model"]], output_df[[src]])),
+                         fill=interaction(output_df[["pred_model"]], output_df[[correct]]))) +
+    scale_x_continuous("Age", breaks=seq(1.5, 2*num_cats, 2), labels=levels(output_df[[src]]), limits=c(0,2*num_cats + 1)) +
+    scale_fill_manual("Model and Correctness",
+                      values = c("orangered", "firebrick", "springgreen", "green4"),
+                      labels = c("DeepFace, incorrect", "FairFace, incorrect", "DeepFace, correct", "FairFace, correct"))
+  
+  return(plot)
+}
+
+
+plot_category("src_gender", "correct_gender")
+plot_category("src_age_grp", "correct_age")
+plot_category("src_race", "correct_race")
+```
+
+<!-- PC? !-->
+
 ```{r}
 #pull in the master data frame for use
-master_df <- read_csv('https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv')
+master_df <- read_csv('https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv', show_col_types = FALSE)
 
 #get the deepface-only results
 DF_results <- master_df %>% filter(pred_model=='DeepFace') %>% drop_na(pred_age_grp)
@@ -236,7 +322,6 @@ str_c("p.",a_groups)
 
 ```
 
-
 ```{r}
 # test <- function(df,src_col,pred_col,val){
 #   y <- df %>% select(!!as.symbol(pred_col))
@@ -299,4 +384,3 @@ source_gen_props
 FF_pred_gen_props
 DF_pred_gen_props
 ```
-
