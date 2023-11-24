@@ -113,13 +113,13 @@ The two models, DeepFace and FairFace, were run on the dataset described previou
 #| layout-ncol: 2
 #| layout-nrow: 2
 
-plot_category = function(src, correct) {
+plot_category = function(src, correct, label) {
   num_cats = length(levels(output_df[[src]]))
   
   plot = ggplot() +
     geom_bar(mapping=aes(x=as.numeric(interaction(output_df[["pred_model"]], output_df[[src]])),
                          fill=interaction(output_df[["pred_model"]], output_df[[correct]]))) +
-    scale_x_continuous("Age", breaks=seq(1.5, 2*num_cats, 2), labels=levels(output_df[[src]]), limits=c(0,2*num_cats + 1)) +
+    scale_x_continuous(label, breaks=seq(1.5, 2*num_cats, 2), labels=levels(output_df[[src]]), limits=c(0,2*num_cats + 1)) +
     scale_fill_manual("Model and Correctness",
                       values = c("orangered", "firebrick", "springgreen", "green4"),
                       labels = c("DeepFace, incorrect", "FairFace, incorrect", "DeepFace, correct", "FairFace, correct"))
@@ -128,9 +128,9 @@ plot_category = function(src, correct) {
 }
 
 
-plot_category("src_gender", "correct_gender")
-plot_category("src_age_grp", "correct_age")
-plot_category("src_race", "correct_race")
+plot_category("src_gender", "correct_gender", "Gender")
+plot_category("src_age_grp", "correct_age", "Age")
+plot_category("src_race", "correct_race", "Race")
 ```
 
 <!-- PC? !-->
