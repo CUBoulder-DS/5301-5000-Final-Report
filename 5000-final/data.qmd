@@ -1,12 +1,3 @@
----
-format: 
-  html:
-    # page-layout: full
-    grid:
-      body-width: 1000px
-      margin-width: 150px
-      sidebar-width: 150px
----
 
 # Data
 
@@ -19,11 +10,11 @@ We describe the data here. Note that the default global setting for Quarto is se
 
 ::: {#fig-faces layout-ncol=3}
 
-![Age=6, Gender=F, Race=Indian](../data/UTK/sample_images/6_1_3_20161220223052131.jpg){#fig-img1}
+![Age=6, Gender=F, Race=Indian](images/utk_imgs/6_1_3_20161220223052131.jpg){#fig-img1}
 
-![Age=38, Gender=M, Race=White](../data/UTK/sample_images/38_0_0_20170105172756958.jpg){#fig-img2}
+![Age=38, Gender=M, Race=White](images/utk_imgs/38_0_0_20170105172756958.jpg){#fig-img2}
 
-![Age=80, Gender=M, Race=Asian](../data/UTK/sample_images/80_0_2_20170111201008732.jpg){#fig-img3}
+![Age=80, Gender=M, Race=Asian](images/utk_imgs/80_0_2_20170111201008732.jpg){#fig-img3}
 
 Example face images from the UTK dataset [@utkDataset] with their associated given labels.
 :::
