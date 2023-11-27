@@ -56,6 +56,93 @@ This section should describe the data you'll be using. Answer **at least** **all
 Feel free to add anything else that you think is necessary for understanding the paper and the context of the problem.
 :::
 
+## More information on data
+
+```{r}
+library(tidyverse)
+f <- c(
+"Croped_ff_np.csv",
+"MasterDataFrame.csv",
+"crop_df_np.csv",
+"crop_df_p_mtcnn.csv",
+"crop_df_p_opencv.csv",
+"cropped_UTK.csv",
+"cropped_UTK_dataset.csv",
+"cropped_ff_p.csv",
+"joined_permutations.csv",
+"new_ff_c_np.csv",
+"new_ff_c_p.csv",
+"new_ff_uc_np.csv",
+"new_ff_uc_p.csv",
+"non_normalized_DeepFace_uncropped_DF_all.csv",
+"non_normalized_FairFace_uncropped_FF_all.csv",
+"uncropped_DF_all.csv",
+"uncropped_FF_all.csv",
+"uncropped_UTK.csv",
+"uncropped_UTK_dataset.csv",
+"uncropped_df_np.csv",
+"uncropped_df_p_mtcnn.csv",
+"uncropped_df_p_opencv.csv",
+"uncropped_ff_np.csv",
+"uncropped_ff_p.csv"
+)
+p <- c(
+"Permutation evaluation (older version) for fairface, no preprocessing on cropped images.  Updated this file to look at the same files as the uncropped dataset.", #Croped_ff_np.csv",
+"Final master data file containing all input and output files", #"MasterDataFrame.csv",
+"Permutation evaluation for DeepFace, cropped images, no pre-processing", #"crop_df_np.csv",
+"Permutation evaluation for DeepFace, cropped images, preprocessed with MTCNN backend.", #"crop_df_p_mtcnn.csv",
+"Permutation evaluation for DeepFace, cropped images, preprocessed with OpenCV backend.",  #"crop_df_p_opencv.csv",
+"Permutation evaluation (older version), list of cropped files to perform evaluation.", #"cropped_UTK.csv",
+"Permutation evaluation (newest version), list of cropped files to perform evaluation.", #"cropped_UTK_dataset.csv",
+"Permutation evaluation (older version), used older version of cropped images dataset.", #"cropped_ff_p.csv",
+"Permutation evaluation (newest version), joined all permutation outputs from DeepFace and FairFace to a single file", #"joined_permutations.csv",
+"Permutation evaluation (newest version), FairFaice outputs for cropped images with no preprocessing", #"new_ff_c_np.csv",
+"Permutation evaluation (newest version), FairFaice outputs for cropped images with dlib preprocessing", #"new_ff_c_p.csv",
+"Permutation evaluation (newest version), FairFaice outputs for uncropped images with no preprocessing", #"new_ff_uc_np.csv",
+"Permutation evaluation (newest version), FairFaice outputs for uncropped images with dlib preprocessing.", #"new_ff_uc_p.csv",
+"Final dataset of DeepFace Outputs (non-normalized)", #"non_normalized_DeepFace_uncropped_DF_all.csv",
+"Final dataset of FairFace Outputs (non-normalized)", #"non_normalized_FairFace_uncropped_FF_all.csv",
+"Final normalized output for DeepFace - used to build MasterDataFrame.csv", #"uncropped_DF_all.csv",
+"Final normalized output for FairFace - used to build MasterDataFrame.csv", #"uncropped_FF_all.csv",
+"Permutation evaluation (older version) - source data file for iteration script", #"uncropped_UTK.csv",
+"Permutation evaluation (newest version) - source data file for uncropped images in iteration script", #"uncropped_UTK_dataset.csv",
+"Permutation evaluation (newest version) - DeepFace uncropped images with no preprocessing", #"uncropped_df_np.csv",
+"Permutation Evaluation (newest version) - DeepFace uncropped images with mtcnn preprocessing", #"uncropped_df_p_mtcnn.csv",
+"Permutation Evaluation (newest version) - DeepFace uncropped images with opencv preprocessing", #"uncropped_df_p_opencv.csv",
+"Permutation Evaluation (older version) - FairFace uncropped images with no preprocessing", #"uncropped_ff_np.csv",
+"Permutation Evaluation (older version) - FairFace uncropped images with dlib preprocessing." #"uncropped_ff_p.csv"
+)
+r <- c(
+"Remove from github data folder.", #"Permutation evaluation (older version) for fairface, no preprocessing on cropped images.  Updated this file to look at the same files as the uncropped dataset.", #Croped_ff_np.csv",
+"Keep as-is with no changes", #"Final master data file containing all input and output files", #"MasterDataFrame.csv",
+"Retain; rename to PERM_DF_c_np.csv", #"Permutation evaluation for DeepFace, cropped images, no pre-processing", #"crop_df_np.csv",
+"Retain; rename to PERM_DF_c_p_mtcnn.csv", #"Permutation evaluation for DeepFace, cropped images, preprocessed with MTCNN backend.", #"crop_df_p_mtcnn.csv",
+"Retain; rename to PERM_DF_c_p_opencv.csv", #"Permutation evaluation (newest version)for DeepFace, cropped images, preprocessed with OpenCV backend.",  #"crop_df_p_opencv.csv",
+"Remove from github data folder", #"Permutation evaluation (older version), list of cropped files to perform evaluation.", #"cropped_UTK.csv",
+"Retain with no changes", #"Permutation evaluation (newest version), list of cropped files to perform evaluation.", #"cropped_UTK_dataset.csv",
+"Remove from github data folder.", #"Permutation evaluation (older version), used older version of cropped images dataset.", #"cropped_ff_p.csv",
+"Retain with no changes", #"Permutation evaluation (newest version), joined all permutation outputs from DeepFace and FairFace to a single file", #"joined_permutations.csv",
+"Retain; rename to PERM_FF_c_np.csv", #"Permutation evaluation (newest version), FairFaice outputs for cropped images with no preprocessing", #"new_ff_c_np.csv",
+"Retain; rename to PERM_FF_c_p.csv", #"Permutation evaluation (newest version), FairFaice outputs for cropped images with dlib preprocessing", #"new_ff_c_p.csv",
+"Retain; rename to PERM_FF_uc_np.csv", #"Permutation evaluation (newest version), FairFaice outputs for uncropped images with no preprocessing", #"new_ff_uc_np.csv",
+"Retain; rename to PERM_FF_uc_p.csv", #"Permutation evaluation (newest version), FairFaice outputs for uncropped images with dlib preprocessing.", #"new_ff_uc_p.csv",
+"Retain; rename to Master_DF_non_normalized.csv", #"Final dataset of DeepFace Outputs (non-normalized)", #"non_normalized_DeepFace_uncropped_DF_all.csv",
+"Retain; rename to Master_FF_non_normalized.csv", #"Final dataset of FairFace Outputs (non-normalized)", #"non_normalized_FairFace_uncropped_FF_all.csv",
+"Retain with no changes", #"Final normalized output for DeepFace - used to build MasterDataFrame.csv", #"uncropped_DF_all.csv",
+"Retain with no changes", #"Final normalized output for FairFace - used to build MasterDataFrame.csv", #"uncropped_FF_all.csv",
+"Remove from github data folder.", #"Permutation evaluation (older version) - source data file for iteration script", #"uncropped_UTK.csv",
+"Retain with no changes", #"Permutation evaluation (newest version) - source data file for uncropped images in iteration script", #"uncropped_UTK_dataset.csv",
+"Retain; rename to PERM_DF_uc_np.csv", #"Permutation evaluation (newest version) - DeepFace uncropped images with no preprocessing", #"uncropped_df_np.csv",
+"Retain; rename to PERM_DF_uc_p_mtcnn.csv", #"Permutation Evaluation (newest version) - DeepFace uncropped images with mtcnn preprocessing", #"uncropped_df_p_mtcnn.csv",
+"Retain; rename to PERM_DF_uc_p_opencv.csv", #"Permutation Evaluation (newest version) - DeepFace uncropped images with opencv preprocessing", #"uncropped_df_p_opencv.csv",
+"Remove from github data folder.", #"Permutation Evaluation (older version) - FairFace uncropped images with no preprocessing", #"uncropped_ff_np.csv",
+"Remove from github data folder." #"Permutation Evaluation (older version) - FairFace uncropped images with dlib preprocessing.", #"uncropped_ff_p.csv"
+)
+
+t <- tibble(filenames=f,purpose=p,recommendations=r)
+knitr::kable(t)
+```
+
 ## Data Selection (UTK Dataset) - LN DV
 
 Motivation - has there been progress against bias?

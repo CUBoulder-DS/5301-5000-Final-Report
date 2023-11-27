@@ -180,12 +180,13 @@ div.csl-indent {
    
   <ul>
   <li><a href="#exploration-of-source-data" id="toc-exploration-of-source-data" class="nav-link active" data-scroll-target="#exploration-of-source-data"><span class="header-section-number">2.1</span> Exploration of Source Data</a></li>
-  <li><a href="#data-selection-utk-dataset---ln-dv" id="toc-data-selection-utk-dataset---ln-dv" class="nav-link" data-scroll-target="#data-selection-utk-dataset---ln-dv"><span class="header-section-number">2.2</span> Data Selection (UTK Dataset) - LN DV</a></li>
-  <li><a href="#selected-models-ln-dv" id="toc-selected-models-ln-dv" class="nav-link" data-scroll-target="#selected-models-ln-dv"><span class="header-section-number">2.3</span> Selected Models (LN DV)</a>
+  <li><a href="#more-information-on-data" id="toc-more-information-on-data" class="nav-link" data-scroll-target="#more-information-on-data"><span class="header-section-number">2.2</span> More information on data</a></li>
+  <li><a href="#data-selection-utk-dataset---ln-dv" id="toc-data-selection-utk-dataset---ln-dv" class="nav-link" data-scroll-target="#data-selection-utk-dataset---ln-dv"><span class="header-section-number">2.3</span> Data Selection (UTK Dataset) - LN DV</a></li>
+  <li><a href="#selected-models-ln-dv" id="toc-selected-models-ln-dv" class="nav-link" data-scroll-target="#selected-models-ln-dv"><span class="header-section-number">2.4</span> Selected Models (LN DV)</a>
   <ul class="collapse">
-  <li><a href="#fairface" id="toc-fairface" class="nav-link" data-scroll-target="#fairface"><span class="header-section-number">2.3.1</span> FairFace</a></li>
-  <li><a href="#deepface" id="toc-deepface" class="nav-link" data-scroll-target="#deepface"><span class="header-section-number">2.3.2</span> DeepFace</a></li>
-  <li><a href="#permutation-analysis-information" id="toc-permutation-analysis-information" class="nav-link" data-scroll-target="#permutation-analysis-information"><span class="header-section-number">2.3.3</span> Permutation Analysis Information</a></li>
+  <li><a href="#fairface" id="toc-fairface" class="nav-link" data-scroll-target="#fairface"><span class="header-section-number">2.4.1</span> FairFace</a></li>
+  <li><a href="#deepface" id="toc-deepface" class="nav-link" data-scroll-target="#deepface"><span class="header-section-number">2.4.2</span> DeepFace</a></li>
+  <li><a href="#permutation-analysis-information" id="toc-permutation-analysis-information" class="nav-link" data-scroll-target="#permutation-analysis-information"><span class="header-section-number">2.4.3</span> Permutation Analysis Information</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -242,7 +243,7 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p></p><figcaption class="figure-caption">Figure&nbsp;2.1: Example face images from the UTK dataset <span class="citation" data-cites="utkDataset">(<a href="references.html#ref-utkDataset" role="doc-biblioref"><span>“<span>UTKFace</span>”</span> 2021</a>)</span> with their associated given labels.</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.1: Example face images from the UTK dataset <span class="citation" data-cites="utkDataset">(<a href="#ref-utkDataset" role="doc-biblioref"><span>“<span>UTKFace</span>”</span> 2021</a>)</span> with their associated given labels.</figcaption><p></p>
 </figure>
 </div>
 <!-- CK -->
@@ -272,27 +273,182 @@ From the report requirements
 </div>
 </div>
 </section>
-<section id="data-selection-utk-dataset---ln-dv" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="data-selection-utk-dataset---ln-dv"><span class="header-section-number">2.2</span> Data Selection (UTK Dataset) - LN DV</h2>
+<section id="more-information-on-data" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="more-information-on-data"><span class="header-section-number">2.2</span> More information on data</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.1     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 63%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">filenames</th>
+<th style="text-align: left;">purpose</th>
+<th style="text-align: left;">recommendations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Croped_ff_np.csv</td>
+<td style="text-align: left;">Permutation evaluation (older version) for fairface, no preprocessing on cropped images. Updated this file to look at the same files as the uncropped dataset.</td>
+<td style="text-align: left;">Remove from github data folder.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MasterDataFrame.csv</td>
+<td style="text-align: left;">Final master data file containing all input and output files</td>
+<td style="text-align: left;">Keep as-is with no changes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">crop_df_np.csv</td>
+<td style="text-align: left;">Permutation evaluation for DeepFace, cropped images, no pre-processing</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_c_np.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">crop_df_p_mtcnn.csv</td>
+<td style="text-align: left;">Permutation evaluation for DeepFace, cropped images, preprocessed with MTCNN backend.</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_c_p_mtcnn.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">crop_df_p_opencv.csv</td>
+<td style="text-align: left;">Permutation evaluation for DeepFace, cropped images, preprocessed with OpenCV backend.</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_c_p_opencv.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cropped_UTK.csv</td>
+<td style="text-align: left;">Permutation evaluation (older version), list of cropped files to perform evaluation.</td>
+<td style="text-align: left;">Remove from github data folder</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cropped_UTK_dataset.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), list of cropped files to perform evaluation.</td>
+<td style="text-align: left;">Retain with no changes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cropped_ff_p.csv</td>
+<td style="text-align: left;">Permutation evaluation (older version), used older version of cropped images dataset.</td>
+<td style="text-align: left;">Remove from github data folder.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">joined_permutations.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), joined all permutation outputs from DeepFace and FairFace to a single file</td>
+<td style="text-align: left;">Retain with no changes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">new_ff_c_np.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for cropped images with no preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_FF_c_np.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">new_ff_c_p.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for cropped images with dlib preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_FF_c_p.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">new_ff_uc_np.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for uncropped images with no preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_FF_uc_np.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">new_ff_uc_p.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for uncropped images with dlib preprocessing.</td>
+<td style="text-align: left;">Retain; rename to PERM_FF_uc_p.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">non_normalized_DeepFace_uncropped_DF_all.csv</td>
+<td style="text-align: left;">Final dataset of DeepFace Outputs (non-normalized)</td>
+<td style="text-align: left;">Retain; rename to Master_DF_non_normalized.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">non_normalized_FairFace_uncropped_FF_all.csv</td>
+<td style="text-align: left;">Final dataset of FairFace Outputs (non-normalized)</td>
+<td style="text-align: left;">Retain; rename to Master_FF_non_normalized.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uncropped_DF_all.csv</td>
+<td style="text-align: left;">Final normalized output for DeepFace - used to build MasterDataFrame.csv</td>
+<td style="text-align: left;">Retain with no changes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">uncropped_FF_all.csv</td>
+<td style="text-align: left;">Final normalized output for FairFace - used to build MasterDataFrame.csv</td>
+<td style="text-align: left;">Retain with no changes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uncropped_UTK.csv</td>
+<td style="text-align: left;">Permutation evaluation (older version) - source data file for iteration script</td>
+<td style="text-align: left;">Remove from github data folder.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">uncropped_UTK_dataset.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version) - source data file for uncropped images in iteration script</td>
+<td style="text-align: left;">Retain with no changes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uncropped_df_np.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version) - DeepFace uncropped images with no preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_uc_np.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">uncropped_df_p_mtcnn.csv</td>
+<td style="text-align: left;">Permutation Evaluation (newest version) - DeepFace uncropped images with mtcnn preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_uc_p_mtcnn.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uncropped_df_p_opencv.csv</td>
+<td style="text-align: left;">Permutation Evaluation (newest version) - DeepFace uncropped images with opencv preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_uc_p_opencv.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">uncropped_ff_np.csv</td>
+<td style="text-align: left;">Permutation Evaluation (older version) - FairFace uncropped images with no preprocessing</td>
+<td style="text-align: left;">Remove from github data folder.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uncropped_ff_p.csv</td>
+<td style="text-align: left;">Permutation Evaluation (older version) - FairFace uncropped images with dlib preprocessing.</td>
+<td style="text-align: left;">Remove from github data folder.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="data-selection-utk-dataset---ln-dv" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="data-selection-utk-dataset---ln-dv"><span class="header-section-number">2.3</span> Data Selection (UTK Dataset) - LN DV</h2>
 <p>Motivation - has there been progress against bias?</p>
 <p>Reference Articles from Ethics Class - Joy B’s work, etc. Lots of disparity back in 2018, how much of that still exists with free models?</p>
 </section>
-<section id="selected-models-ln-dv" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="selected-models-ln-dv"><span class="header-section-number">2.3</span> Selected Models (LN DV)</h2>
+<section id="selected-models-ln-dv" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="selected-models-ln-dv"><span class="header-section-number">2.4</span> Selected Models (LN DV)</h2>
 <p>Lorem ipsum</p>
-<section id="fairface" class="level3" data-number="2.3.1">
-<h3 data-number="2.3.1" class="anchored" data-anchor-id="fairface"><span class="header-section-number">2.3.1</span> FairFace</h3>
+<section id="fairface" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="fairface"><span class="header-section-number">2.4.1</span> FairFace</h3>
 <p>Motivation as to how / why we came across this</p>
 </section>
-<section id="deepface" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="deepface"><span class="header-section-number">2.3.2</span> DeepFace</h3>
+<section id="deepface" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="deepface"><span class="header-section-number">2.4.2</span> DeepFace</h3>
 <p>Motivation as to how / why we came across this</p>
 </section>
-<section id="permutation-analysis-information" class="level3" data-number="2.3.3">
-<h3 data-number="2.3.3" class="anchored" data-anchor-id="permutation-analysis-information"><span class="header-section-number">2.3.3</span> Permutation Analysis Information</h3>
+<section id="permutation-analysis-information" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="permutation-analysis-information"><span class="header-section-number">2.4.3</span> Permutation Analysis Information</h3>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-utkDataset" class="csl-entry" role="listitem">
 <span>“<span>UTKFace</span>.”</span> 2021. <em>UTKFace</em>. <a href="https://susanqq.github.io/UTKFace">https://susanqq.github.io/UTKFace</a>.
 </div>
