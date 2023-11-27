@@ -258,6 +258,12 @@ for (age in pull(age_bins)) {
 
 > The returned *result_matrix* contains every combination of demographics and sub-demographics hypothesis testing, at 432 hypotheses tested. If there is a result that is "NA", it most likely means the sub-demographic and it's conditionals had a proportion of 0.
 
+```{r}
+# save result_matrix
+write_csv(result_matrix, "C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results.csv")
+```
+
+
 ## Hypothesis Testing
 
 Our data consists of three main sets, the source input data, the Fairface output data, and the Deepface output data.
