@@ -186,6 +186,55 @@ perf_table %>%
 
 ## Hypothesis Testing
 
+<!-- CK !-->
+
+```{r load_pval_data, include = FALSE}
+df_name <- 'https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/pvalue_results.csv'
+p_value_results <- read_csv(df_name)
+```
+
+```{r}
+table_ages <- c("0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130")
+table_races <- c("White", "Black", "Asian", "Indian", "Other")
+table_genders <- c("Female", "Male")
+```
+
+```{r pval_ages}
+p_value_results %>%
+  filter(test_gender == "All") %>%
+  filter(test_race == "All") %>%
+  select(test_age, source_prop, fairface_prop,
+         fairface_p_value, deepface_prop, deepface_p_value) %>%
+  arrange(factor(test_age, levels = table_ages)) %>%
+  kbl(col.names = c("Test cateogry", "Null Proportion", "FairFace Proportion", "FairFace P-Value",
+                    "DeepFace Proportion", "DeepFace P-Value")) %>% 
+  kable_styling(full_width = T) %>%
+  column_spec(1, bold = T)
+```
+```{r pval_races}
+p_value_results %>%
+  filter(test_gender == "All") %>%
+  filter(test_age == "All") %>%
+  select(test_race, source_prop, fairface_prop,
+         fairface_p_value, deepface_prop, deepface_p_value) %>%
+  arrange(factor(test_race, levels = table_races)) %>%
+  kbl(col.names = c("Test cateogry", "Null Proportion", "FairFace Proportion", "FairFace P-Value",
+                    "DeepFace Proportion", "DeepFace P-Value")) %>% 
+  kable_styling(full_width = T) %>%
+  column_spec(1, bold = T)
+```
+```{r pval_genders}
+p_value_results %>%
+  filter(test_race == "All") %>%
+  filter(test_age == "All") %>%
+  select(test_gender, source_prop, fairface_prop,
+         fairface_p_value, deepface_prop, deepface_p_value) %>%
+  arrange(factor(test_gender, levels = table_genders)) %>%
+  kbl(col.names = c("Test cateogry", "Null Proportion", "FairFace Proportion", "FairFace P-Value",
+                    "DeepFace Proportion", "DeepFace P-Value")) %>% 
+  kable_styling(full_width = T) %>%
+  column_spec(1, bold = T)
+```
 
 <!-- PC? !-->
 
