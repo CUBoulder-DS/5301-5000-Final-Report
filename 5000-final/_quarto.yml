@@ -56,7 +56,7 @@ format:
 # Don't include code in the report
 execute:
   echo: false
-  freeze: auto
+  freeze: false
 
 latex-clean: true # delete latex files after rendering
 latex-auto-mk: true
