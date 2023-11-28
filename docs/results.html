@@ -284,157 +284,562 @@ From the report requirements
 </section>
 <section id="model-performance" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="model-performance"><span class="header-section-number">4.2</span> Model Performance</h2>
-<p>For each category and model, we calculate the F1 score and accuracy, as described in section 3. The results are summarized in <a href="#tbl-model-perf">Table&nbsp;<span>4.1</span></a>.</p>
+<p>For each category and model, we calculate the F1 score and accuracy, as described in section 3. The results are summarized in <a href="#tbl-model-perf">Table&nbsp;<span>4.1</span></a>. Cell values are colored according to the strength of the metric.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-model-perf" class="anchored">
-<table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Table&nbsp;4.1: Table of F1 score and accuracy, by each category evaluated by the models</caption>
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th" style="empty-cells: hide; border-bottom: hidden"></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-FairFace
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-DeepFace
-</div></th>
-</tr>
-<tr class="odd">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Category</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">F1 Score</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Accuracy</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">F1 Score</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Accuracy</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd" data-grouplength="9">
-<td colspan="5" style="border-bottom: 1px solid"><strong>Age</strong></td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Age: 0-2</td>
-<td style="text-align: right;">0.8959757</td>
-<td style="text-align: right;">0.9172888</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.5000000</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Age: 3-9</td>
-<td style="text-align: right;">0.7176035</td>
-<td style="text-align: right;">0.8772778</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.5000000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Age: 10-19</td>
-<td style="text-align: right;">0.5052498</td>
-<td style="text-align: right;">0.7211461</td>
-<td style="text-align: right;">0.0478601</td>
-<td style="text-align: right;">0.5055825</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Age: 20-29</td>
-<td style="text-align: right;">0.7332922</td>
-<td style="text-align: right;">0.8050592</td>
-<td style="text-align: right;">0.5054326</td>
-<td style="text-align: right;">0.6217793</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Age: 30-39</td>
-<td style="text-align: right;">0.4670003</td>
-<td style="text-align: right;">0.6741504</td>
-<td style="text-align: right;">0.3786318</td>
-<td style="text-align: right;">0.6275447</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Age: 40-49</td>
-<td style="text-align: right;">0.3943970</td>
-<td style="text-align: right;">0.6786302</td>
-<td style="text-align: right;">0.2276278</td>
-<td style="text-align: right;">0.5866155</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Age: 50-59</td>
-<td style="text-align: right;">0.4633983</td>
-<td style="text-align: right;">0.7049843</td>
-<td style="text-align: right;">0.0801673</td>
-<td style="text-align: right;">0.5137145</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Age: 60-69</td>
-<td style="text-align: right;">0.3739425</td>
-<td style="text-align: right;">0.6708204</td>
-<td style="text-align: right;">0.0016129</td>
-<td style="text-align: right;">0.4991769</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Age: 70-130</td>
-<td style="text-align: right;">0.6270661</td>
-<td style="text-align: right;">0.7383514</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.5000000</td>
-</tr>
-<tr class="odd" data-grouplength="5">
-<td colspan="5" style="border-bottom: 1px solid"><strong>Race</strong></td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Race: White</td>
-<td style="text-align: right;">0.8610399</td>
-<td style="text-align: right;">0.8788455</td>
-<td style="text-align: right;">0.8095461</td>
-<td style="text-align: right;">0.8365916</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Race: Black</td>
-<td style="text-align: right;">0.8684858</td>
-<td style="text-align: right;">0.8997692</td>
-<td style="text-align: right;">0.7964994</td>
-<td style="text-align: right;">0.8462797</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Race: Asian</td>
-<td style="text-align: right;">0.8948932</td>
-<td style="text-align: right;">0.9338128</td>
-<td style="text-align: right;">0.7038975</td>
-<td style="text-align: right;">0.9005150</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Race: Indian</td>
-<td style="text-align: right;">0.6402458</td>
-<td style="text-align: right;">0.7488102</td>
-<td style="text-align: right;">0.4092481</td>
-<td style="text-align: right;">0.6310597</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Race: Other</td>
-<td style="text-align: right;">0.3087473</td>
-<td style="text-align: right;">0.7105889</td>
-<td style="text-align: right;">0.2389021</td>
-<td style="text-align: right;">0.6283106</td>
-</tr>
-<tr class="odd" data-grouplength="1">
-<td colspan="5" style="border-bottom: 1px solid"><strong>Gender</strong></td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold; padding-left: 2em;" data-indentlevel="1">Gender</td>
-<td style="text-align: right;">0.9429153</td>
-<td style="text-align: right;">0.9453080</td>
-<td style="text-align: right;">0.8197702</td>
-<td style="text-align: right;">0.8402892</td>
-</tr>
-</tbody>
+
+<div id="coxqvvalsk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#coxqvvalsk table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#coxqvvalsk thead, #coxqvvalsk tbody, #coxqvvalsk tfoot, #coxqvvalsk tr, #coxqvvalsk td, #coxqvvalsk th {
+  border-style: none;
+}
+
+#coxqvvalsk p {
+  margin: 0;
+  padding: 0;
+}
+
+#coxqvvalsk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 100%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#coxqvvalsk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#coxqvvalsk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#coxqvvalsk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#coxqvvalsk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#coxqvvalsk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#coxqvvalsk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#coxqvvalsk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#coxqvvalsk .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#coxqvvalsk .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#coxqvvalsk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#coxqvvalsk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#coxqvvalsk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#coxqvvalsk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#coxqvvalsk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#coxqvvalsk .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#coxqvvalsk .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#coxqvvalsk .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#coxqvvalsk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#coxqvvalsk .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#coxqvvalsk .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#coxqvvalsk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#coxqvvalsk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#coxqvvalsk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#coxqvvalsk .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#coxqvvalsk .gt_left {
+  text-align: left;
+}
+
+#coxqvvalsk .gt_center {
+  text-align: center;
+}
+
+#coxqvvalsk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#coxqvvalsk .gt_font_normal {
+  font-weight: normal;
+}
+
+#coxqvvalsk .gt_font_bold {
+  font-weight: bold;
+}
+
+#coxqvvalsk .gt_font_italic {
+  font-style: italic;
+}
+
+#coxqvvalsk .gt_super {
+  font-size: 65%;
+}
+
+#coxqvvalsk .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#coxqvvalsk .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#coxqvvalsk .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#coxqvvalsk .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#coxqvvalsk .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#coxqvvalsk .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#coxqvvalsk .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false"><caption>Table&nbsp;4.1:  <p>Table of F1 score and accuracy, by each category evaluated by the
+models</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings gt_spanner_row">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col" id="Category">Category</th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="<strong>FairFace</strong>">
+        <span class="gt_column_spanner"><strong>FairFace</strong></span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="<strong>DeepFace</strong>">
+        <span class="gt_column_spanner"><strong>DeepFace</strong></span>
+      </th>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="<strong>F1</strong>"><strong>F1</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="<strong>Accuracy</strong>"><strong>Accuracy</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="<strong>F1</strong>"><strong>F1</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="<strong>Accuracy</strong>"><strong>Accuracy</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" scope="colgroup" id="<strong>Age</strong>"><strong>Age</strong></th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="**Age**  Category" class="gt_row gt_left">0-2</td>
+<td headers="**Age**  F1_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.8959757</td>
+<td headers="**Age**  Accuracy_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.9172888</td>
+<td headers="**Age**  F1_D" class="gt_row gt_right" style="background-color: #FFA07A;">NA</td>
+<td headers="**Age**  Accuracy_D" class="gt_row gt_right">0.5000000</td></tr>
+    <tr><td headers="**Age**  Category" class="gt_row gt_left">3-9</td>
+<td headers="**Age**  F1_F" class="gt_row gt_right">0.7176035</td>
+<td headers="**Age**  Accuracy_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.8772778</td>
+<td headers="**Age**  F1_D" class="gt_row gt_right" style="background-color: #FFA07A;">NA</td>
+<td headers="**Age**  Accuracy_D" class="gt_row gt_right">0.5000000</td></tr>
+    <tr><td headers="**Age**  Category" class="gt_row gt_left">10-19</td>
+<td headers="**Age**  F1_F" class="gt_row gt_right">0.5052498</td>
+<td headers="**Age**  Accuracy_F" class="gt_row gt_right">0.7211461</td>
+<td headers="**Age**  F1_D" class="gt_row gt_right" style="background-color: #FFA07A;">0.047860101</td>
+<td headers="**Age**  Accuracy_D" class="gt_row gt_right">0.5055825</td></tr>
+    <tr><td headers="**Age**  Category" class="gt_row gt_left">20-29</td>
+<td headers="**Age**  F1_F" class="gt_row gt_right">0.7332922</td>
+<td headers="**Age**  Accuracy_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.8050592</td>
+<td headers="**Age**  F1_D" class="gt_row gt_right">0.505432596</td>
+<td headers="**Age**  Accuracy_D" class="gt_row gt_right">0.6217793</td></tr>
+    <tr><td headers="**Age**  Category" class="gt_row gt_left">30-39</td>
+<td headers="**Age**  F1_F" class="gt_row gt_right" style="background-color: #FFA07A;">0.4670003</td>
+<td headers="**Age**  Accuracy_F" class="gt_row gt_right">0.6741504</td>
+<td headers="**Age**  F1_D" class="gt_row gt_right" style="background-color: #FFA07A;">0.378631811</td>
+<td headers="**Age**  Accuracy_D" class="gt_row gt_right">0.6275447</td></tr>
+    <tr><td headers="**Age**  Category" class="gt_row gt_left">40-49</td>
+<td headers="**Age**  F1_F" class="gt_row gt_right" style="background-color: #FFA07A;">0.3943970</td>
+<td headers="**Age**  Accuracy_F" class="gt_row gt_right">0.6786302</td>
+<td headers="**Age**  F1_D" class="gt_row gt_right" style="background-color: #FFA07A;">0.227627841</td>
+<td headers="**Age**  Accuracy_D" class="gt_row gt_right">0.5866155</td></tr>
+    <tr><td headers="**Age**  Category" class="gt_row gt_left">50-59</td>
+<td headers="**Age**  F1_F" class="gt_row gt_right" style="background-color: #FFA07A;">0.4633983</td>
+<td headers="**Age**  Accuracy_F" class="gt_row gt_right">0.7049843</td>
+<td headers="**Age**  F1_D" class="gt_row gt_right" style="background-color: #FFA07A;">0.080167306</td>
+<td headers="**Age**  Accuracy_D" class="gt_row gt_right">0.5137145</td></tr>
+    <tr><td headers="**Age**  Category" class="gt_row gt_left">60-69</td>
+<td headers="**Age**  F1_F" class="gt_row gt_right" style="background-color: #FFA07A;">0.3739425</td>
+<td headers="**Age**  Accuracy_F" class="gt_row gt_right">0.6708204</td>
+<td headers="**Age**  F1_D" class="gt_row gt_right" style="background-color: #FFA07A;">0.001612903</td>
+<td headers="**Age**  Accuracy_D" class="gt_row gt_right" style="background-color: #FFA07A;">0.4991769</td></tr>
+    <tr><td headers="**Age**  Category" class="gt_row gt_left">70-130</td>
+<td headers="**Age**  F1_F" class="gt_row gt_right">0.6270661</td>
+<td headers="**Age**  Accuracy_F" class="gt_row gt_right">0.7383514</td>
+<td headers="**Age**  F1_D" class="gt_row gt_right" style="background-color: #FFA07A;">NA</td>
+<td headers="**Age**  Accuracy_D" class="gt_row gt_right">0.5000000</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" scope="colgroup" id="<strong>Race</strong>"><strong>Race</strong></th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="**Race**  Category" class="gt_row gt_left">White</td>
+<td headers="**Race**  F1_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.8610399</td>
+<td headers="**Race**  Accuracy_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.8788455</td>
+<td headers="**Race**  F1_D" class="gt_row gt_right" style="background-color: #CAFF70;">0.809546093</td>
+<td headers="**Race**  Accuracy_D" class="gt_row gt_right" style="background-color: #CAFF70;">0.8365916</td></tr>
+    <tr><td headers="**Race**  Category" class="gt_row gt_left">Black</td>
+<td headers="**Race**  F1_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.8684858</td>
+<td headers="**Race**  Accuracy_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.8997692</td>
+<td headers="**Race**  F1_D" class="gt_row gt_right">0.796499445</td>
+<td headers="**Race**  Accuracy_D" class="gt_row gt_right" style="background-color: #CAFF70;">0.8462797</td></tr>
+    <tr><td headers="**Race**  Category" class="gt_row gt_left">Asian</td>
+<td headers="**Race**  F1_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.8948932</td>
+<td headers="**Race**  Accuracy_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.9338128</td>
+<td headers="**Race**  F1_D" class="gt_row gt_right">0.703897491</td>
+<td headers="**Race**  Accuracy_D" class="gt_row gt_right" style="background-color: #CAFF70;">0.9005150</td></tr>
+    <tr><td headers="**Race**  Category" class="gt_row gt_left">Indian</td>
+<td headers="**Race**  F1_F" class="gt_row gt_right">0.6402458</td>
+<td headers="**Race**  Accuracy_F" class="gt_row gt_right">0.7488102</td>
+<td headers="**Race**  F1_D" class="gt_row gt_right" style="background-color: #FFA07A;">0.409248134</td>
+<td headers="**Race**  Accuracy_D" class="gt_row gt_right">0.6310597</td></tr>
+    <tr><td headers="**Race**  Category" class="gt_row gt_left">Other</td>
+<td headers="**Race**  F1_F" class="gt_row gt_right" style="background-color: #FFA07A;">0.3087473</td>
+<td headers="**Race**  Accuracy_F" class="gt_row gt_right">0.7105889</td>
+<td headers="**Race**  F1_D" class="gt_row gt_right" style="background-color: #FFA07A;">0.238902067</td>
+<td headers="**Race**  Accuracy_D" class="gt_row gt_right">0.6283106</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" scope="colgroup" id="<strong>Gender</strong>"><strong>Gender</strong></th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="**Gender**  Category" class="gt_row gt_left"></td>
+<td headers="**Gender**  F1_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.9429153</td>
+<td headers="**Gender**  Accuracy_F" class="gt_row gt_right" style="background-color: #CAFF70;">0.9453080</td>
+<td headers="**Gender**  F1_D" class="gt_row gt_right" style="background-color: #CAFF70;">0.819770248</td>
+<td headers="**Gender**  Accuracy_D" class="gt_row gt_right" style="background-color: #CAFF70;">0.8402892</td></tr>
+  </tbody>
+  
+  
 </table>
 </div>
-
-
+</div>
 </div>
 </div>
 </section>

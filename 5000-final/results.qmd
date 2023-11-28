@@ -2,15 +2,17 @@
 
 ```{r setup, include=FALSE}
 #| include: false
-
+# BJ
 library(tidyverse)
 library(caret)
 library(kableExtra)
+library(gt)
 ```
 
 <!-- BJ !-->
 
 ```{r load_data, include=FALSE}
+# CK, BJ
 # master dataframe url
 output_name <- 'https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv'
 
@@ -69,6 +71,7 @@ source_df <- output_df %>%
 #|   - Subcap
 #|   - Subcap 2
 #| layout-ncol: 2
+# BJ
 
 f <- 1:10
 ## Tabbed example output
@@ -84,6 +87,8 @@ ggplot() +
 ```{r ex1}
 #| label: fig-sec4-ex1
 #| fig-cap: A caption for generated figure
+# BJ
+
 # Example code that's running
 f <- 1:10
 f
@@ -114,6 +119,7 @@ The two models, DeepFace and FairFace, were run on the dataset described previou
 #|   - Race predictions
 #| layout-ncol: 2
 #| layout-nrow: 2
+# BJ
 
 plot_category = function(src, correct, label) {
   num_cats = length(levels(output_df[[src]]))
@@ -140,15 +146,16 @@ plot_category("src_race", "correct_race", "Race")
 ## Model Performance
 
 ```{r perfomance_table}
+# BJ 
 
 get_f1_acc = function(df) {
   age = confusionMatrix(df$pred_age_grp, df$src_age_grp, mode="everything")[["byClass"]]
   race = confusionMatrix(df$pred_race, df$src_race, mode="everything")[["byClass"]]
   gender = confusionMatrix(df$pred_gender, df$src_gender, mode="everything")[["byClass"]]
   
-  names = c(age[, "F1"] %>% names() %>% str_replace("Class", "Age"), 
-            race[, "F1"] %>% names() %>% str_replace("Class", "Race"), 
-            "Gender")
+  names = c(age[, "F1"] %>% names() %>% str_replace("Class: ", ""), 
+            race[, "F1"] %>% names() %>% str_replace("Class: ", ""), 
+            "")
   f1 = c(age[, "F1"], race[, "F1"], gender["F1"])
   acc = c(age[, "Balanced Accuracy"], race[, "Balanced Accuracy"], gender["Balanced Accuracy"])
   
@@ -162,23 +169,30 @@ perf_table = full_join(get_f1_acc(fairface_df),
                        by="Category")
 ```
 
-For each category and model, we calculate the F1 score and accuracy, as described in section 3. The results are summarized in @tbl-model-perf.
+For each category and model, we calculate the F1 score and accuracy, as described in section 3. The results are summarized in @tbl-model-perf. Cell values are colored according to the strength of the metric.
 
 ```{r tbl-model-perf}
 #| label: tbl-model-perf
 #| tbl-cap: Table of F1 score and accuracy, by each category evaluated by the models
-#| output: asis
+#output: asis
+# BJ 
 
 perf_table %>%
-  # TODO: Try to color cells based on value, doesn't work right now
-  # mutate_at(2:5, ~ cell_spec(., background = case_when(. > 0.8 ~ "green",
-  #                                                   . <= 0.5 ~ "orangered",
-  #                                                   .default = "white"))) %>%
-  kbl(col.names = c("Category", "F1 Score", "Accuracy", "F1 Score", "Accuracy")) %>% 
-  kable_styling(full_width = T) %>%
-  column_spec(1, bold = T) %>%
-  add_header_above(c(" " = 1, "FairFace" = 2, "DeepFace" = 2)) %>%
-  pack_rows(index = c("Age" = 9, "Race" = 5, "Gender" = 1))
+  gt() %>%
+  tab_spanner(label = md("**FairFace**"), columns = c(2, 3)) %>% 
+  tab_spanner(label = md("**DeepFace**"), columns = c(4, 5)) %>%
+  tab_row_group(label = md("**Gender**"), rows = c(15)) %>%
+  tab_row_group(label = md("**Race**"), rows = 10:14) %>%
+  tab_row_group(label = md("**Age**"), rows = 1:9) %>%
+  cols_label(starts_with("F1") ~ md("**F1**"), starts_with("Accuracy") ~ md("**Accuracy**")) %>%
+  tab_options(table.width = pct(100)) %>%
+  # Color cells based on values
+  tab_style_body(columns = where(is.numeric), 
+                 style = cell_fill(color = "darkolivegreen1"),
+                 fn = function(x) x >= 0.8) %>%
+  tab_style_body(columns = where(is.numeric), 
+                 style = cell_fill(color = "lightsalmon"),
+                 fn = function(x) x < 0.5 || is.na(x))
 
 ```
 
