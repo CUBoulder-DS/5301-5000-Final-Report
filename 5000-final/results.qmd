@@ -264,7 +264,107 @@ p_value_results %>%
   column_spec(1, bold = T)
 ```
 
-<!-- PC? !-->
+
+```{r PC_subgroup_pval_acc_f1}
+
+#subgroups 
+  #control for source? pred? race, then breakdown F1/accuracy for age and gender
+  #Carl's tables - same story
+  #do a left-join between on main group (race) and respective sub-group
+  #merge into and present single table
+  #provide color-coding for areas of issue:
+    # p-value: where we're below 1-.997 (3-sigma significance level)
+    # F1 and Accuracy - ?
+
+
+
+rgrps <- as.character(unique(source_df$src_race))
+#modified version of Bav's function - allows to first filter by racial group
+#then proceed to compute accuracy for age and gender in each category
+f1_acc_subset <- function(df,rgrp){
+  tdf <- df %>% filter(as.character(src_race)==as.character(rgrp))
+  age <- confusionMatrix(tdf$pred_age_grp, tdf$src_age_grp, mode="everything")[["byClass"]]
+  #added additional steps for male and female so we have rows for each in the results.
+  gen_m <- confusionMatrix(tdf$pred_gender, tdf$src_gender, mode="everything",positive='Male')[["byClass"]]
+  gen_f <- confusionMatrix(tdf$pred_gender, tdf$src_gender, mode="everything",positive='Female')[["byClass"]]
+  g_names <- c("Class: Male","Class: Female")
+  gender<- cbind(gen_m,gen_f)
+  colnames(gender) <- g_names
+  gender <- t(gender)
+  #end additional steps
+  f1 <- c(age[,'F1'],gender[,'F1'])
+  acc <- c(age[, "Balanced Accuracy"],gender[, "Balanced Accuracy"])
+  names <- c(
+    age[, "F1"] %>% names() %>% str_replace("Class: ",""),
+    gender[, "F1"] %>% names() %>% str_replace("Class: ","")
+  )
+  res <- tibble(Category = names,F1=f1, Accuracy=acc, Race=rgrp)
+  res %>% mutate(Race=rgrp)#,Key=str_c(rgrp,"-",Category)) #use to inner-join with hypothesis test results.
+}
+
+#helper function to merge results from sapply
+table_join <- function(ff,df,rgrp){
+  full_join(as_tibble(ff[, rgrp]),as_tibble(df[,rgrp]),suffix=c("_f","_d"),by=c('Category','Race'))
+}
+
+#use sapply to get a list of tibbles (one for each race) from fairface and deepface
+FairFace <-sapply(rgrps,f1_acc_subset,df=fairface_df)
+DeepFace <-sapply(rgrps,f1_acc_subset,df=deepface_df)
+
+#take the results and extract the sub-tibbles from fairface and deepface, combine into single sub-tibble in one list
+full <- sapply(rgrps,table_join,ff=FairFace,df=DeepFace)
+
+#create a master table to which we can aggregate all results
+result_table <- tibble(Race=character(),Category=character(),F1_f=numeric(),Accuracy_f=numeric(),F1_d=numeric(),Accuracy_d=numeric())
+
+#build the result table
+for (g in rgrps){
+  x <- as_tibble(full[,g]) %>% select(Race,Category,F1_f,Accuracy_f,F1_d,Accuracy_d)
+  result_table<-union(result_table,x)
+}
+
+#extract the data from Carl's calculations race by age
+#transform to have similar columns to the result table for an inner-join
+p_race_age <- p_value_results %>%
+  filter(test_prop=='age_bins',test_gender=='All',test_age!='All',test_race!='All') %>% 
+  select(
+    test_race,test_age,fairface_p_value,deepface_p_value,
+    fairface_n,deepface_n,fairface_prop,deepface_prop,source_prop) %>%
+  rename(
+    Race=test_race,Category=test_age,
+    f_p_value=fairface_p_value,
+    d_p_value=deepface_p_value
+  )
+
+#extract the data from Carl's calculations race by gender
+#transform to have similar columns to the result table for an inner-join
+p_race_gender <- p_value_results %>%
+  filter(test_prop=='genders',test_age=='All',test_gender!='All',test_race!="All") %>% 
+  #select(test_race,test_gender,fairface_p_value,deepface_p_value) %>%
+  select(
+    test_race,test_gender,fairface_p_value,deepface_p_value,
+    fairface_n,deepface_n,fairface_prop,deepface_prop,source_prop) %>%
+  rename(
+    Race=test_race,Category=test_gender,
+    f_p_value=fairface_p_value,
+    d_p_value=deepface_p_value
+  )
+
+#union the two sets of results from Carl's work to a single tibble
+hyp_test <- union(p_race_age,p_race_gender)
+
+#inner-join Carl and Bav's results
+combined_results <- result_table%>%inner_join(hyp_test,by=c('Race'='Race','Category'='Category'))
+```
+
+### Updated Table Version with Data from Carl, Bav
+```{r}
+combined_results%>%
+  select(Race:d_p_value)%>% knitr::kable()
+  
+```
+
+<!-- PC? - will edit / remove below items. Want to merge Carl and Bav's work !-->
 
 ```{r, include=FALSE}
 #pull in the master data frame for use
@@ -286,158 +386,158 @@ master_src <- master_df %>% filter(!duplicated(file)) %>% select(file,src_age,sr
 
 #some example functions for getting proportions
 
-get_proportion <- function(df,evaluate_column,evaluate_value){
-  x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value)%>% count() %>% unlist() %>% unname()
-  if (x==0){
-    0
-  } else {
-    result <- df %>% group_by(!!as.symbol(evaluate_column)) %>%
-      summarise(n=n())%>%
-      mutate(prop=n/sum(n))%>%
-      filter(!!as.symbol(evaluate_column)==evaluate_value)%>%
-      select(prop)%>%unlist()%>% unname()
-    print(result)
-    # if (!is.na(result)) {
-    #   result
-    # } else {
-    #   0
-    # }
-  }
-}
+# get_proportion <- function(df,evaluate_column,evaluate_value){
+#   x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value)%>% count() %>% unlist() %>% unname()
+#   if (x==0){
+#     0
+#   } else {
+#     result <- df %>% group_by(!!as.symbol(evaluate_column)) %>%
+#       summarise(n=n())%>%
+#       mutate(prop=n/sum(n))%>%
+#       filter(!!as.symbol(evaluate_column)==evaluate_value)%>%
+#       select(prop)%>%unlist()%>% unname()
+#     print(result)
+#     # if (!is.na(result)) {
+#     #   result
+#     # } else {
+#     #   0
+#     # }
+#   }
+# }
 
-#fiters down to a specific group, first, then 
-get_proportion_subset <- function(df,filter_column,filter_value,evaluate_column,evaluate_value){
-  x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value)%>% count() %>% unlist() %>% unname()
-  if (x==0){
-    0
-  } else {
-    result <- df %>% filter(!!as.symbol(filter_column) == filter_value) %>%
-      group_by(!!as.symbol(evaluate_column)) %>%
-      summarise(n=n()) %>%
-      mutate(prop = n/sum(n)) %>%
-      filter(!!as.symbol(evaluate_column)==evaluate_value) %>%
-      select(prop) %>% unlist() %>% unname()
-    # if (!is.na(result)) {
-    #   result
-    # } else {
-    #   0
-    # }
-  }
-}
+# #fiters down to a specific group, first, then 
+# get_proportion_subset <- function(df,filter_column,filter_value,evaluate_column,evaluate_value){
+#   x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value)%>% count() %>% unlist() %>% unname()
+#   if (x==0){
+#     0
+#   } else {
+#     result <- df %>% filter(!!as.symbol(filter_column) == filter_value) %>%
+#       group_by(!!as.symbol(evaluate_column)) %>%
+#       summarise(n=n()) %>%
+#       mutate(prop = n/sum(n)) %>%
+#       filter(!!as.symbol(evaluate_column)==evaluate_value) %>%
+#       select(prop) %>% unlist() %>% unname()
+#     # if (!is.na(result)) {
+#     #   result
+#     # } else {
+#     #   0
+#     # }
+#   }
+# }
 
-get_counts <- function(df,evaluate_column,evaluate_value){
-  x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value)%>% count() %>% unlist() %>% unname()
-  if (x==0){
-    0 
-  } else {
-    df %>% group_by(!!as.symbol(evaluate_column)) %>%
-      summarise(n=n())%>%
-      filter(!!as.symbol(evaluate_column)==evaluate_value) %>%
-      select(n)%>%unlist()%>%unname()
-  }
-}
+# get_counts <- function(df,evaluate_column,evaluate_value){
+#   x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value)%>% count() %>% unlist() %>% unname()
+#   if (x==0){
+#     0 
+#   } else {
+#     df %>% group_by(!!as.symbol(evaluate_column)) %>%
+#       summarise(n=n())%>%
+#       filter(!!as.symbol(evaluate_column)==evaluate_value) %>%
+#       select(n)%>%unlist()%>%unname()
+#   }
+# }
 
-r_groups <- c("Asian","Black","Indian","Other","White")
-a_groups <- c("0-2","3-9","10-19","20-29","30-39","40-49","50-59","60-69","70-130")
-g_groups <- c("Male","Female")
+# r_groups <- c("Asian","Black","Indian","Other","White")
+# a_groups <- c("0-2","3-9","10-19","20-29","30-39","40-49","50-59","60-69","70-130")
+# g_groups <- c("Male","Female")
 
-#examples - 
-#give the proportion of black people in the source data
-#   get_proportion(master_src,'src_race','Black')
-#filters on black being the predicted race, then gets the proportion of predicted gender for females.
-#   get_proportion_subset(FF_results,'pred_race','Black','pred_gender','Female')
+# #examples - 
+# #give the proportion of black people in the source data
+# #   get_proportion(master_src,'src_race','Black')
+# #filters on black being the predicted race, then gets the proportion of predicted gender for females.
+# #   get_proportion_subset(FF_results,'pred_race','Black','pred_gender','Female')
 
-#get all the source data proportions into arrays (referenceable by group name)
-source_race_props <- sapply(r_groups,get_proportion,df=master_src,evaluate_column="src_race")
-source_age_props <- sapply(a_groups,get_proportion,df=master_src,evaluate_column="src_age_grp")
-source_gen_props <- sapply(g_groups,get_proportion,df=master_src,evaluate_column="src_gender")
-source_race_counts <- sapply(r_groups,get_counts,df=master_src,evaluate_column="src_race")
-source_age_counts <- sapply(a_groups,get_counts,df=master_src,evaluate_column="src_age_grp")
-source_gen_counts <- sapply(g_groups,get_counts,df=master_src,evaluate_column="src_gender")
+# #get all the source data proportions into arrays (referenceable by group name)
+# source_race_props <- sapply(r_groups,get_proportion,df=master_src,evaluate_column="src_race")
+# source_age_props <- sapply(a_groups,get_proportion,df=master_src,evaluate_column="src_age_grp")
+# source_gen_props <- sapply(g_groups,get_proportion,df=master_src,evaluate_column="src_gender")
+# source_race_counts <- sapply(r_groups,get_counts,df=master_src,evaluate_column="src_race")
+# source_age_counts <- sapply(a_groups,get_counts,df=master_src,evaluate_column="src_age_grp")
+# source_gen_counts <- sapply(g_groups,get_counts,df=master_src,evaluate_column="src_gender")
 
-#deepface prediction proportions
-DF_pred_race_props <- sapply(r_groups,get_proportion,df=DF_results,evaluate_column="pred_race")
-DF_pred_age_props <- sapply(a_groups,get_proportion,df=DF_results,evaluate_column="pred_age_grp")
-DF_pred_gen_props <-sapply(g_groups,get_proportion,df=DF_results,evaluate_column="pred_gender")
-DF_pred_race_counts <- sapply(r_groups,get_counts,df=DF_results,evaluate_column="pred_race")
-DF_pred_age_counts <- sapply(a_groups,get_counts,df=DF_results,evaluate_column="pred_age_grp")
-DF_pred_gen_counts <- sapply(g_groups,get_counts,df=DF_results,evaluate_column="pred_gender")
+# #deepface prediction proportions
+# DF_pred_race_props <- sapply(r_groups,get_proportion,df=DF_results,evaluate_column="pred_race")
+# DF_pred_age_props <- sapply(a_groups,get_proportion,df=DF_results,evaluate_column="pred_age_grp")
+# DF_pred_gen_props <-sapply(g_groups,get_proportion,df=DF_results,evaluate_column="pred_gender")
+# DF_pred_race_counts <- sapply(r_groups,get_counts,df=DF_results,evaluate_column="pred_race")
+# DF_pred_age_counts <- sapply(a_groups,get_counts,df=DF_results,evaluate_column="pred_age_grp")
+# DF_pred_gen_counts <- sapply(g_groups,get_counts,df=DF_results,evaluate_column="pred_gender")
 
-#fairface prediction proportions
-FF_pred_race_props <- sapply(r_groups,get_proportion,df=FF_results,evaluate_column="pred_race")
-FF_pred_age_props <-sapply(a_groups,get_proportion,df=FF_results,evaluate_column="pred_age_grp")
-FF_pred_gen_props <-sapply(g_groups,get_proportion,df=FF_results,evaluate_column="pred_gender")
-FF_pred_race_counts <- sapply(r_groups,get_counts,df=FF_results,evaluate_column="pred_race")
-FF_pred_age_counts <- sapply(a_groups,get_counts,df=FF_results,evaluate_column="pred_age_grp")
-FF_pred_gen_counts <- sapply(g_groups,get_counts,df=FF_results,evaluate_column="pred_gender")
+# #fairface prediction proportions
+# FF_pred_race_props <- sapply(r_groups,get_proportion,df=FF_results,evaluate_column="pred_race")
+# FF_pred_age_props <-sapply(a_groups,get_proportion,df=FF_results,evaluate_column="pred_age_grp")
+# FF_pred_gen_props <-sapply(g_groups,get_proportion,df=FF_results,evaluate_column="pred_gender")
+# FF_pred_race_counts <- sapply(r_groups,get_counts,df=FF_results,evaluate_column="pred_race")
+# FF_pred_age_counts <- sapply(a_groups,get_counts,df=FF_results,evaluate_column="pred_age_grp")
+# FF_pred_gen_counts <- sapply(g_groups,get_counts,df=FF_results,evaluate_column="pred_gender")
 
-n_DF <- count(DF_results%>%filter(!is.na(pred_gender))) %>% unlist() %>% unname()
+# n_DF <- count(DF_results%>%filter(!is.na(pred_gender))) %>% unlist() %>% unname()
 
-n_FF <- count(FF_results %>% filter(!is.na(pred_gender))) %>% unlist() %>% unname()
+# n_FF <- count(FF_results %>% filter(!is.na(pred_gender))) %>% unlist() %>% unname()
 
-prop_p_values <- function(group,src_prop,pred_prop,pred_n){
+# prop_p_values <- function(group,src_prop,pred_prop,pred_n){
 
-  num <- (sqrt(pred_n[group])*(src_prop[group]-pred_prop[group]))
-  den <- (sqrt(pred_prop[group]*(1-pred_prop[group])))
-  test_stat <- abs(num/den)
-  pnorm(-test_stat) + (1 - pnorm(test_stat))
-}
+#   num <- (sqrt(pred_n[group])*(src_prop[group]-pred_prop[group]))
+#   den <- (sqrt(pred_prop[group]*(1-pred_prop[group])))
+#   test_stat <- abs(num/den)
+#   pnorm(-test_stat) + (1 - pnorm(test_stat))
+# }
 
-DF_race_p_values <- sapply(
-  r_groups,
-  prop_p_values,
-  src_prop=source_race_props,
-  pred_prop=DF_pred_race_props,
-  pred_n=DF_pred_race_counts
-)
-names(DF_race_p_values)<- str_c("p.",r_groups)
+# DF_race_p_values <- sapply(
+#   r_groups,
+#   prop_p_values,
+#   src_prop=source_race_props,
+#   pred_prop=DF_pred_race_props,
+#   pred_n=DF_pred_race_counts
+# )
+# names(DF_race_p_values)<- str_c("p.",r_groups)
 
-FF_race_p_values <- sapply(
-  r_groups,
-  prop_p_values,
-  src_prop=source_race_props,
-  pred_prop=FF_pred_race_props,
-  pred_n=FF_pred_race_counts
-)
-names(FF_race_p_values)<- str_c("p.",r_groups)
+# FF_race_p_values <- sapply(
+#   r_groups,
+#   prop_p_values,
+#   src_prop=source_race_props,
+#   pred_prop=FF_pred_race_props,
+#   pred_n=FF_pred_race_counts
+# )
+# names(FF_race_p_values)<- str_c("p.",r_groups)
 
-DF_gen_p_values <- sapply(
-  g_groups,
-  prop_p_values,
-  src_prop=source_gen_props,
-  pred_prop=DF_pred_gen_props,
-  pred_n=DF_pred_gen_counts
-)
-names(DF_gen_p_values)<- str_c("p.",g_groups)
+# DF_gen_p_values <- sapply(
+#   g_groups,
+#   prop_p_values,
+#   src_prop=source_gen_props,
+#   pred_prop=DF_pred_gen_props,
+#   pred_n=DF_pred_gen_counts
+# )
+# names(DF_gen_p_values)<- str_c("p.",g_groups)
 
-FF_gen_p_values <- sapply(
-  g_groups,
-  prop_p_values,
-  src_prop=source_gen_props,
-  pred_prop=FF_pred_gen_props,
-  pred_n=FF_pred_gen_counts
-)
-names(FF_gen_p_values)<- str_c("p.",g_groups)
+# FF_gen_p_values <- sapply(
+#   g_groups,
+#   prop_p_values,
+#   src_prop=source_gen_props,
+#   pred_prop=FF_pred_gen_props,
+#   pred_n=FF_pred_gen_counts
+# )
+# names(FF_gen_p_values)<- str_c("p.",g_groups)
 
-FF_age_p_values <- sapply(
-  a_groups,
-  prop_p_values,
-  src_prop=source_age_props,
-  pred_prop=FF_pred_age_props,
-  pred_n=FF_pred_age_counts
-)
-names(FF_age_p_values)<- str_c("p.",a_groups)
+# FF_age_p_values <- sapply(
+#   a_groups,
+#   prop_p_values,
+#   src_prop=source_age_props,
+#   pred_prop=FF_pred_age_props,
+#   pred_n=FF_pred_age_counts
+# )
+# names(FF_age_p_values)<- str_c("p.",a_groups)
 
-DF_age_p_values <- sapply(
-  a_groups,
-  prop_p_values,
-  src_prop=source_age_props,
-  pred_prop=DF_pred_age_props,
-  pred_n=DF_pred_age_counts
-)
-names(DF_age_p_values)<- str_c("p.",a_groups)
+# DF_age_p_values <- sapply(
+#   a_groups,
+#   prop_p_values,
+#   src_prop=source_age_props,
+#   pred_prop=DF_pred_age_props,
+#   pred_n=DF_pred_age_counts
+# )
+# names(DF_age_p_values)<- str_c("p.",a_groups)
 
-str_c("p.",a_groups)
+# str_c("p.",a_groups)
 
 #DF_race_p_values <- sapply(r_groups, prop_p_values, src_prop=source_race_props, pred_prop=DF_pred_race_props,pred_n=n_DF)
 #FF_race_p_values <- sapply(r_groups, prop_p_values, src_prop=source_race_props, pred_prop=FF_pred_race_props,pred_n=n_FF)
@@ -487,15 +587,15 @@ str_c("p.",a_groups)
 ```
 
 ```{r}
-knitr::kable(FF_gen_p_values)
+# knitr::kable(FF_gen_p_values)
 
-knitr::kable(DF_gen_p_values)
+# knitr::kable(DF_gen_p_values)
 ```
 
 ```{r}
-knitr::kable(FF_race_p_values)
+# knitr::kable(FF_race_p_values)
 
-knitr::kable(DF_race_p_values)
+# knitr::kable(DF_race_p_values)
 ```
 
 $$
@@ -503,15 +603,15 @@ $$
 $$
 
 ```{r}
-source_gen_props['Female']
+# source_gen_props['Female']
 
-source_race_props['Asian']
+# source_race_props['Asian']
 
-source_race_props
-FF_pred_race_props
-DF_pred_race_props
+# source_race_props
+# FF_pred_race_props
+# DF_pred_race_props
 
-source_gen_props
-FF_pred_gen_props
-DF_pred_gen_props
+# source_gen_props
+# FF_pred_gen_props
+# DF_pred_gen_props
 ```
