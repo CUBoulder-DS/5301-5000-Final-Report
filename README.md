@@ -42,3 +42,144 @@ As Github workflows (`.github/workflows/`), there are 2 separate scripts:
    2. `git commit -am "YOUR MESSAGE HERE"`
    3. `git push`
 5. OR. Repeat steps 2-4 locally if you have the repo checked out and know how to, same result of commiting+pushing from deepnote itself.
+
+
+## Info on Files in /data
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 63%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">filenames</th>
+<th style="text-align: left;">purpose</th>
+<th style="text-align: left;">recommendations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Croped_ff_np.csv</td>
+<td style="text-align: left;">Permutation evaluation (older version) for fairface, no preprocessing on cropped images. Updated this file to look at the same files as the uncropped dataset.</td>
+<td style="text-align: left;">Remove from github data folder.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MasterDataFrame.csv</td>
+<td style="text-align: left;">Final master data file containing all input and output files</td>
+<td style="text-align: left;">Keep as-is with no changes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">crop_df_np.csv</td>
+<td style="text-align: left;">Permutation evaluation for DeepFace, cropped images, no pre-processing</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_c_np.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">crop_df_p_mtcnn.csv</td>
+<td style="text-align: left;">Permutation evaluation for DeepFace, cropped images, preprocessed with MTCNN backend.</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_c_p_mtcnn.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">crop_df_p_opencv.csv</td>
+<td style="text-align: left;">Permutation evaluation for DeepFace, cropped images, preprocessed with OpenCV backend.</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_c_p_opencv.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cropped_UTK.csv</td>
+<td style="text-align: left;">Permutation evaluation (older version), list of cropped files to perform evaluation.</td>
+<td style="text-align: left;">Remove from github data folder</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cropped_UTK_dataset.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), list of cropped files to perform evaluation.</td>
+<td style="text-align: left;">Retain with no changes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cropped_ff_p.csv</td>
+<td style="text-align: left;">Permutation evaluation (older version), used older version of cropped images dataset.</td>
+<td style="text-align: left;">Remove from github data folder.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">joined_permutations.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), joined all permutation outputs from DeepFace and FairFace to a single file</td>
+<td style="text-align: left;">Retain with no changes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">new_ff_c_np.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for cropped images with no preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_FF_c_np.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">new_ff_c_p.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for cropped images with dlib preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_FF_c_p.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">new_ff_uc_np.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for uncropped images with no preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_FF_uc_np.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">new_ff_uc_p.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for uncropped images with dlib preprocessing.</td>
+<td style="text-align: left;">Retain; rename to PERM_FF_uc_p.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">non_normalized_DeepFace_uncropped_DF_all.csv</td>
+<td style="text-align: left;">Final dataset of DeepFace Outputs (non-normalized)</td>
+<td style="text-align: left;">Retain; rename to Master_DF_non_normalized.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">non_normalized_FairFace_uncropped_FF_all.csv</td>
+<td style="text-align: left;">Final dataset of FairFace Outputs (non-normalized)</td>
+<td style="text-align: left;">Retain; rename to Master_FF_non_normalized.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uncropped_DF_all.csv</td>
+<td style="text-align: left;">Final normalized output for DeepFace - used to build MasterDataFrame.csv</td>
+<td style="text-align: left;">Retain with no changes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">uncropped_FF_all.csv</td>
+<td style="text-align: left;">Final normalized output for FairFace - used to build MasterDataFrame.csv</td>
+<td style="text-align: left;">Retain with no changes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uncropped_UTK.csv</td>
+<td style="text-align: left;">Permutation evaluation (older version) - source data file for iteration script</td>
+<td style="text-align: left;">Remove from github data folder.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">uncropped_UTK_dataset.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version) - source data file for uncropped images in iteration script</td>
+<td style="text-align: left;">Retain with no changes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uncropped_df_np.csv</td>
+<td style="text-align: left;">Permutation evaluation (newest version) - DeepFace uncropped images with no preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_uc_np.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">uncropped_df_p_mtcnn.csv</td>
+<td style="text-align: left;">Permutation Evaluation (newest version) - DeepFace uncropped images with mtcnn preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_uc_p_mtcnn.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uncropped_df_p_opencv.csv</td>
+<td style="text-align: left;">Permutation Evaluation (newest version) - DeepFace uncropped images with opencv preprocessing</td>
+<td style="text-align: left;">Retain; rename to PERM_DF_uc_p_opencv.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">uncropped_ff_np.csv</td>
+<td style="text-align: left;">Permutation Evaluation (older version) - FairFace uncropped images with no preprocessing</td>
+<td style="text-align: left;">Remove from github data folder.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uncropped_ff_p.csv</td>
+<td style="text-align: left;">Permutation Evaluation (older version) - FairFace uncropped images with dlib preprocessing.</td>
+<td style="text-align: left;">Remove from github data folder.</td>
+</tr>
+</tbody>
+</table>
+</div>
