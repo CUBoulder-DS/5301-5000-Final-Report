@@ -364,6 +364,35 @@ combined_results%>%
   
 ```
 
+### Statistical Power
+
+
+$$
+\beta = P\bigg(\bigg|\frac{\sqrt{n}\cdot\hat{p}-p_a}{\sqrt{p_a(1-p_a)}}\bigg|\geq\frac{\sqrt{n}\cdot p_0-p_a}{\sqrt{p_0(1-p_0)}}\bigg)
+$$
+
+Our selected level of significance is 99.7% (3-sigma).  Type-II error is denoted by $\beta$ above, and Power will be $1-\beta$  
+
+With $p_0$ being our *assumed* population proportion (from the source dataset and what we used in our tests), $p_a$ being the *actual* population proportion (from one or more of the below methods), $n$ being the number of predicted members of a racial group (i.e. "Indian"), 
+
+* For Gender - assume that sex at birth is a bernoulli trial, over time, the proportion for both genders should be 0.5
+
+* For age groups - assume that age has a true normal distribution.  Each race may have different means and standard deviations for their distribution of age, but still adhere to a normal distribution.  The "population" proportions may be a bit more challenging to calculate, but under this framework, we may be able to get there.
+
+  * May be able to get via bootstrapping the source dataset, average age by race - I think that's what we did in our last project?
+
+  * Could look at external data? May not have time to look through everything.
+
+
+```{r PowerCalcs}
+
+TypeII <- function(p0,pa,n){
+  z <- (sqrt(n)*(p0-pa))/(sqrt(p0*(1-p0)))
+}
+
+```
+
+
 <!-- PC? - will edit / remove below items. Want to merge Carl and Bav's work !-->
 
 ```{r, include=FALSE}
