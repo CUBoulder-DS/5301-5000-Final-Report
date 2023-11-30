@@ -49,9 +49,21 @@ This section should describe the data you'll be using. Answer **at least** **all
 
 -   How was the data collected?
 
+The dataset used in this research is a publicly non-commercial available dataset on Github called "UTKFace". The data was collected by the The University of Tennessee, Knoxville. It is specified on its Github page that the images were gathered from the internet. They are likely to be obtained through technique such as web scrapping. The dataset contains more than 20,000 images, representing a highly diversed demographic. However, face images are vary in pose, facial expression, lighting, and resolution.
+
 -   What are the sources and influences of bias in the data?
 
+The distribution of each demographic groups are not normally distributed. By plotting a distribution of each demographic group, it is evident that the dataset contains an uneven high volume of older White men. While a smaller porportion of female among ...(input race)... is present.
+
 -   What are the important features (=columns) that you are using in your analysis? What do they mean?
+
+There are three features in the dataset which are essential to our analysis. They are Race, Gender, and Age.
+
+Race is categorized into five groups; Asian, Black, Indian, White, and Other. It should be noted by Asian group in this dataset mostly refers to people from East and Southeast Asia. Whereas, Other includes ethnicities such as Hispanic, Latino, and Middle Eastern.
+
+Gender is divided into two groups, either male or female.
+
+Lastly, Age is represented with an integer. This dataset contains people of all ages ranging from 0 to 116.
 
 Feel free to add anything else that you think is necessary for understanding the paper and the context of the problem.
 :::
@@ -149,6 +161,12 @@ Motivation - has there been progress against bias?
 
 Reference Articles from Ethics Class - Joy B's work, etc.  Lots of disparity back in 2018, how much of that still exists with free models?
 
+In 2018, Joy Buolamwini, a PhD candinate at MIT Media Lab, published a thesis on gender and racial biases in facial recognition in algorithms. In her paper, she tested facial recongition softwares from multiple large technology companies such as Microsoft, IBM, and Amazom on its effectiveness for different demographic groups. From this research, it is concluded that most AI algorithms offer a substantially less accurate prediction for female and people with dark skin color.
+
+(Add link to the story)
+
+The primary motivation behind this research is to determine the degree in which bias is still present in modern facial recognition models. Therefore, we select a dataset which comprise of face images with high diversity in regards to race.
+
 ## Selected Models (LN DV)
 
 Lorem ipsum 
@@ -157,9 +175,72 @@ Lorem ipsum
 
 Motivation as to how / why we came across this
 
+Developed by researchers at University of California, Los Angeles, FairFace was specifically designed to mitigate gender and racial biases. The model was trained on 100K+ face images of people of various ethnicities with normal distribution (equal stratification) across all groups. Beside facial recognition model, FairFace also provided the dataset which it was trained on. The dataset is highly popular among
+
+We came across this model when we were searching for an
+
 ### DeepFace
 
 Motivation as to how / why we came across this
 
+DeepFace is a lightweight open-source model developed and used by Meta (Facebook). Since the model is used by one of the largest social media company, it is widely known among developers. Therefore, its popularity prompts us to evaluate its performance. It should be noted that this model of DeepFace is a free open-source version. It is highly likely that this version is less advanced than what Meta is actually using. Thus, we should not view the result of this model as a representative of Meta's algorithm.
 
 ### Permutation Analysis Information
+
+```{r}
+# Load required libraries
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(knitr))
+suppressPackageStartupMessages(library(kableExtra))
+
+# Read the CSV file
+permu_data <- read.csv("../data/joined_permutations.csv")
+
+# Create match columns
+permu_data$match_age_grp <- permu_data$src_age_grp == permu_data$pred_age_grp
+permu_data$match_gender <- permu_data$src_gender == permu_data$pred_gender
+permu_data$match_race <- permu_data$src_race == permu_data$pred_race
+permu_data$match_all <- permu_data$match_race & permu_data$match_age_grp & permu_data$match_gender
+
+# Suppress all messages
+suppressMessages({
+  # Create permu_pivot
+  permu_pivot <- permu_data %>%
+    group_by(pred_model) %>%
+    summarise(match_all = sum(match_all),
+              match_age_grp = sum(match_age_grp),
+              match_gender = sum(match_gender),
+              match_race = sum(match_race))
+
+  # Create setting_pivot
+  setting_pivot <- permu_data %>%
+    group_by(pred_model, detection_enabled, detection_model, image_type) %>%
+    summarise(match_all = sum(match_all),
+              match_age_grp = sum(match_age_grp),
+              match_gender = sum(match_gender),
+              match_race = sum(match_race))
+
+  # Create setting_count
+  setting_count <- permu_data %>%
+    group_by(pred_model, detection_enabled, detection_model, image_type) %>%
+    summarise(setting_count = n())
+
+  # Merge setting_pivot and setting_count
+  setting_merge <- merge(setting_pivot, setting_count, by = c("pred_model", "detection_enabled", "detection_model", "image_type"))
+
+  # Calculate rates
+  setting_merge$all_rate <- setting_merge$match_all / setting_merge$setting_count
+  setting_merge$age_grp_rate <- setting_merge$match_age_grp / setting_merge$setting_count
+  setting_merge$gender_rate <- setting_merge$match_gender / setting_merge$setting_count
+  setting_merge$race_rate <- setting_merge$match_race / setting_merge$setting_count
+
+  # Drop unnecessary columns
+  setting_merge <- select(setting_merge, -c(match_all, match_age_grp, match_gender, match_race, setting_count))
+  
+  # Print the table with kableExtra
+  kable(setting_merge, format = "html") %>%
+    kable_styling()
+})
+
+
+```
