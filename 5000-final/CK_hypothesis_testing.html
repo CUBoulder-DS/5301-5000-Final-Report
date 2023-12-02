@@ -11,7 +11,7 @@
 
 <meta name="author" content="Carl Klein" />
 
-<meta name="date" content="2023-11-22" />
+<meta name="date" content="2023-12-01" />
 
 <title>CK_hypothesis_testing</title>
 
@@ -352,13 +352,12 @@ display: none;
 
 <h1 class="title toc-ignore">CK_hypothesis_testing</h1>
 <h4 class="author">Carl Klein</h4>
-<h4 class="date">2023-11-22</h4>
+<h4 class="date">2023-12-01</h4>
 
 </div>
 
 
 <p><strong>Load library</strong></p>
-<pre class="r"><code>library(tidyverse)</code></pre>
 <p><strong>Load data</strong></p>
 <pre class="r"><code># output data
 # master dataframe url
@@ -458,18 +457,38 @@ the proportion is desired</li>
 </ul>
 <pre class="r"><code># function by PC
 get_proportion &lt;- function(df, evaluate_column, evaluate_value) {
-  df %&gt;%
-    group_by(!!as.symbol(evaluate_column)) %&gt;%
-    summarise(n=n()) %&gt;%
-    mutate(prop=n/sum(n)) %&gt;%
-    filter(!!as.symbol(evaluate_column)==evaluate_value) %&gt;%
-    select(prop) %&gt;% unlist() %&gt;% unname()
+  x &lt;- df %&gt;% filter(!!as.symbol(evaluate_column)==evaluate_value)%&gt;% count() %&gt;% unlist() %&gt;% unname()
+  if (x==0){
+    0
+  } else {
+    result &lt;- df %&gt;% group_by(!!as.symbol(evaluate_column)) %&gt;%
+      summarise(n=n())%&gt;%
+      mutate(prop=n/sum(n))%&gt;%
+      filter(!!as.symbol(evaluate_column)==evaluate_value)%&gt;%
+      select(prop)%&gt;%unlist()%&gt;% unname()
+  }
+}</code></pre>
+<pre class="r"><code># function by PC
+get_count &lt;- function(df, evaluate_column, evaluate_value) {
+  x &lt;- df %&gt;% filter(!!as.symbol(evaluate_column)==evaluate_value)%&gt;% count() %&gt;% unlist() %&gt;% unname()
+  if (x==0){
+    0
+  } else {
+    result &lt;- df %&gt;% group_by(!!as.symbol(evaluate_column)) %&gt;%
+      summarise(n=n()) %&gt;%
+      filter(!!as.symbol(evaluate_column)==evaluate_value) %&gt;%
+      select(n) %&gt;% unlist()%&gt;% unname()
+  }
 }</code></pre>
 <p><strong>Example</strong>:</p>
 <pre class="r"><code># return the proportion of females from the source data
 example &lt;- get_proportion(source_df, &#39;src_gender&#39;, &#39;Female&#39;)
 example</code></pre>
 <pre><code>## [1] 0.4780101</code></pre>
+<pre class="r"><code># return the proportion of females from the source data
+example &lt;- get_count(source_df, &#39;src_gender&#39;, &#39;Female&#39;)
+example</code></pre>
+<pre><code>## [1] 11521</code></pre>
 </div>
 <div id="function-to-produce-all-pertinent-information-for-hypothesis-tests-across-all-dataframes" class="section level2">
 <h2>Function to Produce All Pertinent Information for Hypothesis Tests
@@ -582,6 +601,79 @@ test for the deepface model</li>
            deepface_prop = deepface_prop,
            deepface_p_value = deepface_test))
 }</code></pre>
+<pre class="r"><code>run_two_sample_prop_tests &lt;- function(source_df, fairface_df, deepface_df, test_prop, test_age, test_gender, test_race) {
+  # create copies of the dataframes to alter
+  source_subset &lt;- source_df
+  fairface_subset &lt;- fairface_df
+  deepface_subset &lt;- deepface_df
+  
+  # if the main sub-demographic category is not set to &quot;All&quot; and the main demographic is
+  # not the hypothesis test parameter being tested then filter the subsets
+  if (test_age != &#39;All&#39; &amp; test_prop != &#39;age_bins&#39;) {
+    source_subset &lt;- source_subset %&gt;% filter(src_age_grp == test_age)
+    fairface_subset &lt;- fairface_subset %&gt;% filter(pred_age_grp == test_age)
+    deepface_subset &lt;- deepface_subset %&gt;% filter(pred_age_grp == test_age)
+  }
+  if (test_gender != &#39;All&#39; &amp; test_prop != &#39;genders&#39;) {
+    source_subset &lt;- source_subset %&gt;% filter(src_gender == test_gender)
+    fairface_subset &lt;- fairface_subset %&gt;% filter(pred_gender == test_gender)
+    deepface_subset &lt;- deepface_subset %&gt;% filter(pred_gender == test_gender)
+  }
+  if (test_race != &#39;All&#39; &amp; test_prop != &#39;races&#39;) {
+    source_subset &lt;- source_subset %&gt;% filter(src_race == test_race)
+    fairface_subset &lt;- fairface_subset %&gt;% filter(pred_race == test_race)
+    deepface_subset &lt;- deepface_subset %&gt;% filter(pred_race == test_race)
+  }
+  
+  # calculate the size of the filtered datasets
+  source_n &lt;- nrow(source_subset)
+  fairface_n &lt;- nrow(fairface_subset)
+  deepface_n &lt;- nrow(deepface_subset)
+  
+  # if the main demographic is being tested, run get_proportion now on that demographic
+  if (test_prop == &#39;age_bins&#39;) { 
+    source_count &lt;- get_count(source_subset, &#39;src_age_grp&#39;, test_age)
+    fairface_count &lt;- get_count(fairface_subset, &#39;pred_age_grp&#39;, test_age)
+    deepface_count &lt;- get_count(deepface_subset, &#39;pred_age_grp&#39;, test_age)
+  } else if (test_prop == &#39;genders&#39;) { 
+    source_count &lt;- get_count(source_subset, &#39;src_gender&#39;, test_gender)
+    fairface_count &lt;- get_count(fairface_subset, &#39;pred_gender&#39;, test_gender)
+    deepface_count &lt;- get_count(deepface_subset, &#39;pred_gender&#39;, test_gender)
+  } else if (test_prop == &#39;races&#39;) { 
+    source_count &lt;- get_count(source_subset, &#39;src_race&#39;, test_race)
+    fairface_count &lt;- get_count(fairface_subset, &#39;pred_race&#39;, test_race)
+    deepface_count &lt;- get_count(deepface_subset, &#39;pred_race&#39;, test_race)
+  }
+  
+  # calculate p-values for the fairface and deepface model results
+  if (source_n == 0 || fairface_n == 0) {
+    fairface_test &lt;- NA
+  } else {
+    fairface_test &lt;- prop.test(x = c(source_count, fairface_count),
+                               n = c(source_n, fairface_n))$p.value
+  }
+  
+  if (source_n == 0 || deepface_n == 0) {
+    deepface_test &lt;- NA
+  } else {
+    deepface_test &lt;- prop.test(x = c(source_count, deepface_count),
+                               n = c(source_n, deepface_n))$p.value
+  } 
+  
+  # return the vector of pertinent information
+  return(c(test_prop = test_prop,
+           test_age = test_age,
+           test_gender = test_gender,
+           test_race = test_race,
+           source_n = source_n,
+           source_prop = source_count/source_n,
+           fairface_n = fairface_n,
+           fairface_prop = fairface_count/fairface_n,
+           fairface_p_value = fairface_test,
+           deepface_n = deepface_n,
+           deepface_prop = deepface_count/deepface_n,
+           deepface_p_value = deepface_test))
+}</code></pre>
 <p><strong>Example</strong>:</p>
 <pre class="r"><code># return the pertinent information for a test ran on the proportion of females
 example &lt;- run_prop_tests(source_df, fairface_df, deepface_df, &#39;genders&#39;, &#39;All&#39;, &#39;Female&#39;, &#39;All&#39;)
@@ -605,6 +697,28 @@ example</code></pre>
 ##   &quot;0.443012484897302&quot;   &quot;0.294054085230945&quot;                &quot;1470&quot; 
 ##         deepface_prop      deepface_p_value 
 ##   &quot;0.349659863945578&quot; &quot;1.3896529981707e-10&quot;</code></pre>
+<pre class="r"><code># return the pertinent information for a test ran on the proportion of females
+example &lt;- run_two_sample_prop_tests(source_df, fairface_df, deepface_df, &#39;genders&#39;, &#39;All&#39;, &#39;Female&#39;, &#39;All&#39;)
+example</code></pre>
+<pre><code>##              test_prop               test_age            test_gender 
+##              &quot;genders&quot;                  &quot;All&quot;               &quot;Female&quot; 
+##              test_race               source_n            source_prop 
+##                  &quot;All&quot;                &quot;24102&quot;    &quot;0.478010123641192&quot; 
+##             fairface_n          fairface_prop       fairface_p_value 
+##                &quot;24091&quot;    &quot;0.479764227304803&quot;    &quot;0.706692464186261&quot; 
+##             deepface_n          deepface_prop       deepface_p_value 
+##                &quot;24053&quot;    &quot;0.383320167962416&quot; &quot;1.17669812409091e-97&quot;</code></pre>
+<pre class="r"><code># return the pertinent information for a test ran on the proportion of females given they are indian
+example &lt;- run_two_sample_prop_tests(source_df, fairface_df, deepface_df, &#39;genders&#39;, &#39;All&#39;, &#39;Female&#39;, &#39;Indian&#39;)
+example</code></pre>
+<pre><code>##              test_prop               test_age            test_gender 
+##              &quot;genders&quot;                  &quot;All&quot;               &quot;Female&quot; 
+##              test_race               source_n            source_prop 
+##               &quot;Indian&quot;                 &quot;4027&quot;    &quot;0.432580084430097&quot; 
+##             fairface_n          fairface_prop       fairface_p_value 
+##                 &quot;2483&quot;    &quot;0.443012484897302&quot;    &quot;0.424490058914896&quot; 
+##             deepface_n          deepface_prop       deepface_p_value 
+##                 &quot;1470&quot;    &quot;0.349659863945578&quot; &quot;3.78091228273428e-08&quot;</code></pre>
 <pre class="r"><code># create an empty tibble to store results matching the run_prop_tests return vector
 result_matrix &lt;- tibble(
   test_prop = character(),
@@ -646,6 +760,49 @@ demographics and sub-demographics hypothesis testing, at 432 hypotheses
 tested. If there is a result that is “NA”, it most likely means the
 sub-demographic and it’s conditionals had a proportion of 0.</p>
 </blockquote>
+<pre class="r"><code># save result_matrix
+write_csv(result_matrix, &quot;C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results.csv&quot;)</code></pre>
+<pre class="r"><code># create an empty tibble to store results matching the run_prop_tests return vector
+two_sample_result_matrix &lt;- tibble(
+  test_prop = character(),
+  test_age = character(),
+  test_gender = character(),
+  test_race = character(),
+  source_n = character(),
+  source_prop = character(),
+  fairface_n = character(),
+  fairface_prop = character(),
+  fairface_p_value = character(),
+  deepface_n = character(),
+  deepface_prop = character(),
+  deepface_p_value = character()
+)
+
+# loop through each sub-demographic across the main demographics
+# if the main demographic is not an &quot;All&quot; option, add a row containing pertinent information
+for (age in pull(age_bins)) {
+  for (gender in pull(genders)) {
+    for (race in pull(races)) {
+      if (age != &#39;All&#39;) {
+        new_row &lt;- run_two_sample_prop_tests(source_df, fairface_df, deepface_df,
+                                             &#39;age_bins&#39;, age, gender, race)
+        two_sample_result_matrix &lt;- two_sample_result_matrix %&gt;% add_row(!!! new_row)
+      }
+      if (gender != &#39;All&#39;) {
+        new_row &lt;- run_two_sample_prop_tests(source_df, fairface_df, deepface_df,
+                                             &#39;genders&#39;, age, gender, race)
+        two_sample_result_matrix &lt;- two_sample_result_matrix %&gt;% add_row(!!! new_row)
+      }
+      if (race != &#39;All&#39;) {
+        new_row &lt;- run_two_sample_prop_tests(source_df, fairface_df, deepface_df,
+                                             &#39;races&#39;, age, gender, race)
+        two_sample_result_matrix &lt;- two_sample_result_matrix %&gt;% add_row(!!! new_row)
+      }
+    }
+  }
+}</code></pre>
+<pre class="r"><code># save two_sample_result_matrix
+write_csv(two_sample_result_matrix, &quot;C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results.csv&quot;)</code></pre>
 </div>
 <div id="hypothesis-testing" class="section level2">
 <h2>Hypothesis Testing</h2>
@@ -831,22 +988,69 @@ we might find some interesting results.</p>
 ## #   deepface_prop &lt;chr&gt;, deepface_p_value &lt;chr&gt;</code></pre>
 <pre class="r"><code>result_matrix %&gt;%
   filter(deepface_p_value &gt; 0.01)</code></pre>
-<pre><code>## # A tibble: 219 × 11
+<pre><code>## # A tibble: 368 × 11
 ##    test_prop test_age test_gender test_race source_prop fairface_n fairface_prop
 ##    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;        
-##  1 age_bins  10-19    Female      White     0.11467693… 4539       0.0687376074…
-##  2 genders   10-19    Female      White     0.55371900… 644        0.4844720496…
-##  3 races     10-19    Female      White     0.54918032… 779        0.4005134788…
-##  4 age_bins  10-19    Female      Asian     0.04016477… 1895       0.0358839050…
-##  5 genders   10-19    Female      Asian     0.66101694… 128        0.53125      
-##  6 races     10-19    Female      Asian     0.07991803… 779        0.0872913992…
-##  7 age_bins  10-19    Female      Other     0.13163481… 2173       0.0731707317…
-##  8 races     10-19    Female      Other     0.12704918… 779        0.2041078305…
-##  9 age_bins  10-19    Female      All       0.08471486… 11558      0.0673992040…
-## 10 genders   10-19    Female      All       0.58026159… 1461       0.5331964407…
-## # ℹ 209 more rows
+##  1 age_bins  70-130   Female      White     0.10547710… 4539       0.0599250936…
+##  2 genders   70-130   Female      White     0.55580608… 397        0.6851385390…
+##  3 races     70-130   Female      White     0.77272727… 408        0.6666666666…
+##  4 age_bins  70-130   Female      Asian     0.03398558… 1895       0.0274406332…
+##  5 genders   70-130   Female      Asian     0.36065573… 107        0.4859813084…
+##  6 races     70-130   Female      Asian     0.10344827… 408        0.1274509803…
+##  7 age_bins  70-130   Female      Black     0.02206213… 1851       0.0064829821…
+##  8 genders   70-130   Female      Black     0.36029411… 30         0.4          
+##  9 races     70-130   Female      Black     0.07680250… 408        0.0294117647…
+## 10 genders   70-130   Female      Indian    0.5         48         0.5416666666…
+## # ℹ 358 more rows
 ## # ℹ 4 more variables: fairface_p_value &lt;chr&gt;, deepface_n &lt;chr&gt;,
 ## #   deepface_prop &lt;chr&gt;, deepface_p_value &lt;chr&gt;</code></pre>
+<pre class="r"><code>result_matrix %&gt;% filter(deepface_prop == 0 &amp; test_prop!=&#39;races&#39;) %&gt;% select(test_prop,test_age,test_gender,test_race,source_prop,deepface_n,deepface_prop,deepface_p_value)</code></pre>
+<pre><code>## # A tibble: 108 × 8
+##    test_prop test_age test_gender test_race source_prop deepface_n deepface_prop
+##    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;        
+##  1 age_bins  70-130   Female      White     0.10547710… 3936       0            
+##  2 genders   70-130   Female      White     0.55580608… 0          0            
+##  3 age_bins  70-130   Female      Asian     0.03398558… 2248       0            
+##  4 genders   70-130   Female      Asian     0.36065573… 0          0            
+##  5 age_bins  70-130   Female      Black     0.02206213… 856        0            
+##  6 genders   70-130   Female      Black     0.36029411… 0          0            
+##  7 age_bins  70-130   Female      Indian    0.01549942… 514        0            
+##  8 genders   70-130   Female      Indian    0.5         0          0            
+##  9 age_bins  70-130   Female      Other     0.00318471… 1666       0            
+## 10 genders   70-130   Female      Other     0.5         0          0            
+## # ℹ 98 more rows
+## # ℹ 1 more variable: deepface_p_value &lt;chr&gt;</code></pre>
+<pre class="r"><code>result_matrix %&gt;% filter(test_prop==&#39;genders&#39;,test_age==&#39;All&#39;,test_race!=&#39;All&#39;) %&gt;% 
+  select(test_prop,test_gender,test_race,fairface_p_value,deepface_p_value)</code></pre>
+<pre><code>## # A tibble: 10 × 5
+##    test_prop test_gender test_race fairface_p_value     deepface_p_value     
+##    &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                &lt;chr&gt;                
+##  1 genders   Female      White     1.03245184722476e-09 3.31588191740358e-05 
+##  2 genders   Female      Asian     0.850950386032931    5.34410594862308e-122
+##  3 genders   Female      Black     0.00484673553378133  8.6525330630269e-191 
+##  4 genders   Female      Indian    0.294054085230945    1.3896529981707e-10  
+##  5 genders   Female      Other     1.42075685470793e-47 2.54060751615906e-89 
+##  6 genders   Male        White     1.03245184722476e-09 3.31588191740358e-05 
+##  7 genders   Male        Asian     0.850950386032926    5.34410594862308e-122
+##  8 genders   Male        Black     0.00484673553378117  8.6525330630269e-191 
+##  9 genders   Male        Indian    0.294054085230951    1.38965299817068e-10 
+## 10 genders   Male        Other     1.42075685470793e-47 2.54060751615942e-89</code></pre>
+<pre class="r"><code>result_matrix %&gt;% filter(test_prop==&#39;age_bins&#39;,test_gender==&#39;All&#39;,test_race!=&#39;All&#39;) %&gt;% 
+  select(test_prop,test_age,test_race,fairface_p_value,deepface_p_value)</code></pre>
+<pre><code>## # A tibble: 45 × 5
+##    test_prop test_age test_race fairface_p_value     deepface_p_value     
+##    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;                &lt;chr&gt;                
+##  1 age_bins  70-130   White     1.29272865059994e-51 4.49301628195077e-189
+##  2 age_bins  70-130   Asian     4.60395001723853e-08 4.94661983834858e-70 
+##  3 age_bins  70-130   Black     1.77713281357431e-16 6.54041382245119e-26 
+##  4 age_bins  70-130   Indian    0.0103013436308798   7.82619857481121e-06 
+##  5 age_bins  70-130   Other     8.00644228612843e-67 0.000121606739476442 
+##  6 age_bins  3-9      White     0.0526038847830479   2.24974245809394e-154
+##  7 age_bins  3-9      Asian     2.43742163982814e-12 2.99066087917912e-88 
+##  8 age_bins  3-9      Black     0.00393507663500239  2.60716763232187e-20 
+##  9 age_bins  3-9      Indian    0.00120860781994134  2.83961010978227e-15 
+## 10 age_bins  3-9      Other     9.08817524350665e-06 5.44640323286667e-83 
+## # ℹ 35 more rows</code></pre>
 </div>
 
 
