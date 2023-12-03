@@ -273,14 +273,14 @@ run_two_sample_prop_tests <- function(source_df, fairface_df, deepface_df, test_
   
   # calculate p-values for the fairface and deepface model results
   if (source_n == 0 || fairface_n == 0) {
-    fairface_test <- NA
+    fairface_test <- 0
   } else {
     fairface_test <- prop.test(x = c(source_count, fairface_count),
                                n = c(source_n, fairface_n))$p.value
   }
   
   if (source_n == 0 || deepface_n == 0) {
-    deepface_test <- NA
+    deepface_test <- 0
   } else {
     deepface_test <- prop.test(x = c(source_count, deepface_count),
                                n = c(source_n, deepface_n))$p.value
@@ -292,12 +292,12 @@ run_two_sample_prop_tests <- function(source_df, fairface_df, deepface_df, test_
            test_gender = test_gender,
            test_race = test_race,
            source_n = source_n,
-           source_prop = source_count/source_n,
+           source_prop = ifelse(is.nan(source_count/source_n), 0, source_count/source_n),
            fairface_n = fairface_n,
-           fairface_prop = fairface_count/fairface_n,
+           fairface_prop = ifelse(is.nan(fairface_count/fairface_n), 0, fairface_count/fairface_n),
            fairface_p_value = fairface_test,
            deepface_n = deepface_n,
-           deepface_prop = deepface_count/deepface_n,
+           deepface_prop = ifelse(is.nan(deepface_count/deepface_n), 0, deepface_count/deepface_n),
            deepface_p_value = deepface_test))
 }
 ```

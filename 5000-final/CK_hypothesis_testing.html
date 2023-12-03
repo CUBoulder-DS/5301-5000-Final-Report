@@ -11,7 +11,7 @@
 
 <meta name="author" content="Carl Klein" />
 
-<meta name="date" content="2023-12-01" />
+<meta name="date" content="2023-12-02" />
 
 <title>CK_hypothesis_testing</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">CK_hypothesis_testing</h1>
 <h4 class="author">Carl Klein</h4>
-<h4 class="date">2023-12-01</h4>
+<h4 class="date">2023-12-02</h4>
 
 </div>
 
@@ -647,14 +647,14 @@ test for the deepface model</li>
   
   # calculate p-values for the fairface and deepface model results
   if (source_n == 0 || fairface_n == 0) {
-    fairface_test &lt;- NA
+    fairface_test &lt;- 0
   } else {
     fairface_test &lt;- prop.test(x = c(source_count, fairface_count),
                                n = c(source_n, fairface_n))$p.value
   }
   
   if (source_n == 0 || deepface_n == 0) {
-    deepface_test &lt;- NA
+    deepface_test &lt;- 0
   } else {
     deepface_test &lt;- prop.test(x = c(source_count, deepface_count),
                                n = c(source_n, deepface_n))$p.value
@@ -666,12 +666,12 @@ test for the deepface model</li>
            test_gender = test_gender,
            test_race = test_race,
            source_n = source_n,
-           source_prop = source_count/source_n,
+           source_prop = ifelse(is.nan(source_count/source_n), 0, source_count/source_n),
            fairface_n = fairface_n,
-           fairface_prop = fairface_count/fairface_n,
+           fairface_prop = ifelse(is.nan(fairface_count/fairface_n), 0, fairface_count/fairface_n),
            fairface_p_value = fairface_test,
            deepface_n = deepface_n,
-           deepface_prop = deepface_count/deepface_n,
+           deepface_prop = ifelse(is.nan(deepface_count/deepface_n), 0, deepface_count/deepface_n),
            deepface_p_value = deepface_test))
 }</code></pre>
 <p><strong>Example</strong>:</p>
