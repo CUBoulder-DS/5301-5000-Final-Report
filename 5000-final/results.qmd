@@ -7,7 +7,6 @@ library(tidyverse)
 library(caret)
 library(kableExtra)
 library(gt)
-library(janitor)
 ```
 
 <!-- BJ !-->
@@ -389,12 +388,40 @@ combined_results <- full_join(perf_all_race, pvalues_all_race, by=c("Category", 
 ```{r}
 combined_results %>%
   select(Race:p_value_f)%>% knitr::kable()
+
+
+combined_results %>% 
+  select(Race:Category,source_prop,n_d,prop_d,p_value_d,n_f,prop_f,p_value_f) #%>% knitr::kable()
+
+combined_results %>%
+  ggplot()+
+  geom_point(aes(x=Accuracy_d,y=p_value_d),color='black')+
+  geom_point(aes(x=Accuracy_f,y=p_value_f),color='blue')+
+  xlim(0,1)+ylim(0,1)
+
+combined_results %>%
+  mutate(logp_d = as.integer(p_value_d > .003)) %>% 
+  ggplot()+
+  geom_point(aes(x=Accuracy_d,y=logp_d),color='black')#+
+  #xlim(0,1)+ylim(0,1)
+
+combined_results %>% 
+  mutate(logp_f = as.integer(p_value_d > .003)) %>% 
+  ggplot()+
+  geom_point(aes(x=Accuracy_f,y=logp_f),color='blue')#+
+  #xlim(0,1)+ylim(0,1)
+
+
+# combined_results %>% 
+#   mutate(
+#     new_p_value_f = 
+#   )
 ```
 
 <!-- BJ !-->
 ## Model Performance, Hypothesis Testing
 
-For each category and model, we calculate the F1 score, accuracy, and p-value, as described in section 3. The results are summarized in @tbl-perf-pvalue. Cell values are colored according to the strength of the metric.
+For each category and model, we calculate the F1 score, accuracy, and p-value, as described in section 3. The results are summarized in tbl-perf-pvalue. Cell values are colored according to the strength of the metric.
 
 We also specifically looked at the performance metrics of the models, when controlled for specific race groups; 
 
@@ -405,98 +432,55 @@ We also specifically looked at the performance metrics of the models, when contr
 * Better description of signifiance of numerical values of Accuracy, F1 score
 * Add line plot of F1, Accuracy, p-value OR correlation matrix
 * Make table caption work?
-* What is proportion? Clearly not proportion correct
 
 Static table:
 
 * Values where we FAIL to reject null hypothesis
 
 ::: {.content-visible when-format="html"}
-::: {#tbl-perf-pvalue}
-```{r perf-pvalue}
-#| label: tbl-perf-pvalue
-#| tbl-cap: TODO 1 Table of F1 score and accuracy, by each category evaluated by the models
 
-colname_fmt = "**<sub>%s:<br>%s</sub>**"
-colnames = setNames(c(sprintf(colname_fmt, "Test Condition", "Race"),
-                      sprintf(colname_fmt, "Test", "Category"),
-                      sprintf(colname_fmt, "F1 Score", "DeepFace"),
-                      sprintf(colname_fmt, "F1 Score", "FairFace"),
-                      sprintf(colname_fmt, "Accuracy", "DeepFace"),
-                      sprintf(colname_fmt, "Accuracy", "FairFace"),
-                      sprintf(colname_fmt, "<sup>Proportion</sup>", "DeepFace"),
-                      sprintf(colname_fmt, "<sup>Proportion</sup>", "FairFace"),
-                      sprintf(colname_fmt, "p-value", "DeepFace"),
-                      sprintf(colname_fmt, "p-value", "FairFace")), 
-                    names(combined_results)[1:10])
+```{r tbl-perf-pvalue}
+#| label: tbl-perf-pvalue
+#| tbl-cap: TODO Table of F1 score and accuracy, by each category evaluated by the models
 
 combined_results %>%
   select(Race:p_value_f) %>%
   gt() %>%
-  opt_interactive(use_search = T, use_filters = T, use_highlight = T, page_size_default = 15) %>%
-  tab_options(
-            # quarto.use_bootstrap=TRUE, 
-              table.width = pct(100), 
-              table.font.size=5,
-              column_labels.font.weight="bolder",
-              ) %>%
-  tab_caption("TODO 2 Table of F1 score and accuracy, by each category evaluated by the models") %>%
+  tab_options(quarto.use_bootstrap=TRUE, table.width = pct(100), table.font.size=8) %>%
   fmt_number(columns = -c(1, 2), decimals=5) %>%
-  cols_label(.list=as.list(colnames), .fn = md) %>%
+  # tab_spanner(label = md("**FairFace**"), columns = c(2, 3)) %>% 
+  # tab_spanner(label = md("**DeepFace**"), columns = c(4, 5)) %>%
+  # tab_row_group(label = md("**Gender**"), rows = c(15)) %>%
+  # tab_row_group(label = md("**Race**"), rows = 10:14) %>%
+  # tab_row_group(label = md("**Age**"), rows = 1:9) %>%
+  # cols_label(starts_with("F1") ~ md("**F1**"), starts_with("Accuracy") ~ md("**Accuracy**")) %>%
   data_color(columns=3:6, palette="PiYG", domain=c(0, 1), alpha=0.75) %>%
-  data_color(columns=9:10, method="bin", palette = c("#B1DC96", "#F2B8D2"), bins=c(0, 0.03, 1))
+  data_color(columns=9:10, palette="PiYG", alpha=0.75, reverse=T) %>%
+  opt_interactive(use_search = T, use_filters = T, use_highlight = T, page_size_default = 15) %>%
+  tab_caption("TODO 2 Table of F1 score and accuracy, by each category evaluated by the models")
+
+
+combined_results %>%
+  select(Race:p_value_f) %>%
+  gt() %>%
+  tab_options(quarto.use_bootstrap=TRUE, table.width = pct(100), table.font.size=8) %>%
+  fmt_number(columns = -c(1, 2), decimals=5) %>%
+  # tab_spanner(label = md("**FairFace**"), columns = c(2, 3)) %>% 
+  # tab_spanner(label = md("**DeepFace**"), columns = c(4, 5)) %>%
+  # tab_row_group(label = md("**Gender**"), rows = c(15)) %>%
+  # tab_row_group(label = md("**Race**"), rows = 10:14) %>%
+  # tab_row_group(label = md("**Age**"), rows = 1:9) %>%
+  # cols_label(starts_with("F1") ~ md("**F1**"), starts_with("Accuracy") ~ md("**Accuracy**")) %>%
+  data_color(columns=3:6, palette="PiYG", domain=c(0, 1), alpha=0.75) %>%
+  data_color(columns=9:10, palette="PiYG", alpha=0.75, reverse=T) %>%
+  opt_interactive(use_search = T, use_filters = T, use_highlight = T, page_size_default = 15) %>%
+  tab_caption("TODO 2 Table of F1 score and accuracy, by each category evaluated by the models")
+
+names(combined_results)
 
 ```
 
-TODO 3 Table of F1 score, accuracy, p-value, and proportion correct by each category evaluated by the models
 :::
-:::
-
-### p-value Critical Values
-
-From the previous table, we extract and highlight key values; namely, the p-values where we fail to reject the null hypothesis at a significance level of 99.7%, displayed in @tbl-perf-selected.
-
-```{r tbl-perf-selected}
-#| label: tbl-perf-selected
-#| tbl-cap: TODO 
-
-tbl_gt = combined_results %>% 
-  filter(p_value_f > 0.03 | p_value_d > 0.03) %>%
-  select(Race, Category, p_value_d, p_value_f) %>%
-  unite(cat, c(Race, Category)) %>%
-  # t() %>% data.frame() %>% row_to_names(1) %>%
-  # add_column("Model p-value" = c("DeepFace", "FairFace"), .before=1) %>%
-  gt(rowname_col = "cat") %>%
-  tab_options(column_labels.font.weight="bold", 
-          row_group.font.weight="bold",
-          # stub.font.weight="bold",
-          # table.width = pct(100), 
-          # TODO: DOESN'T WORK?!?!!
-          # row_group.as_column = T
-          ) %>%
-  fmt_number(decimals=4) %>%
-  tab_stubhead("Model Test Condition, Category") %>%
-  text_transform( \(x) str_remove(x, ".*_"), locations = cells_stub()) %>%
-  cols_label(p_value_d="DeepFace", p_value_f="FairFace") %>%
-  tab_spanner("p-value", columns=1:3) %>%
-  data_color(method="bin", palette = c("#B1DC96", "#F2B8D2"), bins=c(0, 0.03, 1)) %>%
-  tab_row_group("No Test Condition", rows=starts_with("All"), id="All")
-for (r in table_races) {
-  tbl_gt = tab_row_group(tbl_gt, sprintf("Race: %s", r), rows=starts_with(r), id=r)
-}
-
-# tbl_gt = gt_split(tbl_gt, row_every_n=5)
-
-  
-    # tab_stubhead(label = "car")
-  # tab_stubhead("Model p-value") %>%
-  # cols_label(.list= cells_body(rows = 2)) %>%
-  # gt_split(col_slice_at = c( 8, 14))
-
-tbl_gt
-# gt_split(tbl_gt, row_every_n = 5)
-```
-
 
 ### Statistical Power
 

@@ -194,21 +194,7 @@ div.csl-indent {
   <li><a href="#demographics" id="toc-demographics" class="nav-link" data-scroll-target="#demographics"><span class="header-section-number">3.3.1</span> Demographics</a></li>
   <li><a href="#demographics-subgroups" id="toc-demographics-subgroups" class="nav-link" data-scroll-target="#demographics-subgroups"><span class="header-section-number">3.3.2</span> Demographics’ Subgroups</a></li>
   <li><a href="#the-general-proportion-tests" id="toc-the-general-proportion-tests" class="nav-link" data-scroll-target="#the-general-proportion-tests"><span class="header-section-number">3.3.3</span> The General Proportion Tests</a></li>
-  <li><a href="#notation" id="toc-notation" class="nav-link" data-scroll-target="#notation"><span class="header-section-number">3.3.4</span> Notation</a></li>
-  <li><a href="#more-specific-proportion-tests" id="toc-more-specific-proportion-tests" class="nav-link" data-scroll-target="#more-specific-proportion-tests"><span class="header-section-number">3.3.5</span> More Specific Proportion Tests</a></li>
-  </ul></li>
-  <li><a href="#standardizing-output" id="toc-standardizing-output" class="nav-link" data-scroll-target="#standardizing-output"><span class="header-section-number">3.4</span> Standardizing output</a>
-  <ul class="collapse">
-  <li><a href="#from-fairface" id="toc-from-fairface" class="nav-link" data-scroll-target="#from-fairface"><span class="header-section-number">3.4.1</span> From FairFace</a></li>
-  <li><a href="#from-deepface" id="toc-from-deepface" class="nav-link" data-scroll-target="#from-deepface"><span class="header-section-number">3.4.2</span> From DeepFace</a></li>
-  </ul></li>
-  <li><a href="#evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" id="toc-evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" class="nav-link" data-scroll-target="#evaluating-permutations-of-inputs-and-models-for-equitable-evaluation"><span class="header-section-number">3.5</span> Evaluating Permutations of Inputs and Models for Equitable Evaluation</a>
-  <ul class="collapse">
-  <li><a href="#deepface-analysis-options" id="toc-deepface-analysis-options" class="nav-link" data-scroll-target="#deepface-analysis-options"><span class="header-section-number">3.5.1</span> DeepFace Analysis Options</a></li>
-  <li><a href="#fairface-analysis-options" id="toc-fairface-analysis-options" class="nav-link" data-scroll-target="#fairface-analysis-options"><span class="header-section-number">3.5.2</span> FairFace Analysis Options</a></li>
-  <li><a href="#specific-permutations" id="toc-specific-permutations" class="nav-link" data-scroll-target="#specific-permutations"><span class="header-section-number">3.5.3</span> Specific Permutations</a></li>
-  <li><a href="#permutation-sample-results-ln-dv" id="toc-permutation-sample-results-ln-dv" class="nav-link" data-scroll-target="#permutation-sample-results-ln-dv"><span class="header-section-number">3.5.4</span> Permutation Sample Results (LN &amp; DV)</a></li>
-  <li><a href="#setting-selection" id="toc-setting-selection" class="nav-link" data-scroll-target="#setting-selection"><span class="header-section-number">3.5.5</span> Setting Selection</a></li>
+  <li><a href="#more-specific-proportion-tests" id="toc-more-specific-proportion-tests" class="nav-link" data-scroll-target="#more-specific-proportion-tests"><span class="header-section-number">3.3.4</span> More Specific Proportion Tests</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -246,6 +232,7 @@ div.csl-indent {
 <ul>
 <li>This is where we can dive into “conventional” bias</li>
 </ul></li>
+<li>Are there disparate outcomes (i.e.&nbsp;lower chances of correct classification) for one racial group vs.&nbsp;another?</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -274,6 +261,16 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <p>This performance section is important in choosing the correct models to ensure data integrity, however for the actual statistical tests, we’ll focused on more common statistics like mean and proportion.</p>
+<!-- PC -->
+<p>These are my recommendations on how we can look at the additional values:</p>
+<p>For cases in which we reject the statistical null hypothesis, we plan to evaluate the below metrics for the same output category. Should we reject a null hypothesis for, let’s say, the proportion of females, given that they are asian, we will examine the accuracy and F-1 scores for the same category. We will consider the following range of values:</p>
+<ul>
+<li><p>Accuracy &lt; 70: poor/unacceptable performance</p></li>
+<li><p>70 &lt; Accuracy &lt; 79: marginally acceptable performance</p></li>
+<li><p>80 &lt; Accuracy &lt; 89: acceptable performance</p></li>
+<li><p>90 &lt; Accuracy &lt; 99: excellent performance</p></li>
+<li><p><strong>Do we need anything else regarding precision or recall? and does this all need to be a table?</strong> <!-- PC --></p></li>
+</ul>
 </div>
 </div>
 <p>There are four main measures of performance when evaluating a model:</p>
@@ -378,17 +375,17 @@ Note
 <li><span class="math inline">\(\hat{p}\)</span>: output data subset proportion</li>
 <li><span class="math inline">\(p\)</span>: source data subset proportion</li>
 </ul>
-</section>
-<section id="notation" class="level3" data-number="3.3.4">
-<h3 data-number="3.3.4" class="anchored" data-anchor-id="notation"><span class="header-section-number">3.3.4</span> Notation</h3>
+<!--PC-->
+<p><strong>NOTE</strong> - may be worthwhile to state that we evaluated all cases here, but reduction to specific cases of controlling race and evaluating solely on gender or solely on race is of the most value to us. Performing tight filtering down to, for instance, the proportion of white people given they are 40-49 and female may be too restrictive.</p>
+<p>Performing and analyzing calcuations of P(Age|Race) or P(Gender|Race) are of more interest, as I think our research questions are looking at disparate impact to the outcomes for each racial group. <!-- END PC --> ### Notation</p>
 <p>Before we list the specific tests, we should introduce some notation.</p>
 <p>Let <span class="math inline">\(R\)</span> be race, then <span class="math inline">\(R \in \{Asian, Black, Indian, Other, White\} = \{A, B, I, O, W\}\)</span></p>
 <p>Let <span class="math inline">\(G\)</span> be gender, then <span class="math inline">\(G \in \{Female, Male\} = \{F, M\}\)</span></p>
 <p>Let <span class="math inline">\(A\)</span> be age, then <span class="math inline">\(A \in \{[0,2], [3,9], [10,19], [20,29], [30,39], [40,49], [50,59], [60,69], [70,130]\} = \{1, 2, 3, 4, 5, 6, 7, 8, 9\}\)</span></p>
 <p>Let <span class="math inline">\(D\)</span> be the dataset, then <span class="math inline">\(D \in \{Source, Fairface, Deepface\} = \{D_0, D_f, D_d\}\)</span></p>
 </section>
-<section id="more-specific-proportion-tests" class="level3" data-number="3.3.5">
-<h3 data-number="3.3.5" class="anchored" data-anchor-id="more-specific-proportion-tests"><span class="header-section-number">3.3.5</span> More Specific Proportion Tests</h3>
+<section id="more-specific-proportion-tests" class="level3" data-number="3.3.4">
+<h3 data-number="3.3.4" class="anchored" data-anchor-id="more-specific-proportion-tests"><span class="header-section-number">3.3.4</span> More Specific Proportion Tests</h3>
 <p>Using this notation, we can simplify our nomenclature for testing a certain proportion of an overall demographic.</p>
 <p>For example, we can test if the proportion of <em>Female</em> in the Fairface output is statistically different than the proportion of <em>Female</em> from the source.</p>
 <p>Hypothesis Test:</p>
@@ -438,209 +435,6 @@ From the report requirements
 <li><p>Describe the analyses you did to answer the question of interest. <strong>Explain why you believe these methods are appropriate.</strong></p></li>
 </ul>
 <p>Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data.</p>
-</div>
-</div>
-</section>
-</section>
-<section id="standardizing-output" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="standardizing-output"><span class="header-section-number">3.4</span> Standardizing output</h2>
-<p>The model outputs for both FairFace and DeepFace do not conform to the categories provided within the University of Tennessee - Knoxville (UTK) dataset. We elected to take the outputs from each model and modify them based upon the categories specified in the UTK dataset, namely:</p>
-<ul>
-<li><p>“[race] is an integer from 0 to 4, denoting White, Black, Asian, Indian, and Others (like Hispanic, Latino, Middle Eastern).”</p></li>
-<li><p>“[gender] is either 0 (male) or 1 (female)”</p></li>
-<li><p>“[age] is an integer from 0 to 116, indicating the age”</p></li>
-</ul>
-<section id="from-fairface" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="from-fairface"><span class="header-section-number">3.4.1</span> From FairFace</h3>
-<ul>
-<li><p><strong>Race</strong>: The FairFace classification model had two options - one for “fair7” and one for “fair4.” The latter provided predictions of race in the following categories: [White, Black, Asian, Indian]. Of key note, the model omitted “Other” categories as listed in the race category for the UTK dataset. However, the “fair7” model provides predictions across [White, Black, Latino_Hispanic, East Asian, Southeast Asian, Indian, Middle Eastern]. We elected to use the the fair7 model, and to refactor the output categories to match those of the UTK dataset. Namely, we refactored instances of Middle Eastern and Latino_Hispanic as “Other,” and instances of “East Asian” and “Southeast Asian” as “Asian”</p></li>
-<li><p><strong>Age</strong>: FairFace only provides a predicted age range as opposed to a specific, single, predicted age as a string. To enable comparison of actual values to the predicted values, we maintained this column as a categorical variable, and split it into a lower and upper bound of predicted age as an integer. This split will allow us to determine whether or not the prediction correctly binned the age (i.e.&nbsp;<span class="math inline">\(lowerBound \leq actualAge \leq upperBound\)</span>), and if not - how far outside of those bounds the actual age lay.</p></li>
-<li><p><strong>Gender</strong>: no change to outputs of “Male” and “Female.”</p></li>
-</ul>
-</section>
-<section id="from-deepface" class="level3" data-number="3.4.2">
-<h3 data-number="3.4.2" class="anchored" data-anchor-id="from-deepface"><span class="header-section-number">3.4.2</span> From DeepFace</h3>
-<ul>
-<li><p><strong>Race</strong>: Racial categorical output from DeepFace includes the following categories [“middle eastern”, “asian”, “white”, “latino hispanic”, “black”, “indian”]</p></li>
-<li><p><strong>Age</strong>: DeepFace provides a prediction of a single, specific, predicted age. We elected to match the predicted age to be the same range as would be predicted by Fair Face. For example, if DeepFace predicts an age like “19,” we assign it the same matching category as it would have in FairFace - “10-19.” From there, we also split this category into an upper and lower bound. In spite of the fact that DeepFace does not provide any bounds or ranges on its age prediction outputs, to have a similar and fair comparison of both models, we give it those same upper and lower bounds for equitable comparison.</p></li>
-<li><p><strong>Gender</strong>: DeepFace outputs are “Man” and “Woman”, and we refactor those values to “Male” and “Female” respectively.</p></li>
-</ul>
-</section>
-</section>
-<section id="evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="evaluating-permutations-of-inputs-and-models-for-equitable-evaluation"><span class="header-section-number">3.5</span> Evaluating Permutations of Inputs and Models for Equitable Evaluation</h2>
-<p>Aside from the differences in the outputs of each model in terms of age, race, and gender, there are also substantial differences between FairFace and DeepFace in terms of their available settings when attempting to categorize an image in each of these categories.</p>
-<p>The need for this permutation evaluation rose from some initial scripting and testing of these models on a small sample of images from another facial dataset - the Asian Face Age Dataset (need citation here). We immediately grew concerned with DeepFace’s performance using default settings (namely, enforcing requirement to detect a face prior to categorization, and using OpenCV as the default detection backend). Running these initial scripting tests, we encountered a failure rate in DeepFace of approximately 70% in identifying and categorizing an image of a face.</p>
-<p>We performed further exploratory analysis on both models in light of these facts, and sought some specific permutations of settings to determine what settings may provide the most fair and equitable comparison of the models prior to proceeding to further analysis.</p>
-<section id="deepface-analysis-options" class="level3" data-number="3.5.1">
-<h3 data-number="3.5.1" class="anchored" data-anchor-id="deepface-analysis-options"><span class="header-section-number">3.5.1</span> DeepFace Analysis Options</h3>
-<p>DeepFace has a robust degree of avaialble settings when performing facial categorization and recognition. These include enforcing facial detection prior to classification of an image, as well as 8 different facial detection models to detect a face prior to categorization. The default of these settings is OpenCV detection with detection enabled. Other detection backends include ssd, dlib, mtcnn, retinaface, mediapipe, yolov8, yunet, and fastmtcnn.</p>
-<p>In a Python 3.8 environment, attempting to run detections using dlib, retinaface, mediapipe, yolov8, and yunet failed to run, or failed to install the appropriate models directly from source during exeuction. Repairing any challenges or issues with the core functionality of DeepFace and FairFace’s code is outside the scope of our work, and as such, we have excluded any of these non-functioning models from our permutation evaluation.</p>
-</section>
-<section id="fairface-analysis-options" class="level3" data-number="3.5.2">
-<h3 data-number="3.5.2" class="anchored" data-anchor-id="fairface-analysis-options"><span class="header-section-number">3.5.2</span> FairFace Analysis Options</h3>
-<p>The default script from FairFace provided no options via its command line script to change settings. It uses dlib/resnet34 models for facial detection and image pre-processing, and uses its own fair4 and fair7 models for categorization. There are no other options or flags that can be set by a user when processing a batch of images.</p>
-<p>We converted the simple script to a class in Python without addressing any feature bugs or errors in the underlying code. This change provided us some additional options when performing the analysis of an input image using FairFace - namely, the ability to analyze and categorize an image with or without facial detection, similar to the functionality of DeepFace. FairFace remains limited in the fact that is only detection model backend is built in dlib, but this change gives us more options when considering what type of images to use and what settings to use on both models before generating our final dataset for analysis.</p>
-</section>
-<section id="specific-permutations" class="level3" data-number="3.5.3">
-<h3 data-number="3.5.3" class="anchored" data-anchor-id="specific-permutations"><span class="header-section-number">3.5.3</span> Specific Permutations</h3>
-<p>With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:</p>
-<div class="cell">
-<div class="cell-output-display">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Detection</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Detection Model</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Image Source</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Results Output</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Enabled</td>
-<td style="text-align: left;">FairFace=Dlib; DeepFace=OpenCV</td>
-<td style="text-align: left;">Pre-cropped</td>
-<td style="text-align: left;">new_ff_c_p.csv, crop_df_p_opencv.csv</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Enabled</td>
-<td style="text-align: left;">FairFace=Dlib; DeepFace=OpenCV</td>
-<td style="text-align: left;">In-The-Wild</td>
-<td style="text-align: left;">new_ff_uc_p.csv, uncropped_df_p_opencv.csv</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Enabled</td>
-<td style="text-align: left;">FairFace=Dlib; DeepFace=mtcnn</td>
-<td style="text-align: left;">Pre-cropped</td>
-<td style="text-align: left;">new_ff_c_p.csv, crop_df_p_mtcnn.csv</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Enabled</td>
-<td style="text-align: left;">FairFace=Dlib; DeepFace=mtcnn</td>
-<td style="text-align: left;">In-The-Wild</td>
-<td style="text-align: left;">new_ff_uc_p.csv, uncropped_df_p_mtcnn.csv</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Disabled</td>
-<td style="text-align: left;">FairFace,DeepFace=None</td>
-<td style="text-align: left;">Pre-cropped</td>
-<td style="text-align: left;">new_ff_c_np.csv, cropped_df_np.csv</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Disabled</td>
-<td style="text-align: left;">FairFace,DeepFace=None</td>
-<td style="text-align: left;">In-The-Wild</td>
-<td style="text-align: left;">new_ff_uc_np.csv, uncropped_df_np.csv</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-<p>We processed each of the above setting permutations againnst approximately 9800 images, consisting of images from part 1 of 3 from the UTK datset. Each of the cropped images (cropped_UTK_dataset.csv) and uncropped images (uncropped_UTK_dataset.csv) came from the same underlying subject in each image; the only difference between each image was whether or not it was pre-processed before evaluation by each model.</p>
-<!--End PC!-->
-</section>
-<section id="permutation-sample-results-ln-dv" class="level3" data-number="3.5.4">
-<h3 data-number="3.5.4" class="anchored" data-anchor-id="permutation-sample-results-ln-dv"><span class="header-section-number">3.5.4</span> Permutation Sample Results (LN &amp; DV)</h3>
-<p>(enforcement of facial detection, detection backend model, and cropped images vs.&nbsp;faces in-the-wild)</p>
-</section>
-<section id="setting-selection" class="level3" data-number="3.5.5">
-<h3 data-number="3.5.5" class="anchored" data-anchor-id="setting-selection"><span class="header-section-number">3.5.5</span> Setting Selection</h3>
-<!-- PC -->
-<p>Upon completion of our evaluation, we determined the settings that gave both models the best chance of success included enabling facial detection with mtcnn for DeepFace and Dlib for FairFace on uncropped images.</p>
-<p>From there, we proceeded to process the entirety of the UTK dataset using these settings. The only exception are 4 images that did not conform to UTK’s naming convention to identify age, gender, and race of the subject in the image.</p>
-<p>We wrote a script, MasterScript.py, to enable us to perform batch iteration of images and generate output files. When processing, we generated both the non-normalized output content and normalized output content.</p>
-<p>Due to the resource-intensive design of FairFace, our script enables multiprocessing of FairFace to allow for multiple simultaneous instances of the FairFace class as a pool of worker threads to iterate over all of the source data.</p>
-<p>We attempted the same methodology for DeepFace, but encountered issues with silent errors and halting program execution when iterating over all images using DeepFace. To alleviate this challenge, we processed DeepFace in a single-threaded manner, and with smaller portions of the dataset vs.&nbsp;pursuing an all-in-one go execution. We proceeded to store the data for each of these smaller runs in multiple output files to combine once we completed all processing requirements.</p>
-<p>The following table outlines the output files.</p>
-<p>The last file, MasterDataFrame.csv, is the final output of our evaluation. This file is in the following format, with the following column definitions:</p>
-<div class="cell">
-<div class="cell-output-display">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Column Name</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Definition</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Data Type</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">img_path</td>
-<td style="text-align: left;">Relative path location of the file within the UTK dataset</td>
-<td style="text-align: left;">character vector</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">file</td>
-<td style="text-align: left;">The filename of each file within the UTK dataset</td>
-<td style="text-align: left;">character vector</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">src_age</td>
-<td style="text-align: left;">The age of the subject in each image from the UTK dataset</td>
-<td style="text-align: left;">integer</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">src_gender</td>
-<td style="text-align: left;">The gender of the subject in each image from the UTK dataset</td>
-<td style="text-align: left;">character vector</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">src_race</td>
-<td style="text-align: left;">The race of the subject in each image from the UTK datset</td>
-<td style="text-align: left;">character vector</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">src_timestamp</td>
-<td style="text-align: left;">The time at which the image was submitted to the UTK dataset</td>
-<td style="text-align: left;">character vector</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">src_age_grp</td>
-<td style="text-align: left;">The age group (matching age ranges from the FairFace outputs) for each image in the UTK dataset</td>
-<td style="text-align: left;">character vector</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">pred_model</td>
-<td style="text-align: left;">The model used to produce the predicted output (FairFace or DeepFace)</td>
-<td style="text-align: left;">character vector</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">pred_race</td>
-<td style="text-align: left;">The race of the subject in the image predicted by the given prediction model</td>
-<td style="text-align: left;">character vector</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">pred_gender</td>
-<td style="text-align: left;">The gender of the subject in the image predicted by the given prediction model</td>
-<td style="text-align: left;">character vector</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">pred_age_DF_only</td>
-<td style="text-align: left;">The integer-predicted age by DeepFace of the subject in the image</td>
-<td style="text-align: left;">integer</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">pred_age_grp</td>
-<td style="text-align: left;">The age group of the subject in the image predicted by the given prediction model</td>
-<td style="text-align: left;">character vector</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">pred_age_lower</td>
-<td style="text-align: left;">The integer lower bound of the predicted age group</td>
-<td style="text-align: left;">integer</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">pred_age_upper</td>
-<td style="text-align: left;">The integer upper bound of the predicted age group</td>
-<td style="text-align: left;">integer</td>
-</tr>
-</tbody>
-</table>
-
-
 </div>
 </div>
 

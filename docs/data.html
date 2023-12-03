@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -75,7 +75,8 @@ div.csl-indent {
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
@@ -98,8 +99,8 @@ div.csl-indent {
     </a>
   </div>
         <div class="quarto-navbar-tools ms-auto">
-    <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="./STAT_5000_Final_Report.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./STAT_5000_Final_Report.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
@@ -112,7 +113,7 @@ div.csl-indent {
       <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -182,14 +183,28 @@ div.csl-indent {
    
   <ul>
   <li><a href="#exploration-of-source-data" id="toc-exploration-of-source-data" class="nav-link active" data-scroll-target="#exploration-of-source-data"><span class="header-section-number">2.1</span> Exploration of Source Data</a></li>
-  <li><a href="#more-information-on-data" id="toc-more-information-on-data" class="nav-link" data-scroll-target="#more-information-on-data"><span class="header-section-number">2.2</span> More information on data</a></li>
-  <li><a href="#data-selection-utk-dataset---ln-dv" id="toc-data-selection-utk-dataset---ln-dv" class="nav-link" data-scroll-target="#data-selection-utk-dataset---ln-dv"><span class="header-section-number">2.3</span> Data Selection (UTK Dataset) - LN DV</a></li>
-  <li><a href="#selected-models-ln-dv" id="toc-selected-models-ln-dv" class="nav-link" data-scroll-target="#selected-models-ln-dv"><span class="header-section-number">2.4</span> Selected Models (LN DV)</a>
+  <li><a href="#data-selection-utk-dataset---ln-dv" id="toc-data-selection-utk-dataset---ln-dv" class="nav-link" data-scroll-target="#data-selection-utk-dataset---ln-dv"><span class="header-section-number">2.2</span> Data Selection (UTK Dataset) - LN DV</a></li>
+  <li><a href="#selected-models-ln-dv" id="toc-selected-models-ln-dv" class="nav-link" data-scroll-target="#selected-models-ln-dv"><span class="header-section-number">2.3</span> Selected Models (LN DV)</a>
   <ul class="collapse">
-  <li><a href="#fairface" id="toc-fairface" class="nav-link" data-scroll-target="#fairface"><span class="header-section-number">2.4.1</span> FairFace</a></li>
-  <li><a href="#deepface" id="toc-deepface" class="nav-link" data-scroll-target="#deepface"><span class="header-section-number">2.4.2</span> DeepFace</a></li>
-  <li><a href="#permutation-analysis-information" id="toc-permutation-analysis-information" class="nav-link" data-scroll-target="#permutation-analysis-information"><span class="header-section-number">2.4.3</span> Permutation Analysis Information</a></li>
+  <li><a href="#fairface" id="toc-fairface" class="nav-link" data-scroll-target="#fairface"><span class="header-section-number">2.3.1</span> FairFace</a></li>
+  <li><a href="#deepface" id="toc-deepface" class="nav-link" data-scroll-target="#deepface"><span class="header-section-number">2.3.2</span> DeepFace</a></li>
   </ul></li>
+  <li><a href="#dataset-features" id="toc-dataset-features" class="nav-link" data-scroll-target="#dataset-features"><span class="header-section-number">2.4</span> Dataset Features</a>
+  <ul class="collapse">
+  <li><a href="#input-data-set" id="toc-input-data-set" class="nav-link" data-scroll-target="#input-data-set"><span class="header-section-number">2.4.1</span> Input data set</a></li>
+  <li><a href="#fairface-outputs" id="toc-fairface-outputs" class="nav-link" data-scroll-target="#fairface-outputs"><span class="header-section-number">2.4.2</span> FairFace Outputs</a></li>
+  <li><a href="#deepface-outputs" id="toc-deepface-outputs" class="nav-link" data-scroll-target="#deepface-outputs"><span class="header-section-number">2.4.3</span> DeepFace Outputs</a></li>
+  <li><a href="#standardizing-model-outputs" id="toc-standardizing-model-outputs" class="nav-link" data-scroll-target="#standardizing-model-outputs"><span class="header-section-number">2.4.4</span> Standardizing model outputs</a></li>
+  <li><a href="#deepface-output-modifications" id="toc-deepface-output-modifications" class="nav-link" data-scroll-target="#deepface-output-modifications"><span class="header-section-number">2.4.5</span> DeepFace Output Modifications</a></li>
+  <li><a href="#source-data-modifications" id="toc-source-data-modifications" class="nav-link" data-scroll-target="#source-data-modifications"><span class="header-section-number">2.4.6</span> Source Data Modifications</a></li>
+  </ul></li>
+  <li><a href="#evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" id="toc-evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" class="nav-link" data-scroll-target="#evaluating-permutations-of-inputs-and-models-for-equitable-evaluation"><span class="header-section-number">2.5</span> Evaluating Permutations of Inputs and Models for Equitable Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#deepface-analysis-options" id="toc-deepface-analysis-options" class="nav-link" data-scroll-target="#deepface-analysis-options"><span class="header-section-number">2.5.1</span> DeepFace Analysis Options</a></li>
+  <li><a href="#fairface-analysis-options" id="toc-fairface-analysis-options" class="nav-link" data-scroll-target="#fairface-analysis-options"><span class="header-section-number">2.5.2</span> FairFace Analysis Options</a></li>
+  <li><a href="#specific-permutations" id="toc-specific-permutations" class="nav-link" data-scroll-target="#specific-permutations"><span class="header-section-number">2.5.3</span> Specific Permutations</a></li>
+  </ul></li>
+  <li><a href="#result-output-format" id="toc-result-output-format" class="nav-link" data-scroll-target="#result-output-format"><span class="header-section-number">2.6</span> Result Output Format</a></li>
   </ul>
 </nav>
     </div>
@@ -285,185 +300,237 @@ From the report requirements
 </div>
 </div>
 </section>
-<section id="more-information-on-data" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="more-information-on-data"><span class="header-section-number">2.2</span> More information on data</h2>
-<div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.2     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 63%">
-<col style="width: 18%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">filenames</th>
-<th style="text-align: left;">purpose</th>
-<th style="text-align: left;">recommendations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Croped_ff_np.csv</td>
-<td style="text-align: left;">Permutation evaluation (older version) for fairface, no preprocessing on cropped images. Updated this file to look at the same files as the uncropped dataset.</td>
-<td style="text-align: left;">Remove from github data folder.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MasterDataFrame.csv</td>
-<td style="text-align: left;">Final master data file containing all input and output files</td>
-<td style="text-align: left;">Keep as-is with no changes</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">crop_df_np.csv</td>
-<td style="text-align: left;">Permutation evaluation for DeepFace, cropped images, no pre-processing</td>
-<td style="text-align: left;">Retain; rename to PERM_DF_c_np.csv</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">crop_df_p_mtcnn.csv</td>
-<td style="text-align: left;">Permutation evaluation for DeepFace, cropped images, preprocessed with MTCNN backend.</td>
-<td style="text-align: left;">Retain; rename to PERM_DF_c_p_mtcnn.csv</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">crop_df_p_opencv.csv</td>
-<td style="text-align: left;">Permutation evaluation for DeepFace, cropped images, preprocessed with OpenCV backend.</td>
-<td style="text-align: left;">Retain; rename to PERM_DF_c_p_opencv.csv</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">cropped_UTK.csv</td>
-<td style="text-align: left;">Permutation evaluation (older version), list of cropped files to perform evaluation.</td>
-<td style="text-align: left;">Remove from github data folder</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">cropped_UTK_dataset.csv</td>
-<td style="text-align: left;">Permutation evaluation (newest version), list of cropped files to perform evaluation.</td>
-<td style="text-align: left;">Retain with no changes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">cropped_ff_p.csv</td>
-<td style="text-align: left;">Permutation evaluation (older version), used older version of cropped images dataset.</td>
-<td style="text-align: left;">Remove from github data folder.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">joined_permutations.csv</td>
-<td style="text-align: left;">Permutation evaluation (newest version), joined all permutation outputs from DeepFace and FairFace to a single file</td>
-<td style="text-align: left;">Retain with no changes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">new_ff_c_np.csv</td>
-<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for cropped images with no preprocessing</td>
-<td style="text-align: left;">Retain; rename to PERM_FF_c_np.csv</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">new_ff_c_p.csv</td>
-<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for cropped images with dlib preprocessing</td>
-<td style="text-align: left;">Retain; rename to PERM_FF_c_p.csv</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">new_ff_uc_np.csv</td>
-<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for uncropped images with no preprocessing</td>
-<td style="text-align: left;">Retain; rename to PERM_FF_uc_np.csv</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">new_ff_uc_p.csv</td>
-<td style="text-align: left;">Permutation evaluation (newest version), FairFaice outputs for uncropped images with dlib preprocessing.</td>
-<td style="text-align: left;">Retain; rename to PERM_FF_uc_p.csv</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">non_normalized_DeepFace_uncropped_DF_all.csv</td>
-<td style="text-align: left;">Final dataset of DeepFace Outputs (non-normalized)</td>
-<td style="text-align: left;">Retain; rename to Master_DF_non_normalized.csv</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">non_normalized_FairFace_uncropped_FF_all.csv</td>
-<td style="text-align: left;">Final dataset of FairFace Outputs (non-normalized)</td>
-<td style="text-align: left;">Retain; rename to Master_FF_non_normalized.csv</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">uncropped_DF_all.csv</td>
-<td style="text-align: left;">Final normalized output for DeepFace - used to build MasterDataFrame.csv</td>
-<td style="text-align: left;">Retain with no changes</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">uncropped_FF_all.csv</td>
-<td style="text-align: left;">Final normalized output for FairFace - used to build MasterDataFrame.csv</td>
-<td style="text-align: left;">Retain with no changes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">uncropped_UTK.csv</td>
-<td style="text-align: left;">Permutation evaluation (older version) - source data file for iteration script</td>
-<td style="text-align: left;">Remove from github data folder.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">uncropped_UTK_dataset.csv</td>
-<td style="text-align: left;">Permutation evaluation (newest version) - source data file for uncropped images in iteration script</td>
-<td style="text-align: left;">Retain with no changes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">uncropped_df_np.csv</td>
-<td style="text-align: left;">Permutation evaluation (newest version) - DeepFace uncropped images with no preprocessing</td>
-<td style="text-align: left;">Retain; rename to PERM_DF_uc_np.csv</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">uncropped_df_p_mtcnn.csv</td>
-<td style="text-align: left;">Permutation Evaluation (newest version) - DeepFace uncropped images with mtcnn preprocessing</td>
-<td style="text-align: left;">Retain; rename to PERM_DF_uc_p_mtcnn.csv</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">uncropped_df_p_opencv.csv</td>
-<td style="text-align: left;">Permutation Evaluation (newest version) - DeepFace uncropped images with opencv preprocessing</td>
-<td style="text-align: left;">Retain; rename to PERM_DF_uc_p_opencv.csv</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">uncropped_ff_np.csv</td>
-<td style="text-align: left;">Permutation Evaluation (older version) - FairFace uncropped images with no preprocessing</td>
-<td style="text-align: left;">Remove from github data folder.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">uncropped_ff_p.csv</td>
-<td style="text-align: left;">Permutation Evaluation (older version) - FairFace uncropped images with dlib preprocessing.</td>
-<td style="text-align: left;">Remove from github data folder.</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<section id="data-selection-utk-dataset---ln-dv" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="data-selection-utk-dataset---ln-dv"><span class="header-section-number">2.3</span> Data Selection (UTK Dataset) - LN DV</h2>
+<section id="data-selection-utk-dataset---ln-dv" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="data-selection-utk-dataset---ln-dv"><span class="header-section-number">2.2</span> Data Selection (UTK Dataset) - LN DV</h2>
 <p>Motivation - has there been progress against bias?</p>
 <p>Reference Articles from Ethics Class - Joy B’s work, etc. Lots of disparity back in 2018, how much of that still exists with free models?</p>
 <p>In 2018, Joy Buolamwini, a PhD candinate at MIT Media Lab, published a thesis on gender and racial biases in facial recognition in algorithms. In her paper, she tested facial recongition softwares from multiple large technology companies such as Microsoft, IBM, and Amazom on its effectiveness for different demographic groups. From this research, it is concluded that most AI algorithms offer a substantially less accurate prediction for female and people with dark skin color.</p>
 <p>(Add link to the story)</p>
 <p>The primary motivation behind this research is to determine the degree in which bias is still present in modern facial recognition models. Therefore, we select a dataset which comprise of face images with high diversity in regards to race.</p>
 </section>
-<section id="selected-models-ln-dv" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="selected-models-ln-dv"><span class="header-section-number">2.4</span> Selected Models (LN DV)</h2>
-<p>Lorem ipsum</p>
-<section id="fairface" class="level3" data-number="2.4.1">
-<h3 data-number="2.4.1" class="anchored" data-anchor-id="fairface"><span class="header-section-number">2.4.1</span> FairFace</h3>
-<p>Motivation as to how / why we came across this</p>
+<section id="selected-models-ln-dv" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="selected-models-ln-dv"><span class="header-section-number">2.3</span> Selected Models (LN DV)</h2>
+<section id="fairface" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="fairface"><span class="header-section-number">2.3.1</span> FairFace</h3>
 <p>Developed by researchers at University of California, Los Angeles, FairFace was specifically designed to mitigate gender and racial biases. The model was trained on 100K+ face images of people of various ethnicities with normal distribution (equal stratification) across all groups. Beside facial recognition model, FairFace also provided the dataset which it was trained on. The dataset is highly popular among</p>
 <p>We came across this model when we were searching for an</p>
 </section>
-<section id="deepface" class="level3" data-number="2.4.2">
-<h3 data-number="2.4.2" class="anchored" data-anchor-id="deepface"><span class="header-section-number">2.4.2</span> DeepFace</h3>
-<p>Motivation as to how / why we came across this</p>
+<section id="deepface" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="deepface"><span class="header-section-number">2.3.2</span> DeepFace</h3>
 <p>DeepFace is a lightweight open-source model developed and used by Meta (Facebook). Since the model is used by one of the largest social media company, it is widely known among developers. Therefore, its popularity prompts us to evaluate its performance. It should be noted that this model of DeepFace is a free open-source version. It is highly likely that this version is less advanced than what Meta is actually using. Thus, we should not view the result of this model as a representative of Meta’s algorithm.</p>
 </section>
-<section id="permutation-analysis-information" class="level3" data-number="2.4.3">
-<h3 data-number="2.4.3" class="anchored" data-anchor-id="permutation-analysis-information"><span class="header-section-number">2.4.3</span> Permutation Analysis Information</h3>
+</section>
+<section id="dataset-features" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="dataset-features"><span class="header-section-number">2.4</span> Dataset Features</h2>
+<p>Understanding and selecting the appropriate features for our data is key to success in analysis. Furthermore, understanding feature differences and planning standardization across datasets is key in making sound comparisons and analyses upon the dataset.</p>
+<section id="input-data-set" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="input-data-set"><span class="header-section-number">2.4.1</span> Input data set</h3>
+<p>The input dataset, being UTKFace, provided feature information natively in each filename without additional external data. The features contained therein include the following items for each image’s subject. They are defined as follows in the UTKFace Readme:</p>
+<ul>
+<li><p>“[race] is an integer from 0 to 4, denoting White, Black, Asian, Indian, and Others (like Hispanic, Latino, Middle Eastern).”</p></li>
+<li><p>“[gender] is either 0 (male) or 1 (female)”</p></li>
+<li><p>“[age] is an integer from 0 to 116, indicating the age”</p></li>
+</ul>
+<p>We processed each image to extract these features from each image and create a table of source information (link to source data file here).</p>
+<p>As our work is focused in potential biases in protected classes such as race, gender, and age, the features of UTKFace are sufficient to meet the needs for an input dataset for category prediction in our selected models.</p>
+</section>
+<section id="fairface-outputs" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="fairface-outputs"><span class="header-section-number">2.4.2</span> FairFace Outputs</h3>
+<p>FairFace outputs provided predictions age and race, and two different predictions for race - one based upon their “Fair4” model, and the other based upon their “Fair7” model. In addition to these predictions, the output included scores for each category. With the nature of our planned analyses, the scores are of less import to us in our evaluation.</p>
+<p>To examine more in detail on “Fair” and “Fair4” models, the latter provided predictions of race in the following categories: [White, Black, Asian, Indian]. Of key note, the “Fair4” model omitted “Other” categories as listed in the race category for the UTK dataset. However, the “Fair7” model provides predictions across [White, Black, Latino_Hispanic, East Asian, Southeast Asian, Indian, Middle Eastern]. We elected to use the the Fair7 model, and to refactor the output categories to match those of the UTK dataset. Namely, we refactored instances of Middle Eastern and Latino_Hispanic as “Other” and instances of “East Asian” and “Southeast Asian” as “Asian” to match the categories explicitly listed in UTKFace.</p>
+<p>Additionally, FairFace only provides a predicted age range as opposed to a specific, single, predicted age as a string. To enable comparison of actual values to the predicted values, we maintained this column as a categorical variable, and split it into a lower and upper bound of predicted age as an integer in the event we require it for our analyses.</p>
+<p>With the above considerations in mind, the following output features are of import to the team:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 32%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Significance</th>
+<th style="text-align: left;">Valid Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">name_face_align</td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">The name and path of the file upon which FairFace made predictions</td>
+<td style="text-align: left;">[filepath]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">race_preds_fair</td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">The predicted race of the image subject</td>
+<td style="text-align: left;">[White|Black|Latino_Hispanic|East Asian|Southeast Asian|Middle Eastern|Indian]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">gender_preds_fair7</td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">The predicted gender of the image subject</td>
+<td style="text-align: left;">[Male|Female]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">age_preds_fair</td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">The predicted age range of the image subject</td>
+<td style="text-align: left;">[‘0-2’|‘3-9’|‘10-19’|‘20-29’|‘30-39’|‘40-49’|‘50-59’|‘60-69’|‘70+’]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="deepface-outputs" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="deepface-outputs"><span class="header-section-number">2.4.3</span> DeepFace Outputs</h3>
+<p>Default outputs have a wide-range of information for the user. In addition to providing its predictions, DeepFace also provides scores associated with each evaluation on a per class basis (i.e.&nbsp;92% for Race #1, 3% Race #2, 1% Race #3, and 4% Race #4). For the purpose of our planned analyses, the score features are of less concern to us.</p>
+<p>We hone in on the following select features from DeepFace outputs to have the ability to cross-compare between UTKFace, FairFace, and DeepFace:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 6%">
+<col style="width: 27%">
+<col style="width: 54%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Significance</th>
+<th style="text-align: left;">Valid Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Age</td>
+<td style="text-align: left;">Integer</td>
+<td style="text-align: left;">The predicted age of the image subject</td>
+<td style="text-align: left;">Any Integer</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dominant Gender</td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">The predicted gender of the iamge subject</td>
+<td style="text-align: left;">[Man|Woman]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dominant Race</td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">The predicted race of the image subject</td>
+<td style="text-align: left;">[middle eastern|asian|white|latino hispanic|black|indian]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="standardizing-model-outputs" class="level3" data-number="2.4.4">
+<h3 data-number="2.4.4" class="anchored" data-anchor-id="standardizing-model-outputs"><span class="header-section-number">2.4.4</span> Standardizing model outputs</h3>
+<p>As can be seen above, there are some key differences between the outputs of both models as well as the source data that we needed to resolve to enable comparison of each dataset to one another. We’ll focus on the primary features of age, gender, and race from each dataset.</p>
+<section id="fairface-output-modifications" class="level4" data-number="2.4.4.1">
+<h4 data-number="2.4.4.1" class="anchored" data-anchor-id="fairface-output-modifications"><span class="header-section-number">2.4.4.1</span> FairFace Output Modifications</h4>
+<p>We’ll discuss FairFace first, as it introduces a requirement for modification to both our input information as well as the outputs for DeepFace.</p>
+<p><strong>Age</strong> - FairFace only provides a categorical predicted age range as opposed to a specific numeric age. We retain this age format and modify the last category of “70+” to “70-130” to ensure we can capture the gamut of all input and output ages in all datasets.</p>
+<p><strong>Gender</strong> - No changes to predicted values; use “Male” and “Female”</p>
+<p><strong>Race</strong> - the source data from UTKFace has 5 categories “White” “Black” “Asian” “Indian” and “Other”. Using the defintions from UTKFace, we collapse the output categories of FairFace’s Fair7 model as follows:</p>
+<p>[“Southeast Asian”,“East Asian”] =&gt; “Asian” [“Middle Eastern” , “Latino_Hispanic] =&gt;”Other”</p>
+</section>
+</section>
+<section id="deepface-output-modifications" class="level3" data-number="2.4.5">
+<h3 data-number="2.4.5" class="anchored" data-anchor-id="deepface-output-modifications"><span class="header-section-number">2.4.5</span> DeepFace Output Modifications</h3>
+<p><strong>Age</strong> Cut the predicted age into bins based upon the same prediction ranges provided by FairFace. If the DeepFace predicted age falls into a range provided by FairFace, provide that as the predicted age range for DeepFace.</p>
+<p><strong>Gender:</strong> we adjust the DeepFace gender prediction outputs to match that of the source and FairFace data with the following refactoring: “Man” =&gt; “Male” “Woman” =&gt; “Female”</p>
+<p><strong>Race:</strong> we adjust the DeepFace race prediction outputs to match that of the source dataset with the following refactoring:</p>
+<ul>
+<li>“white” =&gt; “White”</li>
+<li>“black” =&gt; “Black”</li>
+<li>“indian” =&gt; “Indian”</li>
+<li>“asian” =&gt; “Asian”</li>
+<li>[“middle eastern”, “latino hispanic”] =&gt; “Other”</li>
+</ul>
+</section>
+<section id="source-data-modifications" class="level3" data-number="2.4.6">
+<h3 data-number="2.4.6" class="anchored" data-anchor-id="source-data-modifications"><span class="header-section-number">2.4.6</span> Source Data Modifications</h3>
+<p><strong>Age:</strong> We cut the predicted age into bins based upon the same prediction ranges provided by FairFace. If the input / source data age falls into a range provided by FairFace, provide that is the source age range for the image subject.</p>
+<p><strong>Gender:</strong> No changes.</p>
+<p><strong>Race:</strong> No changes.</p>
+</section>
+</section>
+<section id="evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="evaluating-permutations-of-inputs-and-models-for-equitable-evaluation"><span class="header-section-number">2.5</span> Evaluating Permutations of Inputs and Models for Equitable Evaluation</h2>
+<p>Aside from the differences in the outputs of each model in terms of age, race, and gender, there are also substantial differences between FairFace and DeepFace in terms of their available settings when attempting to categorize and predict the features associated with an image.</p>
+<p>The need for this permutation evaluation rose from some initial scripting and testing of these models on a small sample of images from another facial dataset - the Asian Face Age Dataset (<strong>need citation here</strong>). We immediately grew concerned with DeepFace’s performance using default settings (namely, enforcing requirement to detect a face prior to categorization/prediction, and using OpenCV as the default detection backend). Running these initial scripting tests, we encountered a face detection failure rate, and thus a prediction failure rate, in DeepFace of approximately 70%.</p>
+<p>We performed further exploratory analysis on both models in light of these facts, and sought some specific permutations of settings to determine what settings may provide the most fair and equitable comparison of the models prior to proceeding to further analysis.</p>
+<p>The ultimate goal for us in performing this exploration was to identify the settings for each model that might best increase the likelihood that the model’s output would result in a failure to reject our null hypotheses. In lamens terms, our tests sought out the combination of settings that give each model the benefit of the doubt, and for each to deliver the greatest accuracy in their predictions. For simplicity’s sake, we leaned solely on the proportion of true positives across each category when compared with the source information to decide which settings to use.</p>
+<section id="deepface-analysis-options" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="deepface-analysis-options"><span class="header-section-number">2.5.1</span> DeepFace Analysis Options</h3>
+<p>DeepFace has a robust degree of avaialble settings when performing facial categorization and recognition. These include enforcing facial detection prior to classification of an image, as well as 8 different facial detection models to detect a face prior to categorization. The default of these settings is OpenCV detection with detection enabled. Other detection backends include ssd, dlib, mtcnn, retinaface, mediapipe, yolov8, yunet, and fastmtcnn.</p>
+<p>In a Python 3.8 environment, attempting to run detections using dlib, fastmtcnn, retinaface, mediapipe, yolov8, and yunet failed to run, or failed to install the appropriate models directly from source during exeuction. Repairing any challenges or issues with the core functionality of DeepFace and FairFace’s code is outside the scope of our work, and as such, we have excluded any of these non-functioning models from our settings permutation evaluation.</p>
+</section>
+<section id="fairface-analysis-options" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="fairface-analysis-options"><span class="header-section-number">2.5.2</span> FairFace Analysis Options</h3>
+<p>The default script from FairFace provided no options via its command line script to change runtime settings. It uses dlib/resnet34 models for facial detection and image pre-processing, and uses its own Fair4 and Fair7 models for categorization. There are no other options or flags that can be set by a user when processing a batch of images.</p>
+<p>We converted the simple script to a class in Python without addressing any feature bugs or errors in the underlying code. This change provided us some additional options when performing the analysis of an input image using FairFace - namely, the ability to analyze and categorize an image with or without facial detection, similar to the functionality of DeepFace. FairFace remains limited in the fact that is only detection model backend is built in dlib, but this change from a script to a class object gave us more options when considering what type of images to use and what settings to use on both models before generating our final dataset for analysis.</p>
+</section>
+<section id="specific-permutations" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="specific-permutations"><span class="header-section-number">2.5.3</span> Specific Permutations</h3>
+<p>With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Detection</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Detection Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Image Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib; DeepFace=OpenCV</td>
+<td style="text-align: left;">Pre-cropped</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib; DeepFace=OpenCV</td>
+<td style="text-align: left;">In-The-Wild</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib; DeepFace=mtcnn</td>
+<td style="text-align: left;">Pre-cropped</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Enabled</td>
+<td style="text-align: left;">FairFace=Dlib; DeepFace=mtcnn</td>
+<td style="text-align: left;">In-The-Wild</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Disabled</td>
+<td style="text-align: left;">FairFace,DeepFace=None</td>
+<td style="text-align: left;">Pre-cropped</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Disabled</td>
+<td style="text-align: left;">FairFace,DeepFace=None</td>
+<td style="text-align: left;">In-The-Wild</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>We processed each of the above setting permutations against approximately 9800 images, consisting of images from part 1 of 3 from the UTK datset. Each of the cropped images (cropped_UTK_dataset.csv) and uncropped images (uncropped_UTK_dataset.csv) came from the same underlying subject in each image; the only difference between each image was whether or not it was pre-processed before evaluation by each model. Having the same underlying source subject enables us to perform a direct comparison of results between cropped vs.&nbsp;in-the-wild images, and better support a conlcusion of which settings to use.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
@@ -586,6 +653,107 @@ From the report requirements
 
 </div>
 </div>
+<p>Examining the true positive ratios for each case, our team came to the conclusion that the settings that gave both models the best chance for success in correctly predicting the age, gender, and race of subject images are as follows:</p>
+<ul>
+<li><p>FairFace: enforce facial detection with dlib, and use uncropped images for evaluation</p></li>
+<li><p>DeepFace: enforce facial detection with MTCNN detection backend, and use uncropped images for evaluation.</p></li>
+</ul>
+<p>These settings are equitable and make a degree of sense. Using facial detection, specifically-coded for each model, should give each model the ability to isolate the portions of a face necessary for them to make a prediction, as opposed to using a pre-cropped image that could include unneeded information, or excluded needed information.</p>
+<p>Having decided on these settings, our team proceeded to run the entirety of the UTK dataset through both DeepFace and FairFace models using a custom coded script <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report/blob/main/src/sample%20code/MasterScript.py">MasterScript.py</a> that allowed us to apply multiprocessing across the list of images and evaluate all items in a reasonable amount of time. (cite FairFace here, may also need to reference that we rebuilt their script into a class format).</p>
+<p>Due to the resource-intensive design of FairFace, our script enables multiprocessing of FairFace to allow for multiple simultaneous instances of the FairFace class as a pool of worker threads to iterate over all of the source data.</p>
+<p>We attempted the same multiprocessing methodology for DeepFace, but encountered issues with silent errors and halting program execution when iterating over all images using DeepFace. To alleviate this challenge, we processed DeepFace in a single-threaded manner, and with smaller portions of the dataset vs.&nbsp;pursuing an all-in-one go execution. We proceeded to store the data for each of these smaller runs in multiple output files to combine once we completed all processing requirements.</p>
+</section>
+</section>
+<section id="result-output-format" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="result-output-format"><span class="header-section-number">2.6</span> Result Output Format</h2>
+<p>The following table outlines, after the input and output data modifications, the final format of our data for use in our analyses. This file is stored in the /data folder as <a href="https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv">MasterDataFrame.csv</a></p>
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Column Name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Definition</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Data Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">img_path</td>
+<td style="text-align: left;">Relative path location of the file within the UTK dataset</td>
+<td style="text-align: left;">character vector</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">file</td>
+<td style="text-align: left;">The filename of each file within the UTK dataset</td>
+<td style="text-align: left;">character vector</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">src_age</td>
+<td style="text-align: left;">The age of the subject in each image from the UTK dataset</td>
+<td style="text-align: left;">integer</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">src_gender</td>
+<td style="text-align: left;">The gender of the subject in each image from the UTK dataset</td>
+<td style="text-align: left;">character vector</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">src_race</td>
+<td style="text-align: left;">The race of the subject in each image from the UTK datset</td>
+<td style="text-align: left;">character vector</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">src_timestamp</td>
+<td style="text-align: left;">The time at which the image was submitted to the UTK dataset</td>
+<td style="text-align: left;">character vector</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">src_age_grp</td>
+<td style="text-align: left;">The age group (matching the predicted age ranges from the FairFace outputs) for each image in the UTK dataset</td>
+<td style="text-align: left;">character vector</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pred_model</td>
+<td style="text-align: left;">The model used to produce the predicted output (FairFace or DeepFace)</td>
+<td style="text-align: left;">character vector</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pred_race</td>
+<td style="text-align: left;">The race of the subject in the image, predicted by the given prediction model under the pred_model column</td>
+<td style="text-align: left;">character vector</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pred_gender</td>
+<td style="text-align: left;">The gender of the subject in the image, predicted by the given prediction model under the pred_model column</td>
+<td style="text-align: left;">character vector</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pred_age_DF_only</td>
+<td style="text-align: left;">The integer-predicted age by DeepFace of the subject in the image</td>
+<td style="text-align: left;">integer</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pred_age_grp</td>
+<td style="text-align: left;">The age group of the subject in the image, predicted by the given prediction model under the pred_model column</td>
+<td style="text-align: left;">character vector</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pred_age_lower</td>
+<td style="text-align: left;">The integer lower bound of the predicted age group</td>
+<td style="text-align: left;">integer</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pred_age_upper</td>
+<td style="text-align: left;">The integer upper bound of the predicted age group</td>
+<td style="text-align: left;">integer</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -593,7 +761,6 @@ From the report requirements
 <span>“<span>UTKFace</span>.”</span> 2021. <em>UTKFace</em>. <a href="https://susanqq.github.io/UTKFace">https://susanqq.github.io/UTKFace</a>.
 </div>
 </div>
-</section>
 </section>
 
 </main> <!-- /main -->
