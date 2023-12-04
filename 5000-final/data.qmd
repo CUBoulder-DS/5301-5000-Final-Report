@@ -350,7 +350,7 @@ img_src <- c(
 #   "new_ff_uc_np.csv, uncropped_df_np.csv")
 # tib <- tibble("Detection"=det,"Detection Model"=det_mod,"Image Source"=img_src, "Results Output"=output_file_names)
 tib <- tibble("Detection"=det,"Detection Model"=det_mod,"Image Source"=img_src)
-knitr::kable(tib,format='html')
+knitr::kable(tib)
 
 ```        
 
@@ -407,7 +407,7 @@ suppressMessages({
   setting_merge <- select(setting_merge, -c(match_all, match_age_grp, match_gender, match_race, setting_count))
   
   # Print the table with kableExtra
-  kable(setting_merge, format = "html") %>%
+  kable(setting_merge) %>%
     kable_styling()
 })
 
@@ -486,5 +486,5 @@ data_types <- c(
 
 column_defs <- tibble("Column Name"=column_names,"Definition"=definitions, "Data Type"=data_types)
 
-knitr::kable(column_defs,format='html')
+knitr::kable(column_defs)
 ```

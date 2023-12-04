@@ -57,44 +57,17 @@ source_df <- output_df %>%
   filter(pred_model == 'FairFace') %>%
   select(c(src_age, src_age_grp, src_gender, src_race, src_timestamp)) %>%
   drop_na()
+
+# p-value two sample calcs table
+df_name <- 'https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/pvalue_results_two_sample.csv'
+p_value_results <- read_csv(df_name)
+
+table_ages <- c("0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130")
+table_races <- c("White", "Black", "Asian", "Indian", "Other")
+table_genders <- c("Female", "Male")
 ```
 
 <!-- BJ !-->
-
-::: panel-tabset
-## Tabbed example output
-
-```{r  ex2}
-#| label: fig-sec4-ex2
-#| fig-cap: ANother example caption
-#| fig-subcap: 
-#|   - Subcap
-#|   - Subcap 2
-#| layout-ncol: 2
-# BJ
-
-f <- 1:10
-## Tabbed example output
-ggplot() + 
-  geom_line(aes(x=f, y=f^2))
-
-ggplot() + 
-  geom_line(aes(x=f, y=1/f))
-```
-
-## Example outout
-
-```{r ex1}
-#| label: fig-sec4-ex1
-#| fig-cap: A caption for generated figure
-# BJ
-
-# Example code that's running
-f <- 1:10
-f
-
-```
-:::
 
 ::: callout-note
 ## From the report requirements
@@ -108,7 +81,7 @@ Don't focus too much on the implications in this section -- that's what the next
 
 ## Model Output
 
-The two models, DeepFace and FairFace, were run on the dataset described previously. In @fig-output-hists, one can see the results of the predictions done by each model, by each factor that was considered: age, gender, and race. Note that the histogram distributions match the correct (source dataset) distributions, so we can see exactly the difference between what was provided and what was predicted, along with how well each model did on each category within each factor.
+The two models, DeepFace and FairFace, were run on the dataset described previously. In @fig-output-hists, one can see the results of the predictions done by each model, by each factor that was considered: age, gender, and race. Note that the total (across correct and incorrect) histogram distributions match the correct (source dataset) distributions of values in each category, so we can see exactly the difference between what was provided and what was predicted, along with how well each model did on each category within each factor.
 
 ```{r plot_hists}
 #| label: fig-output-hists
@@ -170,6 +143,7 @@ perf_table = full_join(get_f1_acc(fairface_df),
                        get_f1_acc(deepface_df), 
                        suffix=c("_F", "_D"), 
                        by="Category")
+
 ```
 
 
@@ -193,6 +167,7 @@ perf_table = full_join(get_f1_acc(fairface_df),
 #   data_color(columns=2:5, palette="PiYG", domain=c(0, 1), alpha=0.75)
   ## BJ NOTE: Cannot have interactive table with also column spanning headings / row groups!
   # opt_interactive(use_search=TRUE, use_filters=FALSE, use_highlight=TRUE)
+p_value_results
 ```
 
 
@@ -202,17 +177,6 @@ perf_table = full_join(get_f1_acc(fairface_df),
 ### TODO: Remove
 
 <!-- CK !-->
-
-```{r load_pval_data, include = FALSE}
-df_name <- 'https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/pvalue_results.csv'
-p_value_results <- read_csv(df_name)
-```
-
-```{r}
-table_ages <- c("0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130")
-table_races <- c("White", "Black", "Asian", "Indian", "Other")
-table_genders <- c("Female", "Male")
-```
 
 ```{r pval_ages}
 p_value_results %>%
@@ -226,6 +190,7 @@ p_value_results %>%
   kable_styling(full_width = T) %>%
   column_spec(1, bold = T)
 ```
+
 ```{r pval_races}
 p_value_results %>%
   filter(test_gender == "All") %>%
@@ -238,6 +203,7 @@ p_value_results %>%
   kable_styling(full_width = T) %>%
   column_spec(1, bold = T)
 ```
+
 ```{r pval_genders}
 p_value_results %>%
   filter(test_race == "All") %>%
@@ -250,7 +216,8 @@ p_value_results %>%
   kable_styling(full_width = T) %>%
   column_spec(1, bold = T)
 ```
-```{r pval races_by_gender}
+
+```{r pval_races_by_gender}
 p_value_results %>%
   filter(test_prop == 'genders') %>%
   filter(test_age == 'All') %>%
@@ -333,7 +300,7 @@ p_race_age <- p_value_results %>%
   filter(test_prop=='age_bins',test_gender=='All',test_age!='All',test_race!='All') %>% 
   select(
     test_race,test_age,fairface_p_value,deepface_p_value,
-    fairface_n,deepface_n,fairface_prop,deepface_prop,source_prop) %>%
+    fairface_n,deepface_n,fairface_prop,deepface_prop,source_prop, fairface_power, deepface_power) %>%
   rename(Race=test_race,Category=test_age) %>%
   rename_f_d_cols()
 
@@ -344,7 +311,7 @@ p_race_gender <- p_value_results %>%
   #select(test_race,test_gender,fairface_p_value,deepface_p_value) %>%
   select(
     test_race,test_gender,fairface_p_value,deepface_p_value,
-    fairface_n,deepface_n,fairface_prop,deepface_prop,source_prop) %>%
+    fairface_n,deepface_n,fairface_prop,deepface_prop,source_prop, fairface_power, deepface_power) %>%
   rename(Race=test_race,Category=test_gender) %>%
   rename_f_d_cols()
 
@@ -361,7 +328,7 @@ filter_pvalues_no_cond = function(category) {
   p_value_results %>%
     filter(.data[[test_cat(cats[1])]] == "All", .data[[test_cat(cats[2])]] == "All") %>%
     select(test_cat(category), fairface_p_value, deepface_p_value, 
-           fairface_prop, deepface_prop, source_prop, fairface_n, deepface_n) %>%
+           fairface_prop, deepface_prop, source_prop, fairface_n, deepface_n, fairface_power, deepface_power) %>%
     rename_with(\(x) "Category", starts_with("test_")) %>%
     rename_f_d_cols() %>%
     mutate("Race" = "All")
@@ -386,6 +353,8 @@ combined_results <- full_join(perf_all_race, pvalues_all_race, by=c("Category", 
 #### TODO: Remove 
 
 ```{r}
+# PC?
+
 combined_results %>%
   select(Race:p_value_f)%>% knitr::kable()
 
@@ -416,12 +385,14 @@ combined_results %>%
 #   mutate(
 #     new_p_value_f = 
 #   )
+
+combined_results
 ```
 
 <!-- BJ !-->
 ## Model Performance, Hypothesis Testing
 
-For each category and model, we calculate the F1 score, accuracy, and p-value, as described in section 3. The results are summarized in tbl-perf-pvalue. Cell values are colored according to the strength of the metric.
+For each category and model, we calculate the F1 score, accuracy, and p-value, as described in section 3. The results are summarized in @tbl-perf-pvalue. Cell values are colored according to the strength of the metric.
 
 We also specifically looked at the performance metrics of the models, when controlled for specific race groups; 
 
@@ -443,44 +414,95 @@ Static table:
 #| label: tbl-perf-pvalue
 #| tbl-cap: TODO Table of F1 score and accuracy, by each category evaluated by the models
 
-combined_results %>%
-  select(Race:p_value_f) %>%
-  gt() %>%
-  tab_options(quarto.use_bootstrap=TRUE, table.width = pct(100), table.font.size=8) %>%
-  fmt_number(columns = -c(1, 2), decimals=5) %>%
-  # tab_spanner(label = md("**FairFace**"), columns = c(2, 3)) %>% 
-  # tab_spanner(label = md("**DeepFace**"), columns = c(4, 5)) %>%
-  # tab_row_group(label = md("**Gender**"), rows = c(15)) %>%
-  # tab_row_group(label = md("**Race**"), rows = 10:14) %>%
-  # tab_row_group(label = md("**Age**"), rows = 1:9) %>%
-  # cols_label(starts_with("F1") ~ md("**F1**"), starts_with("Accuracy") ~ md("**Accuracy**")) %>%
-  data_color(columns=3:6, palette="PiYG", domain=c(0, 1), alpha=0.75) %>%
-  data_color(columns=9:10, palette="PiYG", alpha=0.75, reverse=T) %>%
-  opt_interactive(use_search = T, use_filters = T, use_highlight = T, page_size_default = 15) %>%
-  tab_caption("TODO 2 Table of F1 score and accuracy, by each category evaluated by the models")
-
+colname_fmt = "**<sub>%s:<br>%s</sub>**"
+colnames = setNames(c(sprintf(colname_fmt, "Test Condition", "Race"),
+                      sprintf(colname_fmt, "Test", "Category"),
+                      sprintf(colname_fmt, "F1 Score", "DeepFace"),
+                      sprintf(colname_fmt, "F1 Score", "FairFace"),
+                      sprintf(colname_fmt, "Accuracy", "DeepFace"),
+                      sprintf(colname_fmt, "Accuracy", "FairFace"),
+                      sprintf(colname_fmt, "<sup>Proportion</sup>", "DeepFace"),
+                      sprintf(colname_fmt, "<sup>Proportion</sup>", "FairFace"),
+                      sprintf(colname_fmt, "p-value", "DeepFace"),
+                      sprintf(colname_fmt, "p-value", "FairFace")), 
+                    names(combined_results)[1:10])
 
 combined_results %>%
   select(Race:p_value_f) %>%
   gt() %>%
-  tab_options(quarto.use_bootstrap=TRUE, table.width = pct(100), table.font.size=8) %>%
-  fmt_number(columns = -c(1, 2), decimals=5) %>%
-  # tab_spanner(label = md("**FairFace**"), columns = c(2, 3)) %>% 
-  # tab_spanner(label = md("**DeepFace**"), columns = c(4, 5)) %>%
-  # tab_row_group(label = md("**Gender**"), rows = c(15)) %>%
-  # tab_row_group(label = md("**Race**"), rows = 10:14) %>%
-  # tab_row_group(label = md("**Age**"), rows = 1:9) %>%
-  # cols_label(starts_with("F1") ~ md("**F1**"), starts_with("Accuracy") ~ md("**Accuracy**")) %>%
-  data_color(columns=3:6, palette="PiYG", domain=c(0, 1), alpha=0.75) %>%
-  data_color(columns=9:10, palette="PiYG", alpha=0.75, reverse=T) %>%
   opt_interactive(use_search = T, use_filters = T, use_highlight = T, page_size_default = 15) %>%
-  tab_caption("TODO 2 Table of F1 score and accuracy, by each category evaluated by the models")
+  tab_options(
+            # quarto.use_bootstrap=TRUE, 
+              table.width = pct(100), 
+              # The following settings don't do anything when the table is interactive, boooo
+              # table.font.size=5,
+              # column_labels.font.weight="bolder",
+              ) %>%
+  tab_caption("TODO 2 Table of F1 score and accuracy, by each category evaluated by the models") %>%
+  fmt_number(columns = -c(1, 2), decimals=5) %>%
+  cols_label(.list=as.list(colnames), .fn = md) %>%
+  data_color(columns=3:6, palette="PiYG", domain=c(0, 1), alpha=0.75) %>%
+  data_color(columns=9:10, method="bin", palette = c("#B1DC96", "#F2B8D2"), bins=c(0, 0.03, 1))
 
-names(combined_results)
+
+## PC
+# combined_results %>%
+#   select(Race:p_value_f) %>%
+#   gt() %>%
+#   tab_options(quarto.use_bootstrap=TRUE, table.width = pct(100), table.font.size=8) %>%
+#   fmt_number(columns = -c(1, 2), decimals=5) %>%
+#   # tab_spanner(label = md("**FairFace**"), columns = c(2, 3)) %>% 
+#   # tab_spanner(label = md("**DeepFace**"), columns = c(4, 5)) %>%
+#   # tab_row_group(label = md("**Gender**"), rows = c(15)) %>%
+#   # tab_row_group(label = md("**Race**"), rows = 10:14) %>%
+#   # tab_row_group(label = md("**Age**"), rows = 1:9) %>%
+#   # cols_label(starts_with("F1") ~ md("**F1**"), starts_with("Accuracy") ~ md("**Accuracy**")) %>%
+#   data_color(columns=3:6, palette="PiYG", domain=c(0, 1), alpha=0.75) %>%
+#   data_color(columns=9:10, palette="PiYG", alpha=0.75, reverse=T) %>%
+#   opt_interactive(use_search = T, use_filters = T, use_highlight = T, page_size_default = 15) %>%
+#   tab_caption("TODO 2 Table of F1 score and accuracy, by each category evaluated by the models")
 
 ```
 
 :::
+
+### p-value Critical Values
+
+From the previous table, we extract and highlight key values; namely, the p-values where we fail to reject the null hypothesis at a significance level of 99.7%, displayed in @tbl-perf-selected.
+
+```{r tbl-perf-selected}
+#| label: tbl-perf-selected
+#| tbl-cap: TODO 
+
+tbl_gt = combined_results %>% 
+  filter(p_value_f > 0.03 | p_value_d > 0.03) %>%
+  select(Race, Category, p_value_d, p_value_f) %>%
+  unite(cat, c(Race, Category)) %>%
+  # t() %>% data.frame() %>% row_to_names(1) %>%
+  # add_column("Model p-value" = c("DeepFace", "FairFace"), .before=1) %>%
+  gt(rowname_col = "cat") %>%
+  tab_options(column_labels.font.weight="bold", 
+          row_group.font.weight="bold",
+          # stub.font.weight="bold",
+          # table.width = pct(100), 
+          # TODO: DOESN'T WORK?!?!!
+          # row_group.as_column = T
+          ) %>%
+  fmt_number(decimals=4) %>%
+  tab_stubhead("Test Condition, Category") %>%
+  text_transform( \(x) str_remove(x, ".*_"), locations = cells_stub()) %>%
+  cols_label(p_value_d="DeepFace", p_value_f="FairFace") %>%
+  tab_spanner("p-value", columns=1:3) %>%
+  data_color(method="bin", palette = c("#B1DC96", "#F2B8D2"), bins=c(0, 0.03, 1)) %>%
+  tab_row_group("No Test Condition", rows=starts_with("All"), id="All")
+for (r in table_races) {
+  tbl_gt = tab_row_group(tbl_gt, sprintf("Race: %s", r), rows=starts_with(r), id=r)
+}
+
+# tbl_gt = gt_split(tbl_gt, row_every_n=5)
+
+tbl_gt
+```
 
 ### Statistical Power
 

@@ -504,12 +504,12 @@ From the report requirements
 <p>With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:</p>
 <div class="cell">
 <div class="cell-output-display">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Detection</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Detection Model</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Image Source</th>
+<th style="text-align: left;">Detection</th>
+<th style="text-align: left;">Detection Model</th>
+<th style="text-align: left;">Image Source</th>
 </tr>
 </thead>
 <tbody>
@@ -545,8 +545,6 @@ From the report requirements
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 <p>We processed each of the above setting permutations against approximately 9800 images, consisting of images from part 1 of 3 from the UTK datset. Each of the cropped images (cropped_UTK_dataset.csv) and uncropped images (uncropped_UTK_dataset.csv) came from the same underlying subject in each image; the only difference between each image was whether or not it was pre-processed before evaluation by each model. Having the same underlying source subject enables us to perform a direct comparison of results between cropped vs.&nbsp;in-the-wild images, and better support a conlcusion of which settings to use.</p>

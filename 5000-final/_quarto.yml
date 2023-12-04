@@ -27,6 +27,7 @@ book:
   page-navigation: true
   navbar:
     pinned: true
+  date: today
 
 bibliography: references.bib
 
