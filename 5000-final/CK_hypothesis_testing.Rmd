@@ -652,3 +652,129 @@ two_sample_result_matrix %>%
   select(c(source_prop, fairface_prop, fairface_p_value, fairface_power, deepface_prop, deepface_p_value, deepface_power)) %>%
   transpose()
 ```
+
+
+```{r PC_F1_ACC_add_on}
+#PC add F1 and Accuracy Scores
+library(broom)
+library(caret)
+#build a function to calc F1 and Acc scores similar to Carl's layout
+
+acc_f1 <- function(df,t_prop,t_race,t_gender,t_age){
+  tdf <- df %>% drop_na()
+  
+  if (t_age!='All' & t_prop!='age_bins'){
+    tdf <- tdf %>% filter(src_age_grp==t_age)
+  }
+  
+  if (t_gender!='All' & t_prop!='genders'){
+    tdf <- tdf %>% filter(src_gender==t_gender)
+  }
+  
+  if (t_race!='All' & t_prop != 'races'){
+    tdf <- tdf %>% filter(src_race == t_race)    
+  }
+
+  r_levels <- as.factor(unique(df$src_race))
+  a_levels <- as.factor(unique(df$src_age_grp))
+  g_levels <- as.factor(unique(df$src_gender))
+  tdf <- tdf %>% mutate(
+    src_race = factor(src_race,levels=r_levels),
+    src_gender = factor(src_gender,levels=g_levels),
+    src_age_grp = factor(src_age_grp,levels=a_levels),
+    pred_race = factor(pred_race,levels=r_levels),
+    pred_gender = factor(pred_gender,levels=g_levels),
+    pred_age_grp = factor(pred_age_grp,levels=a_levels)
+  )
+  if (t_prop == 'age_bins'){
+    res <- confusionMatrix(tdf$pred_age_grp,tdf$src_age_grp,mode='everything')[['byClass']]
+  } else if (t_prop =='genders'){
+    resF <- confusionMatrix(tdf$pred_gender,tdf$src_gender,mode='everything',positive='Female')[['byClass']]
+    resM <- confusionMatrix(tdf$pred_gender,tdf$src_gender,mode='everything',positive='Male')[['byClass']]
+    g_names <- c(
+      "Class: Female","Class: Male"
+    )
+    res <- cbind(resF,resM)
+    colnames(res) <- g_names
+    res <- t(res)
+  } else if (t_prop == 'races'){
+    res <- confusionMatrix(tdf$pred_race,tdf$src_race,mode='everything')[['byClass']]
+  } else {
+    res <-  c()
+  }
+  
+  if (length(res) > 0 & 'Balanced Accuracy' %in% colnames(res) & 'F1' %in% colnames(res)){
+
+    acc <- res[,'Balanced Accuracy']  
+    f1 <- res[,'F1']
+  
+    names(acc) <- acc %>% names() %>% str_replace("Class: ","")
+    names(f1) <- f1 %>% names() %>% str_replace("Class: ","")
+    
+    n <- c(names(acc),names(f1))
+    
+    comb <- tibble(namesf1=names(f1),namesAcc=names(acc),f1,acc)
+    
+    res <- tibble(
+      test_prop = t_prop,
+      test_race = t_race,
+      test_gender = t_gender,
+      test_age = t_age,
+      F1 = f1,
+      Accuracy = acc,
+      names = names(f1)
+    )
+    if (t_prop=='age_bins') {
+      res <- res %>% filter(names==t_age) %>% select(test_prop:Accuracy)
+    }
+      
+    if (t_prop=='genders') {
+      res <- res %>% filter(names==t_gender) %>% select(test_prop:Accuracy)
+    }
+    
+    if (t_prop=='races'){
+      res <- res %>% filter(names==t_race) %>% select(test_prop:Accuracy)
+    }
+    res
+  }
+}
+
+#get the same values we'll need for iteration on calling acc_f1
+verify <- two_sample_result_matrix %>% select(test_prop,test_age,test_gender,test_race)
+
+#rowwise basically allows us to iterate per-row of the dataframe and call the function
+#run against fairface
+FF_f1_acc <- verify %>% rowwise %>% reframe(out=acc_f1(fairface_df,test_prop,test_race,test_gender,test_age)) %>% ungroup() %>% unnest(cols=c(out))
+
+#run against deepface
+DF_f1_acc <- verify %>% rowwise %>% reframe(out=acc_f1(deepface_df,test_prop,test_race,test_gender,test_age)) %>% ungroup() %>% unnest(cols=c(out))
+
+#combine the results of FairFace and DeepFace F1/ACC
+total_f1_acc <- FF_f1_acc %>% inner_join(DF_f1_acc,suffix=c('.FF','.DF'),by=c('test_prop'='test_prop','test_age'='test_age','test_gender'='test_gender','test_race'='test_race'))
+
+#merge the F1/ACC with the two sample results
+combined_results <- two_sample_result_matrix %>% inner_join(total_f1_acc,by=c('test_prop'='test_prop','test_age'='test_age','test_gender'='test_gender','test_race'='test_race'))
+
+#extract the columns only pertinent to the source and to deepface
+df_results <- combined_results %>% select(test_prop:source_prop,deepface_n,deepface_prop,deepface_p_value,deepface_power,F1.DF,Accuracy.DF)
+
+#extract the columns only pertinent to the source and to fairface
+ff_results <- combined_results %>% select(test_prop:source_prop,fairface_n,fairface_prop,fairface_p_value,fairface_power,F1.FF,Accuracy.FF)
+
+#rename the columns from fairface and deepface to have the same names.
+names(ff_results) <- c("test_prop","test_age","test_gender","test_race","source_n","source_prop","model_n","model_prop","model_p_value","model_power","model_F1","model_Accuracy")
+
+names(df_results) <- c("test_prop","test_age","test_gender","test_race","source_n","source_prop","model_n","model_prop","model_p_value","model_power","model_F1","model_Accuracy")
+
+#add a model column to both frames to tag which model was used to get the values
+ff_results <- mutate(ff_results,model='FairFace')
+
+df_results <- mutate(df_results,model='DeepFace')
+
+#union the two results to get the full answer in a cleaner format.
+full_results <- union(ff_results,df_results)
+
+#full_results %>% write_csv('C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\combined_p_val_F1_acc.csv')
+
+```
+
