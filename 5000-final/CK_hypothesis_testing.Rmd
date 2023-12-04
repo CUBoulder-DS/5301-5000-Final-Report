@@ -315,14 +315,14 @@ run_two_sample_prop_tests <- function(source_df, fairface_df, deepface_df, test_
     fairface_test <- 0
   } else {
     fairface_test <- prop.test(x = c(source_count, fairface_count),
-                               n = c(source_n, fairface_n))$p.value
+                               n = c(source_n, fairface_n), correct = FALSE)$p.value
   }
   
   if (source_n == 0 || deepface_n == 0) {
     deepface_test <- 0
   } else {
     deepface_test <- prop.test(x = c(source_count, deepface_count),
-                               n = c(source_n, deepface_n))$p.value
+                               n = c(source_n, deepface_n), correct = FALSE)$p.value
   }
   
   # calculate power for fairface and deepface hypothesis tests
@@ -336,7 +336,7 @@ run_two_sample_prop_tests <- function(source_df, fairface_df, deepface_df, test_
     fairface_power = pwr.2p2n.test(h = fairface_h,
                                    n1 = source_n, n2 = fairface_n,
                                    sig.level = 0.003,
-                                   alternative = "greater")$power
+                                   alternative = "two.sided")$power
   } else {
     fairface_power = 0
   }
@@ -345,7 +345,7 @@ run_two_sample_prop_tests <- function(source_df, fairface_df, deepface_df, test_
   deepface_power = pwr.2p2n.test(h = deepface_h,
                                  n1 = source_n, n2 = deepface_n,
                                  sig.level = 0.003,
-                                 alternative = "greater")$power
+                                 alternative = "two.sided")$power
   } else {
     deepface_power = 0
   }

@@ -11,7 +11,7 @@
 
 <meta name="author" content="Carl Klein" />
 
-<meta name="date" content="2023-12-03" />
+<meta name="date" content="2023-12-04" />
 
 <title>CK_hypothesis_testing</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">CK_hypothesis_testing</h1>
 <h4 class="author">Carl Klein</h4>
-<h4 class="date">2023-12-03</h4>
+<h4 class="date">2023-12-04</h4>
 
 </div>
 
@@ -728,14 +728,14 @@ for the deepface model</li>
     fairface_test &lt;- 0
   } else {
     fairface_test &lt;- prop.test(x = c(source_count, fairface_count),
-                               n = c(source_n, fairface_n))$p.value
+                               n = c(source_n, fairface_n), correct = FALSE)$p.value
   }
   
   if (source_n == 0 || deepface_n == 0) {
     deepface_test &lt;- 0
   } else {
     deepface_test &lt;- prop.test(x = c(source_count, deepface_count),
-                               n = c(source_n, deepface_n))$p.value
+                               n = c(source_n, deepface_n), correct = FALSE)$p.value
   }
   
   # calculate power for fairface and deepface hypothesis tests
@@ -749,7 +749,7 @@ for the deepface model</li>
     fairface_power = pwr.2p2n.test(h = fairface_h,
                                    n1 = source_n, n2 = fairface_n,
                                    sig.level = 0.003,
-                                   alternative = &quot;greater&quot;)$power
+                                   alternative = &quot;two.sided&quot;)$power
   } else {
     fairface_power = 0
   }
@@ -758,7 +758,7 @@ for the deepface model</li>
   deepface_power = pwr.2p2n.test(h = deepface_h,
                                  n1 = source_n, n2 = deepface_n,
                                  sig.level = 0.003,
-                                 alternative = &quot;greater&quot;)$power
+                                 alternative = &quot;two.sided&quot;)$power
   } else {
     deepface_power = 0
   }
@@ -810,11 +810,11 @@ example</code></pre>
 ##              test_race               source_n            source_prop 
 ##                  &quot;All&quot;                &quot;24102&quot;    &quot;0.478010123641192&quot; 
 ##             fairface_n          fairface_prop       fairface_p_value 
-##                &quot;24091&quot;    &quot;0.479764227304803&quot;    &quot;0.706692464186261&quot; 
+##                &quot;24091&quot;    &quot;0.479764227304803&quot;    &quot;0.699925934607135&quot; 
 ##         fairface_power             deepface_n          deepface_prop 
-## &quot;0.000864551916221675&quot;                &quot;24053&quot;    &quot;0.383320167962416&quot; 
+##  &quot;0.00530644028473707&quot;                &quot;24053&quot;    &quot;0.383320167962416&quot; 
 ##       deepface_p_value         deepface_power 
-## &quot;1.17669812409091e-97&quot;                    &quot;1&quot;</code></pre>
+## &quot;9.69698799739197e-98&quot;                    &quot;1&quot;</code></pre>
 <pre class="r"><code># return the pertinent information for a test ran on the proportion of females given they are indian
 example &lt;- run_two_sample_prop_tests(source_df, fairface_df, deepface_df, &#39;genders&#39;, &#39;All&#39;, &#39;Female&#39;, &#39;Indian&#39;)
 example</code></pre>
@@ -823,11 +823,11 @@ example</code></pre>
 ##              test_race               source_n            source_prop 
 ##               &quot;Indian&quot;                 &quot;4027&quot;    &quot;0.432580084430097&quot; 
 ##             fairface_n          fairface_prop       fairface_p_value 
-##                 &quot;2483&quot;    &quot;0.443012484897302&quot;    &quot;0.424490058914896&quot; 
+##                 &quot;2483&quot;    &quot;0.443012484897302&quot;    &quot;0.409723921590758&quot; 
 ##         fairface_power             deepface_n          deepface_prop 
-## &quot;0.000177189205639555&quot;                 &quot;1470&quot;    &quot;0.349659863945578&quot; 
+##   &quot;0.0161071203046988&quot;                 &quot;1470&quot;    &quot;0.349659863945578&quot; 
 ##       deepface_p_value         deepface_power 
-## &quot;3.78091228273428e-08&quot;    &quot;0.997715920510549&quot;</code></pre>
+## &quot;3.17024142170306e-08&quot;    &quot;0.995552316256151&quot;</code></pre>
 <pre class="r"><code># create an empty tibble to store results matching the run_prop_tests return vector
 result_matrix &lt;- tibble(
   test_prop = character(),
@@ -1107,16 +1107,16 @@ Fairface output is statistically different than the proportion of
 ## [1] &quot;0.479764227304803&quot;
 ## 
 ## [[1]]$fairface_p_value
-## [1] &quot;0.706692464186261&quot;
+## [1] &quot;0.699925934607135&quot;
 ## 
 ## [[1]]$fairface_power
-## [1] &quot;0.000864551916221675&quot;
+## [1] &quot;0.00530644028473707&quot;
 ## 
 ## [[1]]$deepface_prop
 ## [1] &quot;0.383320167962416&quot;
 ## 
 ## [[1]]$deepface_p_value
-## [1] &quot;1.17669812409091e-97&quot;
+## [1] &quot;9.69698799739197e-98&quot;
 ## 
 ## [[1]]$deepface_power
 ## [1] &quot;1&quot;</code></pre>
@@ -1136,16 +1136,16 @@ proportion of those who <em>Female</em>, given that they were
 ## [1] &quot;0.464958553127355&quot;
 ## 
 ## [[1]]$fairface_p_value
-## [1] &quot;0.0415523560425101&quot;
+## [1] &quot;0.0394279899425558&quot;
 ## 
 ## [[1]]$fairface_power
-## [1] &quot;0.245798687873687&quot;
+## [1] &quot;0.1820115002838&quot;
 ## 
 ## [[1]]$deepface_prop
 ## [1] &quot;0.240584598088814&quot;
 ## 
 ## [[1]]$deepface_p_value
-## [1] &quot;3.92558655764136e-114&quot;
+## [1] &quot;2.32278403399e-114&quot;
 ## 
 ## [[1]]$deepface_power
 ## [1] &quot;1&quot;</code></pre>
