@@ -176,13 +176,11 @@ The primary motivation behind this research is to determine the degree in which 
 
 ### FairFace 
 
-Developed by researchers at University of California, Los Angeles, FairFace was specifically designed to mitigate gender and racial biases. The model was trained on 100K+ face images of people of various ethnicities with normal distribution (equal stratification) across all groups. Beside facial recognition model, FairFace also provided the dataset which it was trained on. The dataset is highly popular among
-
-We came across this model when we were searching for an
+Developed by researchers at University of California, Los Angeles, FairFace was specifically designed to mitigate gender and racial biases. The [model](https://github.com/dchen236/FairFace) was trained on 100K+ face images of people of various ethnicities with approximately equal stratification across all groups. Beside facial recognition model, FairFace also provided the [dataset](https://github.com/joojs/fairface) which it was trained on. The dataset is immensely popular among facial recognition algorithm developers. Owing to its reputation in bias mitigation, FairFace appears to be a valuable piece for the objective of this research.
 
 ### DeepFace
 
-DeepFace is a lightweight open-source model developed and used by Meta (Facebook). Since the model is used by one of the largest social media company, it is widely known among developers. Therefore, its popularity prompts us to evaluate its performance. It should be noted that this model of DeepFace is a free open-source version. It is highly likely that this version is less advanced than what Meta is actually using. Thus, we should not view the result of this model as a representative of Meta's algorithm.
+DeepFace is a lightweight open-source model developed and used by Meta (Facebook). Since the model is used by one of the largest social media company, it is widely known among developers. Therefore, its popularity prompts us to evaluate its performance. It should be noted that this model of DeepFace is a [free open source version](https://github.com/serengil/deepface). It is highly likely that this version is less advanced than what Meta is actually utilizing. Thus, we should not view the result of this model as a representative of Meta's algorithm.
 
 ## Dataset Features 
 
