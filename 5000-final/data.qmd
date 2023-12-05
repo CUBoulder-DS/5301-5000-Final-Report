@@ -18,7 +18,7 @@ The dataset has three main sets available for download from the main page: A set
 
 ![Age=80, Gender=M, Race=Asian](images/utk_imgs/80_0_2_20170111201008732.jpg){#fig-img3}
 
-Example face images from the UTK dataset [@utkDataset] with their associated given labels.
+Example face images from the UTK dataset [@utkdataset] with their associated given labels.
 :::
 
 <!-- CK -->
@@ -166,7 +166,7 @@ t <- tibble(filenames=f,purpose=p,recommendations=r)
 
 ### Motivation for the Selection of UTKFace Dataset
 
-In 2018, [Joy Buolamwini](https://www.media.mit.edu/people/joyab/overview/), a PhD candidate at MIT Media Lab, published a thesis on gender and racial biases in facial recognition in algorithms. In her paper, she tested facial recongition softwares from multiple large technology companies such as Microsoft, IBM, and Amazom on its effectiveness for different demographic groups. Her research led to a surprising conclusion that most AI algorithms offer a substantially less accurate prediction for feminine/female faces, particularly those with dark skin color.
+In 2018, [Joy Buolamwini](https://www.media.mit.edu/people/joyab/overview/) [paper link](https://www.media.mit.edu/publications/gender-shades-intersectional-accuracy-disparities-in-commercial-gender-classification/), a PhD candidate at MIT Media Lab, published a thesis on gender and racial biases in facial recognition in algorithms. In her paper, she tested facial recongition softwares from multiple large technology companies such as Microsoft, IBM, and Amazom on its effectiveness for different demographic groups. Her research led to a surprising conclusion that most AI algorithms offer a substantially less accurate prediction for feminine/female faces, particularly those with dark skin color.
 
 To determine the degree in which bias is still present in modern facial recognition models, a dataset which comprise of face images with high diversity in regards to ethinicty is required. Upon searching, UTKFace came out as the largest dataset which fit the preferred qualifications.
 

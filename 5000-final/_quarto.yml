@@ -22,7 +22,7 @@ book:
   downloads: [pdf]
   references: references.bib # Unsure if needed
   output-file: STAT_5000_Final_Report # PDF filename
-  cover-image: cover.png
+  cover-image: images/cover.png
   repo-url: "https://github.com/CUBoulder-DS/5301-5000-Final-Report"
   page-navigation: true
   navbar:
@@ -53,6 +53,7 @@ format:
       - \floatplacement{image}{H}
     hyperrefoptions:
       - linktoc=all
+    latex-output-dir: "../docs"
     # pdf-engine: pdflatex
 
 ## Extra settings
