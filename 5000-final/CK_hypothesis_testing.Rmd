@@ -788,6 +788,11 @@ full_results %>% write_csv('../data/combined_p_val_F1_acc.csv')
 ```
 
 ```{r twoSample_T_Tests}
+
+get_mean <- function(vector,ind){
+  mean(vector[,ind])  
+}
+
 t_tests <- function(df,age_col,t_prop,t_race,t_gender,t_age){
   tdf <- df %>% drop_na()
   
@@ -804,21 +809,61 @@ t_tests <- function(df,age_col,t_prop,t_race,t_gender,t_age){
   }
   
   x <- tdf %>% pull(src_age)
+  x_boot <- replicate(10000,sample(x,size=500,replace=T))
+  x_samp_means <- sapply(c(1:10000),get_mean,vector=x_boot)
   #print(x)
   y <- tdf %>% pull(!!as.symbol(age_col))
+  y_boot <- replicate(10000,sample(y,size=500,replace=T))
+  y_samp_means <- sapply(c(1:10000),get_mean,vector=y_boot)
   #print(y)
-  p_val <- t.test(x,y,var.equal=TRUE,conf.level=0.997)$p.value
+  p_val <- t.test(x_samp_means,y_samp_means,var.equal=TRUE,conf.level=0.997,alternative=)$p.value
   #do a power test
   #use +/- 5 as the effect size (so it's comparable to FairFace)
   #sig level of .997, two-sided test.
-  test_power <- pwr.t2n.test(n1=length(x),n2=length(y),d=5,sig.level=.003,alternative = 'two.sided')$power
+  test_power <- pwr.t2n.test(n1=length(x_samp_means),n2=length(y_samp_means),d=0.8,sig.level=.003,alternative = 'two.sided')$power
   res <- tibble(
     test_prop = t_prop,
     test_gender = t_gender,
     test_race = t_race,
-    p_value = p_val,
-    power = test_power
+    p_value = as.character(p_val),
+    power = as.character(test_power)
   )
+  ress
+}
+
+bootstrapped_means <- function(df,age_col,t_prop,t_race,t_gender,t_age){
+  tdf <- df %>% drop_na()
+  
+  if (t_age!='All' & t_prop!='age_bins'){
+    tdf <- tdf %>% filter(src_age_grp==t_age)
+  }
+  
+  if (t_gender!='All' & t_prop!='genders'){
+    tdf <- tdf %>% filter(src_gender==t_gender)
+  }
+  
+  if (t_race!='All' & t_prop != 'races'){
+    tdf <- tdf %>% filter(src_race == t_race)    
+  }
+  x_boot <- tdf %>% pull(src_age)
+  x_bootstrap <- replicate(10000,sample(x_boot,size=500,replace=T))
+  x_samp_means <- sapply(c(1:10000),get_mean,vector=x_bootstrap)
+  x_norm_means <- (x_samp_means-mean(x_samp_means))/sd(x_samp_means)
+  y_boot <- tdf %>% pull(!!as.symbol(age_col))
+  y_bootstrap <- replicate(10000,sample(y_boot,size=500,replace=T))
+  y_samp_means <- sapply(c(1:10000),get_mean,vector=y_bootstrap)
+  #note - using mean of x (source) under assumption that the null hypothesis is true.
+  y_norm_means <- (y_samp_means-mean(x_samp_means))/sd(x_samp_means)
+  res <- tibble(
+    test_prop=replicate(10000,t_prop),
+    test_race=replicate(10000,t_race),
+    test_gender=replicate(10000,t_gender),
+    src=x_samp_means,
+    pred=y_samp_means,
+    src.norm=x_norm_means,
+    pred.norm=y_norm_means
+  )
+  res
 }
 
 #modify the verify variable to include only age bin tests
@@ -828,12 +873,77 @@ samp_means_tests <- verify %>% filter(test_prop == 'age_bins') %>%
   mutate(key=str_c(test_prop,test_gender,test_race)) %>% filter(!duplicated(key)) %>% 
   select(test_prop:test_race)
 
+set.seed(100)
+DF_samp_means <- samp_means_tests %>% 
+  rowwise %>% 
+  reframe(
+    out=bootstrapped_means(
+      deepface_df,
+      'pred_age_DF_only',
+      t_prop=test_prop,
+      t_race=test_race,
+      t_gender=test_gender,
+      t_age=test_age
+    )
+  ) %>% ungroup() %>% unnest(cols=c(out))
+  
+
+#run the tests for all combos on DeepFace
+set.seed(100)
 DF_t_test_results <- samp_means_tests %>% 
   rowwise %>% 
-  reframe(out=t_tests(deepface_df,'pred_age_DF_only',t_prop=test_prop,t_race=test_race,t_gender=test_gender,t_age=test_age)) %>% 
+  reframe(
+    out=t_tests(
+      deepface_df,
+      'pred_age_DF_only',
+      t_prop=test_prop,
+      t_race=test_race,
+      t_gender=test_gender,
+      t_age=test_age)
+  ) %>% 
   ungroup() %>% unnest(cols=c(out))
 
-#DF_t_test_results %>% write_csv("C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\DF_t_tests.csv")
+# set.seed(100)
+# FF_lower_samp_means <- samp_means_tests %>% 
+#   rowwise %>% 
+#   reframe(
+#     out=bootstrapped_means(
+#       fairface_df,
+#       'pred_age_lower',
+#       t_prop=test_prop,
+#       t_race=test_race,
+#       t_gender=test_gender,
+#       t_age=test_age
+#     )
+#   ) %>% ungroup() %>% unnest(cols=c(out))
+# 
+# set.seed(100)
+# FF_lower_t_test_results <- samp_means_tests %>% 
+#   rowwise %>% 
+#   reframe(
+#     out=t_tests(
+#       fairface_df,
+#       'pred_age_lower',
+#       t_prop=test_prop,
+#       t_race=test_race,
+#       t_gender=test_gender,
+#       t_age=test_age
+#     )
+#   ) %>% ungroup() %>% unnest(cols=c(out))
+
 DF_t_test_results %>% write_csv("../data/DF_t_tests.csv")
+DF_samp_means %>% write_csv("../data/DF_sample_means.csv")
 DF_t_test_results
+
+
 ```
+
+```{r}
+#example of plotting the sample means after grabbing them all.
+#in this case, seems like we're good on our p-value anc power calcs.
+DF_samp_means %>% filter(test_race=='White',test_gender=='Male') %>% 
+  ggplot()+
+  geom_density(aes(x=src,color='Source'))+
+  geom_density(aes(x=pred,color='Predicted'))+xlim(15,45)
+```
+

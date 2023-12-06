@@ -23,6 +23,11 @@ Example face images from the UTK dataset [@utkdataset] with their associated giv
 
 <!-- CK -->
 
+<!--PC-->
+The source data, with respect to age, does not tightly adhere to the normal distribution in all cases.  This may impact our results unless we perform some other means of evaluating age (i.e. proportion analysis by age group, or bootstrapping)
+
+
+
 ::: {.content-visible when-format="html"}
 ::: {#fig-data-eda}
 ```{=html}
@@ -72,7 +77,7 @@ Feel free to add anything else that you think is necessary for understanding the
 :::
 
 
-```{r}
+```{r extraCodeOnOurData}
 suppressPackageStartupMessages(library(tidyverse))
 #this is relocated to Readme.md.  I will comment out the code, but retain it
 #reasoning:  may need it in the future for other purposes
@@ -224,7 +229,10 @@ Additionally, FairFace only provides a predicted age range as opposed to a speci
 
 With the above considerations in mind, the following output features are of import to the team:
 
-```{r}
+```{r tbl-FF-output-format}
+#| label: tbl-FF-output-format
+#| tbl-cap: Fairface Output Format
+# PC
 columns<-c("name_face_align","race_preds_fair","gender_preds_fair7","age_preds_fair")
 defs<-c("The name and path of the file upon which FairFace made predictions","The predicted race of the image subject","The predicted gender of the image subject","The predicted age range of the image subject")
 types<-c("String","String","String","String")
@@ -240,7 +248,9 @@ Default outputs have a wide-range of information for the user.  In addition to p
 
 We hone in on the following select features from DeepFace outputs to have the ability to cross-compare between UTKFace, FairFace, and DeepFace:
 
-```{r}
+```{r tbl-DF-output-format}
+#| label: tbl-DF-output-format
+#| tbl-cap: Deepface Output Format
 columns <- c("Age","Dominant Gender","Dominant Race")
 types <- c("Integer","String","String")
 defs <- c("The predicted age of the image subject","The predicted gender of the iamge subject","The predicted race of the image subject")
@@ -320,7 +330,10 @@ We converted the simple script to a class in Python without addressing any featu
 
 With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:
 
-```{r}
+```{r tbl-Permutation-Listing}
+#| label: tbl-Permutation-Listing
+#| tbl-cap: List of Permutation Evaluations
+# PC
 suppressPackageStartupMessages(library(tidyverse))
 names <- c("Detection","Detection Model","Image Source")
 det <- c("Enabled","Enabled","Enabled","Enabled","Disabled","Disabled")
@@ -356,7 +369,10 @@ knitr::kable(tib)
 
 We processed each of the above setting permutations against approximately 9800 images, consisting of images from part 1 of 3 from the UTK datset.  Each of the cropped images (cropped_UTK_dataset.csv) and uncropped images (uncropped_UTK_dataset.csv) came from the same underlying subject in each image; the only difference between each image was whether or not it was pre-processed before evaluation by each model.  Having the same underlying source subject enables us to perform a direct comparison of results between cropped vs. in-the-wild images, and better support a conlcusion of which settings to use.
 
-```{r}
+```{r tbl-Permutation-Results}
+#| label: tbl-Permutation-Results
+#| tbl-cap: Results of Permutation Evaluation
+#LN, DV
 # Load required libraries
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(knitr))
@@ -428,11 +444,20 @@ Due to the resource-intensive design of FairFace, our script enables multiproces
 
 We attempted the same multiprocessing methodology for DeepFace, but encountered issues with silent errors and halting program execution when iterating over all images using DeepFace.  To alleviate this challenge, we processed DeepFace in a single-threaded manner, and with smaller portions of the dataset vs. pursuing an all-in-one go execution.  We proceeded to store the data for each of these smaller runs in multiple output files to combine once we completed all processing requirements.
 
-## Result Output Format
 
-The following table outlines, after the input and output data modifications, the final format of our data for use in our analyses.  This file is stored in the /data folder as [MasterDataFrame.csv](https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv)
+## Model Evaluation Data
+
+The final listing of all inputs and outputs from each model, with standardization methods discussed in this section applied, are stored here: [MasterDataFrame.csv](https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv)
 
 ```{r}
+## Result Output Format
+
+# The following table outlines, after the input and output data modifications, the final format of our data for use in our analyses.  This file is stored in the /data folder as [MasterDataFrame.csv](https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv)
+```
+
+```{r tbl-All-Output-Data}
+#| label: tbl-All-Output-Data
+#| tbl-cap: Data Format for All Inputs and Outputs
 column_names <- c(
 "img_path",
 "file",
@@ -486,5 +511,5 @@ data_types <- c(
 
 column_defs <- tibble("Column Name"=column_names,"Definition"=definitions, "Data Type"=data_types)
 
-knitr::kable(column_defs)
+#knitr::kable(column_defs)
 ```
