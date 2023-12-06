@@ -438,6 +438,7 @@ for (age in pull(age_bins)) {
 # save result_matrix
 #write_csv(result_matrix, "C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results.csv")
 #write_csv(result_matrix, "c:/Users/pconn/OneDrive/Desktop/Stat-Git/data/pvalue_results.csv")
+result_matrix %>% write_csv('../data/pvalue_results.csv')
 ```
 
 ```{r two sample proportion, warning = FALSE}
@@ -487,6 +488,7 @@ for (age in pull(age_bins)) {
 # save two_sample_result_matrix
 #write_csv(two_sample_result_matrix, "C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results_two_sample.csv")
 #write_csv(two_sample_result_matrix,"C:/Users/pconn/OneDrive/Desktop/Stat-Git/data/p_value_results_two_sample.csv")
+two_sample_result_matrix %>% write_csv('../data/p_value_results_two_sample.csv')
 ```
 
 ## Hypothesis Testing - Single Sample
@@ -781,8 +783,8 @@ df_results <- mutate(df_results,model='DeepFace')
 #union the two results to get the full answer in a cleaner format.
 full_results <- union(ff_results,df_results)
 
-full_results %>% write_csv('C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\combined_p_val_F1_acc.csv')
-
+#full_results %>% write_csv('C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\combined_p_val_F1_acc.csv')
+full_results %>% write_csv('../data/combined_p_val_F1_acc.csv')
 ```
 
 ```{r twoSample_T_Tests}
@@ -809,7 +811,7 @@ t_tests <- function(df,age_col,t_prop,t_race,t_gender,t_age){
   #do a power test
   #use +/- 5 as the effect size (so it's comparable to FairFace)
   #sig level of .997, two-sided test.
-  test_power <- pwr.t2n.test(n1=length(x),n2=length(y),d=5,sig.level=.997,alternative = 'two.sided')$power
+  test_power <- pwr.t2n.test(n1=length(x),n2=length(y),d=5,sig.level=.003,alternative = 'two.sided')$power
   res <- tibble(
     test_prop = t_prop,
     test_gender = t_gender,
@@ -831,6 +833,7 @@ DF_t_test_results <- samp_means_tests %>%
   reframe(out=t_tests(deepface_df,'pred_age_DF_only',t_prop=test_prop,t_race=test_race,t_gender=test_gender,t_age=test_age)) %>% 
   ungroup() %>% unnest(cols=c(out))
 
-DF_t_test_results %>% write_csv("C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\DF_t_tests.csv")
-
+#DF_t_test_results %>% write_csv("C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\DF_t_tests.csv")
+DF_t_test_results %>% write_csv("../data/DF_t_tests.csv")
+DF_t_test_results
 ```

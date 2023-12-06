@@ -62,6 +62,9 @@ source_df <- output_df %>%
 # df_name <- 'https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/pvalue_results_two_sample.csv'
 # p_value_results <- read_csv(df_name)
 
+#added DeepFace only T-testing for age when controlled for gender/race
+DeepFace_Only_T_tests <- read_csv('https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/DF_t_tests.csv') %>% select(test_gender:power) %>% rename(gender=test_gender,race=test_race)
+
 stats_results <- read_csv('https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/combined_p_val_F1_acc.csv')
 
 table_ages <- c("0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130")
@@ -468,7 +471,6 @@ view_results %>%
   unite("test_subcat", test_age:test_race, remove=T, na.rm=T) %>%
   gt()
 
-
 # tbl_gt = combined_results %>% 
 #   filter(p_value_f > 0.03 | p_value_d > 0.03) %>%
 #   select(Race, Category, p_value_d, p_value_f) %>%
@@ -499,6 +501,31 @@ view_results %>%
 # tbl_gt
 ```
 
+```{r tbl-DF-T-Tests, warning=F}
+#| label: tbl-DF-T-Tests
+#| tbl-cap: Rejected Null Hypotheses for DeepFace Mean Age T-Testing
+
+#PC
+##ran t tests to compare mean ages between source data and DeepFace
+DeepFace_Only_T_tests %>%
+  filter(p_value <0.003,power > 0.8) %>%
+  gt()
+```
+
+T-Test Parameters: 
+
+* Confidence level: 0.997
+
+* Two-sided test
+
+Statistical Power T-Test Parameters: 
+
+* Effect Size: +/- 5 years in age
+
+* Significance level: 0.003
+
+* Two-sided test
+
 ### Comparison Plots
 
 ```{r, warning=F}
@@ -514,24 +541,24 @@ ggplot(stats_results) +
 #   geom_point(aes(x=model_power, y=model_p_value, color=model))
 ```
 
-### Statistical Power
+### Statistical Power - TODO REMOVE
 
 $$
 \beta = P\bigg(\bigg|\frac{\sqrt{n}\cdot\hat{p}-p_a}{\sqrt{p_a(1-p_a)}}\bigg|\geq\frac{\sqrt{n}\cdot p_0-p_a}{\sqrt{p_0(1-p_0)}}\bigg)
 $$
+```{r}
+# Our selected level of significance is 99.7% (3-sigma). Type-II error is denoted by $\beta$ above, and Power will be $1-\beta$
 
-Our selected level of significance is 99.7% (3-sigma). Type-II error is denoted by $\beta$ above, and Power will be $1-\beta$
+# With $p_0$ being our *assumed* population proportion (from the source dataset and what we used in our tests), $p_a$ being the *actual* population proportion (from one or more of the below methods), $n$ being the number of predicted members of a racial group (i.e. "Indian"),
 
-With $p_0$ being our *assumed* population proportion (from the source dataset and what we used in our tests), $p_a$ being the *actual* population proportion (from one or more of the below methods), $n$ being the number of predicted members of a racial group (i.e. "Indian"),
+# -   For Gender - assume that sex at birth is a bernoulli trial, over time, the proportion for both genders should be 0.5
 
--   For Gender - assume that sex at birth is a bernoulli trial, over time, the proportion for both genders should be 0.5
+# -   For age groups - assume that age has a true normal distribution. Each race may have different means and standard deviations for their distribution of age, but still adhere to a normal distribution. The "population" proportions may be a bit more challenging to calculate, but under this framework, we may be able to get there.
 
--   For age groups - assume that age has a true normal distribution. Each race may have different means and standard deviations for their distribution of age, but still adhere to a normal distribution. The "population" proportions may be a bit more challenging to calculate, but under this framework, we may be able to get there.
+#     -   May be able to get via bootstrapping the source dataset, average age by race - I think that's what we did in our last project?
 
-    -   May be able to get via bootstrapping the source dataset, average age by race - I think that's what we did in our last project?
-
-    -   Could look at external data? May not have time to look through everything.
-
+#     -   Could look at external data? May not have time to look through everything.
+```
 ```{r PowerCalcs}
 
 TypeII <- function(p0,pa,n){
