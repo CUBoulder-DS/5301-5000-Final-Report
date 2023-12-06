@@ -103,10 +103,10 @@ get_proportion <- function(df, evaluate_column, evaluate_value) {
     0
   } else {
     result <- df %>% group_by(!!as.symbol(evaluate_column)) %>%
-      summarise(n=n())%>%
-      mutate(prop=n/sum(n))%>%
-      filter(!!as.symbol(evaluate_column)==evaluate_value)%>%
-      select(prop)%>%unlist()%>% unname()
+      summarise(n=n()) %>%
+      mutate(prop=n/sum(n)) %>%
+      filter(!!as.symbol(evaluate_column)==evaluate_value) %>%
+      select(prop) %>% unlist() %>% unname()
   }
 }
 ```
@@ -124,14 +124,14 @@ get_proportion <- function(df, evaluate_column, evaluate_value) {
 ```{r}
 # function by PC, altered for count by CK
 get_count <- function(df, evaluate_column, evaluate_value) {
-  x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value)%>% count() %>% unlist() %>% unname()
+  x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value) %>% count() %>% unlist() %>% unname()
   if (x==0){
     0
   } else {
     result <- df %>% group_by(!!as.symbol(evaluate_column)) %>%
       summarise(n=n()) %>%
       filter(!!as.symbol(evaluate_column)==evaluate_value) %>%
-      select(n) %>% unlist()%>% unname()
+      select(n) %>% unlist() %>% unname()
   }
 }
 ```
@@ -312,28 +312,33 @@ run_two_sample_prop_tests <- function(source_df, fairface_df, deepface_df, test_
   
   # calculate p-values for the fairface and deepface model results
   if (source_n == 0 || fairface_n == 0) {
-    fairface_test <- 0
+    fairface_test <- NA
   } else {
     fairface_test <- prop.test(x = c(source_count, fairface_count),
-                               n = c(source_n, fairface_n), correct = FALSE)$p.value
+                               n = c(source_n, fairface_n))$p.value
   }
   
   if (source_n == 0 || deepface_n == 0) {
-    deepface_test <- 0
+    deepface_test <- NA
   } else {
     deepface_test <- prop.test(x = c(source_count, deepface_count),
-                               n = c(source_n, deepface_n), correct = FALSE)$p.value
+                               n = c(source_n, deepface_n))$p.value
   }
   
   # calculate power for fairface and deepface hypothesis tests
   # effect size is calculated by 2(arcsin(sqrt(p1)) - arcsin(sqrt(p2))), denoted by h
-  source_prop = ifelse(is.nan(source_count/source_n), 0, source_count/source_n)
-  fairface_prop = ifelse(is.nan(fairface_count/fairface_n), 0, fairface_count/fairface_n)
-  deepface_prop = ifelse(is.nan(deepface_count/deepface_n), 0, deepface_count/deepface_n)
-  fairface_h = 2 * (asin(sqrt(source_prop)) - asin(sqrt(fairface_prop)))
-  deepface_h = 2 * (asin(sqrt(source_prop)) - asin(sqrt(deepface_prop)))
+  source_prop = ifelse(is.nan(source_count/source_n)|is.infinite(source_count/source_n),
+                       NA, source_count/source_n)
+  fairface_prop = ifelse(is.nan(fairface_count/fairface_n)|is.infinite(fairface_count/fairface_n),
+                         NA, fairface_count/fairface_n)
+  deepface_prop = ifelse(is.nan(deepface_count/deepface_n)|is.infinite(deepface_count/deepface_n),
+                         NA, deepface_count/deepface_n)
+  
+  # fairface_h = 2 * (asin(sqrt(source_prop)) - asin(sqrt(fairface_prop)))
+  # deepface_h = 2 * (asin(sqrt(source_prop)) - asin(sqrt(deepface_prop)))
+  
   if (fairface_n > 1) {
-    fairface_power = pwr.2p2n.test(h = fairface_h,
+    fairface_power = pwr.2p2n.test(ES.h(source_prop, fairface_prop),
                                    n1 = source_n, n2 = fairface_n,
                                    sig.level = 0.003,
                                    alternative = "two.sided")$power
@@ -342,7 +347,7 @@ run_two_sample_prop_tests <- function(source_df, fairface_df, deepface_df, test_
   }
   
   if (deepface_n > 1) {
-  deepface_power = pwr.2p2n.test(h = deepface_h,
+  deepface_power = pwr.2p2n.test(ES.h(source_prop, deepface_prop),
                                  n1 = source_n, n2 = deepface_n,
                                  sig.level = 0.003,
                                  alternative = "two.sided")$power

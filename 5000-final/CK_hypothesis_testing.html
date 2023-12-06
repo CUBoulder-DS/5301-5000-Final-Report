@@ -11,7 +11,7 @@
 
 <meta name="author" content="Carl Klein" />
 
-<meta name="date" content="2023-12-04" />
+<meta name="date" content="2023-12-05" />
 
 <title>CK_hypothesis_testing</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">CK_hypothesis_testing</h1>
 <h4 class="author">Carl Klein</h4>
-<h4 class="date">2023-12-04</h4>
+<h4 class="date">2023-12-05</h4>
 
 </div>
 
@@ -462,10 +462,10 @@ get_proportion &lt;- function(df, evaluate_column, evaluate_value) {
     0
   } else {
     result &lt;- df %&gt;% group_by(!!as.symbol(evaluate_column)) %&gt;%
-      summarise(n=n())%&gt;%
-      mutate(prop=n/sum(n))%&gt;%
-      filter(!!as.symbol(evaluate_column)==evaluate_value)%&gt;%
-      select(prop)%&gt;%unlist()%&gt;% unname()
+      summarise(n=n()) %&gt;%
+      mutate(prop=n/sum(n)) %&gt;%
+      filter(!!as.symbol(evaluate_column)==evaluate_value) %&gt;%
+      select(prop) %&gt;% unlist() %&gt;% unname()
   }
 }</code></pre>
 </div>
@@ -490,14 +490,14 @@ the count is desired</li>
 </ul>
 <pre class="r"><code># function by PC, altered for count by CK
 get_count &lt;- function(df, evaluate_column, evaluate_value) {
-  x &lt;- df %&gt;% filter(!!as.symbol(evaluate_column)==evaluate_value)%&gt;% count() %&gt;% unlist() %&gt;% unname()
+  x &lt;- df %&gt;% filter(!!as.symbol(evaluate_column)==evaluate_value) %&gt;% count() %&gt;% unlist() %&gt;% unname()
   if (x==0){
     0
   } else {
     result &lt;- df %&gt;% group_by(!!as.symbol(evaluate_column)) %&gt;%
       summarise(n=n()) %&gt;%
       filter(!!as.symbol(evaluate_column)==evaluate_value) %&gt;%
-      select(n) %&gt;% unlist()%&gt;% unname()
+      select(n) %&gt;% unlist() %&gt;% unname()
   }
 }</code></pre>
 <p><strong>Example</strong>:</p>
@@ -725,28 +725,33 @@ for the deepface model</li>
   
   # calculate p-values for the fairface and deepface model results
   if (source_n == 0 || fairface_n == 0) {
-    fairface_test &lt;- 0
+    fairface_test &lt;- NA
   } else {
     fairface_test &lt;- prop.test(x = c(source_count, fairface_count),
-                               n = c(source_n, fairface_n), correct = FALSE)$p.value
+                               n = c(source_n, fairface_n))$p.value
   }
   
   if (source_n == 0 || deepface_n == 0) {
-    deepface_test &lt;- 0
+    deepface_test &lt;- NA
   } else {
     deepface_test &lt;- prop.test(x = c(source_count, deepface_count),
-                               n = c(source_n, deepface_n), correct = FALSE)$p.value
+                               n = c(source_n, deepface_n))$p.value
   }
   
   # calculate power for fairface and deepface hypothesis tests
   # effect size is calculated by 2(arcsin(sqrt(p1)) - arcsin(sqrt(p2))), denoted by h
-  source_prop = ifelse(is.nan(source_count/source_n), 0, source_count/source_n)
-  fairface_prop = ifelse(is.nan(fairface_count/fairface_n), 0, fairface_count/fairface_n)
-  deepface_prop = ifelse(is.nan(deepface_count/deepface_n), 0, deepface_count/deepface_n)
-  fairface_h = 2 * (asin(sqrt(source_prop)) - asin(sqrt(fairface_prop)))
-  deepface_h = 2 * (asin(sqrt(source_prop)) - asin(sqrt(deepface_prop)))
+  source_prop = ifelse(is.nan(source_count/source_n)|is.infinite(source_count/source_n),
+                       NA, source_count/source_n)
+  fairface_prop = ifelse(is.nan(fairface_count/fairface_n)|is.infinite(fairface_count/fairface_n),
+                         NA, fairface_count/fairface_n)
+  deepface_prop = ifelse(is.nan(deepface_count/deepface_n)|is.infinite(deepface_count/deepface_n),
+                         NA, deepface_count/deepface_n)
+  
+  # fairface_h = 2 * (asin(sqrt(source_prop)) - asin(sqrt(fairface_prop)))
+  # deepface_h = 2 * (asin(sqrt(source_prop)) - asin(sqrt(deepface_prop)))
+  
   if (fairface_n &gt; 1) {
-    fairface_power = pwr.2p2n.test(h = fairface_h,
+    fairface_power = pwr.2p2n.test(ES.h(source_prop, fairface_prop),
                                    n1 = source_n, n2 = fairface_n,
                                    sig.level = 0.003,
                                    alternative = &quot;two.sided&quot;)$power
@@ -755,7 +760,7 @@ for the deepface model</li>
   }
   
   if (deepface_n &gt; 1) {
-  deepface_power = pwr.2p2n.test(h = deepface_h,
+  deepface_power = pwr.2p2n.test(ES.h(source_prop, deepface_prop),
                                  n1 = source_n, n2 = deepface_n,
                                  sig.level = 0.003,
                                  alternative = &quot;two.sided&quot;)$power
@@ -810,11 +815,11 @@ example</code></pre>
 ##              test_race               source_n            source_prop 
 ##                  &quot;All&quot;                &quot;24102&quot;    &quot;0.478010123641192&quot; 
 ##             fairface_n          fairface_prop       fairface_p_value 
-##                &quot;24091&quot;    &quot;0.479764227304803&quot;    &quot;0.699925934607135&quot; 
+##                &quot;24091&quot;    &quot;0.479764227304803&quot;    &quot;0.706692464186261&quot; 
 ##         fairface_power             deepface_n          deepface_prop 
 ##  &quot;0.00530644028473707&quot;                &quot;24053&quot;    &quot;0.383320167962416&quot; 
 ##       deepface_p_value         deepface_power 
-## &quot;9.69698799739197e-98&quot;                    &quot;1&quot;</code></pre>
+## &quot;1.17669812409091e-97&quot;                    &quot;1&quot;</code></pre>
 <pre class="r"><code># return the pertinent information for a test ran on the proportion of females given they are indian
 example &lt;- run_two_sample_prop_tests(source_df, fairface_df, deepface_df, &#39;genders&#39;, &#39;All&#39;, &#39;Female&#39;, &#39;Indian&#39;)
 example</code></pre>
@@ -823,11 +828,11 @@ example</code></pre>
 ##              test_race               source_n            source_prop 
 ##               &quot;Indian&quot;                 &quot;4027&quot;    &quot;0.432580084430097&quot; 
 ##             fairface_n          fairface_prop       fairface_p_value 
-##                 &quot;2483&quot;    &quot;0.443012484897302&quot;    &quot;0.409723921590758&quot; 
+##                 &quot;2483&quot;    &quot;0.443012484897302&quot;    &quot;0.424490058914896&quot; 
 ##         fairface_power             deepface_n          deepface_prop 
 ##   &quot;0.0161071203046988&quot;                 &quot;1470&quot;    &quot;0.349659863945578&quot; 
 ##       deepface_p_value         deepface_power 
-## &quot;3.17024142170306e-08&quot;    &quot;0.995552316256151&quot;</code></pre>
+## &quot;3.78091228273428e-08&quot;    &quot;0.995552316256151&quot;</code></pre>
 <pre class="r"><code># create an empty tibble to store results matching the run_prop_tests return vector
 result_matrix &lt;- tibble(
   test_prop = character(),
@@ -1107,7 +1112,7 @@ Fairface output is statistically different than the proportion of
 ## [1] &quot;0.479764227304803&quot;
 ## 
 ## [[1]]$fairface_p_value
-## [1] &quot;0.699925934607135&quot;
+## [1] &quot;0.706692464186261&quot;
 ## 
 ## [[1]]$fairface_power
 ## [1] &quot;0.00530644028473707&quot;
@@ -1116,7 +1121,7 @@ Fairface output is statistically different than the proportion of
 ## [1] &quot;0.383320167962416&quot;
 ## 
 ## [[1]]$deepface_p_value
-## [1] &quot;9.69698799739197e-98&quot;
+## [1] &quot;1.17669812409091e-97&quot;
 ## 
 ## [[1]]$deepface_power
 ## [1] &quot;1&quot;</code></pre>
@@ -1136,7 +1141,7 @@ proportion of those who <em>Female</em>, given that they were
 ## [1] &quot;0.464958553127355&quot;
 ## 
 ## [[1]]$fairface_p_value
-## [1] &quot;0.0394279899425558&quot;
+## [1] &quot;0.0415523560425101&quot;
 ## 
 ## [[1]]$fairface_power
 ## [1] &quot;0.1820115002838&quot;
@@ -1145,10 +1150,137 @@ proportion of those who <em>Female</em>, given that they were
 ## [1] &quot;0.240584598088814&quot;
 ## 
 ## [[1]]$deepface_p_value
-## [1] &quot;2.32278403399e-114&quot;
+## [1] &quot;3.92558655764136e-114&quot;
 ## 
 ## [[1]]$deepface_power
 ## [1] &quot;1&quot;</code></pre>
+<pre class="r"><code>#PC add F1 and Accuracy Scores
+library(broom)
+library(caret)</code></pre>
+<pre><code>## Warning: package &#39;caret&#39; was built under R version 4.3.2</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## 
+## Attaching package: &#39;caret&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     lift</code></pre>
+<pre class="r"><code>#build a function to calc F1 and Acc scores similar to Carl&#39;s layout
+
+acc_f1 &lt;- function(df,t_prop,t_race,t_gender,t_age){
+  tdf &lt;- df %&gt;% drop_na()
+  
+  if (t_age!=&#39;All&#39; &amp; t_prop!=&#39;age_bins&#39;){
+    tdf &lt;- tdf %&gt;% filter(src_age_grp==t_age)
+  }
+  
+  if (t_gender!=&#39;All&#39; &amp; t_prop!=&#39;genders&#39;){
+    tdf &lt;- tdf %&gt;% filter(src_gender==t_gender)
+  }
+  
+  if (t_race!=&#39;All&#39; &amp; t_prop != &#39;races&#39;){
+    tdf &lt;- tdf %&gt;% filter(src_race == t_race)    
+  }
+
+  r_levels &lt;- as.factor(unique(df$src_race))
+  a_levels &lt;- as.factor(unique(df$src_age_grp))
+  g_levels &lt;- as.factor(unique(df$src_gender))
+  tdf &lt;- tdf %&gt;% mutate(
+    src_race = factor(src_race,levels=r_levels),
+    src_gender = factor(src_gender,levels=g_levels),
+    src_age_grp = factor(src_age_grp,levels=a_levels),
+    pred_race = factor(pred_race,levels=r_levels),
+    pred_gender = factor(pred_gender,levels=g_levels),
+    pred_age_grp = factor(pred_age_grp,levels=a_levels)
+  )
+  if (t_prop == &#39;age_bins&#39;){
+    res &lt;- confusionMatrix(tdf$pred_age_grp,tdf$src_age_grp,mode=&#39;everything&#39;)[[&#39;byClass&#39;]]
+  } else if (t_prop ==&#39;genders&#39;){
+    resF &lt;- confusionMatrix(tdf$pred_gender,tdf$src_gender,mode=&#39;everything&#39;,positive=&#39;Female&#39;)[[&#39;byClass&#39;]]
+    resM &lt;- confusionMatrix(tdf$pred_gender,tdf$src_gender,mode=&#39;everything&#39;,positive=&#39;Male&#39;)[[&#39;byClass&#39;]]
+    g_names &lt;- c(
+      &quot;Class: Female&quot;,&quot;Class: Male&quot;
+    )
+    res &lt;- cbind(resF,resM)
+    colnames(res) &lt;- g_names
+    res &lt;- t(res)
+  } else if (t_prop == &#39;races&#39;){
+    res &lt;- confusionMatrix(tdf$pred_race,tdf$src_race,mode=&#39;everything&#39;)[[&#39;byClass&#39;]]
+  } else {
+    res &lt;-  c()
+  }
+  
+  if (length(res) &gt; 0 &amp; &#39;Balanced Accuracy&#39; %in% colnames(res) &amp; &#39;F1&#39; %in% colnames(res)){
+
+    acc &lt;- res[,&#39;Balanced Accuracy&#39;]  
+    f1 &lt;- res[,&#39;F1&#39;]
+  
+    names(acc) &lt;- acc %&gt;% names() %&gt;% str_replace(&quot;Class: &quot;,&quot;&quot;)
+    names(f1) &lt;- f1 %&gt;% names() %&gt;% str_replace(&quot;Class: &quot;,&quot;&quot;)
+    
+    n &lt;- c(names(acc),names(f1))
+    
+    comb &lt;- tibble(namesf1=names(f1),namesAcc=names(acc),f1,acc)
+    
+    res &lt;- tibble(
+      test_prop = t_prop,
+      test_race = t_race,
+      test_gender = t_gender,
+      test_age = t_age,
+      F1 = f1,
+      Accuracy = acc,
+      names = names(f1)
+    )
+    if (t_prop==&#39;age_bins&#39;) {
+      res &lt;- res %&gt;% filter(names==t_age) %&gt;% select(test_prop:Accuracy)
+    }
+      
+    if (t_prop==&#39;genders&#39;) {
+      res &lt;- res %&gt;% filter(names==t_gender) %&gt;% select(test_prop:Accuracy)
+    }
+    
+    if (t_prop==&#39;races&#39;){
+      res &lt;- res %&gt;% filter(names==t_race) %&gt;% select(test_prop:Accuracy)
+    }
+    res
+  }
+}
+
+#get the same values we&#39;ll need for iteration on calling acc_f1
+verify &lt;- two_sample_result_matrix %&gt;% select(test_prop,test_age,test_gender,test_race)
+
+#rowwise basically allows us to iterate per-row of the dataframe and call the function
+#run against fairface
+FF_f1_acc &lt;- verify %&gt;% rowwise %&gt;% reframe(out=acc_f1(fairface_df,test_prop,test_race,test_gender,test_age)) %&gt;% ungroup() %&gt;% unnest(cols=c(out))
+
+#run against deepface
+DF_f1_acc &lt;- verify %&gt;% rowwise %&gt;% reframe(out=acc_f1(deepface_df,test_prop,test_race,test_gender,test_age)) %&gt;% ungroup() %&gt;% unnest(cols=c(out))
+
+#combine the results of FairFace and DeepFace F1/ACC
+total_f1_acc &lt;- FF_f1_acc %&gt;% inner_join(DF_f1_acc,suffix=c(&#39;.FF&#39;,&#39;.DF&#39;),by=c(&#39;test_prop&#39;=&#39;test_prop&#39;,&#39;test_age&#39;=&#39;test_age&#39;,&#39;test_gender&#39;=&#39;test_gender&#39;,&#39;test_race&#39;=&#39;test_race&#39;))
+
+#merge the F1/ACC with the two sample results
+combined_results &lt;- two_sample_result_matrix %&gt;% inner_join(total_f1_acc,by=c(&#39;test_prop&#39;=&#39;test_prop&#39;,&#39;test_age&#39;=&#39;test_age&#39;,&#39;test_gender&#39;=&#39;test_gender&#39;,&#39;test_race&#39;=&#39;test_race&#39;))
+
+#extract the columns only pertinent to the source and to deepface
+df_results &lt;- combined_results %&gt;% select(test_prop:source_prop,deepface_n,deepface_prop,deepface_p_value,deepface_power,F1.DF,Accuracy.DF)
+
+#extract the columns only pertinent to the source and to fairface
+ff_results &lt;- combined_results %&gt;% select(test_prop:source_prop,fairface_n,fairface_prop,fairface_p_value,fairface_power,F1.FF,Accuracy.FF)
+
+#rename the columns from fairface and deepface to have the same names.
+names(ff_results) &lt;- c(&quot;test_prop&quot;,&quot;test_age&quot;,&quot;test_gender&quot;,&quot;test_race&quot;,&quot;source_n&quot;,&quot;source_prop&quot;,&quot;model_n&quot;,&quot;model_prop&quot;,&quot;model_p_value&quot;,&quot;model_power&quot;,&quot;model_F1&quot;,&quot;model_Accuracy&quot;)
+
+names(df_results) &lt;- c(&quot;test_prop&quot;,&quot;test_age&quot;,&quot;test_gender&quot;,&quot;test_race&quot;,&quot;source_n&quot;,&quot;source_prop&quot;,&quot;model_n&quot;,&quot;model_prop&quot;,&quot;model_p_value&quot;,&quot;model_power&quot;,&quot;model_F1&quot;,&quot;model_Accuracy&quot;)
+
+#add a model column to both frames to tag which model was used to get the values
+ff_results &lt;- mutate(ff_results,model=&#39;FairFace&#39;)
+
+df_results &lt;- mutate(df_results,model=&#39;DeepFace&#39;)
+
+#union the two results to get the full answer in a cleaner format.
+full_results &lt;- union(ff_results,df_results)
+
+#full_results %&gt;% write_csv(&#39;C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\combined_p_val_F1_acc.csv&#39;)</code></pre>
 </div>
 
 
