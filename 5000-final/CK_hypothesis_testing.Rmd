@@ -436,7 +436,8 @@ for (age in pull(age_bins)) {
 
 ```{r}
 # save result_matrix
-write_csv(result_matrix, "C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results.csv")
+#write_csv(result_matrix, "C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results.csv")
+#write_csv(result_matrix, "c:/Users/pconn/OneDrive/Desktop/Stat-Git/data/pvalue_results.csv")
 ```
 
 ```{r two sample proportion, warning = FALSE}
@@ -484,7 +485,8 @@ for (age in pull(age_bins)) {
 ```
 ```{r}
 # save two_sample_result_matrix
-write_csv(two_sample_result_matrix, "C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results_two_sample.csv")
+#write_csv(two_sample_result_matrix, "C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results_two_sample.csv")
+#write_csv(two_sample_result_matrix,"C:/Users/pconn/OneDrive/Desktop/Stat-Git/data/p_value_results_two_sample.csv")
 ```
 
 ## Hypothesis Testing - Single Sample
@@ -779,7 +781,56 @@ df_results <- mutate(df_results,model='DeepFace')
 #union the two results to get the full answer in a cleaner format.
 full_results <- union(ff_results,df_results)
 
-#full_results %>% write_csv('C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\combined_p_val_F1_acc.csv')
+full_results %>% write_csv('C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\combined_p_val_F1_acc.csv')
 
 ```
 
+```{r twoSample_T_Tests}
+t_tests <- function(df,age_col,t_prop,t_race,t_gender,t_age){
+  tdf <- df %>% drop_na()
+  
+  if (t_age!='All' & t_prop!='age_bins'){
+    tdf <- tdf %>% filter(src_age_grp==t_age)
+  }
+  
+  if (t_gender!='All' & t_prop!='genders'){
+    tdf <- tdf %>% filter(src_gender==t_gender)
+  }
+  
+  if (t_race!='All' & t_prop != 'races'){
+    tdf <- tdf %>% filter(src_race == t_race)    
+  }
+  
+  x <- tdf %>% pull(src_age)
+  #print(x)
+  y <- tdf %>% pull(!!as.symbol(age_col))
+  #print(y)
+  p_val <- t.test(x,y,var.equal=TRUE,conf.level=0.997)$p.value
+  #do a power test
+  #use +/- 5 as the effect size (so it's comparable to FairFace)
+  #sig level of .997, two-sided test.
+  test_power <- pwr.t2n.test(n1=length(x),n2=length(y),d=5,sig.level=.997,alternative = 'two.sided')$power
+  res <- tibble(
+    test_prop = t_prop,
+    test_gender = t_gender,
+    test_race = t_race,
+    p_value = p_val,
+    power = test_power
+  )
+}
+
+#modify the verify variable to include only age bin tests
+#this will ensure we're only sub-setting on race and gender in each test.
+#also - filter down duplicate cases because we don't need to test per age grp
+samp_means_tests <- verify %>% filter(test_prop == 'age_bins') %>% 
+  mutate(key=str_c(test_prop,test_gender,test_race)) %>% filter(!duplicated(key)) %>% 
+  select(test_prop:test_race)
+
+DF_t_test_results <- samp_means_tests %>% 
+  rowwise %>% 
+  reframe(out=t_tests(deepface_df,'pred_age_DF_only',t_prop=test_prop,t_race=test_race,t_gender=test_gender,t_age=test_age)) %>% 
+  ungroup() %>% unnest(cols=c(out))
+
+DF_t_test_results %>% write_csv("C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\DF_t_tests.csv")
+
+```
