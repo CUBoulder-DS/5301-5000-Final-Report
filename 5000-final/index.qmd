@@ -9,8 +9,7 @@ library(tidyverse)
 # Abstract {.unnumbered}
 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+In this study, our research team examines the performance of two facial recognition models, FairFace and DeepFace, for potential biases against the protected classes of age, gender, and race. Our objective is to determine whether the source data and model outputs originate from the same population and determine if any such difference is indicative of bias in one or both models. We employ two-sample proportionality tests to evaluate the parent populations for the input data and each model’s output in terms of gender, race, and age, incorporating model F1 and Accuracy scores in tandem with our test results to evaluate presence of bias. Our goal in this effort is to contribute to ongoing research and discourse on ethics in computing and machine learning, and to share any insights or significant findings we encounter.  Further details on our source data and models, methods, results, and implications are detailed in the subsequent sections of this paper.
 ---
 
 ::: callout-tip
@@ -24,8 +23,8 @@ Features of Quarto:
 
 
 
-## How we should write this report
-
+## How we should write this report  TODO: REMOVE
+<!-- PC -->
 -   See @fairface , that is an example on how to cite a bibliography.
 -   Sections/title headings are automatically numbered.
 -   Any changes you make, make sure to make a comment of your initials at the top of your work (INCLUDING written text) like so:
