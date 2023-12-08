@@ -2,6 +2,7 @@ project:
   type: book
   output-dir: "../docs"
 
+## Overall settings
 book:
   title: "Bias in Facial Classification ML Models"
   author:
@@ -22,7 +23,7 @@ book:
   downloads: [pdf]
   references: references.bib # Unsure if needed
   output-file: STAT_5000_Final_Report # PDF filename
-  cover-image: images/cover.png
+  cover-image: "images/cover.png"
   repo-url: "https://github.com/CUBoulder-DS/5301-5000-Final-Report"
   page-navigation: true
   navbar:
@@ -30,7 +31,10 @@ book:
   date: today
 
 bibliography: references.bib
+nocite: |
+  @*
 
+## Controls for each output format
 format:
   html:
     theme: flatly
@@ -44,6 +48,7 @@ format:
   pdf:
     documentclass: scrreprt
     number-depth: 4
+    toc: true
     geometry:
       - margin=0.5in
     link-citations: true
@@ -54,15 +59,15 @@ format:
     hyperrefoptions:
       - linktoc=all
     latex-output-dir: "../docs"
-    # pdf-engine: pdflatex
 
 ## Extra settings
-
-# Don't include code in the report
 execute:
-  echo: false
-  freeze: false
+  echo: false # Don't include code in the report
+  freeze: false # Not useful when rendering across multiple users
+  warning: false
+  error: false
 
+## PDF creation settings
 latex-clean: true # delete latex files after rendering
 latex-auto-mk: true
-#
+latex-auto-install: true

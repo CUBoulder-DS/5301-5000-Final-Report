@@ -19,10 +19,6 @@ A link to download the [PDF version](https://cuboulder-ds.github.io/5301-5000-Fi
 :::
 
 <!-- BJ !-->
-Features of Quarto:
-
-
-
 ## How we should write this report  TODO: REMOVE
 <!-- PC -->
 -   See @fairface , that is an example on how to cite a bibliography.
@@ -44,7 +40,7 @@ r_var <- ...
 #| label: fig-sec1-unique-name
 #| fig-cap: A caption for generated figure
 
-ggplot() + 
+ggplot() +
   geom_line(aes(x=1:10, y = (1:10)^2))
 ```
 

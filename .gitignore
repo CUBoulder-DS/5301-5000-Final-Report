@@ -1,10 +1,10 @@
-.ipynb_checkpoints
+*.ipynb_checkpoints
 
-/.quarto/
-.Rproj.user
+*/.quarto/
 
-*.Rproj
+*.Rproj.user
+*.RproJ
 
 *.DS_Store
-.DS_Store
+
 data/UTK/images/*
