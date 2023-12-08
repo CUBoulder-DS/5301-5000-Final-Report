@@ -194,7 +194,8 @@ div.csl-indent {
   <li><a href="#demographics" id="toc-demographics" class="nav-link" data-scroll-target="#demographics"><span class="header-section-number">3.3.1</span> Demographics</a></li>
   <li><a href="#demographics-subgroups" id="toc-demographics-subgroups" class="nav-link" data-scroll-target="#demographics-subgroups"><span class="header-section-number">3.3.2</span> Demographics’ Subgroups</a></li>
   <li><a href="#the-general-proportion-tests" id="toc-the-general-proportion-tests" class="nav-link" data-scroll-target="#the-general-proportion-tests"><span class="header-section-number">3.3.3</span> The General Proportion Tests</a></li>
-  <li><a href="#more-specific-proportion-tests" id="toc-more-specific-proportion-tests" class="nav-link" data-scroll-target="#more-specific-proportion-tests"><span class="header-section-number">3.3.4</span> More Specific Proportion Tests</a></li>
+  <li><a href="#notation" id="toc-notation" class="nav-link" data-scroll-target="#notation"><span class="header-section-number">3.3.4</span> Notation</a></li>
+  <li><a href="#more-specific-proportion-tests" id="toc-more-specific-proportion-tests" class="nav-link" data-scroll-target="#more-specific-proportion-tests"><span class="header-section-number">3.3.5</span> More Specific Proportion Tests</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -262,15 +263,22 @@ Note
 <div class="callout-body-container callout-body">
 <p>This performance section is important in choosing the correct models to ensure data integrity, however for the actual statistical tests, we’ll focused on more common statistics like mean and proportion.</p>
 <!-- PC -->
-<p>These are my recommendations on how we can look at the additional values:</p>
+<p>NOTE: From Rubric - May need to relocate sub-sections from data back to here:</p>
+<ul>
+<li>Exploratory data analysis</li>
+<li>what modifications were necessary to make the dataset ready for analysis?</li>
+</ul>
+<p>Separate of those two - may need explanations on the analyses we performed and <strong>why we think they are appropriate.</strong> We have part of that regarding the F1 use to possibly identify errors, may need more on two-prop tests and the like</p>
+<!-- end PC-->
+<!-- PC -->
+<p>These are PC’s recommendations on how we can look at the additional values:</p>
 <p>For cases in which we reject the statistical null hypothesis, we plan to evaluate the below metrics for the same output category. Should we reject a null hypothesis for, let’s say, the proportion of females, given that they are asian, we will examine the accuracy and F-1 scores for the same category. We will consider the following range of values:</p>
 <ul>
-<li><p>Accuracy &lt; 70: poor/unacceptable performance</p></li>
-<li><p>70 &lt; Accuracy &lt; 79: marginally acceptable performance</p></li>
-<li><p>80 &lt; Accuracy &lt; 89: acceptable performance</p></li>
-<li><p>90 &lt; Accuracy &lt; 99: excellent performance</p></li>
-<li><p><strong>Do we need anything else regarding precision or recall? and does this all need to be a table?</strong> <!-- PC --></p></li>
+<li>F1 Score &lt; .9 vs F1 Score &gt;= 0.9</li>
+<li>Power &lt; .8 vs Power &gt;= .8</li>
+<li>p-value &lt; .003 vs pvalue &gt;= .003</li>
 </ul>
+<!-- PC -->
 </div>
 </div>
 <p>There are four main measures of performance when evaluating a model:</p>
@@ -302,17 +310,19 @@ Note
 <section id="precision" class="level3" data-number="3.2.2">
 <h3 data-number="3.2.2" class="anchored" data-anchor-id="precision"><span class="header-section-number">3.2.2</span> Precision</h3>
 <p><strong>Precision</strong> is the ratio of true positives to the total number of positives (true positive + true negative).</p>
-<p><span class="math inline">\(Precision = \frac{TP}{TP+FP}\)</span></p>
 </section>
 <section id="recall" class="level3" data-number="3.2.3">
 <h3 data-number="3.2.3" class="anchored" data-anchor-id="recall"><span class="header-section-number">3.2.3</span> Recall</h3>
 <p><strong>Recall</strong> is the ratio of true positives to the number of total correct predictions (true positive + false negative).</p>
-<p><span class="math inline">\(Recall = \frac{TP}{TP+FN}\)</span></p>
 </section>
 <section id="f1-score" class="level3" data-number="3.2.4">
 <h3 data-number="3.2.4" class="anchored" data-anchor-id="f1-score"><span class="header-section-number">3.2.4</span> F1-Score</h3>
 <p><strong>F1-Score</strong>* is known as the harmonic mean between precision and recall. <strong>Precision</strong> and <strong>Recall</strong> are useful in their own rights, but the f1-Score is useful in the fact it’s a balanced combination of both precision and recall.</p>
 <p>F1-Score <span class="math inline">\(= \frac{2 * Precision * Recall}{Precision + Recall}\)</span></p>
+<p>When considering the classification of a subject by protected classes of age, gender, and race, we believe that stronger penalties should be assigned in making an improper classification decision. Due to F1 being the harmonic mean of precision and recall, incorrect classification will more directly impact the score of each model in its prediction of protected classes, and do so more strongly than an accuracy calculation.</p>
+<p>(Citations - https://www.statology.org/f1-score-vs-accuracy/ https://medium.com/analytics-vidhya/accuracy-vs-f1-score-6258237beca2 )</p>
+<p>We calculate F1 score as a measure of performance of our selected machine learning models. This was not used in the calculation or results of the hypothesis tests, but will be used for when we draw conclusions of our tests based upon p-value and statistical power. Namely, we do not plan to control for statistical power / Type-II error when running our 432 hypothesis tests, so statistical power may vary from test to test. Using F1 scores to assess p-values in cases of low statistical power should assist us in identifying potential Type-II Errors. We set a F1 score threshold of 0.9 to make this determination.</p>
+<p>In lamens terms, we’re leveraging F1 score as a mitigatory factor for our team to avoid stating that a model is biased when it may not be.</p>
 </section>
 </section>
 <section id="hypothesis-testing" class="level2" data-number="3.3">
@@ -375,17 +385,23 @@ Note
 <li><span class="math inline">\(\hat{p}\)</span>: output data subset proportion</li>
 <li><span class="math inline">\(p\)</span>: source data subset proportion</li>
 </ul>
-<!--PC-->
-<p><strong>NOTE</strong> - may be worthwhile to state that we evaluated all cases here, but reduction to specific cases of controlling race and evaluating solely on gender or solely on race is of the most value to us. Performing tight filtering down to, for instance, the proportion of white people given they are 40-49 and female may be too restrictive.</p>
-<p>Performing and analyzing calcuations of P(Age|Race) or P(Gender|Race) are of more interest, as I think our research questions are looking at disparate impact to the outcomes for each racial group. <!-- END PC --> ### Notation</p>
+<!-- PC -->
+<p>We believe that using two-sample proportion testing is an appropriate means by which we can evaluate the outputs of the two facial recognition models in comparison to the source data. In leveraging two-sample proportion tests, we can infer whether or not the proportions of age, gender, or race (or some combination thereof) from the UTKFace dataset (i.e.&nbsp;1st sample) originate from the same population as the outputs from each facial recognition model (i.e.&nbsp;2nd dataset).</p>
+<p><strong>What is our population? Pictures of people across the internet? Or pictures of people?</strong></p>
+<p>In theory, similar proportions of protected classes between the two datasets could suggest that the source data and predicted data originate from the same population (pictures of people), and would thus indicate an absence of bias against the protected class in question. Vastly different proportions, however, could indicate that the source data and predicted data are from differing populations and indicate a bias against the protected classes in question.</p>
+<p>Leveraging p-values and powers calculated on our samples for our protected classes of age, gender, and race, should enable us to provide a clear picture of any biases that may manifest from one or both models. Leveraging F1 scores in cases of inconclusive results from p-value and power should assist us in identifying potential error.</p>
+<!-- end PC-->
+</section>
+<section id="notation" class="level3" data-number="3.3.4">
+<h3 data-number="3.3.4" class="anchored" data-anchor-id="notation"><span class="header-section-number">3.3.4</span> Notation</h3>
 <p>Before we list the specific tests, we should introduce some notation.</p>
 <p>Let <span class="math inline">\(R\)</span> be race, then <span class="math inline">\(R \in \{Asian, Black, Indian, Other, White\} = \{A, B, I, O, W\}\)</span></p>
 <p>Let <span class="math inline">\(G\)</span> be gender, then <span class="math inline">\(G \in \{Female, Male\} = \{F, M\}\)</span></p>
 <p>Let <span class="math inline">\(A\)</span> be age, then <span class="math inline">\(A \in \{[0,2], [3,9], [10,19], [20,29], [30,39], [40,49], [50,59], [60,69], [70,130]\} = \{1, 2, 3, 4, 5, 6, 7, 8, 9\}\)</span></p>
 <p>Let <span class="math inline">\(D\)</span> be the dataset, then <span class="math inline">\(D \in \{Source, Fairface, Deepface\} = \{D_0, D_f, D_d\}\)</span></p>
 </section>
-<section id="more-specific-proportion-tests" class="level3" data-number="3.3.4">
-<h3 data-number="3.3.4" class="anchored" data-anchor-id="more-specific-proportion-tests"><span class="header-section-number">3.3.4</span> More Specific Proportion Tests</h3>
+<section id="more-specific-proportion-tests" class="level3" data-number="3.3.5">
+<h3 data-number="3.3.5" class="anchored" data-anchor-id="more-specific-proportion-tests"><span class="header-section-number">3.3.5</span> More Specific Proportion Tests</h3>
 <p>Using this notation, we can simplify our nomenclature for testing a certain proportion of an overall demographic.</p>
 <p>For example, we can test if the proportion of <em>Female</em> in the Fairface output is statistically different than the proportion of <em>Female</em> from the source.</p>
 <p>Hypothesis Test:</p>
@@ -411,6 +427,14 @@ Note
 <li><span class="math inline">\(n = n_{F \cup M|D_f \cap B}\)</span>: number of data points in the gender subset form the fairface output, given they were black.</li>
 </ul>
 <p>These were two specific hypothesis tests, however, we’ll be testing many combinations of these parameters and reporting back on any significant findings.</p>
+<!--PC-->
+<p>In the above, we’ve outlined our methods for examining a total of 432 hypothesis tests per recognition model on the totality of, and smaller samples of, our overall dataset. We have elected to sub-divide our source and predicted samples by these protected classes to inspect and investigate whether or not there may be bias against groupings of protected classes.</p>
+<p>For instance, in the performance of our hypothesis tests, we may find an absence of bias when only examining proportions of gender between samples. However, by examining a subset of our samples, such as subject gender given the subject’s membership in a specific racial category, we may find biases providing more, or fewer, correct predictions of subject gender given their membership in a specific racial group.</p>
+<p>This could help us answer questions and draw conclusions about such groups. For example:</p>
+<p>“Model X demonstrates bias in favor of correctly predicting race, given the subject is young.” - which also suggests a bias against correctly predicting the race of older subjects in a model. Such a bias, if used in a decision making process, could result in age discrimination.</p>
+<p>“Model Y demonstrates bias against predicting correct gender, given the subject image is Black, Asian, or Other.” - which also suggests a bias for correctly predicting gender, given the subject is White or Indian. Such a bias, if used in a decision making process, could result in racial discrimination.</p>
+<p>Structuring our tests in this manner will enable us to quickly analyze and report on the results of our tests.</p>
+<!--end PC-->
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

@@ -1,0 +1,1092 @@
+---
+title: "CK_hypothesis_testing"
+author: "Carl Klein"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+**Load library**
+
+```{r setup, message = FALSE, include=FALSE}
+library(tidyverse)
+library(pwr)
+```
+
+**Load data**
+
+```{r}
+# output data
+# master dataframe url
+output_name <- 'https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv'
+
+# entire master dataframe
+output_df <- read_csv(output_name)
+
+# fairface dataframe
+# exclude the indexing column and deepface only column
+fairface_df <- output_df %>%
+  filter(pred_model == 'FairFace') %>%
+  select(-c(...1, pred_age_DF_only)) %>%
+  drop_na()
+
+# deepface dataframe
+# exclude the indexing column
+deepface_df <- output_df %>%
+  filter(pred_model == 'DeepFace') %>%
+  select(-...1) %>%
+  drop_na()
+
+# source dataframe
+# use one of the models (since the data is doubled)
+# include only the source ("src") columns
+source_df <- output_df %>%
+  filter(pred_model == 'FairFace') %>%
+  select(c(img_path, file, src_age, src_age_grp, src_gender, src_race, src_timestamp)) %>%
+  drop_na()
+```
+
+**Separate out the categories**
+
+```{r}
+# categories from the data
+age_bins <- source_df %>%
+  select(src_age_grp) %>%
+  unique()
+
+genders <- source_df %>%
+  select(src_gender) %>%
+  unique()
+
+races <- source_df %>%
+  select(src_race) %>%
+  unique()
+
+# appending an "All" option for parsing reasons
+age_bins <- age_bins %>% rbind('All')
+genders <- genders %>% rbind('All')
+races <- races %>% rbind('All')
+```
+
+## Two-Tailed Single Sample Proportion Test
+
+-   **Description**: *prop_test* will return the p-value associated with a two-tailed single sample proportion test.
+-   **Input**:
+    -   *p*: proportion that is initially assumed to be true (prior belief)
+    -   *p_hat*: calculated sample proportion given the required conditions
+    -   *n*: sample size given the required conditions
+-   **Output**:
+    -   *p_value*: p-value associated with the hypothesis test
+
+```{r single-sample-proportion}
+prop_test <- function(p, p_hat, n) {
+  test_statistic <- abs((sqrt(n) * (p_hat - p)) / sqrt(p * (1 - p)))
+  p_value <- pnorm(-test_statistic) + (1 - pnorm(test_statistic))
+  return(p_value)
+}
+```
+
+## Function to get Proportion Given Certain Parameters
+
+-   **Description**: *get_proportion* will return the proportion associated for a value within a given category.
+-   **Input**:
+    -   *df*: dataframe to calculate proportion frame
+    -   *evaluate_column*: column which contains the value desired for the proportion
+    -   *evaluate_value*: value within the specified column for which the proportion is desired
+-   **Output**:
+    -   *proportion*: desired proportion
+
+```{r}
+# function by PC
+get_proportion <- function(df, evaluate_column, evaluate_value) {
+  x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value)%>% count() %>% unlist() %>% unname()
+  if (x==0){
+    0
+  } else {
+    result <- df %>% group_by(!!as.symbol(evaluate_column)) %>%
+      summarise(n=n()) %>%
+      mutate(prop=n/sum(n)) %>%
+      filter(!!as.symbol(evaluate_column)==evaluate_value) %>%
+      select(prop) %>% unlist() %>% unname()
+  }
+}
+```
+
+## Function to get Count Given Certain Parameters (alteration of *get_proportion*)
+
+-   **Description**: *get_count* will return the row count associated for a value within a given category.
+-   **Input**:
+    -   *df*: dataframe to calculate count frame
+    -   *evaluate_column*: column which contains the value desired for the count
+    -   *evaluate_value*: value within the specified column for which the count is desired
+-   **Output**:
+    -   *proportion*: desired count
+
+```{r}
+# function by PC, altered for count by CK
+get_count <- function(df, evaluate_column, evaluate_value) {
+  x <- df %>% filter(!!as.symbol(evaluate_column)==evaluate_value) %>% count() %>% unlist() %>% unname()
+  if (x==0){
+    0
+  } else {
+    result <- df %>% group_by(!!as.symbol(evaluate_column)) %>%
+      summarise(n=n()) %>%
+      filter(!!as.symbol(evaluate_column)==evaluate_value) %>%
+      select(n) %>% unlist() %>% unname()
+  }
+}
+```
+
+**Example**:
+
+```{r}
+# return the proportion of females from the source data
+example <- get_proportion(source_df, 'src_gender', 'Female')
+example
+```
+```{r}
+# return the proportion of females from the source data
+example <- get_count(source_df, 'src_gender', 'Female')
+example
+```
+
+## Function to Produce All Pertinent Information for Hypothesis Tests Across All DataFrames - SINGLE SAMPLE
+
+-   **Description**: *run_prop_tests* will return an array containing all pertinent information regarding the desired proportion hypothesis test.
+-   **Input**:
+    -   *source_df*: the input dataframe (the data in which the null hypotheses will be built off, i.e. the prior belief data)
+    -   *fairface_df*: the output dataframe ran through the fairface model
+    -   *deepface_df*: the output dataframe ran through the deepface model
+    -   *test_prop*: choose a demographic from "age_bins", "genders", or "races" **(MUST CHOOSE ONE)**
+    -   *test_age*: specify a sub-demographic from "0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130", or "All"
+    -   *test_gender*: specify a sub-demographic from "Female", "Male", or "All"
+    -   *test_race*: specify a sub-demographic from "Asian", "Black", "Indian", "Other", "White", or "All"
+    -   **NOTE: AT LEAST ONE OF THE SUB-DEMOGRAPHIC SPECIFICATIONS MUST NOT BE "All"!**
+-   **Output**: a vector containing the following:
+    -   *test_prop*: restating the main demographic for which the proportion is tested from
+    -   *test_age*: restating the desired age sub-demographic
+    -   *test_gender*: restating the desired gender sub-demographic
+    -   *test_race*: restating the desired race sub-demographic
+    -   *source_prop*: the calculated source proportion for the sub-demographic (the prior belief)
+    -   *fairface_n*: the number of datapoints in the fairface dataframe associated with the main demographic
+    -   *fairface_prop*: the calculated fairface proportion for the sub-demographic
+    -   *fairface_p_value*: the p-value associated with hypothesis test for the fairface model
+    -   *deepface_n*: the number of datapoints in the deepface dataframe associated with the main demographic
+    -   *deepface_prop*: the calculated deepface proportion for the sub-demographic
+    -   *deepface_p_value*: the p-value associated with hypothesis test for the deepface model
+
+```{r single sample proportion test}
+run_prop_tests <- function(source_df, fairface_df, deepface_df, test_prop, test_age, test_gender, test_race) {
+  # create copies of the dataframes to alter
+  source_subset <- source_df
+  fairface_subset <- fairface_df
+  deepface_subset <- deepface_df
+  
+  # if the main sub-demographic category is not set to "All" and the main demographic is
+  # not the hypothesis test parameter being tested then filter the subsets
+  if (test_age != 'All' & test_prop != 'age_bins') {
+    source_subset <- source_subset %>% filter(src_age_grp == test_age)
+    fairface_subset <- fairface_subset %>% filter(pred_age_grp == test_age)
+    deepface_subset <- deepface_subset %>% filter(pred_age_grp == test_age)
+  }
+  if (test_gender != 'All' & test_prop != 'genders') {
+    source_subset <- source_subset %>% filter(src_gender == test_gender)
+    fairface_subset <- fairface_subset %>% filter(pred_gender == test_gender)
+    deepface_subset <- deepface_subset %>% filter(pred_gender == test_gender)
+  }
+  if (test_race != 'All' & test_prop != 'races') {
+    source_subset <- source_subset %>% filter(src_race == test_race)
+    fairface_subset <- fairface_subset %>% filter(pred_race == test_race)
+    deepface_subset <- deepface_subset %>% filter(pred_race == test_race)
+  }
+  
+  # calculate the size of the filtered datasets (samples)
+  fairface_n <- nrow(fairface_subset)
+  deepface_n <- nrow(deepface_subset)
+  
+  # if the main demographic is being tested, run get_proportion now on that demographic
+  if (test_prop == 'age_bins') { 
+    source_prop <- get_proportion(source_subset, 'src_age_grp', test_age)
+    fairface_prop <- get_proportion(fairface_subset, 'pred_age_grp', test_age)
+    deepface_prop <- get_proportion(deepface_subset, 'pred_age_grp', test_age)
+  } else if (test_prop == 'genders') { 
+    source_prop <- get_proportion(source_subset, 'src_gender', test_gender)
+    fairface_prop <- get_proportion(fairface_subset, 'pred_gender', test_gender)
+    deepface_prop <- get_proportion(deepface_subset, 'pred_gender', test_gender)
+  } else if (test_prop == 'races') { 
+    source_prop <- get_proportion(source_subset, 'src_race', test_race)
+    fairface_prop <- get_proportion(fairface_subset, 'pred_race', test_race)
+    deepface_prop <- get_proportion(deepface_subset, 'pred_race', test_race)
+  }
+  
+  # calculate p-values for the fairface and deepface model results
+  fairface_test <- prop_test(source_prop, fairface_prop, fairface_n)
+  deepface_test <- prop_test(source_prop, deepface_prop, deepface_n)
+  
+  # return the vector of pertinent information
+  return(c(test_prop = test_prop,
+           test_age = test_age,
+           test_gender = test_gender,
+           test_race = test_race,
+           source_prop = source_prop,
+           fairface_n = fairface_n,
+           fairface_prop = fairface_prop,
+           fairface_p_value = fairface_test,
+           deepface_n = deepface_n,
+           deepface_prop = deepface_prop,
+           deepface_p_value = deepface_test))
+}
+```
+
+## Function to Produce All Pertinent Information for Hypothesis Tests Across All DataFrames - TWO SAMPLE
+
+-   **Description**: *run_two_sample_prop_tests* will return an array containing all pertinent information regarding the desired proportion hypothesis test.
+-   **Input**:
+    -   *source_df*: the input dataframe (the data in which the null hypotheses will be built off, i.e. the prior belief data)
+    -   *fairface_df*: the output dataframe ran through the fairface model
+    -   *deepface_df*: the output dataframe ran through the deepface model
+    -   *test_prop*: choose a demographic from "age_bins", "genders", or "races" **(MUST CHOOSE ONE)**
+    -   *test_age*: specify a sub-demographic from "0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-130", or "All"
+    -   *test_gender*: specify a sub-demographic from "Female", "Male", or "All"
+    -   *test_race*: specify a sub-demographic from "Asian", "Black", "Indian", "Other", "White", or "All"
+    -   **NOTE: AT LEAST ONE OF THE SUB-DEMOGRAPHIC SPECIFICATIONS MUST NOT BE "All"!**
+-   **Output**: a vector containing the following:
+    -   *test_prop*: restating the main demographic for which the proportion is tested from
+    -   *test_age*: restating the desired age sub-demographic
+    -   *test_gender*: restating the desired gender sub-demographic
+    -   *test_race*: restating the desired race sub-demographic
+    -   *source_n*: the number of datapoints in the source dataframe associated with the main demographic
+    -   *source_prop*: the calculated source proportion for the sub-demographic
+    -   *fairface_n*: the number of datapoints in the fairface dataframe associated with the main demographic
+    -   *fairface_prop*: the calculated fairface proportion for the sub-demographic
+    -   *fairface_p_value*: the p-value associated with hypothesis test for the fairface model
+    -   *fairface_power*: the power associated with hypothesis test for the fairface model
+    -   *deepface_n*: the number of datapoints in the deepface dataframe associated with the main demographic
+    -   *deepface_prop*: the calculated deepface proportion for the sub-demographic
+    -   *deepface_p_value*: the p-value associated with hypothesis test for the deepface model
+    -   *deepface_power*: the power associated with hypothesis test for the deepface model
+
+```{r two-sample proportion tests}
+run_two_sample_prop_tests <- function(source_df, fairface_df, deepface_df, test_prop, test_age, test_gender, test_race) {
+  # create copies of the dataframes to alter
+  source_subset <- source_df
+  fairface_subset <- fairface_df
+  deepface_subset <- deepface_df
+  
+  # if the main sub-demographic category is not set to "All" and the main demographic is
+  # not the hypothesis test parameter being tested then filter the subsets
+  if (test_age != 'All' & test_prop != 'age_bins') {
+    source_subset <- source_subset %>% filter(src_age_grp == test_age)
+    fairface_subset <- fairface_subset %>% filter(pred_age_grp == test_age)
+    deepface_subset <- deepface_subset %>% filter(pred_age_grp == test_age)
+  }
+  if (test_gender != 'All' & test_prop != 'genders') {
+    source_subset <- source_subset %>% filter(src_gender == test_gender)
+    fairface_subset <- fairface_subset %>% filter(pred_gender == test_gender)
+    deepface_subset <- deepface_subset %>% filter(pred_gender == test_gender)
+  }
+  if (test_race != 'All' & test_prop != 'races') {
+    source_subset <- source_subset %>% filter(src_race == test_race)
+    fairface_subset <- fairface_subset %>% filter(pred_race == test_race)
+    deepface_subset <- deepface_subset %>% filter(pred_race == test_race)
+  }
+  
+  # calculate the size of the filtered datasets
+  source_n <- nrow(source_subset)
+  fairface_n <- nrow(fairface_subset)
+  deepface_n <- nrow(deepface_subset)
+  
+  # if the main demographic is being tested, run get_proportion now on that demographic
+  if (test_prop == 'age_bins') { 
+    source_count <- get_count(source_subset, 'src_age_grp', test_age)
+    fairface_count <- get_count(fairface_subset, 'pred_age_grp', test_age)
+    deepface_count <- get_count(deepface_subset, 'pred_age_grp', test_age)
+  } else if (test_prop == 'genders') { 
+    source_count <- get_count(source_subset, 'src_gender', test_gender)
+    fairface_count <- get_count(fairface_subset, 'pred_gender', test_gender)
+    deepface_count <- get_count(deepface_subset, 'pred_gender', test_gender)
+  } else if (test_prop == 'races') { 
+    source_count <- get_count(source_subset, 'src_race', test_race)
+    fairface_count <- get_count(fairface_subset, 'pred_race', test_race)
+    deepface_count <- get_count(deepface_subset, 'pred_race', test_race)
+  }
+  
+  # calculate p-values for the fairface and deepface model results
+  if (source_n == 0 || fairface_n == 0) {
+    fairface_test <- NA
+  } else {
+    fairface_test <- prop.test(x = c(source_count, fairface_count),
+                               n = c(source_n, fairface_n))$p.value
+  }
+  
+  if (source_n == 0 || deepface_n == 0) {
+    deepface_test <- NA
+  } else {
+    deepface_test <- prop.test(x = c(source_count, deepface_count),
+                               n = c(source_n, deepface_n))$p.value
+  }
+  
+  # calculate power for fairface and deepface hypothesis tests
+  # effect size is calculated by 2(arcsin(sqrt(p1)) - arcsin(sqrt(p2))), denoted by h
+  source_prop = ifelse(is.nan(source_count/source_n)|is.infinite(source_count/source_n),
+                       NA, source_count/source_n)
+  fairface_prop = ifelse(is.nan(fairface_count/fairface_n)|is.infinite(fairface_count/fairface_n),
+                         NA, fairface_count/fairface_n)
+  deepface_prop = ifelse(is.nan(deepface_count/deepface_n)|is.infinite(deepface_count/deepface_n),
+                         NA, deepface_count/deepface_n)
+  
+  # fairface_h = 2 * (asin(sqrt(source_prop)) - asin(sqrt(fairface_prop)))
+  # deepface_h = 2 * (asin(sqrt(source_prop)) - asin(sqrt(deepface_prop)))
+  
+  if (fairface_n > 1) {
+    fairface_power = pwr.2p2n.test(ES.h(source_prop, fairface_prop),
+                                   n1 = source_n, n2 = fairface_n,
+                                   sig.level = 0.003,
+                                   alternative = "two.sided")$power
+  } else {
+    fairface_power = 0
+  }
+  
+  if (deepface_n > 1) {
+  deepface_power = pwr.2p2n.test(ES.h(source_prop, deepface_prop),
+                                 n1 = source_n, n2 = deepface_n,
+                                 sig.level = 0.003,
+                                 alternative = "two.sided")$power
+  } else {
+    deepface_power = 0
+  }
+  
+  # return the vector of pertinent information
+  return(c(test_prop = test_prop,
+           test_age = test_age,
+           test_gender = test_gender,
+           test_race = test_race,
+           source_n = source_n,
+           source_prop = source_prop,
+           fairface_n = fairface_n,
+           fairface_prop = fairface_prop,
+           fairface_p_value = fairface_test,
+           fairface_power = fairface_power,
+           deepface_n = deepface_n,
+           deepface_prop = deepface_prop,
+           deepface_p_value = deepface_test,
+           deepface_power = deepface_power))
+}
+```
+
+**Example**:
+
+```{r}
+# return the pertinent information for a test ran on the proportion of females
+example <- run_prop_tests(source_df, fairface_df, deepface_df, 'genders', 'All', 'Female', 'All')
+example
+
+# return the pertinent information for a test ran on the proportion of females given they are indian
+example <- run_prop_tests(source_df, fairface_df, deepface_df, 'genders', 'All', 'Female', 'Indian')
+example
+```
+```{r}
+# return the pertinent information for a test ran on the proportion of females
+example <- run_two_sample_prop_tests(source_df, fairface_df, deepface_df, 'genders', 'All', 'Female', 'All')
+example
+
+# return the pertinent information for a test ran on the proportion of females given they are indian
+example <- run_two_sample_prop_tests(source_df, fairface_df, deepface_df, 'genders', 'All', 'Female', 'Indian')
+example
+```
+
+```{r single proportion}
+# create an empty tibble to store results matching the run_prop_tests return vector
+result_matrix <- tibble(
+  test_prop = character(),
+  test_age = character(),
+  test_gender = character(),
+  test_race = character(),
+  source_prop = character(),
+  fairface_n = character(),
+  fairface_prop = character(),
+  fairface_p_value = character(),
+  deepface_n = character(),
+  deepface_prop = character(),
+  deepface_p_value = character()
+)
+
+# loop through each sub-demographic across the main demographics
+# if the main demographic is not an "All" option, add a row containing pertinent information
+for (age in pull(age_bins)) {
+  for (gender in pull(genders)) {
+    for (race in pull(races)) {
+      if (age != 'All') {
+        new_row <- run_prop_tests(source_df, fairface_df, deepface_df, 'age_bins', age, gender, race)
+        result_matrix <- result_matrix %>% add_row(!!! new_row)
+      }
+      if (gender != 'All') {
+        new_row <- run_prop_tests(source_df, fairface_df, deepface_df, 'genders', age, gender, race)
+        result_matrix <- result_matrix %>% add_row(!!! new_row)
+      }
+      if (race != 'All') {
+        new_row <- run_prop_tests(source_df, fairface_df, deepface_df, 'races', age, gender, race)
+        result_matrix <- result_matrix %>% add_row(!!! new_row)
+      }
+    }
+  }
+}
+```
+
+> The returned *result_matrix* contains every combination of demographics and sub-demographics hypothesis testing, at 432 hypotheses tested. If there is a result that is "NA", it most likely means the sub-demographic and it's conditionals had a proportion of 0.
+
+```{r}
+# save result_matrix
+#write_csv(result_matrix, "C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results.csv")
+#write_csv(result_matrix, "c:/Users/pconn/OneDrive/Desktop/Stat-Git/data/pvalue_results.csv")
+result_matrix %>% write_csv('../data/pvalue_results.csv')
+```
+
+```{r two sample proportion, warning = FALSE}
+# create an empty tibble to store results matching the run_prop_tests return vector
+two_sample_result_matrix <- tibble(
+  test_prop = character(),
+  test_age = character(),
+  test_gender = character(),
+  test_race = character(),
+  source_n = character(),
+  source_prop = character(),
+  fairface_n = character(),
+  fairface_prop = character(),
+  fairface_p_value = character(),
+  fairface_power = character(),
+  deepface_n = character(),
+  deepface_prop = character(),
+  deepface_p_value = character(),
+  deepface_power = character()
+)
+
+# loop through each sub-demographic across the main demographics
+# if the main demographic is not an "All" option, add a row containing pertinent information
+for (age in pull(age_bins)) {
+  for (gender in pull(genders)) {
+    for (race in pull(races)) {
+      if (age != 'All') {
+        new_row <- run_two_sample_prop_tests(source_df, fairface_df, deepface_df,
+                                             'age_bins', age, gender, race)
+        two_sample_result_matrix <- two_sample_result_matrix %>% add_row(!!! new_row)
+      }
+      if (gender != 'All') {
+        new_row <- run_two_sample_prop_tests(source_df, fairface_df, deepface_df,
+                                             'genders', age, gender, race)
+        two_sample_result_matrix <- two_sample_result_matrix %>% add_row(!!! new_row)
+      }
+      if (race != 'All') {
+        new_row <- run_two_sample_prop_tests(source_df, fairface_df, deepface_df,
+                                             'races', age, gender, race)
+        two_sample_result_matrix <- two_sample_result_matrix %>% add_row(!!! new_row)
+      }
+    }
+  }
+}
+```
+```{r}
+# save two_sample_result_matrix
+#write_csv(two_sample_result_matrix, "C:/Users/carlj/OneDrive/Documents/CUBoulder/Statistics/Project/5301-5000-Final-Report/data/pvalue_results_two_sample.csv")
+#write_csv(two_sample_result_matrix,"C:/Users/pconn/OneDrive/Desktop/Stat-Git/data/p_value_results_two_sample.csv")
+two_sample_result_matrix %>% write_csv('../data/p_value_results_two_sample.csv')
+```
+
+## Hypothesis Testing - Single Sample
+
+Our data consists of three main sets, the source input data, the Fairface output data, and the Deepface output data.
+
+We'll be creating our hypothesis tests by treating the source data as the basis for the original assumptions (our *null hypotheses*), and then using the output from Fairface and Deepface to test for statistically significant differences. Gaining a statistically significant result would allow us to reject our *null hypothesis* in favor of the *alternative hypothesis*. In other words, rejecting the original assumption means there is a statistically large enough difference between the source data and output data, and could indicate a bias in model.
+
+We'll be testing across different subsets contained within the data, as listed below:
+
+### Demographics
+
+-   Age Group
+-   Gender
+-   Race
+
+### Demographics' Subgroups
+
+-   Age Group (9 groups)
+    -   0-2
+    -   3-9
+    -   10-19
+    -   20-29
+    -   30-39
+    -   40-49
+    -   50-59
+    -   60-69
+    -   70-130
+-   Gender (2 groups)
+    -   Female
+    -   Male
+-   Race (5 groups)
+    -   Asian
+    -   Black
+    -   Indian
+    -   Other
+    -   White
+
+### The General Proportion Tests
+
+Our hypothesis tests will be testing different proportions within these subgroups between the source data and the output data.
+
+The general format of our hypothesis tests will be:
+
+$H_0: p = p_{\text{Source Data Subset}}$
+
+$H_A: p \neq p_{\text{Source Data Subset}}$
+
+With the following test statistic:
+
+$\frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}}$
+
+With the p-value being calculated by:
+
+$P(|Z| > \hat{p} | H_0)$
+
+$= P(|Z| > \frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}})$,
+
+where
+
+-   $n$: output data subset size
+-   $\hat{p}$: output data subset proportion
+-   $p$: source data subset proportion
+
+### Notation
+
+Before we list the specific tests, we should introduce some notation.
+
+Let $R$ be race, then $R \in \{Asian, Black, Indian, Other, White\} = \{A, B, I, O, W\}$
+
+Let $G$ be gender, then $G \in \{Female, Male\} = \{F, M\}$
+
+Let $A$ be age, then $A \in \{[0,2], [3,9], [10,19], [20,29], [30,39], [40,49], [50,59], [60,69], [70,130]\} = \{1, 2, 3, 4, 5, 6, 7, 8, 9\}$
+
+Let $D$ be the dataset, then $D \in \{Source, Fairface, Deepface\} = \{D_0, D_f, D_d\}$
+
+### More Specific Proportion Tests
+
+Using this notation, we can simplify our nomenclature for testing a certain proportion of an overall demographic.
+
+For example, we can test if the proportion of *Female* in the Fairface output is statistically different than the proportion of *Female* from the source.
+
+Hypothesis Test:
+
+$H_0: p_F = p_{F|D_0}$
+
+$H_A: p_F \neq p_{F|D_0}$
+
+P-value Calculation:
+
+$P(|Z| > \frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}})$,
+
+where
+
+-   $p = p_{F|D_0}$: proportion of females from the source data
+-   $\hat{p} = p_{F|D_f}$: proportion of females from the fairface output
+-   $n = n_{F \cup M|D_f}$: number of data points in the gender subset form the fairface output
+
+Using the *result_matrix*, we can return all of the pertinent testing information from both fairface and deepface.
+
+```{r}
+result_matrix %>%
+  filter(test_prop == 'genders' & test_age =='All' & test_gender == 'Female' & test_race == 'All') %>%
+  select(c(source_prop, fairface_prop, fairface_p_value, deepface_prop, deepface_p_value))
+```
+
+Additionally, we could test for different combinations of subsets within demographics. For instance, if we wanted to test for a statistically significant difference between the proportion of those who *Female*, given that they were *Black*, then we could write a hypothesis test like:
+
+$H_0: p_{F|B} = p_{F|D_0 \cap B}$
+
+$H_A: p_{F|B} \neq p_{F|D_0 \cap B}$
+
+P-value Calculation:
+
+$P(|Z| > \frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}})$,
+
+where
+
+-   $p = p_{F|D_0 \cap B}$: proportion of females from the source data, given they were black
+-   $\hat{p} = p_{F|D_f \cap B}$: proportion of females from the fairface output, given they were black
+-   $n = n_{F \cup M|D_f \cap B}$: number of data points in the gender subset form the fairface output, given they were black.
+
+again, using the *result_matrix*, we can return all of the pertinent testing information from both fairface and deepface.
+
+```{r}
+result_matrix %>%
+  filter(test_prop == 'genders' & test_age =='All' & test_gender == 'Female' & test_race == 'Black') %>%
+  select(c(source_prop, fairface_prop, fairface_p_value, deepface_prop, deepface_p_value))
+```
+
+These were two specific hypothesis tests, however, we'll be testing many combinations of these parameters and reporting back on any significant findings. The results of any combination of these test can be found in the *results_matrix*.
+
+
+## Hypothesis Testing - Two Sample
+
+It seemed more appropriate to test the true difference between two samples rather than assume one of the samples as the "prior assumption" for the null hypothesis.
+
+Our test when viewed in this perspective becomes:
+
+$H_0: \hat{p_1} = \hat{p_2}$
+
+$H_A: \hat{p_1} \neq \hat{p_2}$
+
+with our test statistic being:
+
+$\frac{\hat{p_1} - \hat{p_2}}{\sqrt{\hat{p}(1 - \hat{p})(\frac{1}{n_1} \frac{1}{n_2})}}$
+
+and $\hat{p} = \frac{\text{# satisfied in both samples}}{\text{total in both samples}}$
+
+Using our examples from above:
+
+**Example 1**: 
+
+For example, we can test if the proportion of *Female* in the Fairface output is statistically different than the proportion of *Female* from the source.
+
+```{r}
+two_sample_result_matrix %>%
+  filter(test_prop == 'genders' & test_age =='All' & test_gender == 'Female' & test_race == 'All') %>%
+  select(c(source_prop, fairface_prop, fairface_p_value, fairface_power, deepface_prop, deepface_p_value, deepface_power)) %>%
+  transpose()
+```
+
+**Example 2**: 
+
+Or, test for a statistically significant difference between the proportion of those who *Female*, given that they were *Black*, then we could write a hypothesis test like.
+
+```{r}
+two_sample_result_matrix %>%
+  filter(test_prop == 'genders' & test_age =='All' & test_gender == 'Female' & test_race == 'Black') %>%
+  select(c(source_prop, fairface_prop, fairface_p_value, fairface_power, deepface_prop, deepface_p_value, deepface_power)) %>%
+  transpose()
+```
+
+
+```{r PC_F1_ACC_add_on}
+#PC add F1 and Accuracy Scores
+library(broom)
+library(caret)
+#build a function to calc F1 and Acc scores similar to Carl's layout
+
+acc_f1 <- function(df,t_prop,t_race,t_gender,t_age){
+  tdf <- df %>% drop_na()
+  
+  if (t_age!='All' & t_prop!='age_bins'){
+    tdf <- tdf %>% filter(src_age_grp==t_age)
+  }
+  
+  if (t_gender!='All' & t_prop!='genders'){
+    tdf <- tdf %>% filter(src_gender==t_gender)
+  }
+  
+  if (t_race!='All' & t_prop != 'races'){
+    tdf <- tdf %>% filter(src_race == t_race)    
+  }
+
+  r_levels <- as.factor(unique(df$src_race))
+  a_levels <- as.factor(unique(df$src_age_grp))
+  g_levels <- as.factor(unique(df$src_gender))
+  tdf <- tdf %>% mutate(
+    src_race = factor(src_race,levels=r_levels),
+    src_gender = factor(src_gender,levels=g_levels),
+    src_age_grp = factor(src_age_grp,levels=a_levels),
+    pred_race = factor(pred_race,levels=r_levels),
+    pred_gender = factor(pred_gender,levels=g_levels),
+    pred_age_grp = factor(pred_age_grp,levels=a_levels)
+  )
+  if (t_prop == 'age_bins'){
+    res <- confusionMatrix(tdf$pred_age_grp,tdf$src_age_grp,mode='everything')[['byClass']]
+  } else if (t_prop =='genders'){
+    resF <- confusionMatrix(tdf$pred_gender,tdf$src_gender,mode='everything',positive='Female')[['byClass']]
+    resM <- confusionMatrix(tdf$pred_gender,tdf$src_gender,mode='everything',positive='Male')[['byClass']]
+    g_names <- c(
+      "Class: Female","Class: Male"
+    )
+    res <- cbind(resF,resM)
+    colnames(res) <- g_names
+    res <- t(res)
+  } else if (t_prop == 'races'){
+    res <- confusionMatrix(tdf$pred_race,tdf$src_race,mode='everything')[['byClass']]
+  } else {
+    res <-  c()
+  }
+  
+  if (length(res) > 0 & 'Balanced Accuracy' %in% colnames(res) & 'F1' %in% colnames(res)){
+
+    acc <- res[,'Balanced Accuracy']  
+    f1 <- res[,'F1']
+  
+    names(acc) <- acc %>% names() %>% str_replace("Class: ","")
+    names(f1) <- f1 %>% names() %>% str_replace("Class: ","")
+    
+    n <- c(names(acc),names(f1))
+    
+    comb <- tibble(namesf1=names(f1),namesAcc=names(acc),f1,acc)
+    
+    res <- tibble(
+      test_prop = t_prop,
+      test_race = t_race,
+      test_gender = t_gender,
+      test_age = t_age,
+      F1 = f1,
+      Accuracy = acc,
+      names = names(f1)
+    )
+    if (t_prop=='age_bins') {
+      res <- res %>% filter(names==t_age) %>% select(test_prop:Accuracy)
+    }
+      
+    if (t_prop=='genders') {
+      res <- res %>% filter(names==t_gender) %>% select(test_prop:Accuracy)
+    }
+    
+    if (t_prop=='races'){
+      res <- res %>% filter(names==t_race) %>% select(test_prop:Accuracy)
+    }
+    res
+  }
+}
+
+#get the same values we'll need for iteration on calling acc_f1
+verify <- two_sample_result_matrix %>% select(test_prop,test_age,test_gender,test_race)
+
+#rowwise basically allows us to iterate per-row of the dataframe and call the function
+#run against fairface
+FF_f1_acc <- verify %>% rowwise %>% reframe(out=acc_f1(fairface_df,test_prop,test_race,test_gender,test_age)) %>% ungroup() %>% unnest(cols=c(out))
+
+#run against deepface
+DF_f1_acc <- verify %>% rowwise %>% reframe(out=acc_f1(deepface_df,test_prop,test_race,test_gender,test_age)) %>% ungroup() %>% unnest(cols=c(out))
+
+#combine the results of FairFace and DeepFace F1/ACC
+total_f1_acc <- FF_f1_acc %>% inner_join(DF_f1_acc,suffix=c('.FF','.DF'),by=c('test_prop'='test_prop','test_age'='test_age','test_gender'='test_gender','test_race'='test_race'))
+
+#merge the F1/ACC with the two sample results
+combined_results <- two_sample_result_matrix %>% inner_join(total_f1_acc,by=c('test_prop'='test_prop','test_age'='test_age','test_gender'='test_gender','test_race'='test_race'))
+
+#extract the columns only pertinent to the source and to deepface
+df_results <- combined_results %>% select(test_prop:source_prop,deepface_n,deepface_prop,deepface_p_value,deepface_power,F1.DF,Accuracy.DF)
+
+#extract the columns only pertinent to the source and to fairface
+ff_results <- combined_results %>% select(test_prop:source_prop,fairface_n,fairface_prop,fairface_p_value,fairface_power,F1.FF,Accuracy.FF)
+
+#rename the columns from fairface and deepface to have the same names.
+names(ff_results) <- c("test_prop","test_age","test_gender","test_race","source_n","source_prop","model_n","model_prop","model_p_value","model_power","model_F1","model_Accuracy")
+
+names(df_results) <- c("test_prop","test_age","test_gender","test_race","source_n","source_prop","model_n","model_prop","model_p_value","model_power","model_F1","model_Accuracy")
+
+#add a model column to both frames to tag which model was used to get the values
+ff_results <- mutate(ff_results,model='FairFace')
+
+df_results <- mutate(df_results,model='DeepFace')
+
+#union the two results to get the full answer in a cleaner format.
+full_results <- union(ff_results,df_results)
+
+#full_results %>% write_csv('C:\\Users\\pconn\\OneDrive\\Desktop\\Stat-Git\\data\\combined_p_val_F1_acc.csv')
+full_results %>% write_csv('../data/combined_p_val_F1_acc.csv')
+```
+
+```{r bootstrap_power_level}
+
+get_sample_props <- function(vector,i,category){
+  x <- vector[,i]
+  length(x[x==category]) / length(x)
+}
+
+prop_bootstrap_data <- function(df,t_prop,t_race,t_gender,t_age){
+
+  if (t_age!='All' & t_prop!='age_bins'){
+    tdf <- df %>% filter(src_age_grp==t_age)
+  }
+  
+  if (t_gender!='All' & t_prop!='genders'){
+    tdf <- df %>% filter(src_gender==t_gender)
+  }
+  
+  if (t_race!='All' & t_prop != 'races'){
+    tdf <- df %>% filter(src_race == t_race)    
+  }
+  
+  if (t_prop=='races'){
+    src1 <- tdf %>% pull(src_race)
+    pred1 <- tdf %>% pull(pred_race)
+    catg <- t_race
+  } else if (t_prop=='genders'){
+    src1 <- tdf %>% pull(src_gender)
+    pred1 <- tdf %>% pull(pred_gender)
+    catg <- t_gender
+  } else if (t_prop=='age_bins'){
+    src1 <- tdf %>% pull(src_age_grp)
+    pred1 <- tdf %>% pull(pred_age_grp)
+    catg <- t_age
+  } else {
+    return(0)
+  }
+  
+  #c(as.character(length(src1)),as.character(length(pred1)),catg,t_prop)
+  # tibble(
+  #   category = replicate(length(src1),catg),
+  #   src = src1,
+  #   pred = pred1
+  # )
+  
+  source_bootstrap <- replicate(5000,sample(src1,size=500,replace=T))
+  pred_bootstrap <- replicate(5000,sample(pred1,size=500,replace=T))
+
+  source_props <- sapply(c(1:5000),get_sample_props,vector=source_bootstrap,category=catg)
+  pred_props <- sapply(c(1:5000),get_sample_props,vector=pred_bootstrap,category=catg)
+
+  tibble(
+    model=replicate(5000,''),
+    src_mean_props = source_props,
+    pred_mean_props= pred_props
+  )
+}
+
+proportion_bootstrap <- function(df,t_prop,t_race,t_gender,t_age){
+  #add cases for prop all
+  #get props
+  sdf <- df
+  pdf <- df
+  if (t_age!='All' & t_prop!='age_bins'){
+    sdf <- sdf %>% filter(src_age_grp==t_age)
+    pdf <- pdf %>% filter(pred_age_grp==t_age)
+  }
+  
+  if (t_gender!='All' & t_prop!='genders'){
+    sdf <- sdf %>% filter(src_gender==t_gender)
+    pdf <- pdf %>% filter(pred_gender==t_gender)
+  }
+  
+  if (t_race!='All' & t_prop != 'races'){
+    sdf <- sdf %>% filter(src_race == t_race)    
+    pdf <- pdf %>% filter(pred_race == t_race)
+  }
+  
+  if (t_prop=='races'){
+    src1 <- sdf %>% pull(src_race)
+    pred1 <- pdf %>% pull(pred_race)
+    catg <- t_race
+  } else if (t_prop=='genders'){
+    src1 <- sdf %>% pull(src_gender)
+    pred1 <- pdf %>% pull(pred_gender)
+    catg <- t_gender
+  } else if (t_prop=='age_bins'){
+    src1 <- sdf %>% pull(src_age_grp)
+    pred1 <- pdf %>% pull(pred_age_grp)
+    catg <- t_age
+  } else {
+    return(0)
+  }
+  
+  source_bootstrap <- replicate(2000,sample(src1,size=500,replace=T))
+  pred_bootstrap <- replicate(2000,sample(pred1,size=500,replace=T))
+  
+  source_props <- sapply(c(1:5000),get_sample_props,vector=source_bootstrap,category=catg)
+  pred_props <- sapply(c(1:5000),get_sample_props,vector=pred_bootstrap,category=catg)
+  
+  #source_props
+  p_val <- t.test(source_props,pred_props,var.equal=TRUE,conf.level=.997,alternative='two.sided')$p.value
+  
+  power <- pwr.t2n.test(n1=length(source_props),n2=length(pred_props),d=0.8,sig.level=.003,alternative='two.sided')$power
+  
+  tibble(
+    model="test",
+    test_prop=t_prop,
+    test_race=t_race,
+    test_gender=t_gender,
+    test_age=t_age,
+    model_p_value=p_val,
+    model_power=power
+  )
+}
+
+
+full_results %>% filter(model_p_value < .8) %>% rowwise %>% 
+  reframe(out=proportion_bootstrap(
+    deepface_df,
+    test_prop,
+    test_race,
+    test_gender,
+    test_age)) %>% 
+  ungroup() %>% 
+  unnest(cols=c(out))
+
+full_results %>% filter(model_p_value < .8) %>% rowwise %>% 
+  reframe(out=proportion_bootstrap(
+    fairface_df,
+    test_prop,
+    test_race,
+    test_gender,
+    test_age)) %>% 
+  ungroup() %>% 
+  unnest(cols=c(out))
+  
+  
+  
+
+```
+
+
+
+```{r twoSample_T_Tests}
+
+get_mean <- function(vector,ind){
+  mean(vector[,ind])  
+}
+
+t_tests <- function(df,age_col,t_prop,t_race,t_gender,t_age){
+  tdf <- df %>% drop_na()
+  
+  if (t_age!='All' & t_prop!='age_bins'){
+    tdf <- tdf %>% filter(src_age_grp==t_age)
+  }
+  
+  if (t_gender!='All' & t_prop!='genders'){
+    tdf <- tdf %>% filter(src_gender==t_gender)
+  }
+  
+  if (t_race!='All' & t_prop != 'races'){
+    tdf <- tdf %>% filter(src_race == t_race)    
+  }
+  
+  x <- tdf %>% pull(src_age)
+  x_boot <- replicate(10000,sample(x,size=500,replace=T))
+  x_samp_means <- sapply(c(1:10000),get_mean,vector=x_boot)
+  #print(x)
+  y <- tdf %>% pull(!!as.symbol(age_col))
+  y_boot <- replicate(10000,sample(y,size=500,replace=T))
+  y_samp_means <- sapply(c(1:10000),get_mean,vector=y_boot)
+  #print(y)
+  p_val <- t.test(x_samp_means,y_samp_means,var.equal=TRUE,conf.level=0.997,alternative=)$p.value
+  #do a power test
+  #use +/- 5 as the effect size (so it's comparable to FairFace)
+  #sig level of .997, two-sided test.
+  test_power <- pwr.t2n.test(n1=length(x_samp_means),n2=length(y_samp_means),d=0.8,sig.level=.003,alternative = 'two.sided')$power
+  res <- tibble(
+    test_prop = t_prop,
+    test_gender = t_gender,
+    test_race = t_race,
+    p_value = as.character(p_val),
+    power = as.character(test_power)
+  )
+  res
+}
+
+bootstrapped_means <- function(df,age_col,t_prop,t_race,t_gender,t_age){
+  tdf <- df %>% drop_na()
+  
+  if (t_age!='All' & t_prop!='age_bins'){
+    tdf <- tdf %>% filter(src_age_grp==t_age)
+  }
+  
+  if (t_gender!='All' & t_prop!='genders'){
+    tdf <- tdf %>% filter(src_gender==t_gender)
+  }
+  
+  if (t_race!='All' & t_prop != 'races'){
+    tdf <- tdf %>% filter(src_race == t_race)    
+  }
+  x_boot <- tdf %>% pull(src_age)
+  x_bootstrap <- replicate(10000,sample(x_boot,size=500,replace=T))
+  x_samp_means <- sapply(c(1:10000),get_mean,vector=x_bootstrap)
+  x_norm_means <- (x_samp_means-mean(x_samp_means))/sd(x_samp_means)
+  y_boot <- tdf %>% pull(!!as.symbol(age_col))
+  y_bootstrap <- replicate(10000,sample(y_boot,size=500,replace=T))
+  y_samp_means <- sapply(c(1:10000),get_mean,vector=y_bootstrap)
+  #note - using mean of x (source) under assumption that the null hypothesis is true.
+  y_norm_means <- (y_samp_means-mean(x_samp_means))/sd(x_samp_means)
+  res <- tibble(
+    test_prop=replicate(10000,t_prop),
+    test_race=replicate(10000,t_race),
+    test_gender=replicate(10000,t_gender),
+    src=x_samp_means,
+    pred=y_samp_means,
+    src.norm=x_norm_means,
+    pred.norm=y_norm_means
+  )
+  res
+}
+
+#modify the verify variable to include only age bin tests
+#this will ensure we're only sub-setting on race and gender in each test.
+#also - filter down duplicate cases because we don't need to test per age grp
+samp_means_tests <- verify %>% filter(test_prop == 'age_bins') %>% 
+  mutate(key=str_c(test_prop,test_gender,test_race)) %>% filter(!duplicated(key)) %>% 
+  select(test_prop:test_race)
+
+set.seed(100)
+DF_samp_means <- samp_means_tests %>% 
+  rowwise %>% 
+  reframe(
+    out=bootstrapped_means(
+      deepface_df,
+      'pred_age_DF_only',
+      t_prop=test_prop,
+      t_race=test_race,
+      t_gender=test_gender,
+      t_age=test_age
+    )
+  ) %>% ungroup() %>% unnest(cols=c(out))
+  
+
+#run the tests for all combos on DeepFace
+set.seed(100)
+DF_t_test_results <- samp_means_tests %>% 
+  rowwise %>% 
+  reframe(
+    out=t_tests(
+      deepface_df,
+      'pred_age_DF_only',
+      t_prop=test_prop,
+      t_race=test_race,
+      t_gender=test_gender,
+      t_age=test_age)
+  ) %>% 
+  ungroup() %>% unnest(cols=c(out))
+
+# set.seed(100)
+# FF_lower_samp_means <- samp_means_tests %>% 
+#   rowwise %>% 
+#   reframe(
+#     out=bootstrapped_means(
+#       fairface_df,
+#       'pred_age_lower',
+#       t_prop=test_prop,
+#       t_race=test_race,
+#       t_gender=test_gender,
+#       t_age=test_age
+#     )
+#   ) %>% ungroup() %>% unnest(cols=c(out))
+# 
+# set.seed(100)
+# FF_lower_t_test_results <- samp_means_tests %>% 
+#   rowwise %>% 
+#   reframe(
+#     out=t_tests(
+#       fairface_df,
+#       'pred_age_lower',
+#       t_prop=test_prop,
+#       t_race=test_race,
+#       t_gender=test_gender,
+#       t_age=test_age
+#     )
+#   ) %>% ungroup() %>% unnest(cols=c(out))
+
+DF_t_test_results %>% write_csv("../data/DF_t_tests.csv")
+DF_samp_means %>% write_csv("../data/DF_sample_means.csv")
+DF_t_test_results
+
+
+```
+
+```{r}
+#example of plotting the sample means after grabbing them all.
+#in this case, seems like we're good on our p-value anc power calcs.
+DF_samp_means %>% filter(test_race=='Indian',test_gender=='Male') %>% 
+  ggplot()+
+  geom_density(aes(x=src,color='Source'))+
+  geom_density(aes(x=pred,color='Predicted'))+xlim(15,45)
+```
+

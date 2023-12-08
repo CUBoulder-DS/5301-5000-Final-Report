@@ -7,6 +7,7 @@ library(tidyverse)
 library(caret)
 library(kableExtra)
 library(gt)
+library(broom)
 ```
 
 <!-- BJ !-->
@@ -423,8 +424,9 @@ view_results %>%
   cols_label(.list=as.list(colnames), .fn=md) %>%
   data_color(columns=6:8, palette="PiYG", domain=c(0, 1), alpha=0.75) %>%
   data_color(columns=5, method="bin", palette = c("#B1DC96", "#F2B8D2"), bins=c(0, 0.003, 1))
+```
 
-
+```{r}
 ## PC
 # combined_results %>%
 #   select(Race:p_value_f) %>%
@@ -441,7 +443,6 @@ view_results %>%
 #   data_color(columns=9:10, palette="PiYG", alpha=0.75, reverse=T) %>%
 #   opt_interactive(use_search = T, use_filters = T, use_highlight = T, page_size_default = 15) %>%
 #   tab_caption("TODO 2 Table of F1 score and accuracy, by each category evaluated by the models")
-
 ```
 
 TODO 3 Table of F1 score, accuracy, p-value, and power, by each category evaluated by the models
@@ -507,63 +508,166 @@ view_results %>%
 
 #PC
 ##ran t tests to compare mean ages between source data and DeepFace
-DeepFace_Only_T_tests %>%
-  filter(p_value <0.003,power > 0.8) %>%
-  gt()
+# DeepFace_Only_T_tests %>%
+#   filter(p_value <0.003,power > 0.8) %>%
+#   gt()
+
+# T-Test Parameters: 
+
+# * Confidence level: 0.997
+
+# * Two-sided test
+
+# Statistical Power T-Test Parameters: 
+
+# * Effect Size: +/- 5 years in age
+
+# * Significance level: 0.003
+
+# * Two-sided test
 ```
 
-T-Test Parameters: 
-
-* Confidence level: 0.997
-
-* Two-sided test
-
-Statistical Power T-Test Parameters: 
-
-* Effect Size: +/- 5 years in age
-
-* Significance level: 0.003
-
-* Two-sided test
 
 ### Comparison Plots
 
 ```{r, warning=F}
 # BJ
 
-ggplot(stats_results) +
-  geom_point(aes(x=model_F1, y=model_p_value, color=model, fill=model_power), shape=21)
+#PC - commented out, we decided this plot didn't make sense.
+# ggplot(stats_results) +
+#   geom_point(aes(x=model_F1, y=model_p_value, color=model, fill=model_power), shape=21)
 
-ggplot(stats_results) +
-  geom_point(aes(x=model_F1, y=model_Accuracy, color=model))
+# ggplot(stats_results) +
+#   geom_point(aes(x=model_F1, y=model_Accuracy, color=model))
 
 # ggplot(stats_results) +
 #   geom_point(aes(x=model_power, y=model_p_value, color=model))
-```
 
-### Statistical Power - TODO REMOVE
 
-$$
-\beta = P\bigg(\bigg|\frac{\sqrt{n}\cdot\hat{p}-p_a}{\sqrt{p_a(1-p_a)}}\bigg|\geq\frac{\sqrt{n}\cdot p_0-p_a}{\sqrt{p_0(1-p_0)}}\bigg)
-$$
-```{r}
-# Our selected level of significance is 99.7% (3-sigma). Type-II error is denoted by $\beta$ above, and Power will be $1-\beta$
-
-# With $p_0$ being our *assumed* population proportion (from the source dataset and what we used in our tests), $p_a$ being the *actual* population proportion (from one or more of the below methods), $n$ being the number of predicted members of a racial group (i.e. "Indian"),
-
-# -   For Gender - assume that sex at birth is a bernoulli trial, over time, the proportion for both genders should be 0.5
-
-# -   For age groups - assume that age has a true normal distribution. Each race may have different means and standard deviations for their distribution of age, but still adhere to a normal distribution. The "population" proportions may be a bit more challenging to calculate, but under this framework, we may be able to get there.
-
-#     -   May be able to get via bootstrapping the source dataset, average age by race - I think that's what we did in our last project?
-
-#     -   Could look at external data? May not have time to look through everything.
-```
-```{r PowerCalcs}
-
-TypeII <- function(p0,pa,n){
-  z <- (sqrt(n)*(p0-pa))/(sqrt(p0*(1-p0)))
+#classify our test results as TP,TN,FP,FN or unknown.
+classify <- function(p_val,power,F1){
+  #handle NAs...
+	if (!is.numeric(p_val) | !is.numeric(F1) | is.nan(p_val) | is.nan(F1)){
+			"Unknown"
+  #assume cases where we have no F1 or P-value
+	} else if (is.na(F1) | is.na(p_val)) {
+    if (!is.na(p_val)&p_val < 0.003){
+		"True Positive"  #TP = reject the null, and we should
+    } else {
+      "Unknown"
+    }
+	} else if(p_val >=0.003 & F1 >= 0.9 & power < 0.8){
+		"True Negative" #TN = fail to reject the null when we shouldn't
+	} else if (p_val < 0.003 & F1 < 0.9 & power >= 0.8) {
+		"True Positive" #TP = reject the null, and we should
+	} else if (p_val >= 0.003 & F1 < 0.9 & power < 0.8) {
+		"False Negative" #FN = fail to reject the null when it's false 
+	} else if (p_val < 0.003 & F1 > 0.9 & power >= 0.8) {
+		"False Positive" #FP = reject the null when it's true 
+	} else {
+		"Unknown" #not sure how we should classify the case.
+	}
 }
+
+test_result <- function(pval){
+  if(is.na(pval) | is.nan(pval)){
+    "Unknown"
+  } else if (pval<.003){
+    "reject null"
+  } else {
+    "fail to reject null"
+  }
+}
+
+result_confusion <- function(p_val,power,F1){
+    #handle NAs...
+	if (!is.numeric(p_val) | !is.numeric(F1) | is.nan(p_val) | is.nan(F1)){
+			"Unknown"
+  #assume cases where we have no F1 or P-value
+	} else if (is.na(F1) | is.na(p_val)) {
+    if (!is.na(p_val)&p_val < 0.003){
+		"reject null"  #TP = reject the null, and we should
+    } else {
+      "Unknown"
+    }
+	} else if(p_val >=0.003 & F1 >= 0.9 & power < 0.8){
+		"fail to reject null" #TN = fail to reject the null when we shouldn't
+	} else if (p_val < 0.003 & F1 < 0.9 & power >= 0.8) {
+		"reject null" #TP = reject the null, and we should
+	} else if (p_val >= 0.003 & F1 < 0.9 & power < 0.8) {
+		"reject null" #FN = fail to reject the null when it's false 
+	} else if (p_val < 0.003 & F1 > 0.9 & power >= 0.8) {
+		"fail to reject null" #FP = reject the null when it's true 
+	} else {
+		"Unknown" #not sure how we should classify the case.
+	}
+}
+
+categorized_results <- stats_results %>% 
+  rowwise %>%
+  mutate(
+    result_category=classify(model_p_value,model_power,model_F1),
+    p_value_classification=test_result(model_p_value),
+    f1_classification=result_confusion(model_p_value,model_power,model_F1)
+  ) %>%
+  mutate(
+    F1_pass = as.numeric(model_F1>=.9),
+    reject_null = as.numeric(model_p_value < 0.003 & model_power > 0.8)
+  )
+
+###plot the graph as jitter points
+categorized_results %>% filter(model=='DeepFace') %>%
+  ggplot()+
+    geom_jitter(aes(x=reject_null,y=F1_pass,color=result_category))
+
+categorized_results %>% filter(model=='FairFace') %>%
+  ggplot()+
+    geom_jitter(aes(x=reject_null,y=F1_pass,color=result_category))
+
+
+#try to make confusion matrices and turn them into tile charts.
+
+fac_lev <- categorized_results %>% pull(f1_classification) %>% unique()
+
+plot_cm <- categorized_results %>% 
+  mutate(
+    p_value_classification=factor(p_value_classification,levels=fac_lev),
+    f1_classification=factor(f1_classification,levels=fac_lev)
+  )
+
+ff_tests <- plot_cm %>% filter(model=='FairFace')
+ff_results <- confusionMatrix(data=ff_tests$p_value_classification,reference=ff_tests$f1_classification)$table
+df_tests <- plot_cm %>% filter(model=='DeepFace')
+df_results <- confusionMatrix(data=df_tests$p_value_classification,reference=df_tests$f1_classification,)$table
+
+
+
+```
+
+
+<!-- ### Statistical Power - TODO REMOVE -->
+<!-- $$
+\beta = P\bigg(\bigg|\frac{\sqrt{n}\cdot\hat{p}-p_a}{\sqrt{p_a(1-p_a)}}\bigg|\geq\frac{\sqrt{n}\cdot p_0-p_a}{\sqrt{p_0(1-p_0)}}\bigg)
+$$ -->
+
+
+<!-- Our selected level of significance is 99.7% (3-sigma). Type-II error is denoted by $\beta$ above, and Power will be $1-\beta$
+
+With $p_0$ being our *assumed* population proportion (from the source dataset and what we used in our tests), $p_a$ being the *actual* population proportion (from one or more of the below methods), $n$ being the number of predicted members of a racial group (i.e. "Indian"),
+
+-   For Gender - assume that sex at birth is a bernoulli trial, over time, the proportion for both genders should be 0.5
+
+-   For age groups - assume that age has a true normal distribution. Each race may have different means and standard deviations for their distribution of age, but still adhere to a normal distribution. The "population" proportions may be a bit more challenging to calculate, but under this framework, we may be able to get there.
+
+    -   May be able to get via bootstrapping the source dataset, average age by race - I think that's what we did in our last project?
+
+    -   Could look at external data? May not have time to look through everything. -->
+
+```{r PowerCalcs}
+#can be removed.
+# TypeII <- function(p0,pa,n){
+#   z <- (sqrt(n)*(p0-pa))/(sqrt(p0*(1-p0)))
+# }
 
 ```
 
@@ -799,11 +903,11 @@ TypeII <- function(p0,pa,n){
 # knitr::kable(FF_race_p_values)
 
 # knitr::kable(DF_race_p_values)
-```
 
-$$
-\frac{\sqrt{n_M}\cdot(\bar{p}_M-p_S)}{\sqrt{p_S\cdot(1-P_S)}}
-$$
+# $$
+# \frac{\sqrt{n_M}\cdot(\bar{p}_M-p_S)}{\sqrt{p_S\cdot(1-P_S)}}
+# $$
+```
 
 ```{r}
 # source_gen_props['Female']

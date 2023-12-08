@@ -32,20 +32,26 @@ We need to be careful how we define and use bias. Statistical bias is essentiall
 ::: callout-note
 This performance section is important in choosing the correct models to ensure data integrity, however for the actual statistical tests, we'll focused on more common statistics like mean and proportion.
 
+<!-- PC --> 
+NOTE:  From Rubric - 
+May need to relocate sub-sections from data back to here:
+
+- Exploratory data analysis
+- what modifications were necessary to make the dataset ready for analysis?
+
+Separate of those two - may need explanations on the analyses we performed and **why we think they are appropriate.**  We have part of that regarding the F1 use to possibly identify errors, may need more on two-prop tests and the like
+
+<!-- end PC-->
+
 <!-- PC -->
-These are my recommendations on how we can look at the additional values: 
+These are PC's recommendations on how we can look at the additional values: 
 
 For cases in which we reject the statistical null hypothesis, we plan to evaluate the below metrics for the same output category.  Should we reject a null hypothesis for, let's say, the proportion of females, given that they are asian, we will examine the accuracy and F-1 scores for the same category.  We will consider the following range of values:
 
-* Accuracy < 70: poor/unacceptable performance
+* F1 Score < .9 vs F1 Score >= 0.9
+* Power < .8 vs Power >= .8
+* p-value < .003 vs pvalue >= .003
 
-* 70 < Accuracy < 79: marginally acceptable performance
-
-* 80 < Accuracy < 89: acceptable performance
-
-* 90 < Accuracy < 99: excellent performance
-
-* **Do we need anything else regarding precision or recall? and does this all need to be a table?**
 <!-- PC --> 
 :::
 
@@ -76,20 +82,33 @@ $Acccuracy = \frac{TP+TN}{TP + TN + FN}$
 ### Precision
 
 **Precision** is the ratio of true positives to the total number of positives (true positive + true negative).
-
-$Precision = \frac{TP}{TP+FP}$
-
+```{r}
+#$Precision = \frac{TP}{TP+FP}$
+```
 ### Recall
 
 **Recall** is the ratio of true positives to the number of total correct predictions (true positive + false negative).
 
-$Recall = \frac{TP}{TP+FN}$
+```{r}
+##$Recall = \frac{TP}{TP+FN}$
+```
 
 ### F1-Score
 
 **F1-Score**\* is known as the harmonic mean between precision and recall. **Precision** and **Recall** are useful in their own rights, but the f1-Score is useful in the fact it's a balanced combination of both precision and recall.
 
 F1-Score $= \frac{2 * Precision * Recall}{Precision + Recall}$
+
+When considering the classification of a subject by protected classes of age, gender, and race, we believe that stronger penalties should be assigned in making an improper classification decision.  Due to F1 being the harmonic mean of precision and recall, incorrect classification will more directly impact the score of each model in its prediction of protected classes, and do so more strongly than an accuracy calculation.
+
+(Citations -
+https://www.statology.org/f1-score-vs-accuracy/
+https://medium.com/analytics-vidhya/accuracy-vs-f1-score-6258237beca2
+)
+
+We calculate F1 score as a measure of performance of our selected machine learning models. This was not used in the calculation or results of the hypothesis tests, but will be used for when we draw conclusions of our tests based upon p-value and statistical power.  Namely, we do not plan to control for statistical power / Type-II error when running our 432 hypothesis tests, so statistical power may vary from test to test.  Using F1 scores to assess p-values in cases of low statistical power should assist us in identifying potential Type-II Errors.  We set a F1 score threshold of 0.9 to make this determination.
+
+In lamens terms, we're leveraging F1 score as a mitigatory factor for our team to avoid stating that a model is biased when it may not be.
 
 ## Hypothesis Testing
 
@@ -153,11 +172,17 @@ where
 - $\hat{p}$: output data subset proportion
 - $p$: source data subset proportion
 
-<!--PC-->
-**NOTE** - may be worthwhile to state that we evaluated all cases here, but reduction to specific cases of controlling race and evaluating solely on gender or solely on race is of the most value to us.  Performing tight filtering down to, for instance, the proportion of white people given they are 40-49 and female may be too restrictive.
+<!-- PC -->
+We believe that using two-sample proportion testing is an appropriate means by which we can evaluate the outputs of the two facial recognition models in comparison to the source data.  In leveraging two-sample proportion tests, we can infer whether or not the proportions of age, gender, or race (or some combination thereof) from the UTKFace dataset (i.e. 1st sample) originate from the same population as the outputs from each facial recognition model (i.e. 2nd dataset).  
 
-Performing and analyzing calcuations of P(Age|Race) or P(Gender|Race) are of more interest, as I think our research questions are looking at disparate impact to the outcomes for each racial group.
-<!-- END PC --> 
+**What is our population? Pictures of people across the internet?  Or pictures of people?**
+
+In theory, similar proportions of protected classes between the two datasets could suggest that the source data and predicted data originate from the same population (pictures of people), and would thus indicate an absence of bias against the protected class in question.  Vastly different proportions, however, could indicate that the source data and predicted data are from differing populations and indicate a bias against the protected classes in question.
+
+Leveraging p-values and powers calculated on our samples for our protected classes of age, gender, and race, should enable us to provide a clear picture of any biases that may manifest from one or both models.  Leveraging F1 scores in cases of inconclusive results from p-value and power should assist us in identifying potential error.
+
+<!-- end PC-->
+
 ### Notation
 
 Before we list the specific tests, we should introduce some notation.
@@ -212,6 +237,21 @@ where
 
 These were two specific hypothesis tests, however, we'll be testing many combinations of these parameters and reporting back on any significant findings.
 
+<!--PC-->
+
+In the above, we've outlined our methods for examining a total of 432 hypothesis tests per recognition model on the totality of, and smaller samples of, our overall dataset.  We have elected to sub-divide our source and predicted samples by these protected classes to inspect and investigate whether or not there may be bias against groupings of protected classes.  
+
+For instance, in the performance of our hypothesis tests, we may find an absence of bias when only examining proportions of gender between samples.  However, by examining a subset of our samples, such as subject gender given the subject's membership in a specific racial category, we may find biases providing more, or fewer, correct predictions of subject gender given their membership in a specific racial group.
+
+This could help us answer questions and draw conclusions about such groups.  For example: 
+
+"Model X demonstrates bias in favor of correctly predicting race, given the subject is young." - which also suggests a bias against correctly predicting the race of older subjects in a model.  Such a bias, if used in a decision making process, could result in age discrimination.
+
+"Model Y demonstrates bias against predicting correct gender, given the subject image is Black, Asian, or Other." - which also suggests a bias for correctly predicting gender, given the subject is White or Indian.  Such a bias, if used in a decision making process, could result in racial discrimination.
+
+Structuring our tests in this manner will enable us to quickly analyze and report on the results of our tests.
+
+<!--end PC-->
 
 ::: callout-note
 ## From the report requirements

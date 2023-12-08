@@ -23,8 +23,6 @@ Example face images from the UTK dataset [@utkdataset] with their associated giv
 
 <!-- CK -->
 
-<!--PC-->
-The source data, with respect to age, does not tightly adhere to the normal distribution in all cases.  This may impact our results unless we perform some other means of evaluating age (i.e. proportion analysis by age group, or bootstrapping)
 
 
 
@@ -76,6 +74,11 @@ Feel free to add anything else that you think is necessary for understanding the
 
 :::
 
+
+<!--  PC -->
+TODO: Not sure where this goes
+
+For each of the selected facial recognition models, we assume that each model's training dataset is independent of the content of the UTKFace dataset.  Independence between each model's output and the source data is a requirement for performing our testing.  We have no means or methods to verify whether or not any UTKFace images were used in the training of either model, and must make this assumption before moving forward in our methods and results.
 
 ```{r extraCodeOnOurData}
 suppressPackageStartupMessages(library(tidyverse))
