@@ -8,6 +8,7 @@ library(caret)
 library(kableExtra)
 library(gt)
 library(broom)
+library(yardstick)
 ```
 
 <!-- BJ !-->
@@ -242,14 +243,20 @@ view_results %>%
 ### Comparison Plots
 
 ```{r, warning=F}
+ggplot(stats_results) +
+  geom_point(aes(x=model_F1, y=model_Accuracy, color=model)) +
+  labs(x="F1 Score", y="Accuracy")
+```
+
+
+```{r, warning=F}
 # BJ
 
 #PC - commented out, we decided this plot didn't make sense.
 # ggplot(stats_results) +
 #   geom_point(aes(x=model_F1, y=model_p_value, color=model, fill=model_power), shape=21)
 
-ggplot(stats_results) +
-  geom_point(aes(x=model_F1, y=model_Accuracy, color=model))
+
 
 # ggplot(stats_results) +
 #   geom_point(aes(x=model_power, y=model_p_value, color=model))
@@ -284,9 +291,9 @@ test_result <- function(pval){
   if(is.na(pval) | is.nan(pval)){
     "Unknown"
   } else if (pval<.003){
-    "reject null"
+    "Reject null"
   } else {
-    "fail to reject null"
+    "Fail to reject null"
   }
 }
 
@@ -297,18 +304,18 @@ result_confusion <- function(p_val,power,F1){
   #assume cases where we have no F1 or P-value
 	} else if (is.na(F1) | is.na(p_val)) {
     if (!is.na(p_val)&p_val < 0.003){
-		"reject null"  #TP = reject the null, and we should
+		"Reject null"  #TP = reject the null, and we should
     } else {
       "Unknown"
     }
 	} else if(p_val >=0.003 & F1 >= 0.9 & power < 0.8){
-		"fail to reject null" #TN = fail to reject the null when we shouldn't
+		"Fail to reject null" #TN = fail to reject the null when we shouldn't
 	} else if (p_val < 0.003 & F1 < 0.9 & power >= 0.8) {
-		"reject null" #TP = reject the null, and we should
+		"Reject null" #TP = reject the null, and we should
 	} else if (p_val >= 0.003 & F1 < 0.9 & power < 0.8) {
-		"reject null" #FN = fail to reject the null when it's false 
+		"Reject null" #FN = fail to reject the null when it's false 
 	} else if (p_val < 0.003 & F1 > 0.9 & power >= 0.8) {
-		"fail to reject null" #FP = reject the null when it's true 
+		"Fail to reject null" #FP = reject the null when it's true 
 	} else {
 		"Unknown" #not sure how we should classify the case.
 	}
@@ -326,33 +333,51 @@ categorized_results <- stats_results %>%
     reject_null = as.numeric(model_p_value < 0.003 & model_power > 0.8)
   )
 
-###plot the graph as jitter points
-categorized_results %>% filter(model=='DeepFace') %>%
-  ggplot()+
-    geom_jitter(aes(x=reject_null,y=F1_pass,color=result_category))
-
-categorized_results %>% filter(model=='FairFace') %>%
-  ggplot()+
-    geom_jitter(aes(x=reject_null,y=F1_pass,color=result_category))
-
-
-#try to make confusion matrices and turn them into tile charts.
-
+# ###plot the graph as jitter points
+# categorized_results %>% filter(model=='DeepFace') %>%
+#   ggplot()+
+#     geom_jitter(aes(x=reject_null,y=F1_pass,color=result_category))
+# 
+# categorized_results %>% filter(model=='FairFace') %>%
+#   ggplot()+
+#     geom_jitter(aes(x=reject_null,y=F1_pass,color=result_category))
+# 
+# 
+# #try to make confusion matrices and turn them into tile charts.
+# 
 fac_lev <- categorized_results %>% pull(f1_classification) %>% unique()
-
-plot_cm <- categorized_results %>% 
+plot_cm <- categorized_results %>%
   mutate(
     p_value_classification=factor(p_value_classification,levels=fac_lev),
     f1_classification=factor(f1_classification,levels=fac_lev)
   )
-
+# 
 ff_tests <- plot_cm %>% filter(model=='FairFace')
-ff_results <- confusionMatrix(data=ff_tests$p_value_classification,reference=ff_tests$f1_classification)$table
+# ff_results_conf <- confusionMatrix(data=ff_tests$p_value_classification,reference=ff_tests$f1_classification)
 df_tests <- plot_cm %>% filter(model=='DeepFace')
-df_results <- confusionMatrix(data=df_tests$p_value_classification,reference=df_tests$f1_classification,)$table
+# df_results_conf <- confusionMatrix(data=df_tests$p_value_classification,reference=df_tests$f1_classification,)$table
 
 
+```
 
+In @fig-p-conf, we display confusion matrices of the TODO
+
+```{r, warning=F}
+#| label: fig-p-conf
+#| fig-cap: Confusion matrices of TODO
+#| fig-subcap: 
+#|   - Matrix for FairFace
+#|   - Matrix for DeepFace
+#| layout-ncol: 2
+
+# BJ
+autoplot(conf_mat(ff_tests, p_value_classification, f1_classification), type = "heatmap") +
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  labs(title="FairFace")
+
+autoplot(conf_mat(df_tests, p_value_classification, f1_classification), type = "heatmap") +
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  labs(title="DeepFace")
 ```
 
 
