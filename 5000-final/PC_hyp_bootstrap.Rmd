@@ -787,71 +787,102 @@ full_results <- union(ff_results,df_results)
 full_results %>% write_csv('../data/combined_p_val_F1_acc.csv')
 ```
 
-```{r bootstrap_power_level}
 
-get_sample_props <- function(vector,i,category){
-  x <- vector[,i]
-  length(x[x==category]) / length(x)
+Here, I went to try to bootstrap the power level of all of our tests.
+
+General steps are as follows:
+
+* Take the test condition (i.e. Female, Given Black)
+
+* Filter DF down to the appropriate condition (i.e. from above,filter down to Black in the source and in the prediction)
+
+* Pull the column for source and predicted from each filtered version of the dataframe
+
+  * Sample the pulled column 2K times, 500 times per sample, with replacement
+  
+  * In each sample, calculate 
+    
+    * the proportion of the target class (i.e. from above example, get proportion of Women)
+  
+    * The F1 and Accuracy for the sample of source vs sample of predicted
+    
+    
+
+```{r bootstrap_power_level, include=FALSE, echo=FALSE}
+
+#for use when setting factor levels of individual samples.
+fct_age <- source_df %>% pull(src_age_grp) %>% unique() %>%  factor()
+fct_gen <- source_df %>% pull(src_gender) %>% unique() %>% factor()
+fct_race <- source_df %>% pull(src_race) %>% unique() %>% factor()
+
+#used for extracting sample proportions from a vector
+#i.e. get 2k samples of 500 using sapply
+#then use this to get a vector of sample means
+get_samp_prop <- function(vector,category){
+  x <- as.character(vector)
+  length(x[x==category])/length(x)
 }
+
+#used to calculate the accuracy and F1 of each sample
+get_acc_f1 <- function(src,pred,category){
+  res <- confusionMatrix(
+    data=pred,
+    reference=src,
+    mode='everything'
+  )[['byClass']]
+  
+  #note - output differs depending on what category is being tested
+  #also using to make sure something is calculated each time
+  if(length(res)>0 & 'Balanced Accuracy' %in% colnames(res)){
+    data.frame(
+      acc=res[,'Balanced Accuracy'][str_c("Class: ",category)] %>% unname(),
+      f1=res[,'F1'][str_c('Class: ',category)]
+    )
+  } else if (category=='Male' | category=='Female'){
+    data.frame(
+      acc=res['Balanced Accuracy'] %>% unname(),
+      f1=res['F1'] %>% unname()
+    )
+  } else {
+    data.frame(
+      f1=NA,acc=NA
+    )
+  }
+}
+
+get_f1_acc <- function(src,pred,i,category,fact){
+  res <- confusionMatrix(
+    data=factor(pred,levels=fact),
+    reference=factor(src,levels=fact),
+    mode='everything'
+  )[['byClass']]
+  if (length(res) > 0 & 'Balanced Accuracy' %in% colnames(res)){
+    data.frame(
+      acc=res[,'Balanced Accuracy'][str_c("Class: ",category)] %>% unname(),
+      f1=res[,'F1'][str_c('Class: ',category)] %>% unname()
+    )
+  } else if (category=='Male' | category=='Female'){
+    data.frame(
+      res[,'F1'] %>% unname(),
+      res['Balanced Accuracy'] %>% unname()
+    )
+  } else {
+    data.frame(f1=NA,acc=NA)
+  }
+}
+
+# to_factor <- function(vec,i,fact){
+#   factor(vec[,i],levels=fact)
+# }
 
 prop_bootstrap_data <- function(df,t_prop,t_race,t_gender,t_age){
-
-  if (t_age!='All' & t_prop!='age_bins'){
-    tdf <- df %>% filter(src_age_grp==t_age)
-  }
   
-  if (t_gender!='All' & t_prop!='genders'){
-    tdf <- df %>% filter(src_gender==t_gender)
-  }
-  
-  if (t_race!='All' & t_prop != 'races'){
-    tdf <- df %>% filter(src_race == t_race)    
-  }
-  
-  if (t_prop=='races'){
-    src1 <- tdf %>% pull(src_race)
-    pred1 <- tdf %>% pull(pred_race)
-    catg <- t_race
-  } else if (t_prop=='genders'){
-    src1 <- tdf %>% pull(src_gender)
-    pred1 <- tdf %>% pull(pred_gender)
-    catg <- t_gender
-  } else if (t_prop=='age_bins'){
-    src1 <- tdf %>% pull(src_age_grp)
-    pred1 <- tdf %>% pull(pred_age_grp)
-    catg <- t_age
-  } else {
-    return(0)
-  }
-  
-  #c(as.character(length(src1)),as.character(length(pred1)),catg,t_prop)
-  # tibble(
-  #   category = replicate(length(src1),catg),
-  #   src = src1,
-  #   pred = pred1
-  # )
-  
-  source_bootstrap <- replicate(5000,sample(src1,size=500,replace=T))
-  pred_bootstrap <- replicate(5000,sample(pred1,size=500,replace=T))
-
-  source_props <- sapply(c(1:5000),get_sample_props,vector=source_bootstrap,category=catg)
-  pred_props <- sapply(c(1:5000),get_sample_props,vector=pred_bootstrap,category=catg)
-
-  tibble(
-    model=replicate(5000,''),
-    src_mean_props = source_props,
-    pred_mean_props= pred_props
-  )
-}
-
-proportion_bootstrap <- function(df,t_prop,t_race,t_gender,t_age){
-  #add cases for prop all
-  #get props
   sdf <- df
   pdf <- df
+  
   if (t_age!='All' & t_prop!='age_bins'){
     sdf <- sdf %>% filter(src_age_grp==t_age)
-    pdf <- pdf %>% filter(pred_age_grp==t_age)
+    pdf <- pdf %>%filter(pred_age_grp==t_age)
   }
   
   if (t_gender!='All' & t_prop!='genders'){
@@ -861,232 +892,296 @@ proportion_bootstrap <- function(df,t_prop,t_race,t_gender,t_age){
   
   if (t_race!='All' & t_prop != 'races'){
     sdf <- sdf %>% filter(src_race == t_race)    
-    pdf <- pdf %>% filter(pred_race == t_race)
+    pdf <- pdf %>% filter(pred_race==t_race)
   }
-  
+  fct <- c()
   if (t_prop=='races'){
     src1 <- sdf %>% pull(src_race)
     pred1 <- pdf %>% pull(pred_race)
     catg <- t_race
+    fct <- fct_race
   } else if (t_prop=='genders'){
     src1 <- sdf %>% pull(src_gender)
     pred1 <- pdf %>% pull(pred_gender)
     catg <- t_gender
+    fct <- fct_gen
   } else if (t_prop=='age_bins'){
     src1 <- sdf %>% pull(src_age_grp)
     pred1 <- pdf %>% pull(pred_age_grp)
     catg <- t_age
+    fct <- fct_age
   } else {
     return(0)
   }
   
-  source_bootstrap <- replicate(2000,sample(src1,size=500,replace=T))
-  pred_bootstrap <- replicate(2000,sample(pred1,size=500,replace=T))
+  #print(t_prop)
   
-  source_props <- sapply(c(1:5000),get_sample_props,vector=source_bootstrap,category=catg)
-  pred_props <- sapply(c(1:5000),get_sample_props,vector=pred_bootstrap,category=catg)
+  if (length(src1) > 0 & length(pred1) > 0){
+    print("sampling")
+    source_bootstrap <- replicate(2000,sample(src1,size=500,replace=T)) %>% as.data.frame()
+    pred_bootstrap <- replicate(2000,sample(pred1,size=500,replace=T)) %>% as.data.frame()
   
-  #source_props
-  p_val <- t.test(source_props,pred_props,var.equal=TRUE,conf.level=.997,alternative='two.sided')$p.value
-  
-  power <- pwr.t2n.test(n1=length(source_props),n2=length(pred_props),d=0.8,sig.level=.003,alternative='two.sided')$power
-  
-  tibble(
-    model="test",
-    test_prop=t_prop,
-    test_race=t_race,
-    test_gender=t_gender,
-    test_age=t_age,
-    model_p_value=p_val,
-    model_power=power
-  )
+    #return(source_bootstrap)
+    print("proportions")
+    source_props <- as.numeric(lapply(source_bootstrap[col_names],get_samp_prop,category=catg))
+    pred_props <- as.numeric(lapply(pred_bootstrap[col_names],get_samp_prop,category=catg))
+    
+    col_names <- colnames(source_bootstrap)
+    print("factors")
+    source_bootstrap[,col_names] <- lapply(source_bootstrap[,col_names],factor,levels=fct)
+    pred_bootstrap[,col_names] <- lapply(pred_bootstrap[,col_names],factor,levels=fct)
+    
+    acc_f1 <- sapply(col_names,function(x) get_acc_f1(source_bootstrap[,x],pred_bootstrap[,x],category = catg))
+    
+    #return(acc_f1)
+    
+    #return(source_bootstrap)
+    
+    print("Done")
+    tibble(
+      model=replicate(2000,''),
+      test_prop=t_prop,
+      test_gender=t_gender,
+      test_race=t_race,
+      test_age=t_age,
+      src_mean_props = source_props,
+      pred_mean_props= pred_props,
+      F1=(acc_f1["f1",] %>% as.numeric()),
+      Accuracy=(acc_f1['acc',] %>% as.numeric())
+    )
+    
+  } else if (length(src1)==0){
+    pred_bootstrap <- replicate(2000,sample(pred1,size=500,replace=T))
+    pred_props <- sapply(c(1:2000),get_sample_props,vector=pred_bootstrap,category=catg)
+    tibble(
+      model=replicate(2000,''),
+      test_prop=t_prop,
+      test_gender=t_gender,
+      test_race=t_race,
+      test_age=t_age,
+      src_mean_props = replicate(2000,NA),
+      pred_mean_props = pred_props,
+      F1=replicate(2000,NA),
+      Accuracy=replicate(2000,NA)
+    ) 
+  } else {
+    source_bootstrap <- replicate(2000,sample(src1,size=500,replace=T))
+    source_props <- sapply(c(1:2000),get_sample_props,vector=source_bootstrap,category=catg)
+    tibble(
+      model=replicate(2000,''),
+      test_prop=t_prop,
+      test_gender=t_gender,
+      test_race=t_race,
+      test_age=t_age,
+      src_mean_props=source_props,
+      pred_mean_props=replicate(2000,NA),
+      F1=replicate(2000,NA),
+      Accuracy=replicate(2000,NA)
+    )
+  }
 }
-
-
-full_results %>% filter(model_p_value < .8) %>% rowwise %>% 
-  reframe(out=proportion_bootstrap(
-    deepface_df,
-    test_prop,
-    test_race,
-    test_gender,
-    test_age)) %>% 
-  ungroup() %>% 
-  unnest(cols=c(out))
-
-full_results %>% filter(model_p_value < .8) %>% rowwise %>% 
-  reframe(out=proportion_bootstrap(
-    fairface_df,
-    test_prop,
-    test_race,
-    test_gender,
-    test_age)) %>% 
-  ungroup() %>% 
-  unnest(cols=c(out))
-  
-  
-  
-
-```
-
-
-
-```{r twoSample_T_Tests}
-
-get_mean <- function(vector,ind){
-  mean(vector[,ind])  
-}
-
-t_tests <- function(df,age_col,t_prop,t_race,t_gender,t_age){
-  tdf <- df %>% drop_na()
-  
-  if (t_age!='All' & t_prop!='age_bins'){
-    tdf <- tdf %>% filter(src_age_grp==t_age)
-  }
-  
-  if (t_gender!='All' & t_prop!='genders'){
-    tdf <- tdf %>% filter(src_gender==t_gender)
-  }
-  
-  if (t_race!='All' & t_prop != 'races'){
-    tdf <- tdf %>% filter(src_race == t_race)    
-  }
-  
-  x <- tdf %>% pull(src_age)
-  x_boot <- replicate(10000,sample(x,size=500,replace=T))
-  x_samp_means <- sapply(c(1:10000),get_mean,vector=x_boot)
-  #print(x)
-  y <- tdf %>% pull(!!as.symbol(age_col))
-  y_boot <- replicate(10000,sample(y,size=500,replace=T))
-  y_samp_means <- sapply(c(1:10000),get_mean,vector=y_boot)
-  #print(y)
-  p_val <- t.test(x_samp_means,y_samp_means,var.equal=TRUE,conf.level=0.997,alternative=)$p.value
-  #do a power test
-  #use +/- 5 as the effect size (so it's comparable to FairFace)
-  #sig level of .997, two-sided test.
-  test_power <- pwr.t2n.test(n1=length(x_samp_means),n2=length(y_samp_means),d=0.8,sig.level=.003,alternative = 'two.sided')$power
-  res <- tibble(
-    test_prop = t_prop,
-    test_gender = t_gender,
-    test_race = t_race,
-    p_value = as.character(p_val),
-    power = as.character(test_power)
-  )
-  res
-}
-
-bootstrapped_means <- function(df,age_col,t_prop,t_race,t_gender,t_age){
-  tdf <- df %>% drop_na()
-  
-  if (t_age!='All' & t_prop!='age_bins'){
-    tdf <- tdf %>% filter(src_age_grp==t_age)
-  }
-  
-  if (t_gender!='All' & t_prop!='genders'){
-    tdf <- tdf %>% filter(src_gender==t_gender)
-  }
-  
-  if (t_race!='All' & t_prop != 'races'){
-    tdf <- tdf %>% filter(src_race == t_race)    
-  }
-  x_boot <- tdf %>% pull(src_age)
-  x_bootstrap <- replicate(10000,sample(x_boot,size=500,replace=T))
-  x_samp_means <- sapply(c(1:10000),get_mean,vector=x_bootstrap)
-  x_norm_means <- (x_samp_means-mean(x_samp_means))/sd(x_samp_means)
-  y_boot <- tdf %>% pull(!!as.symbol(age_col))
-  y_bootstrap <- replicate(10000,sample(y_boot,size=500,replace=T))
-  y_samp_means <- sapply(c(1:10000),get_mean,vector=y_bootstrap)
-  #note - using mean of x (source) under assumption that the null hypothesis is true.
-  y_norm_means <- (y_samp_means-mean(x_samp_means))/sd(x_samp_means)
-  res <- tibble(
-    test_prop=replicate(10000,t_prop),
-    test_race=replicate(10000,t_race),
-    test_gender=replicate(10000,t_gender),
-    src=x_samp_means,
-    pred=y_samp_means,
-    src.norm=x_norm_means,
-    pred.norm=y_norm_means
-  )
-  res
-}
-
-#modify the verify variable to include only age bin tests
-#this will ensure we're only sub-setting on race and gender in each test.
-#also - filter down duplicate cases because we don't need to test per age grp
-samp_means_tests <- verify %>% filter(test_prop == 'age_bins') %>% 
-  mutate(key=str_c(test_prop,test_gender,test_race)) %>% filter(!duplicated(key)) %>% 
-  select(test_prop:test_race)
 
 set.seed(100)
-DF_samp_means <- samp_means_tests %>% 
-  rowwise %>% 
+df_bootstrap_data <- verify %>% rowwise %>% 
   reframe(
-    out=bootstrapped_means(
-      deepface_df,
-      'pred_age_DF_only',
+    out=prop_bootstrap_data(
+      df=deepface_df,
       t_prop=test_prop,
       t_race=test_race,
       t_gender=test_gender,
       t_age=test_age
-    )
-  ) %>% ungroup() %>% unnest(cols=c(out))
-  
-
-#run the tests for all combos on DeepFace
-set.seed(100)
-DF_t_test_results <- samp_means_tests %>% 
-  rowwise %>% 
-  reframe(
-    out=t_tests(
-      deepface_df,
-      'pred_age_DF_only',
-      t_prop=test_prop,
-      t_race=test_race,
-      t_gender=test_gender,
-      t_age=test_age)
+    ) 
   ) %>% 
-  ungroup() %>% unnest(cols=c(out))
+  ungroup() %>% 
+  unnest(cols=c(out))  
 
-# set.seed(100)
-# FF_lower_samp_means <- samp_means_tests %>% 
-#   rowwise %>% 
-#   reframe(
-#     out=bootstrapped_means(
-#       fairface_df,
-#       'pred_age_lower',
-#       t_prop=test_prop,
-#       t_race=test_race,
-#       t_gender=test_gender,
-#       t_age=test_age
-#     )
-#   ) %>% ungroup() %>% unnest(cols=c(out))
-# 
-# set.seed(100)
-# FF_lower_t_test_results <- samp_means_tests %>% 
-#   rowwise %>% 
-#   reframe(
-#     out=t_tests(
-#       fairface_df,
-#       'pred_age_lower',
-#       t_prop=test_prop,
-#       t_race=test_race,
-#       t_gender=test_gender,
-#       t_age=test_age
-#     )
-#   ) %>% ungroup() %>% unnest(cols=c(out))
+set.seed(100)
 
-DF_t_test_results %>% write_csv("../data/DF_t_tests.csv")
-DF_samp_means %>% write_csv("../data/DF_sample_means.csv")
-DF_t_test_results
+set.seed(100)
+ff_bootstrap_data <- verify %>% rowwise %>% 
+  reframe(
+    out=prop_bootstrap_data(
+      fairface_df,
+      test_prop,
+      test_race,
+      test_gender,
+      test_age
+    ) 
+  ) %>% 
+  ungroup() %>% 
+  unnest(cols=c(out))  
+  
+ff_bootstrap_data %>% write.csv(
+  '../data/bootstrap_ff_output.csv'
+)
 
+df_bootstrap_data %>% write.csv(
+  '../data/bootstrap_df_output.csv'
+)
+
+```
+
+
+```{r}
+
+df_bootstrap_data <- df_bootstrap_data %>% pivot_longer(cols=c(src_mean_props,pred_mean_props)) %>% separate_wider_delim(name,delim='_',names=c('datasource','rem1','rem2')) %>% select(model:datasource,value)
+
+ff_bootstrap_data <- ff_bootstrap_data %>% pivot_longer(cols=c(src_mean_props,pred_mean_props)) %>% separate_wider_delim(name,delim='_',names=c('datasource','rem1','rem2')) %>% select(model:datasource,value)
+```
+
+
+```{r}
+df_bootstrap_data <- df_bootstrap_data %>% mutate(model='DeepFace')
+ff_bootstrap_data <- ff_bootstrap_data %>% mutate(model='FairFace')
+
+full_bootstrap_data <- union(df_bootstrap_data,ff_bootstrap_data)
+full_bootstrap_data %>% write.csv('../data/full_bootstrap_data.csv')
+```
+
+
+
+```{r}
+#new bootstrapped t-tests
+new_prop_bootstrap <- function(df,t_prop,t_race,t_gender,t_age){
+  tdf <- filter(df,test_prop==t_prop,test_race==t_race,test_gender==t_gender,t_age==t_age)
+  src <- tdf %>% filter(datasource=='src') %>% pull(value)
+  pred <- tdf %>% filter(datasource=='pred') %>% pull(value)
+  p_val <- t.test(
+    x=src,y=pred,var.equal=T,conf.level=0.997
+  )$p.value
+  power <- pwr.t2n.test(
+    n1=length(src),n2=length(pred),sig.level=0.003,d=0.8
+  )$power
+  
+  src <- tdf %>% filter(datasource=='src')
+  pred <- tdf %>% filter(datasource=='pred')
+  src_prop <- src %>% pull(value)
+  pred_prop <- pred %>% pull(value)
+  F1 <- pred %>% pull(F1)
+  Acc <- pred %>% pull(Accuracy)
+  
+  src_prop_mean <- mean(src_prop,na.rm=T)
+  src_prop_sd <- sd(src_prop,na.rm=T)
+  pred_prop_mean <- mean(pred_prop,na.rm=T)
+  pred_prop_sd <- sd(pred_prop,na.rm=T)
+  F1_mean <- mean(F1,na.rm=T)
+  F1_sd <- sd(F1,na.rm=T)
+  Acc_mean <- mean(Acc,na.rm=T)
+  Acc_sd <- sd(Acc,na.rm=T)
+  
+  # F1_sd <- tdf %>% filter(datasource=='pred') %>% sd(F1,na.rm=T)
+  # Acc_mean <- tdf %>% filter(datasource=='pred') %>% mean(Accuracy,na.rm=T)
+  # Acc_sd <- tdf %>% filter(datasource=='pred') %>% sd(Accuracy,na.rm=T)
+  # 
+  # src_prop_mean <- tdf %>% filter(datasource=='src') %>% mean(value,na.rm=T)
+  # src_prop_sd <- tdf %>% filter(datasource=='src') %>% sd(value,na.rm=T)
+  # pred_prop_mean <- tdf %>% filter(datasource=='pred') %>% mean(value,na.rm=T)
+  # pred_prop_sd <- tdf %>% filter(datasource=='pred') %>% sd(value,na.rm=T)
+  
+  tibble(
+    model="",
+    test_prop=t_prop,
+    test_gender=t_gender,
+    test_race=t_race,
+    test_age=t_age,
+    source_prop_mean=src_prop_mean,
+    source_prop_sd=src_prop_sd,
+    model_prop_mean=pred_prop_mean,
+    model_prop_sd=pred_prop_sd,
+    model_p_value=p_val,
+    model_power=power,
+    model_F1_mean=F1_mean,
+    model_F1_SD=F1_sd,
+    model_acc_mean=Acc_mean,
+    model_acc_SD=Acc_sd
+  )
+}
+
+# hyp_tests <- verify %>% rowwise %>% reframe(
+#   out=new_prop_bootstrap(
+#     df=full_bootstrap_data,
+#     t_prop=test_prop,
+#     t_age=test_age,
+#     t_gender=test_gender,
+#     t_race=test_race
+#   )
+# ) %>% ungroup() %>% unnest(cols=c(out)) 
+
+#hyp_tests %>% write.csv('../data/bootstrap_hypothesis_tests.csv')
+
+df_hyp_tests <- verify %>% rowwise %>% reframe(
+  out=new_prop_bootstrap(
+    df=df_bootstrap_data,
+    t_prop=test_prop,
+    t_age=test_age,
+    t_gender=test_gender,
+    t_race=test_race
+  )
+) %>% ungroup() %>% unnest(cols=c(out)) %>% mutate(model="DeepFace")
+
+ff_hyp_tests <- verify %>% rowwise %>% reframe(
+  out=new_prop_bootstrap(
+    df=ff_bootstrap_data,
+    t_prop=test_prop,
+    t_age=test_age,
+    t_gender=test_gender,
+    t_race=test_race
+  )
+) %>% ungroup() %>% unnest(cols=c(out)) %>% mutate(model="FairFace")
+
+dist_hyp_tests <- union(df_hyp_tests,ff_hyp_tests)
+
+```
+
+
+```{r}
+
+
+```
+
+
+```{r}
+new_results <- full_results %>% select(model,test_prop,test_gender,test_age,test_race,model_F1,model_Accuracy) %>% 
+  inner_join(dist_hyp_tests,by=c("model"="model","test_prop"="test_prop","test_gender"="test_gender","test_age"="test_age","test_race"="test_race"))
+```
+
+
+```{r}
+
+#2000 samples, 500 subjects per sample, with replacement
+#facet-wrap plots by top-level cateogry (age,gender,race) by model
+
+f <- factor(c('0-2','3-9','10-19','20-29','30-39','40-49','50-59','60-69','70-130'))
+
+#age plots
+df_bootstrap_data %>% filter(test_prop=='age_bins',test_gender=='All',test_race=='All') %>%
+  mutate(test_age=factor(test_age,levels=f)) %>% 
+  ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_age) + xlab('sample proportion') + ggtitle('DeepFace vs. Source Age Bootstrap Proportions')
+
+#gender plots
+df_bootstrap_data %>% filter(test_prop=='genders',test_age=='All',test_race=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_gender)+ xlab('sample proportion')+ ggtitle('DeepFace vs. Source Gender Bootstrap Proportions')
+
+#race plots
+df_bootstrap_data %>% filter(test_prop=='races',test_age=='All',test_gender=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_race)+ xlab('sample proportion')+ ggtitle('DeepFace vs. Source Race Bootstrap Proportions')
+
+
+
+#age plots
+ff_bootstrap_data %>% filter(test_prop=='age_bins',test_gender=='All',test_race=='All') %>%
+  mutate(test_age=factor(test_age,levels=f)) %>% 
+  ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_age)+ xlab('sample proportion')+ ggtitle('FairFace vs. Source Age Bootstrap Proportions')
+
+#gender plots
+ff_bootstrap_data %>% filter(test_prop=='genders',test_age=='All',test_race=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_gender)+  xlab('sample proportion')+ ggtitle('FairFace vs. Source Gender Bootstrap Proportions')
+
+#race plots
+ff_bootstrap_data %>% filter(test_prop=='races',test_age=='All',test_gender=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_race)+ xlab('sample proportion')+ ggtitle('FairFace vs. Source Race Bootstrap Proportions')
 
 ```
 
 ```{r}
-#example of plotting the sample means after grabbing them all.
-#in this case, seems like we're good on our p-value anc power calcs.
-DF_samp_means %>% filter(test_race=='Indian',test_gender=='Male') %>% 
-  ggplot()+
-  geom_density(aes(x=src,color='Source'))+
-  geom_density(aes(x=pred,color='Predicted'))+xlim(15,45)
+ff_bootstrap %>% filter(model_p_value > 0.003)
 ```
+
+
 
