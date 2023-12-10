@@ -74,7 +74,7 @@ df_bootstrap_data %>% filter(test_prop=='races',test_age=='All', test_gender!='A
     geom_density(
         aes(x=value,color=datasource)
     )+
-    facet_grid(test_race~test_gender)+
+    facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Race Proportion Predictions, Given Gender")
 
 ff_bootstrap_data %>% filter(test_prop=='races',test_age=='All', test_gender!='All',test_race!='All') %>% 
@@ -82,7 +82,96 @@ ff_bootstrap_data %>% filter(test_prop=='races',test_age=='All', test_gender!='A
     geom_density(
         aes(x=value,color=datasource)
     )+
-    facet_grid(test_race~test_gender)+
+    facet_grid(test_gender~test_race)+
     ggtitle("FairFace Race Proportion Predictions, Given Gender")
 ```
 
+Age proportions, Given Gender
+```{r}
+df_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender!='All',test_race=='All') %>% 
+  mutate(test_age=factor(test_age,levels=age_lev)) %>% 
+    ggplot()+
+    geom_density(
+        aes(x=value,color=datasource)
+    )+
+    facet_grid(test_gender~test_age)+
+    ggtitle("DeepFace Age Proportion Predictions, Given Gender")
+
+
+ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender!='All',test_race=='All') %>% 
+  mutate(test_age=factor(test_age,levels=age_lev)) %>% 
+    ggplot()+
+    geom_density(
+        aes(x=value,color=datasource)
+    )+
+    facet_grid(test_gender~test_age)+
+    ggtitle("FairFace Age Proportion Predictions, Given Gender")
+```
+
+
+Age Proportions, Given Race
+```{r}
+df_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender=='All',test_race!='All') %>% 
+    mutate(test_age=factor(test_age,levels=age_lev)) %>% 
+    ggplot()+
+    geom_density(
+        aes(x=value,color=datasource)
+    )+
+    facet_grid(test_race~test_age)+
+    ggtitle("DeepFace Age Proportion Predictions, Given Race")
+
+
+ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender=='All',test_race!='All') %>% 
+    mutate(test_age=factor(test_age,levels=age_lev)) %>% 
+    ggplot()+
+    geom_density(
+        aes(x=value,color=datasource)
+    )+
+    facet_grid(test_race~test_age)+
+    ggtitle("FairFace Age Proportion Predictions, Given Race")
+```
+
+Gender Proportions, Given Race
+```{r}
+df_bootstrap_data %>% filter(test_prop=='genders',test_age=='All', test_gender!='All',test_race!='All') %>% 
+    ggplot()+
+    geom_density(
+        aes(x=value,color=datasource)
+    )+
+    facet_grid(test_race~test_gender)+
+    ggtitle("DeepFace Gender Proportion Predictions, Given Race")
+
+
+ff_bootstrap_data %>% filter(test_prop=='genders',test_age=='All', test_gender!='All',test_race!='All') %>% 
+    ggplot()+
+    geom_density(
+        aes(x=value,color=datasource)
+    )+
+    facet_grid(test_race~test_gender)+
+    ggtitle("FairFace Gender Proportion Predictions, Given Race")
+```
+
+
+Gender Proportions, Given Age Group
+
+```{r}
+df_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender!='All',test_race=='All') %>% 
+    mutate(test_age=factor(test_age,levels=age_lev)) %>% 
+    ggplot()+
+    geom_density(
+        aes(x=value,color=datasource)
+    )+
+    facet_grid(test_age~test_gender)+
+    ggtitle("DeepFace Gender Proportion Predictions, Given Age")
+
+
+ff_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender!='All',test_race=='All') %>% 
+    mutate(test_age=factor(test_age,levels=age_lev)) %>% 
+  
+    ggplot()+
+    geom_density(
+        aes(x=value,color=datasource)
+    )+
+    facet_grid(test_age~test_gender)+
+    ggtitle("FairFace Gender Proportion Predictions, Given Age")
+```
