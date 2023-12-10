@@ -265,48 +265,6 @@ DF_features%>% knitr::kable()
 ```
 
 
-### Standardizing model outputs
-
-As can be seen above, there are some key differences between the outputs of both models as well as the source data that we needed to resolve to enable comparison of each dataset to one another.  We'll focus on the primary features of age, gender, and race from each dataset.
-
-#### FairFace Output Modifications
-
-We'll discuss FairFace first, as it introduces a requirement for modification to both our input information as well as the outputs for DeepFace.  
-
-**Age** - FairFace only provides a categorical predicted age range as opposed to a specific numeric age.  We retain this age format and modify the last category of "70+" to "70-130" to ensure we can capture the gamut of all input and output ages in all datasets.  
-
-**Gender** - No changes to predicted values; use "Male" and "Female"
-
-**Race** - the source data from UTKFace has 5 categories "White" "Black" "Asian" "Indian" and "Other".  Using the defintions from UTKFace, we collapse the output categories of FairFace's Fair7 model as follows:
-
-\["Southeast Asian","East Asian"\] => "Asian"
-\["Middle Eastern" , "Latino_Hispanic\] => "Other"
-
-### DeepFace Output Modifications
-
-**Age**
-Cut the predicted age into bins based upon the same prediction ranges provided by FairFace.  If the DeepFace predicted age falls into a range provided by FairFace, provide that as the predicted age range for DeepFace.
-
-**Gender:** we adjust the DeepFace gender prediction outputs to match that of the source and FairFace data with the following refactoring: 
-"Man" => "Male"
-"Woman" => "Female"
-
-**Race:** we adjust the DeepFace race prediction outputs to match that of the source dataset with the following refactoring: 
-
-* "white" => "White"
-* "black" => "Black"
-* "indian" => "Indian"
-* "asian" => "Asian"
-* \["middle eastern", "latino hispanic"\] => "Other"
-
-### Source Data Modifications
-
-**Age:** We cut the predicted age into bins based upon the same prediction ranges provided by FairFace.  If the input / source data age falls into a range provided by FairFace, provide that is the source age range for the image subject.
-
-**Gender:** No changes.
-
-**Race:** No changes.
-
 ## Evaluating Permutations of Inputs and Models for Equitable Evaluation
 
 Aside from the differences in the outputs of each model in terms of age, race, and gender, there are also substantial differences between FairFace and DeepFace in terms of their available settings when attempting to categorize and predict the features associated with an image.

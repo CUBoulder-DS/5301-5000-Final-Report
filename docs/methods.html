@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.521">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -24,7 +24,6 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -66,13 +65,7 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -81,7 +74,6 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -98,35 +90,43 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
+      <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Bias in Facial Classification ML Models</span>
     </a>
   </div>
-        <div class="quarto-navbar-tools">
-    <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="./STAT_5000_Final_Report.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+        <div class="quarto-navbar-tools ms-auto">
+    <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./STAT_5000_Final_Report.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./methods.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Methods</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./methods.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Methods</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -174,28 +174,35 @@ div.csl-indent {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-big-picture" id="toc-the-big-picture" class="nav-link active" data-scroll-target="#the-big-picture"><span class="header-section-number">3.1</span> The Big Picture</a></li>
-  <li><a href="#measuring-performance" id="toc-measuring-performance" class="nav-link" data-scroll-target="#measuring-performance"><span class="header-section-number">3.2</span> Measuring Performance</a>
+  <li><a href="#data-cleaning-standardizing-model-outputs" id="toc-data-cleaning-standardizing-model-outputs" class="nav-link active" data-scroll-target="#data-cleaning-standardizing-model-outputs"><span class="header-section-number">3.1</span> Data Cleaning: Standardizing Model Outputs</a>
   <ul class="collapse">
-  <li><a href="#accuracy" id="toc-accuracy" class="nav-link" data-scroll-target="#accuracy"><span class="header-section-number">3.2.1</span> Accuracy</a></li>
-  <li><a href="#precision" id="toc-precision" class="nav-link" data-scroll-target="#precision"><span class="header-section-number">3.2.2</span> Precision</a></li>
-  <li><a href="#recall" id="toc-recall" class="nav-link" data-scroll-target="#recall"><span class="header-section-number">3.2.3</span> Recall</a></li>
-  <li><a href="#f1-score" id="toc-f1-score" class="nav-link" data-scroll-target="#f1-score"><span class="header-section-number">3.2.4</span> F1-Score</a></li>
+  <li><a href="#fairface-output-modifications" id="toc-fairface-output-modifications" class="nav-link" data-scroll-target="#fairface-output-modifications"><span class="header-section-number">3.1.1</span> FairFace Output Modifications</a></li>
+  <li><a href="#deepface-output-modifications" id="toc-deepface-output-modifications" class="nav-link" data-scroll-target="#deepface-output-modifications"><span class="header-section-number">3.1.2</span> DeepFace Output Modifications</a></li>
+  <li><a href="#source-data-modifications" id="toc-source-data-modifications" class="nav-link" data-scroll-target="#source-data-modifications"><span class="header-section-number">3.1.3</span> Source Data Modifications</a></li>
   </ul></li>
-  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">3.3</span> Hypothesis Testing</a>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"><span class="header-section-number">3.2</span> Exploratory Data Analysis</a></li>
+  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions"><span class="header-section-number">3.3</span> Research Questions</a></li>
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">3.4</span> Hypothesis Testing</a>
   <ul class="collapse">
-  <li><a href="#demographics" id="toc-demographics" class="nav-link" data-scroll-target="#demographics"><span class="header-section-number">3.3.1</span> Demographics</a></li>
-  <li><a href="#demographics-subgroups" id="toc-demographics-subgroups" class="nav-link" data-scroll-target="#demographics-subgroups"><span class="header-section-number">3.3.2</span> Demographics’ Subgroups</a></li>
-  <li><a href="#the-general-proportion-tests" id="toc-the-general-proportion-tests" class="nav-link" data-scroll-target="#the-general-proportion-tests"><span class="header-section-number">3.3.3</span> The General Proportion Tests</a></li>
-  <li><a href="#notation" id="toc-notation" class="nav-link" data-scroll-target="#notation"><span class="header-section-number">3.3.4</span> Notation</a></li>
-  <li><a href="#more-specific-proportion-tests" id="toc-more-specific-proportion-tests" class="nav-link" data-scroll-target="#more-specific-proportion-tests"><span class="header-section-number">3.3.5</span> More Specific Proportion Tests</a></li>
+  <li><a href="#demographics" id="toc-demographics" class="nav-link" data-scroll-target="#demographics"><span class="header-section-number">3.4.1</span> Demographics</a></li>
+  <li><a href="#demographics-subgroups" id="toc-demographics-subgroups" class="nav-link" data-scroll-target="#demographics-subgroups"><span class="header-section-number">3.4.2</span> Demographics’ Subgroups</a></li>
+  <li><a href="#the-general-proportion-tests" id="toc-the-general-proportion-tests" class="nav-link" data-scroll-target="#the-general-proportion-tests"><span class="header-section-number">3.4.3</span> The General Proportion Tests</a></li>
+  <li><a href="#notation" id="toc-notation" class="nav-link" data-scroll-target="#notation"><span class="header-section-number">3.4.4</span> Notation</a></li>
+  <li><a href="#proportion-testing-of-subsets" id="toc-proportion-testing-of-subsets" class="nav-link" data-scroll-target="#proportion-testing-of-subsets"><span class="header-section-number">3.4.5</span> Proportion Testing of Subsets</a></li>
+  </ul></li>
+  <li><a href="#performance-measurement" id="toc-performance-measurement" class="nav-link" data-scroll-target="#performance-measurement"><span class="header-section-number">3.5</span> Performance Measurement</a>
+  <ul class="collapse">
+  <li><a href="#accuracy" id="toc-accuracy" class="nav-link" data-scroll-target="#accuracy"><span class="header-section-number">3.5.1</span> Accuracy</a></li>
+  <li><a href="#precision" id="toc-precision" class="nav-link" data-scroll-target="#precision"><span class="header-section-number">3.5.2</span> Precision</a></li>
+  <li><a href="#recall" id="toc-recall" class="nav-link" data-scroll-target="#recall"><span class="header-section-number">3.5.3</span> Recall</a></li>
+  <li><a href="#f1-score" id="toc-f1-score" class="nav-link" data-scroll-target="#f1-score"><span class="header-section-number">3.5.4</span> F1-Score</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -210,7 +217,7 @@ div.csl-indent {
 
 
 
-<div class="quarto-title-meta column-body">
+<div class="quarto-title-meta">
 
     
   
@@ -218,130 +225,82 @@ div.csl-indent {
   </div>
   
 
-
 </header>
 
-
-<!-- BJ !-->
-<!-- CK !-->
-<p><span class="citation" data-cites="fairface">Karkkainen and Joo (<a href="references.html#ref-fairface" role="doc-biblioref">2021</a>)</span></p>
-<section id="the-big-picture" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="the-big-picture"><span class="header-section-number">3.1</span> The Big Picture</h2>
+<p>As described in the previous section, the two selected models (DeepFace and FairFace) are run on the UTK face dataset in order to generate output of classification across 3 categories (age, race, and gender). We evaluate the performance of this classification, and perform hypothesis testing in order to answer the key research questions.</p>
+<section id="data-cleaning-standardizing-model-outputs" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="data-cleaning-standardizing-model-outputs"><span class="header-section-number">3.1</span> Data Cleaning: Standardizing Model Outputs</h2>
+<p>As can be seen in section 2, there are some key differences between the outputs of both models as well as the source data that we needed to resolve to enable comparison of each dataset to one another. We’ll focus on the primary features of age, gender, and race from each dataset.</p>
+<section id="fairface-output-modifications" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="fairface-output-modifications"><span class="header-section-number">3.1.1</span> FairFace Output Modifications</h3>
+<p>We’ll discuss FairFace first, as it introduces a requirement for modification to both our input information as well as the outputs for DeepFace.</p>
+<ul>
+<li><p><strong>Age</strong>: FairFace only provides a categorical predicted age range as opposed to a specific numeric age. We retain this age format and modify the last category of “70+” to “70-130” to ensure we can capture the gamut of all input and output ages in all datasets.</p></li>
+<li><p><strong>Gender</strong>: No changes to predicted values; use “Male” and “Female”</p></li>
+<li><p><strong>Race</strong>: the source data from UTKFace has 5 categories “White” “Black” “Asian” “Indian” and “Other”. Using the definitions from UTKFace, we collapse the output categories of FairFace’s Fair7 model as follows:</p></li>
+</ul>
+<p>[“Southeast Asian”,“East Asian”] =&gt; “Asian” [“Middle Eastern” , “Latino_Hispanic] =&gt;”Other”</p>
+</section>
+<section id="deepface-output-modifications" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="deepface-output-modifications"><span class="header-section-number">3.1.2</span> DeepFace Output Modifications</h3>
+<ul>
+<li><p><strong>Age</strong>: Cut the predicted age into bins based upon the same prediction ranges provided by FairFace. If the DeepFace predicted age falls into a range provided by FairFace, provide that as the predicted age range for DeepFace.</p></li>
+<li><p><strong>Gender</strong>: we adjust the DeepFace gender prediction outputs to match that of the source and FairFace data with the following refactoring: “Man” =&gt; “Male” “Woman” =&gt; “Female”</p></li>
+<li><p><strong>Race</strong>: we adjust the DeepFace race prediction outputs to match that of the source dataset with the following refactoring:</p></li>
+<li><p>“white” =&gt; “White”</p></li>
+<li><p>“black” =&gt; “Black”</p></li>
+<li><p>“indian” =&gt; “Indian”</p></li>
+<li><p>“asian” =&gt; “Asian”</p></li>
+<li><p>[“middle eastern”, “latino hispanic”] =&gt; “Other”</p></li>
+</ul>
+</section>
+<section id="source-data-modifications" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="source-data-modifications"><span class="header-section-number">3.1.3</span> Source Data Modifications</h3>
+<ul>
+<li><p><strong>Age:</strong> We cut the predicted age into bins based upon the same prediction ranges provided by FairFace. If the input / source data age falls into a range provided by FairFace, provide that is the source age range for the image subject.</p></li>
+<li><p><strong>Gender:</strong> No changes.</p></li>
+<li><p><strong>Race:</strong> No changes.</p></li>
+</ul>
+</section>
+</section>
+<section id="exploratory-data-analysis" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="exploratory-data-analysis"><span class="header-section-number">3.2</span> Exploratory Data Analysis</h2>
+<p>Our EDA performed on the source UTK dataset can be seen in the previous section in <a href="data.html#fig-data-eda">Figure&nbsp;<span>2.2</span></a>. The EDA performed on the output from the models can be summarized as follows, and is presented in the Results section:</p>
+<ul>
+<li>Visualization of the histograms of distributions of predictions, per each category, per each model</li>
+</ul>
+<p>We also perform some meta-analysis on the statistics and performance metrics calculated from the model outputs:</p>
+<ul>
+<li>Visualization of the p-values vs F1-score across all hypothesis tests across both models</li>
+<li>Confusion matrix of whether we reject or fail to reject the null hypothesis based on power and F1 score</li>
+</ul>
+</section>
+<section id="research-questions" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="research-questions"><span class="header-section-number">3.3</span> Research Questions</h2>
+<p>We evaluate the output of the 2 models in order to answer the following questions:</p>
 <ul>
 <li>Is bias prevalent in facial recognition machine learning models?</li>
 <li>Can one model be shown to have statistically significant less bias than the other?</li>
 <li>Does one model outperform the other in a statistically significant manner, in all aspects?</li>
-<li>Does one model outperform the other in a statistically significant manner, in certain aspects?
-<ul>
-<li>This is where we can dive into “conventional” bias</li>
-</ul></li>
+<li>Does one model outperform the other in a statistically significant manner, in certain aspects?</li>
 <li>Are there disparate outcomes (i.e.&nbsp;lower chances of correct classification) for one racial group vs.&nbsp;another?</li>
 </ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Thoughts on Bias
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>We need to be careful how we define and use bias. Statistical bias is essentially error, and we could be crossing our definitions between statistical bias and conventional bias.</p>
-</div>
-</div>
 </section>
-<section id="measuring-performance" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="measuring-performance"><span class="header-section-number">3.2</span> Measuring Performance</h2>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This performance section is important in choosing the correct models to ensure data integrity, however for the actual statistical tests, we’ll focused on more common statistics like mean and proportion.</p>
-<!-- PC -->
-<p>NOTE: From Rubric - May need to relocate sub-sections from data back to here:</p>
-<ul>
-<li>Exploratory data analysis</li>
-<li>what modifications were necessary to make the dataset ready for analysis?</li>
-</ul>
-<p>Separate of those two - may need explanations on the analyses we performed and <strong>why we think they are appropriate.</strong> We have part of that regarding the F1 use to possibly identify errors, may need more on two-prop tests and the like</p>
-<!-- end PC-->
-<!-- PC -->
-<p>These are PC’s recommendations on how we can look at the additional values:</p>
-<p>For cases in which we reject the statistical null hypothesis, we plan to evaluate the below metrics for the same output category. Should we reject a null hypothesis for, let’s say, the proportion of females, given that they are asian, we will examine the accuracy and F-1 scores for the same category. We will consider the following range of values:</p>
-<ul>
-<li>F1 Score &lt; .9 vs F1 Score &gt;= 0.9</li>
-<li>Power &lt; .8 vs Power &gt;= .8</li>
-<li>p-value &lt; .003 vs pvalue &gt;= .003</li>
-</ul>
-<!-- PC -->
-</div>
-</div>
-<p>There are four main measures of performance when evaluating a model:</p>
-<ul>
-<li><strong>Accuracy</strong></li>
-<li><strong>Precision</strong></li>
-<li><strong>Recall</strong></li>
-<li><strong>F1-Score</strong></li>
-</ul>
-<p>Each of these performance measures has their own place in evaluating models, however, to begin to explain the differences between these models we should start with concepts of positive and negative outcomes.</p>
-<ul>
-<li><strong>True Positive:</strong> predicted positive, was actually positive (correct)</li>
-<li><strong>False Positive:</strong> predicted positive, was actually negative (incorrect)</li>
-<li><strong>True Negative:</strong> predicted negative, was actually negative (correct)</li>
-<li><strong>False Negative:</strong> predicted negative, was actually positive (incorrect)</li>
-</ul>
-<p>These outcomes can be visualized on a confusion matrix. In the image below, green are correct predictions while red are incorrect predictions.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/confusion_matrix.png" class="img-fluid figure-img"></p>
-<figcaption>confusion_matrix</figcaption>
-</figure>
-</div>
-<section id="accuracy" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="accuracy"><span class="header-section-number">3.2.1</span> Accuracy</h3>
-<p><strong>Accuracy</strong> is the ratio of correct predictions to all predictions. In other words, the total of the green squares divided by the entire matrix. This is arguably the most common concept of measuring performance.</p>
-<p><span class="math inline">\(Acccuracy = \frac{TP+TN}{TP + TN + FN}\)</span></p>
-</section>
-<section id="precision" class="level3" data-number="3.2.2">
-<h3 data-number="3.2.2" class="anchored" data-anchor-id="precision"><span class="header-section-number">3.2.2</span> Precision</h3>
-<p><strong>Precision</strong> is the ratio of true positives to the total number of positives (true positive + true negative).</p>
-</section>
-<section id="recall" class="level3" data-number="3.2.3">
-<h3 data-number="3.2.3" class="anchored" data-anchor-id="recall"><span class="header-section-number">3.2.3</span> Recall</h3>
-<p><strong>Recall</strong> is the ratio of true positives to the number of total correct predictions (true positive + false negative).</p>
-</section>
-<section id="f1-score" class="level3" data-number="3.2.4">
-<h3 data-number="3.2.4" class="anchored" data-anchor-id="f1-score"><span class="header-section-number">3.2.4</span> F1-Score</h3>
-<p><strong>F1-Score</strong>* is known as the harmonic mean between precision and recall. <strong>Precision</strong> and <strong>Recall</strong> are useful in their own rights, but the f1-Score is useful in the fact it’s a balanced combination of both precision and recall.</p>
-<p>F1-Score <span class="math inline">\(= \frac{2 * Precision * Recall}{Precision + Recall}\)</span></p>
-<p>When considering the classification of a subject by protected classes of age, gender, and race, we believe that stronger penalties should be assigned in making an improper classification decision. Due to F1 being the harmonic mean of precision and recall, incorrect classification will more directly impact the score of each model in its prediction of protected classes, and do so more strongly than an accuracy calculation.</p>
-<p>(Citations - https://www.statology.org/f1-score-vs-accuracy/ https://medium.com/analytics-vidhya/accuracy-vs-f1-score-6258237beca2 )</p>
-<p>We calculate F1 score as a measure of performance of our selected machine learning models. This was not used in the calculation or results of the hypothesis tests, but will be used for when we draw conclusions of our tests based upon p-value and statistical power. Namely, we do not plan to control for statistical power / Type-II error when running our 432 hypothesis tests, so statistical power may vary from test to test. Using F1 scores to assess p-values in cases of low statistical power should assist us in identifying potential Type-II Errors. We set a F1 score threshold of 0.9 to make this determination.</p>
-<p>In lamens terms, we’re leveraging F1 score as a mitigatory factor for our team to avoid stating that a model is biased when it may not be.</p>
-</section>
-</section>
-<section id="hypothesis-testing" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">3.3</span> Hypothesis Testing</h2>
-<p>Our data consists of three main sets, the source input data, the Fairface output data, and the Deepface output data.</p>
-<p>We’ll be creating our hypothesis tests by treating the source data as the basis for the original assumptions (our <em>null hypotheses</em>), and then using the output from Fairface and Deepface to test for statistically significant differences. Gaining a statistically significant result would allow us to reject our <em>null hypothesis</em> in favor of the <em>alternative hypothesis</em>. In other words, rejecting the original assumption means there is a statistically large enough difference between the source data and output data, and could indicate a bias in model.</p>
+<section id="hypothesis-testing" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">3.4</span> Hypothesis Testing</h2>
+<p>Our data consists of three main sets: the source input data, the Fairface output data, and the Deepface output data.</p>
+<p>We’ll be creating our hypothesis tests by running as two-sample proportion tests. The population is the set of all labels (of race, age, and gender as defined below) for a given image, for all face images. The first sample will be the source dataset “correct” labels of the images, and the 2nd sample will be the output of a given model between FairFace and DeepFace, respectively. The base null hpyothesis will be no difference in means. Gaining a statistically significant result would allow us to reject our <em>null hypothesis</em> in favor of the <em>alternative hypothesis</em>. In other words, rejecting the original assumption means there is a statistically large enough difference between the source data and output data, and could indicate a bias in a model. We use a significance level of 99.7% to accurately judge the strength of the test statistic.</p>
 <p>We’ll be testing across different subsets contained within the data, as listed below:</p>
-<section id="demographics" class="level3" data-number="3.3.1">
-<h3 data-number="3.3.1" class="anchored" data-anchor-id="demographics"><span class="header-section-number">3.3.1</span> Demographics</h3>
+<section id="demographics" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="demographics"><span class="header-section-number">3.4.1</span> Demographics</h3>
 <ul>
 <li>Age Group</li>
 <li>Gender</li>
 <li>Race</li>
 </ul>
 </section>
-<section id="demographics-subgroups" class="level3" data-number="3.3.2">
-<h3 data-number="3.3.2" class="anchored" data-anchor-id="demographics-subgroups"><span class="header-section-number">3.3.2</span> Demographics’ Subgroups</h3>
+<section id="demographics-subgroups" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="demographics-subgroups"><span class="header-section-number">3.4.2</span> Demographics’ Subgroups</h3>
 <ul>
 <li>Age Group (9 groups)
 <ul>
@@ -370,65 +329,58 @@ Note
 </ul></li>
 </ul>
 </section>
-<section id="the-general-proportion-tests" class="level3" data-number="3.3.3">
-<h3 data-number="3.3.3" class="anchored" data-anchor-id="the-general-proportion-tests"><span class="header-section-number">3.3.3</span> The General Proportion Tests</h3>
+<section id="the-general-proportion-tests" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="the-general-proportion-tests"><span class="header-section-number">3.4.3</span> The General Proportion Tests</h3>
 <p>Our hypothesis tests will be testing different proportions within these subgroups between the source data and the output data.</p>
 <p>The general format of our hypothesis tests will be:</p>
-<p><span class="math inline">\(H_0: p = p_{\text{Source Data Subset}}\)</span></p>
-<p><span class="math inline">\(H_A: p \neq p_{\text{Source Data Subset}}\)</span></p>
+<p><span class="math inline">\(H_0: p_1 = p_2\)</span></p>
+<p><span class="math inline">\(H_A: p_1 \neq p_2\)</span></p>
 <p>With the following test statistic:</p>
-<p><span class="math inline">\(\frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}}\)</span></p>
+<p><span class="math display">\[
+\dfrac{(\hat p_1 - \hat p_2)}{\sqrt{ \hat p (1 - \hat p)  (\dfrac{1}{n_{p_1}} + \dfrac{1}{n_{p_2}}})}
+\]</span></p>
 <p>With the p-value being calculated by:</p>
-<p><span class="math inline">\(P(|Z| &gt; \hat{p} | H_0)\)</span></p>
-<p><span class="math inline">\(= P(|Z| &gt; \frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}})\)</span>,</p>
-<p>where</p>
+<p><span class="math inline">\(P(|Z| &gt; z | H_0)\)</span></p>
+<p><span class="math inline">\(= P(|Z| &gt; \dfrac{(\hat p_1 - \hat p_2)}{\sqrt{ \hat p (1 - \hat p) (\dfrac{1}{n_{p_1}} + \dfrac{1}{n_{p_2}}})}\)</span>,</p>
+<p>Where:</p>
 <ul>
-<li><span class="math inline">\(n\)</span>: output data subset size</li>
-<li><span class="math inline">\(\hat{p}\)</span>: output data subset proportion</li>
-<li><span class="math inline">\(p\)</span>: source data subset proportion</li>
+<li><span class="math inline">\(p_1\)</span> = the source dataset categories labels given and <span class="math inline">\(p_2\)</span> = the chosen model’s labels given.</li>
+<li><span class="math inline">\(\hat p\)</span> = the pooled proportion.</li>
+<li><span class="math inline">\(n_{p_1}, n_{p_2}\)</span> = the size of each sample.</li>
 </ul>
 <!-- PC -->
+<p>We also calculate the power of each test performed, and use a power level threshold of 0.8 in order to assess the strength of the p-value calculated.</p>
 <p>We believe that using two-sample proportion testing is an appropriate means by which we can evaluate the outputs of the two facial recognition models in comparison to the source data. In leveraging two-sample proportion tests, we can infer whether or not the proportions of age, gender, or race (or some combination thereof) from the UTKFace dataset (i.e.&nbsp;1st sample) originate from the same population as the outputs from each facial recognition model (i.e.&nbsp;2nd dataset).</p>
-<p><strong>What is our population? Pictures of people across the internet? Or pictures of people?</strong></p>
 <p>In theory, similar proportions of protected classes between the two datasets could suggest that the source data and predicted data originate from the same population (pictures of people), and would thus indicate an absence of bias against the protected class in question. Vastly different proportions, however, could indicate that the source data and predicted data are from differing populations and indicate a bias against the protected classes in question.</p>
-<p>Leveraging p-values and powers calculated on our samples for our protected classes of age, gender, and race, should enable us to provide a clear picture of any biases that may manifest from one or both models. Leveraging F1 scores in cases of inconclusive results from p-value and power should assist us in identifying potential error.</p>
+<p>Leveraging p-values and powers calculated on our samples for our protected classes of age, gender, and race, should enable us to provide a clear picture of any biases that may manifest from one or both models. Leveraging F1 scores (as described below) in cases of inconclusive results from p-value and power should assist us in identifying potential error.</p>
 <!-- end PC-->
 </section>
-<section id="notation" class="level3" data-number="3.3.4">
-<h3 data-number="3.3.4" class="anchored" data-anchor-id="notation"><span class="header-section-number">3.3.4</span> Notation</h3>
-<p>Before we list the specific tests, we should introduce some notation.</p>
+<section id="notation" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="notation"><span class="header-section-number">3.4.4</span> Notation</h3>
+<p>We introduce notation for the specific tests we perform:</p>
 <p>Let <span class="math inline">\(R\)</span> be race, then <span class="math inline">\(R \in \{Asian, Black, Indian, Other, White\} = \{A, B, I, O, W\}\)</span></p>
 <p>Let <span class="math inline">\(G\)</span> be gender, then <span class="math inline">\(G \in \{Female, Male\} = \{F, M\}\)</span></p>
 <p>Let <span class="math inline">\(A\)</span> be age, then <span class="math inline">\(A \in \{[0,2], [3,9], [10,19], [20,29], [30,39], [40,49], [50,59], [60,69], [70,130]\} = \{1, 2, 3, 4, 5, 6, 7, 8, 9\}\)</span></p>
 <p>Let <span class="math inline">\(D\)</span> be the dataset, then <span class="math inline">\(D \in \{Source, Fairface, Deepface\} = \{D_0, D_f, D_d\}\)</span></p>
 </section>
-<section id="more-specific-proportion-tests" class="level3" data-number="3.3.5">
-<h3 data-number="3.3.5" class="anchored" data-anchor-id="more-specific-proportion-tests"><span class="header-section-number">3.3.5</span> More Specific Proportion Tests</h3>
+<section id="proportion-testing-of-subsets" class="level3" data-number="3.4.5">
+<h3 data-number="3.4.5" class="anchored" data-anchor-id="proportion-testing-of-subsets"><span class="header-section-number">3.4.5</span> Proportion Testing of Subsets</h3>
 <p>Using this notation, we can simplify our nomenclature for testing a certain proportion of an overall demographic.</p>
 <p>For example, we can test if the proportion of <em>Female</em> in the Fairface output is statistically different than the proportion of <em>Female</em> from the source.</p>
 <p>Hypothesis Test:</p>
-<p><span class="math inline">\(H_0: p_F = p_{F|D_0}\)</span></p>
-<p><span class="math inline">\(H_A: p_F \neq p_{F|D_0}\)</span></p>
+<p><span class="math inline">\(H_0: p_{F, D_f} = p_{F,D_0}\)</span></p>
+<p><span class="math inline">\(H_A: p_{F, D_f} \neq p_{F,D_0}\)</span></p>
 <p>P-value Calculation:</p>
-<p><span class="math inline">\(P(|Z| &gt; \frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}})\)</span>,</p>
+<p><span class="math inline">\(P(|Z| &gt; \dfrac{(\hat p_1 - \hat p_2)}{\sqrt{ \hat p (1 - \hat p) (\dfrac{1}{n_{p_1}} + \dfrac{1}{n_{p_2}}})})\)</span>,</p>
 <p>where</p>
 <ul>
-<li><span class="math inline">\(p = p_{F|D_0}\)</span>: proportion of females from the source data</li>
-<li><span class="math inline">\(\hat{p} = p_{F|D_f}\)</span>: proportion of females from the fairface output</li>
-<li><span class="math inline">\(n = n_{F \cup M|D_f}\)</span>: number of data points in the gender subset form the fairface output</li>
+<li><span class="math inline">\(\hat p_1 = p_{F, D_0}\)</span>: proportion of females from the source data</li>
+<li><span class="math inline">\(\hat{p_2} = p_{F, D_f}\)</span>: proportion of females from the FairFace output</li>
 </ul>
-<p>Additionally, we could test for different combinations of subsets within demographics. For instance, if we wanted to test for a statistically significant difference between the proportion of those who <em>Female</em>, given that they were <em>Black</em>, then we could write a hypothesis test like:</p>
-<p><span class="math inline">\(H_0: p_{F|B} = p_{F|D_0 \cap B}\)</span></p>
-<p><span class="math inline">\(H_A: p_{F|B} \neq p_{F|D_0 \cap B}\)</span></p>
-<p>P-value Calculation:</p>
-<p><span class="math inline">\(P(|Z| &gt; \frac{\sqrt{n}(\hat{p} - p)}{\sqrt{p(1 - p)}})\)</span>,</p>
-<p>where</p>
-<ul>
-<li><span class="math inline">\(p = p_{F|D_0 \cap B}\)</span>: proportion of females from the source data, given they were black</li>
-<li><span class="math inline">\(\hat{p} = p_{F|D_f \cap B}\)</span>: proportion of females from the fairface output, given they were black</li>
-<li><span class="math inline">\(n = n_{F \cup M|D_f \cap B}\)</span>: number of data points in the gender subset form the fairface output, given they were black.</li>
-</ul>
-<p>These were two specific hypothesis tests, however, we’ll be testing many combinations of these parameters and reporting back on any significant findings.</p>
+<p>Additionally, we could test for different combinations of subsets within demographics. For instance, if we wanted to test for a statistically significant difference between the proportion of those who <em>Female</em>, given that they were <em>Black</em>, as predicted by DeepFace, then we could write a hypothesis test like:</p>
+<p><span class="math inline">\(H_0: p_{D_d, F|B} = p_{D_0, F|B}\)</span></p>
+<p><span class="math inline">\(H_A: p_{D_d, F|B} \neq p_{D_0, F|B}\)</span></p>
+<p>These were two specific hypothesis tests, however, we’ll be testing all combinations of these parameters and reporting back on any significant findings.</p>
 <!--PC-->
 <p>In the above, we’ve outlined our methods for examining a total of 432 hypothesis tests per recognition model on the totality of, and smaller samples of, our overall dataset. We have elected to sub-divide our source and predicted samples by these protected classes to inspect and investigate whether or not there may be bias against groupings of protected classes.</p>
 <p>For instance, in the performance of our hypothesis tests, we may find an absence of bias when only examining proportions of gender between samples. However, by examining a subset of our samples, such as subject gender given the subject’s membership in a specific racial category, we may find biases providing more, or fewer, correct predictions of subject gender given their membership in a specific racial group.</p>
@@ -437,37 +389,89 @@ Note
 <p>“Model Y demonstrates bias against predicting correct gender, given the subject image is Black, Asian, or Other.” - which also suggests a bias for correctly predicting gender, given the subject is White or Indian. Such a bias, if used in a decision making process, could result in racial discrimination.</p>
 <p>Structuring our tests in this manner will enable us to quickly analyze and report on the results of our tests.</p>
 <!--end PC-->
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-From the report requirements
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Also can be called “Analyses”</p>
-<p>This section might contain several subsections as needed.</p>
+</section>
+</section>
+<section id="performance-measurement" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="performance-measurement"><span class="header-section-number">3.5</span> Performance Measurement</h2>
+<p>We evaluate the performance of the models in order to choose which models to use (as described in the Data section), to ensure data integrity, and to evaluate the hypothesis testing in context of performance. These measures are not used in the calculation of the statistical/hypothesis testing.</p>
+<!-- ::: callout-note -->
+<!-- This performance section is important in choosing the correct models to ensure data integrity, however for the actual statistical tests, we'll focused on more common statistics like mean and proportion. -->
+<!-- PC -->
+<!-- NOTE: From Rubric - May need to relocate sub-sections from data back to here: -->
+<!-- -   Exploratory data analysis -->
+<!-- -   what modifications were necessary to make the dataset ready for analysis? -->
+<!-- Separate of those two - may need explanations on the analyses we performed and **why we think they are appropriate.** We have part of that regarding the F1 use to possibly identify errors, may need more on two-prop tests and the like -->
+<!-- end PC-->
+<!-- PC -->
+<!-- These are PC's recommendations on how we can look at the additional values: -->
+<!-- For cases in which we reject the statistical null hypothesis, we plan to evaluate the below metrics for the same output category. Should we reject a null hypothesis for, let's say, the proportion of females, given that they are asian, we will examine the accuracy and F-1 scores for the same category. We will consider the following range of values: -->
+<!-- -   F1 Score \< .9 vs F1 Score \>= 0.9 -->
+<!-- -   Power \< .8 vs Power \>= .8 -->
+<!-- -   p-value \< .003 vs pvalue \>= .003 -->
+<!-- PC -->
+<!-- ::: -->
+<p>There are four main measures of performance when evaluating a model:</p>
 <ul>
-<li><p>At least one subsection should describe the exploratory data analysis you did.</p></li>
-<li><p>What modifications were necessary to make the dataset ready for analysis? (e.g.&nbsp;dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)</p></li>
-<li><p>Describe the analyses you did to answer the question of interest. <strong>Explain why you believe these methods are appropriate.</strong></p></li>
-<li><p>At least one subsection should describe the exploratory data analysis you did.</p></li>
-<li><p>What modifications were necessary to make the dataset ready for analysis? (e.g.&nbsp;dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)</p></li>
-<li><p>Describe the analyses you did to answer the question of interest. <strong>Explain why you believe these methods are appropriate.</strong></p></li>
-<li><p>At least one subsection should describe the exploratory data analysis you did.</p></li>
-<li><p>What modifications were necessary to make the dataset ready for analysis? (e.g.&nbsp;dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc)</p></li>
-<li><p>Describe the analyses you did to answer the question of interest. <strong>Explain why you believe these methods are appropriate.</strong></p></li>
+<li><strong>Accuracy</strong></li>
+<li><strong>Precision</strong></li>
+<li><strong>Recall</strong></li>
+<li><strong>F1-Score</strong></li>
 </ul>
-<p>Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data.</p>
+<p>Each of these performance measures has their own place in evaluating models; in order to explain the differences between these metrics, we start with concepts of positive and negative outcomes.</p>
+<div class="columns">
+<div class="column" style="width:70%;">
+<ul>
+<li><strong>True Positive:</strong> predicted positive, was actually positive (correct)</li>
+<li><strong>False Positive:</strong> predicted positive, was actually negative (incorrect)</li>
+<li><strong>True Negative:</strong> predicted negative, was actually negative (correct)</li>
+<li><strong>False Negative:</strong> predicted negative, was actually positive (incorrect)</li>
+</ul>
+<p>These outcomes can be visualized in a confusion matrix. In <a href="#fig-confusion">Figure&nbsp;<span>3.1</span></a>, green are correct predictions while red are incorrect predictions.</p>
+</div><div class="column" style="width:30%;">
+<div id="fig-confusion" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/confusion_matrix.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;3.1: Confusion_matrix</figcaption>
+</figure>
 </div>
 </div>
+</div>
+<section id="accuracy" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="accuracy"><span class="header-section-number">3.5.1</span> Accuracy</h3>
+<p><strong>Accuracy</strong> is the ratio of correct predictions to all predictions. In other words, the total of the green squares divided by the entire matrix. This is arguably the most common concept of measuring performance.</p>
+<p><span class="math inline">\(Acccuracy = \frac{TP+TN}{TP + TN + FN}\)</span></p>
+</section>
+<section id="precision" class="level3" data-number="3.5.2">
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="precision"><span class="header-section-number">3.5.2</span> Precision</h3>
+<p><strong>Precision</strong> is the ratio of true positives to the total number of positives (true positive + true negative).</p>
+</section>
+<section id="recall" class="level3" data-number="3.5.3">
+<h3 data-number="3.5.3" class="anchored" data-anchor-id="recall"><span class="header-section-number">3.5.3</span> Recall</h3>
+<p><strong>Recall</strong> is the ratio of true positives to the number of total correct predictions (true positive + false negative).</p>
+</section>
+<section id="f1-score" class="level3" data-number="3.5.4">
+<h3 data-number="3.5.4" class="anchored" data-anchor-id="f1-score"><span class="header-section-number">3.5.4</span> F1-Score</h3>
+<p><strong>F1-Score</strong>* is known as the harmonic mean between precision and recall. <strong>Precision</strong> and <strong>Recall</strong> are useful in their own rights, but the F1-Score is useful in the fact it’s a balanced combination of both precision and recall.</p>
+<p>F1-Score <span class="math inline">\(= \frac{2 * Precision * Recall}{Precision + Recall}\)</span></p>
+<p>When considering the classification of a subject by protected classes of age, gender, and race, we believe that stronger penalties should be assigned in making an improper classification decision. Due to F1 being the harmonic mean of precision and recall, incorrect classification will more directly impact the score of each model in its prediction of protected classes, and do so more strongly than an accuracy calculation <span class="citation" data-cites="mediumPerf">(<a href="references.html#ref-mediumPerf" role="doc-biblioref">Huilgol 2021</a>)</span>.</p>
+<p>We calculate F1 score as a measure of performance of our selected machine learning models. This was not used in the calculation or results of the hypothesis tests, but will be used for when we draw conclusions of our tests based upon p-value and statistical power. Namely, we do not plan to control for statistical power / Type-II error when running our 432 hypothesis tests, so statistical power may vary from test to test. Using F1 scores to assess p-values in cases of low statistical power should assist us in identifying potential Type-II Errors. We set a F1 score threshold of 0.9 to make this determination.</p>
+<!-- ::: callout-note -->
+<!-- ## From the report requirements -->
+<!-- Also can be called "Analyses" -->
+<!-- This section might contain several subsections as needed. -->
+<!-- -   At least one subsection should describe the exploratory data analysis you did. -->
+<!-- -   What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc) -->
+<!-- -   Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.** -->
+<!-- Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data. -->
+<!-- ::: -->
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-perplineup" class="csl-entry" role="listitem">
 Georgetown Law. 2016. <span>“<span class="nocase">The Perpetual Line-Up: Unregulated Police Face Recognition in America</span>.”</span> <em><span>Center on Privacy <span>&amp;</span> Technology</span></em>. <a href="https://www.perpetuallineup.org">https://www.perpetuallineup.org</a>.
+</div>
+<div id="ref-mediumPerf" class="csl-entry" role="listitem">
+Huilgol, Purva. 2021. <span>“<span class="nocase">Accuracy vs. F1-Score - Analytics Vidhya - Medium</span>.”</span> <em>Medium</em>, December. <a href="https://medium.com/analytics-vidhya/accuracy-vs-f1-score-6258237beca2">https://medium.com/analytics-vidhya/accuracy-vs-f1-score-6258237beca2</a>.
 </div>
 <div id="ref-fairface" class="csl-entry" role="listitem">
 Karkkainen, Kimmo, and Jungseock Joo. 2021. <span>“FairFace: Face Attribute Dataset for Balanced Race, Gender, and Age for Bias Measurement and Mitigation.”</span> In <em>Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision</em>, 1548–58.
@@ -568,9 +572,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -580,17 +585,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -603,135 +599,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        typesetMath(container);
-        return container.innerHTML
-      } else {
-        typesetMath(note);
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      typesetMath(note);
-      return note.innerHTML;
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -775,7 +642,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -801,32 +667,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -888,18 +728,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="./data.html" class="pagination-link  aria-label=" &lt;span="">
+      <a href="./data.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./results.html" class="pagination-link" aria-label="<span class='chapter-number'>4</span>&nbsp; <span class='chapter-title'>Results</span>">
+      <a href="./results.html" class="pagination-link">
         <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Results</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-
 
 
 

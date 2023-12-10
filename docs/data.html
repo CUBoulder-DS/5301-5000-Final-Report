@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.521">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -24,7 +24,6 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -66,13 +65,7 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -81,13 +74,13 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
@@ -100,35 +93,43 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
+      <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Bias in Facial Classification ML Models</span>
     </a>
   </div>
-        <div class="quarto-navbar-tools">
-    <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="./STAT_5000_Final_Report.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+        <div class="quarto-navbar-tools ms-auto">
+    <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./STAT_5000_Final_Report.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -176,7 +177,7 @@ div.csl-indent {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -200,9 +201,6 @@ div.csl-indent {
   <li><a href="#input-data-set" id="toc-input-data-set" class="nav-link" data-scroll-target="#input-data-set"><span class="header-section-number">2.4.1</span> Input data set</a></li>
   <li><a href="#fairface-outputs" id="toc-fairface-outputs" class="nav-link" data-scroll-target="#fairface-outputs"><span class="header-section-number">2.4.2</span> FairFace Outputs</a></li>
   <li><a href="#deepface-outputs" id="toc-deepface-outputs" class="nav-link" data-scroll-target="#deepface-outputs"><span class="header-section-number">2.4.3</span> DeepFace Outputs</a></li>
-  <li><a href="#standardizing-model-outputs" id="toc-standardizing-model-outputs" class="nav-link" data-scroll-target="#standardizing-model-outputs"><span class="header-section-number">2.4.4</span> Standardizing model outputs</a></li>
-  <li><a href="#deepface-output-modifications" id="toc-deepface-output-modifications" class="nav-link" data-scroll-target="#deepface-output-modifications"><span class="header-section-number">2.4.5</span> DeepFace Output Modifications</a></li>
-  <li><a href="#source-data-modifications" id="toc-source-data-modifications" class="nav-link" data-scroll-target="#source-data-modifications"><span class="header-section-number">2.4.6</span> Source Data Modifications</a></li>
   </ul></li>
   <li><a href="#evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" id="toc-evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" class="nav-link" data-scroll-target="#evaluating-permutations-of-inputs-and-models-for-equitable-evaluation"><span class="header-section-number">2.5</span> Evaluating Permutations of Inputs and Models for Equitable Evaluation</a>
   <ul class="collapse">
@@ -224,7 +222,7 @@ div.csl-indent {
 
 
 
-<div class="quarto-title-meta column-body">
+<div class="quarto-title-meta">
 
     
   
@@ -232,9 +230,7 @@ div.csl-indent {
   </div>
   
 
-
 </header>
-
 
 <p>Pursuant to the study, the team sought out multiple datasets on which we could evaluate the performance of two selected recognition models (Facebook’s DeepFace and K. Karkkainen &amp; J. Joo’s Fair Face models) to generate performance data and perform statistical analysis on their ability to accurately identify race, age, and gender of a subject in a photograph.</p>
 <p>Collectively, we landed on the UTK dataset to perform our evaluation: <a href="https://susanqq.github.io/UTKFace/">https://susanqq.github.io/UTKFace/</a></p>
@@ -242,61 +238,41 @@ div.csl-indent {
 <section id="exploration-of-source-data" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="exploration-of-source-data"><span class="header-section-number">2.1</span> Exploration of Source Data</h2>
 <div id="fig-faces" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-faces-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="figure">
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-faces" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 33.3%;justify-content: center;">
 <div id="fig-img1" class="quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-img1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/utk_imgs/6_1_3_20161220223052131.jpg" class="img-fluid figure-img" data-ref-parent="fig-faces">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-img1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Age=6, Gender=F, Race=Indian
-</figcaption>
+<figure class="figure">
+<p><img src="images/utk_imgs/6_1_3_20161220223052131.jpg" class="img-fluid figure-img" data-ref-parent="fig-faces"></p>
+<figcaption class="figure-caption">(a) Age=6, Gender=F, Race=Indian</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-faces" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 33.3%;justify-content: center;">
 <div id="fig-img2" class="quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-img2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/utk_imgs/38_0_0_20170105172756958.jpg" class="img-fluid figure-img" data-ref-parent="fig-faces">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-img2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Age=38, Gender=M, Race=White
-</figcaption>
+<figure class="figure">
+<p><img src="images/utk_imgs/38_0_0_20170105172756958.jpg" class="img-fluid figure-img" data-ref-parent="fig-faces"></p>
+<figcaption class="figure-caption">(b) Age=38, Gender=M, Race=White</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-faces" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 33.3%;justify-content: center;">
 <div id="fig-img3" class="quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-img3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/utk_imgs/80_0_2_20170111201008732.jpg" class="img-fluid figure-img" data-ref-parent="fig-faces">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-img3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(c) Age=80, Gender=M, Race=Asian
-</figcaption>
+<figure class="figure">
+<p><img src="images/utk_imgs/80_0_2_20170111201008732.jpg" class="img-fluid figure-img" data-ref-parent="fig-faces"></p>
+<figcaption class="figure-caption">(c) Age=80, Gender=M, Race=Asian</figcaption>
 </figure>
 </div>
 </div>
 </div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-faces-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.1: Example face images from the UTK dataset <span class="citation" data-cites="utkdataset">(<a href="references.html#ref-utkdataset" role="doc-biblioref"><span>“<span>UTKFace</span>”</span> 2021</a>)</span> with their associated given labels.
-</figcaption>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.1: Example face images from the UTK dataset <span class="citation" data-cites="utkdataset">(<a href="references.html#ref-utkdataset" role="doc-biblioref"><span>“<span>UTKFace</span>”</span> 2021</a>)</span> with their associated given labels.</figcaption><p></p>
 </figure>
 </div>
 <!-- CK -->
 <div id="fig-data-eda" class="quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-data-eda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="figure">
 <iframe id="Shiny App" src="https://carlklein.shinyapps.io/5000-final/" style="border: none; width: 100%; height: 820px" frameborder="0"></iframe>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-data-eda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.2: An interactive figure showcasing the distributions of various data factors in the image dataset, and showcasing the underlying data.
-</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;2.2: An interactive figure showcasing the distributions of various data factors in the image dataset, and showcasing the underlying data.</figcaption>
 </figure>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -386,14 +362,10 @@ From the report requirements
 <p>Additionally, FairFace only provides a predicted age range as opposed to a specific, single, predicted age as a string. To enable comparison of actual values to the predicted values, we maintained this column as a categorical variable, and split it into a lower and upper bound of predicted age as an integer in the event we require it for our analyses.</p>
 <p>With the above considerations in mind, the following output features are of import to the team:</p>
 <div class="cell">
-<div id="tbl-FF-output-format" class="cell anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-FF-output-format-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2.1: Fairface Output Format
-</figcaption>
-<div aria-describedby="tbl-FF-output-format-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="cell table table-sm table-striped small">
+<div id="tbl-FF-output-format" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;2.1: Fairface Output Format</caption>
 <colgroup>
 <col style="width: 9%">
 <col style="width: 4%">
@@ -437,8 +409,6 @@ Table&nbsp;2.1: Fairface Output Format
 </table>
 </div>
 </div>
-</figure>
-</div>
 </div>
 </section>
 <section id="deepface-outputs" class="level3" data-number="2.4.3">
@@ -446,14 +416,10 @@ Table&nbsp;2.1: Fairface Output Format
 <p>Default outputs have a wide-range of information for the user. In addition to providing its predictions, DeepFace also provides scores associated with each evaluation on a per class basis (i.e.&nbsp;92% for Race #1, 3% Race #2, 1% Race #3, and 4% Race #4). For the purpose of our planned analyses, the score features are of less concern to us.</p>
 <p>We hone in on the following select features from DeepFace outputs to have the ability to cross-compare between UTKFace, FairFace, and DeepFace:</p>
 <div class="cell">
-<div id="tbl-DF-output-format" class="cell anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-DF-output-format-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2.2: Deepface Output Format
-</figcaption>
-<div aria-describedby="tbl-DF-output-format-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="cell table table-sm table-striped small">
+<div id="tbl-DF-output-format" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;2.2: Deepface Output Format</caption>
 <colgroup>
 <col style="width: 10%">
 <col style="width: 6%">
@@ -491,40 +457,7 @@ Table&nbsp;2.2: Deepface Output Format
 </table>
 </div>
 </div>
-</figure>
 </div>
-</div>
-</section>
-<section id="standardizing-model-outputs" class="level3" data-number="2.4.4">
-<h3 data-number="2.4.4" class="anchored" data-anchor-id="standardizing-model-outputs"><span class="header-section-number">2.4.4</span> Standardizing model outputs</h3>
-<p>As can be seen above, there are some key differences between the outputs of both models as well as the source data that we needed to resolve to enable comparison of each dataset to one another. We’ll focus on the primary features of age, gender, and race from each dataset.</p>
-<section id="fairface-output-modifications" class="level4" data-number="2.4.4.1">
-<h4 data-number="2.4.4.1" class="anchored" data-anchor-id="fairface-output-modifications"><span class="header-section-number">2.4.4.1</span> FairFace Output Modifications</h4>
-<p>We’ll discuss FairFace first, as it introduces a requirement for modification to both our input information as well as the outputs for DeepFace.</p>
-<p><strong>Age</strong> - FairFace only provides a categorical predicted age range as opposed to a specific numeric age. We retain this age format and modify the last category of “70+” to “70-130” to ensure we can capture the gamut of all input and output ages in all datasets.</p>
-<p><strong>Gender</strong> - No changes to predicted values; use “Male” and “Female”</p>
-<p><strong>Race</strong> - the source data from UTKFace has 5 categories “White” “Black” “Asian” “Indian” and “Other”. Using the defintions from UTKFace, we collapse the output categories of FairFace’s Fair7 model as follows:</p>
-<p>[“Southeast Asian”,“East Asian”] =&gt; “Asian” [“Middle Eastern” , “Latino_Hispanic] =&gt;”Other”</p>
-</section>
-</section>
-<section id="deepface-output-modifications" class="level3" data-number="2.4.5">
-<h3 data-number="2.4.5" class="anchored" data-anchor-id="deepface-output-modifications"><span class="header-section-number">2.4.5</span> DeepFace Output Modifications</h3>
-<p><strong>Age</strong> Cut the predicted age into bins based upon the same prediction ranges provided by FairFace. If the DeepFace predicted age falls into a range provided by FairFace, provide that as the predicted age range for DeepFace.</p>
-<p><strong>Gender:</strong> we adjust the DeepFace gender prediction outputs to match that of the source and FairFace data with the following refactoring: “Man” =&gt; “Male” “Woman” =&gt; “Female”</p>
-<p><strong>Race:</strong> we adjust the DeepFace race prediction outputs to match that of the source dataset with the following refactoring:</p>
-<ul>
-<li>“white” =&gt; “White”</li>
-<li>“black” =&gt; “Black”</li>
-<li>“indian” =&gt; “Indian”</li>
-<li>“asian” =&gt; “Asian”</li>
-<li>[“middle eastern”, “latino hispanic”] =&gt; “Other”</li>
-</ul>
-</section>
-<section id="source-data-modifications" class="level3" data-number="2.4.6">
-<h3 data-number="2.4.6" class="anchored" data-anchor-id="source-data-modifications"><span class="header-section-number">2.4.6</span> Source Data Modifications</h3>
-<p><strong>Age:</strong> We cut the predicted age into bins based upon the same prediction ranges provided by FairFace. If the input / source data age falls into a range provided by FairFace, provide that is the source age range for the image subject.</p>
-<p><strong>Gender:</strong> No changes.</p>
-<p><strong>Race:</strong> No changes.</p>
 </section>
 </section>
 <section id="evaluating-permutations-of-inputs-and-models-for-equitable-evaluation" class="level2" data-number="2.5">
@@ -547,14 +480,10 @@ Table&nbsp;2.2: Deepface Output Format
 <h3 data-number="2.5.3" class="anchored" data-anchor-id="specific-permutations"><span class="header-section-number">2.5.3</span> Specific Permutations</h3>
 <p>With the above options in mind, we designed the following permutations for evaluation on a subset of the UTK dataset:</p>
 <div class="cell">
-<div id="tbl-Permutation-Listing" class="cell anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Permutation-Listing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2.3: List of Permutation Evaluations
-</figcaption>
-<div aria-describedby="tbl-Permutation-Listing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="cell table table-sm table-striped small">
+<div id="tbl-Permutation-Listing" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;2.3: List of Permutation Evaluations</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Detection</th>
@@ -597,19 +526,13 @@ Table&nbsp;2.3: List of Permutation Evaluations
 </table>
 </div>
 </div>
-</figure>
-</div>
 </div>
 <p>We processed each of the above setting permutations against approximately 9800 images, consisting of images from part 1 of 3 from the UTK datset. Each of the cropped images (cropped_UTK_dataset.csv) and uncropped images (uncropped_UTK_dataset.csv) came from the same underlying subject in each image; the only difference between each image was whether or not it was pre-processed before evaluation by each model. Having the same underlying source subject enables us to perform a direct comparison of results between cropped vs.&nbsp;in-the-wild images, and better support a conlcusion of which settings to use.</p>
 <div class="cell">
-<div id="tbl-Permutation-Results" class="cell anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Permutation-Results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2.4: Results of Permutation Evaluation
-</figcaption>
-<div aria-describedby="tbl-Permutation-Results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-Permutation-Results" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;2.4: Results of Permutation Evaluation</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">pred_model</th>
@@ -725,11 +648,9 @@ Table&nbsp;2.4: Results of Permutation Evaluation
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</figure>
 </div>
 </div>
 <p>Examining the true positive ratios for each case, our team came to the conclusion that the settings that gave both models the best chance for success in correctly predicting the age, gender, and race of subject images are as follows:</p>
@@ -746,21 +667,17 @@ Table&nbsp;2.4: Results of Permutation Evaluation
 <section id="model-evaluation-data" class="level2" data-number="2.6">
 <h2 data-number="2.6" class="anchored" data-anchor-id="model-evaluation-data"><span class="header-section-number">2.6</span> Model Evaluation Data</h2>
 <p>The final listing of all inputs and outputs from each model, with standardization methods discussed in this section applied, are stored here: <a href="https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv">MasterDataFrame.csv</a></p>
-<div id="tbl-All-Output-Data" class="cell anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-All-Output-Data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2.5: Data Format for All Inputs and Outputs
-</figcaption>
-<div aria-describedby="tbl-All-Output-Data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="tbl-All-Output-Data" class="cell tbl-parent quarto-layout-panel anchored" data-tbl-cap="Data Format for All Inputs and Outputs">
 
 </div>
-</figure>
-</div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-perplineup" class="csl-entry" role="listitem">
 Georgetown Law. 2016. <span>“<span class="nocase">The Perpetual Line-Up: Unregulated Police Face Recognition in America</span>.”</span> <em><span>Center on Privacy <span>&amp;</span> Technology</span></em>. <a href="https://www.perpetuallineup.org">https://www.perpetuallineup.org</a>.
+</div>
+<div id="ref-mediumPerf" class="csl-entry" role="listitem">
+Huilgol, Purva. 2021. <span>“<span class="nocase">Accuracy vs. F1-Score - Analytics Vidhya - Medium</span>.”</span> <em>Medium</em>, December. <a href="https://medium.com/analytics-vidhya/accuracy-vs-f1-score-6258237beca2">https://medium.com/analytics-vidhya/accuracy-vs-f1-score-6258237beca2</a>.
 </div>
 <div id="ref-fairface" class="csl-entry" role="listitem">
 Karkkainen, Kimmo, and Jungseock Joo. 2021. <span>“FairFace: Face Attribute Dataset for Balanced Race, Gender, and Age for Bias Measurement and Mitigation.”</span> In <em>Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision</em>, 1548–58.
@@ -860,9 +777,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -872,17 +790,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -895,135 +804,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        typesetMath(container);
-        return container.innerHTML
-      } else {
-        typesetMath(note);
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      typesetMath(note);
-      return note.innerHTML;
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1067,7 +847,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1093,32 +872,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1180,18 +933,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="./intro.html" class="pagination-link  aria-label=" &lt;span="">
+      <a href="./intro.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./methods.html" class="pagination-link" aria-label="<span class='chapter-number'>3</span>&nbsp; <span class='chapter-title'>Methods</span>">
+      <a href="./methods.html" class="pagination-link">
         <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Methods</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-
 
 
 
