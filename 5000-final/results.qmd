@@ -1,4 +1,4 @@
-# Results
+# Results {#sec-results}
 
 ```{r setup, include=FALSE}
 #| include: false
@@ -114,7 +114,6 @@ plot_category("src_age_grp", "correct_age", "Age")
 plot_category("src_race", "correct_race", "Race")
 ```
 
-
 ## Model Performance, Hypothesis Testing
 
 ```{r view_stat_results}
@@ -122,22 +121,26 @@ plot_category("src_race", "correct_race", "Race")
 view_results = stats_results %>% 
                 filter(test_age == "All" | test_gender == "All" | test_race == "All") %>%
                 select(-c(source_n, model_n, model_prop, source_prop)) %>% 
-                replace(. == "age_bins", "ages")
+                replace(. == "age_bins", "age") %>%
+                replace(. == "genders", "gender") %>%
+                replace(. == "races", "race")
 ```
 
-For each category and model, we calculate the F1 score, accuracy, and p-value, as described in section 3. Cell values are colored according to the strength of the metric. We also specifically looked at the performance metrics of the models, when controlled for specific source categories; TODO
+For each factor category and model, we calculate the F1 score, accuracy, p-value, and power, as described in section 3. Cell values are colored according to the strength of the metric; p-value is colored as to whether it crosses the significance value threshold of 0.003. We calculate these metrics and hypothesis tests across all categories of each factor, but also with conditional filtering on other factors; the value "All" indicates we did not filter/condition on that factor. The column `Test Factor` indicates which factor we are calculating the proportion for that hypothesis test. For example, the following column value subsets would indicate the given hypothesis test:
 
-### TODO
-
--   Add color key
--   Better description of signifiance of numerical values of Accuracy, F1 score, power
+| **Test Factor** | **Age** | **Gender** | **Race** | Model    | Null Hypothesis                      | Description                                                                                  |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| gender          | 0-2     | Female     | All      | FairFace | $p_{F, D_f | A_1} = p_{F,D_0 | A_1}$ | $H_0$ : The proportions of Female labels, given that the source age label is 0-2, are equal. |
+| race            | All     | All        | Black    | DeepFace | $p_{R_B, D_d} = p_{R_B, D_0}$        | $H_0$: The proportions of Black labels are equal.                                            |
 
 ::: {.content-visible when-format="html"}
-The results are summarized in @tbl-perf-pvalue. 
+The results are summarized in @tbl-perf-pvalue, which is interactive and filterable.
 
-::: {#tbl-perf-pvalue}
+<!-- ::: {#tbl-perf-pvalue} -->
+
 ```{r perf-pvalue}
 #| label: tbl-perf-pvalue
+#| tbl-cap: Table of F1 score, accuracy, p-value, and power, by each factor and category evaluated by the models, with a potential filtering condition.
 # BJ
 # Note: For some reason, making the table interactive (aka HTML) breaks Quarto table labeling/captioning/crossref
 # That's why we use a combination of table div and label.
@@ -156,98 +159,164 @@ view_results %>%
   data_color(columns=5, method="bin", palette = c("#B1DC96", "#F2B8D2"), bins=c(0, 0.003, 1))
 ```
 
-
-TODO 3 Table of F1 score, accuracy, p-value, and power, by each category evaluated by the models
-:::
+<!-- ::: -->
 :::
 
 ::: {.content-visible when-format="pdf"}
-The results are summarized in @fig-perf-pvalue-pdf. 
+The results are summarized in @fig-perf-pvalue-pdf.
 
-![Screenshot of the interactive table showing TODO. To see and interact with this table, go to [the website link](https://cuboulder-ds.github.io/5301-5000-Final-Report/results.html)]("images/table_interactive.png"){#fig-perf-pvalue-pdf}
+![Screenshot of the interactive table showing TODO. To see and interact with this table, go to [the website link](https://cuboulder-ds.github.io/5301-5000-Final-Report/results.html)](%22images/table_interactive.png%22){#fig-perf-pvalue-pdf}
 :::
 
 ### p-value Critical Values
 
-From the previous table, we extract and highlight key values; namely, the p-values where we reject the null hypothesis at a significance level of 99.7%, and where there is no conditional filtering based on another category. The values are displayed in @tbl-perf-selected.
+```{r calc-criticals}
 
-```{r tbl-perf-selected}
-#| label: tbl-perf-selected
-#| tbl-cap: TODO 
+cats = c("age", "gender", "race")
+pvalue_thresh = 0.003
+power_thresh = 0.8
+f1_thresh = 0.9
+
+# Because R is stupid about concatenating strings
+t_str = function(x) {
+  paste("test", x, sep="_")
+}
+
+get_hyp_results = function(full_df, reject_null, noconds=TRUE) {
+  if (reject_null) {
+      filtered = full_df %>% 
+                  filter(model_p_value < pvalue_thresh,
+                         model_power >= power_thresh,
+                         model_F1 < f1_thresh | is.na(model_F1)
+                         )
+  } else {
+      filtered = full_df %>% 
+                  filter(model_p_value >= pvalue_thresh,
+                         model_power < power_thresh,
+                         model_F1 >= f1_thresh
+                         )
+  }
+
+  if (noconds) {
+    return(filtered %>%
+            filter((test_age == "All") + (test_gender == "All") + (test_race == "All") > 1))
+    
+  } else return(filtered)
+}
+
+get_opposite_rows = function(row, full_df, reject_null) {
+  other_cats = cats[cats != row["test_prop"]]
+  
+  full_df %>%
+      filter(test_prop == row["test_prop"],
+             # Get same test prop category val and model 
+             .[[t_str(row["test_prop"])]] == row[t_str(row["test_prop"])],
+             model == row["model"],
+             # Get row where there is some test filtering sub condition
+             .[[t_str(other_cats[1])]] != "All" | .[[t_str(other_cats[2])]] != "All") %>%
+      # Get rows with the opposite hypothesis rejection result
+      get_hyp_results(reject_null=reject_null, noconds=FALSE)
+}
+
+
+reject_nulls =  view_results %>% get_hyp_results(T)
+reject_nulls_opp = bind_rows(apply(reject_nulls, 1, get_opposite_rows, full_df=view_results, reject_null=F))
+
+reject_nulls_ff = reject_nulls %>% filter(model == "FairFace")
+reject_nulls_df = reject_nulls %>% filter(model == "DeepFace")
+
+reject_nulls_opp_ff = reject_nulls_opp %>% filter(model == "FairFace")
+reject_nulls_opp_df = reject_nulls_opp %>% filter(model == "DeepFace")
+
+no_reject_nulls = view_results %>% get_hyp_results(F)
+no_reject_nulls_opp = bind_rows(apply(no_reject_nulls, 1, get_opposite_rows, full_df=view_results, reject_null=T))
+```
+
+From the previous table, we extract and highlight key values; namely, where we reject the null hypothesis and where we do not, based on our criteria:
+
+-   Significance level of 99.7%
+-   Power threshold of 0.8
+-   F1-Score of 0.9
+
+Which come from the rationale described in @sec-methods. We show the test values where there is no sub-filtering/conditions by another category; then, we also highlight the reverse null hypothesis decisions made with filtering for a sub-condition and for the specific rows as described in the table captions. The coloring of cells is the same as in @tbl-perf-pvalue. The values are displayed in @tbl-reject-nulls. There is only a Fairface table for not rejecting the null hypothesis (with no condition subfiltering) because no DeepFace values passed our given thresholds for not rejecting; the same reasoning is why there is no table for FairFace rejecting the null hypothesis with condition subfiltering.
+
+```{r reject-nulls}
+#| label: tbl-reject-nulls
+#| tbl-cap: Highlighted statistics/metrics for DeepFace and FairFace, that pass the given significance level/power/F1-score thresholding. 
+#| tbl-subcap: 
+#|   - "FairFace: Reject the null hypothesis, with no condition subfiltering"
+#|   - "FairFace: Do not reject the null hypothesis, for the factor category given in (a), for subcondition filtering"
+#|   - "DeepFace: Reject the null hypothesis, with no condition subfiltering"
+#|   - "DeepFace: Do not reject the null hypothesis, for the factor category given in (c), for subcondition filtering"
+#|   - "FairFace: Do not reject the null hypothesis,  with no condition subfiltering"
+#| layout-ncol: 2
 # BJ
 
-view_results %>%
-  filter(model_p_value < 0.003, 
-         model_power > 0.8, 
-         (test_age == "All") + (test_gender == "All") + (test_race == "All") > 1) %>%
+
+no_conds_cols = setNames(c("Test Factor", "Category", "p-Value", "Power", "F1 Score"),
+                          c("test_prop", "test_subcat", "model_p_value", "model_power", "model_F1"))
+conds_cols = setNames(c("Test Factor", "Age", "Gender", "Race", "p-Value", "Power", "F1 Score"),
+                          c("test_prop", "test_age", "test_gender", "test_race", "model_p_value", "model_power", "model_F1"))
+
+fmt_gt = function(x) {
+  x %>%
+    select(-c(model_Accuracy, model)) %>%
+    group_by(test_prop) %>%
+    gt() %>%
+    tab_options(column_labels.font.weight="bold",
+                row_group.font.weight="bold",
+                row_group.as_column = T
+                ) %>%
+    # Format the p-value column
+    fmt_scientific(columns = model_p_value, n_sigfig=3, drop_trailing_zeros=T, exp_style="e") %>%
+    ## BJ: Colors don't work in Latex!!!!!
+    # data_color(columns=model_p_value, method="bin", palette = c("#B1DC96", "#F2B8D2"), bins=c(0, 0.003, 1)) %>%
+    # Format the other number columns
+    fmt_number(columns = model_power:model_F1, decimal=4)
+    # data_color(columns=model_power:model_F1, palette="PiYG", domain=c(0, 1), alpha=0.75)
+}
+
+
+reject_nulls_ff %>%
   replace(. == "All", NA) %>%
   unite("test_subcat", test_age:test_race, remove=T, na.rm=T) %>%
-  gt()
+  fmt_gt() %>%
+  cols_label(.list=no_conds_cols)
 
-# tbl_gt = combined_results %>% 
-#   filter(p_value_f > 0.03 | p_value_d > 0.03) %>%
-#   select(Race, Category, p_value_d, p_value_f) %>%
-#   unite(cat, c(Race, Category)) %>%
-#   # t() %>% data.frame() %>% row_to_names(1) %>%
-#   # add_column("Model p-value" = c("DeepFace", "FairFace"), .before=1) %>%
-#   gt(rowname_col = "cat") %>%
-#   tab_options(column_labels.font.weight="bold", 
-#           row_group.font.weight="bold",
-#           # stub.font.weight="bold",
-#           # table.width = pct(100), 
-#           # TODO: DOESN'T WORK?!?!!
-#           # row_group.as_column = T
-#           ) %>%
-#   fmt_number(decimals=4) %>%
-#   tab_stubhead("Test Condition, Category") %>%
-#   text_transform( \(x) str_remove(x, ".*_"), locations = cells_stub()) %>%
-#   cols_label(p_value_d="DeepFace", p_value_f="FairFace") %>%
-#   tab_spanner("p-value", columns=1:3) %>%
-#   data_color(method="bin", palette = c("#B1DC96", "#F2B8D2"), bins=c(0, 0.03, 1)) %>%
-#   tab_row_group("No Test Condition", rows=starts_with("All"), id="All")
-# for (r in table_races) {
-#   tbl_gt = tab_row_group(tbl_gt, sprintf("Race: %s", r), rows=starts_with(r), id=r)
-# }
-# 
-# # tbl_gt = gt_split(tbl_gt, row_every_n=5)
-# 
-# tbl_gt
+reject_nulls_opp_ff %>%
+  fmt_gt() %>%
+  cols_label(.list=conds_cols)
+
+reject_nulls_df %>%
+  replace(. == "All", NA) %>%
+  unite("test_subcat", test_age:test_race, remove=T, na.rm=T) %>%
+  fmt_gt() %>%
+  cols_label(.list=no_conds_cols)
+
+reject_nulls_opp_df %>%
+  fmt_gt() %>%
+  cols_label(.list=conds_cols)
+
+no_reject_nulls %>%
+  replace(. == "All", NA) %>%
+  unite("test_subcat", test_age:test_race, remove=T, na.rm=T) %>%
+  fmt_gt() %>%
+  cols_label(.list=no_conds_cols)
 ```
 
-```{r tbl-DF-T-Tests, warning=F}
-#| label: tbl-DF-T-Tests
-#| tbl-cap: Rejected Null Hypotheses for DeepFace Mean Age T-Testing
+## Meta-Analysis Plots
 
-#PC
-##ran t tests to compare mean ages between source data and DeepFace
-# DeepFace_Only_T_tests %>%
-#   filter(p_value <0.003,power > 0.8) %>%
-#   gt()
-
-# T-Test Parameters: 
-
-# * Confidence level: 0.997
-
-# * Two-sided test
-
-# Statistical Power T-Test Parameters: 
-
-# * Effect Size: +/- 5 years in age
-
-# * Significance level: 0.003
-
-# * Two-sided test
-```
-
-
-### Comparison Plots
+In @fig-f1-acc, we show F1-score vs accuracy for all hypothesis tests that were performed. Note the relationship is not perfectly linear.
 
 ```{r, warning=F}
+#| label: fig-f1-acc
+#| fig-cap: F1-Score vs Accuracy for all hypothesis tests performed.
+# BJ
+
 ggplot(stats_results) +
   geom_point(aes(x=model_F1, y=model_Accuracy, color=model)) +
   labs(x="F1 Score", y="Accuracy")
 ```
-
 
 ```{r, warning=F}
 # BJ
@@ -256,10 +325,8 @@ ggplot(stats_results) +
 # ggplot(stats_results) +
 #   geom_point(aes(x=model_F1, y=model_p_value, color=model, fill=model_power), shape=21)
 
-
-
 # ggplot(stats_results) +
-#   geom_point(aes(x=model_power, y=model_p_value, color=model))
+#   geom_point(aes(x=model_F1, y=model_p_value, color=model))
 
 
 #classify our test results as TP,TN,FP,FN or unknown.
@@ -360,11 +427,17 @@ df_tests <- plot_cm %>% filter(model=='DeepFace')
 
 ```
 
-In @fig-p-conf, we display confusion matrices of the TODO
+In @fig-p-conf, we display confusion matrices of our null hypothesis rejections. We define the true/false positive/negative as follows:
+
+-   Reject null when we should reject null: p-value \< 0.003, F1 \< 0.9, power \>= 0.8
+-   Reject null when we should fail to reject null: p-value \< 0.003, F1 \> 0.9, power \>= 0.8
+-   Fail to reject null, when we should reject null: p-value \>= 0.003, F1 \< 0.9, power \< 0.8
+-   Fail to reject null, when we should fail to reject null: p-value \>=0.003, F1 \>= 0.9, power \< 0.8
+-   Uknown: One of the values was NaN.
 
 ```{r, warning=F}
 #| label: fig-p-conf
-#| fig-cap: Confusion matrices of TODO
+#| fig-cap: Confusion matrices of null rejection decisions.
 #| fig-subcap: 
 #|   - Matrix for FairFace
 #|   - Matrix for DeepFace
@@ -380,13 +453,14 @@ autoplot(conf_mat(df_tests, p_value_classification, f1_classification), type = "
   labs(title="DeepFace")
 ```
 
-
 <!-- ### Statistical Power - TODO REMOVE -->
+
+```{=html}
 <!-- $$
 \beta = P\bigg(\bigg|\frac{\sqrt{n}\cdot\hat{p}-p_a}{\sqrt{p_a(1-p_a)}}\bigg|\geq\frac{\sqrt{n}\cdot p_0-p_a}{\sqrt{p_0(1-p_0)}}\bigg)
 $$ -->
-
-
+```
+```{=html}
 <!-- Our selected level of significance is 99.7% (3-sigma). Type-II error is denoted by $\beta$ above, and Power will be $1-\beta$
 
 With $p_0$ being our *assumed* population proportion (from the source dataset and what we used in our tests), $p_a$ being the *actual* population proportion (from one or more of the below methods), $n$ being the number of predicted members of a racial group (i.e. "Indian"),
@@ -398,7 +472,7 @@ With $p_0$ being our *assumed* population proportion (from the source dataset an
     -   May be able to get via bootstrapping the source dataset, average age by race - I think that's what we did in our last project?
 
     -   Could look at external data? May not have time to look through everything. -->
-
+```
 ```{r PowerCalcs}
 #can be removed.
 # TypeII <- function(p0,pa,n){
@@ -406,5 +480,3 @@ With $p_0$ being our *assumed* population proportion (from the source dataset an
 # }
 
 ```
-
-

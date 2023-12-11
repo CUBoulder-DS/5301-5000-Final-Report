@@ -1,10 +1,10 @@
-# Methods
+# Methods {#sec-methods}
 
 As described in the previous section, the two selected models (DeepFace and FairFace) are run on the UTK face dataset in order to generate output of classification across 3 categories (age, race, and gender). We evaluate the performance of this classification, and perform hypothesis testing in order to answer the key research questions.
 
 ## Data Cleaning: Standardizing Model Outputs
 
-As can be seen in section 2, there are some key differences between the outputs of both models as well as the source data that we needed to resolve to enable comparison of each dataset to one another. We'll focus on the primary features of age, gender, and race from each dataset.
+As can be seen in @sec-data, there are some key differences between the outputs of both models as well as the source data that we needed to resolve to enable comparison of each dataset to one another. We'll focus on the primary features of age, gender, and race from each dataset.
 
 ### FairFace Output Modifications
 
@@ -260,7 +260,7 @@ These outcomes can be visualized in a confusion matrix. In @fig-confusion, green
 
 ### Accuracy
 
-**Accuracy** is the ratio of correct predictions to all predictions. In other words, the total of the green squares divided by the entire matrix. This is arguably the most common concept of measuring performance.
+**Accuracy** is the ratio of correct predictions to all predictions. In other words, the total of the green squares divided by the entire matrix. This is arguably the most common concept of measuring performance. It ranges from 0-1 with 1 being the best performance.
 
 $Acccuracy = \frac{TP+TN}{TP + TN + FN}$
 
@@ -274,7 +274,7 @@ $Acccuracy = \frac{TP+TN}{TP + TN + FN}$
 
 ### F1-Score
 
-**F1-Score**\* is known as the harmonic mean between precision and recall. **Precision** and **Recall** are useful in their own rights, but the F1-Score is useful in the fact it's a balanced combination of both precision and recall.
+**F1-Score**\* is known as the harmonic mean between precision and recall. **Precision** and **Recall** are useful in their own rights, but the F1-Score is useful in the fact it's a balanced combination of both precision and recall. It ranges from 0-1 with 1 being the best performance.
 
 F1-Score $= \frac{2 * Precision * Recall}{Precision + Recall}$
 
