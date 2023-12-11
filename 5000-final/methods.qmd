@@ -44,8 +44,16 @@ We'll discuss FairFace first, as it introduces a requirement for modification to
 
 -   **Race:** No changes.
 
-## Exploratory Data Analysis
+## Exploratory Data Analysis (EDA)
 
+
+<!-- PC 
+I don't know that the below language reflects the plots done in section 2. Are we talking about section 2, or section 4 (results)
+
+Should we change "also perform" to "we plan to perform?" by this point in the paper, we haven't done those calculations yet.
+
+May need some insight here before making changes.
+-->
 Our EDA performed on the source UTK dataset can be seen in the previous section in @fig-data-eda. The EDA performed on the output from the models can be summarized as follows, and is presented in the Results section:
 
 -   Visualization of the histograms of distributions of predictions, per each category, per each model
@@ -59,17 +67,27 @@ We also perform some meta-analysis on the statistics and performance metrics cal
 
 We evaluate the output of the 2 models in order to answer the following questions:
 
+<!--PC
+Below - some of these research questions can't be answered with hypothesis testing.  Commented those out and changed to new questions.
+-->
 -   Is bias prevalent in facial recognition machine learning models?
--   Can one model be shown to have statistically significant less bias than the other?
+<!---   Can one model be shown to have statistically significant less bias than the other?
 -   Does one model outperform the other in a statistically significant manner, in all aspects?
--   Does one model outperform the other in a statistically significant manner, in certain aspects?
--   Are there disparate outcomes (i.e. lower chances of correct classification) for one racial group vs. another?
+-   Does one model outperform the other in a statistically significant manner, in certain aspects? --> 
+
+-   Can one model be shown to have a greater quantity of statistically significant biases than the other?
+
+    - in all aspects? 
+
+    - In specific/certain aspects? 
+
+-   Are there disparate outcomes (i.e. higher chance of incorrect predictions) for one racial group vs. another?
 
 ## Hypothesis Testing
 
 Our data consists of three main sets: the source input data, the Fairface output data, and the Deepface output data.
 
-We'll be creating our hypothesis tests by running as two-sample proportion tests. The population is the set of all labels (of race, age, and gender as defined below) for a given image, for all face images. The first sample will be the source dataset "correct" labels of the images, and the 2nd sample will be the output of a given model between FairFace and DeepFace, respectively. The base null hpyothesis will be no difference in means. Gaining a statistically significant result would allow us to reject our *null hypothesis* in favor of the *alternative hypothesis*. In other words, rejecting the original assumption means there is a statistically large enough difference between the source data and output data, and could indicate a bias in a model. We use a significance level of 99.7% to accurately judge the strength of the test statistic.
+We'll be creating our hypothesis tests by running as two-sample proportion tests. The population is the set of all labels (of race, age, and gender as defined below) for a given image, for all face images. The first sample will be the source dataset "correct" labels of the images, and the 2nd sample will be the output of a given model between FairFace and DeepFace, respectively. The base null hypothesis will produce no difference in sample proportions. Gaining a statistically significant result would allow us to reject our *null hypothesis* in favor of the *alternative hypothesis*. In other words, rejecting the original assumption means there is a statistically large enough difference between the source data and output data, and could indicate that the source and predicted information originate from differing populations, which is a potential indicator of bias for or against the protected classes in question<!--a bias in a model-->. We use a significance level of 99.7% to mitigate the risk of rejecting the the null hypothesis when it is true. <!--accurately judge the strength of the test statistic.-->
 
 We'll be testing across different subsets contained within the data, as listed below:
 
@@ -137,7 +155,7 @@ We believe that using two-sample proportion testing is an appropriate means by w
 
 In theory, similar proportions of protected classes between the two datasets could suggest that the source data and predicted data originate from the same population (pictures of people), and would thus indicate an absence of bias against the protected class in question. Vastly different proportions, however, could indicate that the source data and predicted data are from differing populations and indicate a bias against the protected classes in question.
 
-Leveraging p-values and powers calculated on our samples for our protected classes of age, gender, and race, should enable us to provide a clear picture of any biases that may manifest from one or both models. Leveraging F1 scores (as described below) in cases of inconclusive results from p-value and power should assist us in identifying potential error.
+Leveraging p-values and powers calculated on our samples for our protected classes of age, gender, and race, should enable us to provide a clear picture of any biases that may manifest from one or both models. Leveraging F1 scores (as described below) will help us identify the specific cases of bias, and whether it is in favor of or against a specific group.<!--in cases of inconclusive results from p-value and power should assist us in identifying potential error.-->
 
 <!-- end PC-->
 
@@ -149,7 +167,8 @@ Let $R$ be race, then $R \in \{Asian, Black, Indian, Other, White\} = \{A, B, I,
 
 Let $G$ be gender, then $G \in \{Female, Male\} = \{F, M\}$
 
-Let $A$ be age, then $A \in \{[0,2], [3,9], [10,19], [20,29], [30,39], [40,49], [50,59], [60,69], [70,130]\} = \{1, 2, 3, 4, 5, 6, 7, 8, 9\}$
+Let $A$ be age, then $A \in \{[0,2], [3,9], [10,19], [20,29], [30,39], [40,49], [50,59], [60,69], [70,130]\};$
+or $A = \{1, 2, 3, 4, 5, 6, 7, 8, 9\}$
 
 Let $D$ be the dataset, then $D \in \{Source, Fairface, Deepface\} = \{D_0, D_f, D_d\}$
 
@@ -186,13 +205,17 @@ These were two specific hypothesis tests, however, we'll be testing all combinat
 
 In the above, we've outlined our methods for examining a total of 432 hypothesis tests per recognition model on the totality of, and smaller samples of, our overall dataset. We have elected to sub-divide our source and predicted samples by these protected classes to inspect and investigate whether or not there may be bias against groupings of protected classes.
 
-For instance, in the performance of our hypothesis tests, we may find an absence of bias when only examining proportions of gender between samples. However, by examining a subset of our samples, such as subject gender given the subject's membership in a specific racial category, we may find biases providing more, or fewer, correct predictions of subject gender given their membership in a specific racial group.
+For instance, in the performance of our hypothesis tests, we may find an absence of bias when only examining proportions of gender between samples. However, by examining a subset of our samples, such as subject gender given the subject's membership in a specific racial category, we may find biases in predictions of subject gender given their membership in a specific racial group.
 
 This could help us answer questions and draw conclusions about such groups. For example:
 
-"Model X demonstrates bias in favor of correctly predicting race, given the subject is young." - which also suggests a bias against correctly predicting the race of older subjects in a model. Such a bias, if used in a decision making process, could result in age discrimination.
+<!--"Model X demonstrates bias in favor of correctly predicting race, given the subject is young." - which also suggests a bias against correctly predicting the race of older subjects in a model. Such a bias, if used in a decision making process, could result in age discrimination.
 
 "Model Y demonstrates bias against predicting correct gender, given the subject image is Black, Asian, or Other." - which also suggests a bias for correctly predicting gender, given the subject is White or Indian. Such a bias, if used in a decision making process, could result in racial discrimination.
+-->
+"Model X demonstrates bias in predicting the race of older subjects."  Such a statement is not one of bias for or against the target group, but that a bias exists.  A bias in either direction, if used in a decision-making process, could result in age discrimination.
+
+"Model Y demonstrates bias in predicting gender, given the subject is Black, Asian, or Other."  Such a statement is not one of bias for or against the target groups, but a statement that a bias exists. Such a bias, if used in a decision-making process, could result in gender or racial discrimination.
 
 Structuring our tests in this manner will enable us to quickly analyze and report on the results of our tests.
 
@@ -280,7 +303,7 @@ F1-Score $= \frac{2 * Precision * Recall}{Precision + Recall}$
 
 When considering the classification of a subject by protected classes of age, gender, and race, we believe that stronger penalties should be assigned in making an improper classification decision. Due to F1 being the harmonic mean of precision and recall, incorrect classification will more directly impact the score of each model in its prediction of protected classes, and do so more strongly than an accuracy calculation [@mediumPerf].
 
-We calculate F1 score as a measure of performance of our selected machine learning models. This was not used in the calculation or results of the hypothesis tests, but will be used for when we draw conclusions of our tests based upon p-value and statistical power. Namely, we do not plan to control for statistical power / Type-II error when running our 432 hypothesis tests, so statistical power may vary from test to test. Using F1 scores to assess p-values in cases of low statistical power should assist us in identifying potential Type-II Errors. We set a F1 score threshold of 0.9 to make this determination.
+We calculate F1 score as a measure of performance of our selected machine learning models. This was not used in the calculation or results of the hypothesis tests, but will be used for when we draw conclusions of our tests based upon p-value and statistical power. Namely, we do not plan to control for statistical power / Type-II error when running our 432 hypothesis tests, so statistical power may vary from test to test. Using F1 and Accuracy scores can support us in identifying specific cases of bias (and whether it is for or against) one or more protected classes.  We elect to use an F1 score threshold of 0.9 to make this determination.<!--Using F1 scores to assess p-values in cases of low statistical power should assist us in identifying potential Type-II Errors. We set a F1 score threshold of 0.9 to make this determination.--> 
 
 <!-- ::: callout-note -->
 

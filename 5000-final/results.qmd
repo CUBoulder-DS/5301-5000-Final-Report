@@ -487,7 +487,7 @@ With $p_0$ being our *assumed* population proportion (from the source dataset an
 
 We used a resampling technique to produce estimated population proportion distributions for each sample.  Each resampling included 2000 samples of 500 subjects under their respective test conditions.
 
-To support our analysis and conclusions on the data, we took 2,000 samples of 500 subjects under our specified test conditions from each of the UTKFace dataset and facial recognition models.  Using these samples, we generate an estimate of the distribution of population proportion for the specified group.  We find that these plots co-incide with our p-value calculations; the greater the overlap between the plots, the higher the p-value result (the same is true for reduced overlap and lower p-value).  As such, they should support us in drawing our conclusions.
+To support our analysis and conclusions, we leveraged a resampling technique (bootstrap sampling) to build approximations of each sample’s parent population.  The resampling took 2000 samples of 500 random subjects, with replacement, to build the estimated distribution of proportions in the population under specified test conditions.  We find that these plots coincide with our hypothesis testing results – namely, that higher p-values result in greater overlap between the predicted and actual distributions, and lower p-values result in less overlap between the distributions.  As such, these distributions will support us in drawing our conclusions.
 
 ```{r importBootstrap}
 age_lev = factor(c("0-2","3-9","10-19","20-29","30-39","40-49","50-59","60-69","70-130"))

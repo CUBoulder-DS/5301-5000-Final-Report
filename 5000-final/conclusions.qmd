@@ -1,4 +1,4 @@
-# Conclusions
+# Conclusions {#sec-conclusions}
 
 ```{r setup, include=FALSE}
 #| include: false

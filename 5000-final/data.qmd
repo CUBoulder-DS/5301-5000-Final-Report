@@ -47,6 +47,7 @@ Screenshots of the interactive figure showcasing the distributions of various da
 :::
 :::
 
+<!--
 ::: callout-note
 ## From the report requirements
 
@@ -73,12 +74,15 @@ Lastly, Age is represented with an integer. This dataset contains people of all 
 Feel free to add anything else that you think is necessary for understanding the paper and the context of the problem.
 
 :::
-
+-->
 
 <!--  PC -->
-TODO: Not sure where this goes
 
-For each of the selected facial recognition models, we assume that each model's training dataset is independent of the content of the UTKFace dataset.  Independence between each model's output and the source data is a requirement for performing our testing.  We have no means or methods to verify whether or not any UTKFace images were used in the training of either model, and must make this assumption before moving forward in our methods and results.
+For initial exploration of the UTKFace dataset, we sought to determine the distribution of age, given other categorical variables. To support hypothesis testing, such as z-tests, t-tests, it is important for us to inspect our data for a normal distribution.  In our case, we are only able to initially inspect age, as it is the only numerical variable from our data available.
+
+Examining the data, we have a somewhat normal distribution of age with heavy tails, centered between the ages of 30 and 35.  To examine distributions of race and gender, we will perform a bootstrapped sampling of proportions of these variables, and include them in our results section.  Having such distributions will provide normal distributions and support us in evaluating our results.
+
+**A note on sample independence**.  For each of the selected facial recognition models, we assume that each model's training dataset is independent of the content of the UTKFace dataset.  Independence between each model's output and the source data is a requirement for performing our testing.  We have no means or methods to verify whether or not any UTKFace images were used in the training of either model, and must make this assumption before moving forward in our methods and results.
 
 ```{r extraCodeOnOurData}
 suppressPackageStartupMessages(library(tidyverse))
@@ -170,31 +174,33 @@ t <- tibble(filenames=f,purpose=p,recommendations=r)
 #knitr::kable(t)
 ```
 
-## Data Selection (UTK Dataset) - LN DV
+## Data Selection (UTK Dataset)
 
 ### Motivation for the Selection of UTKFace Dataset
 
-In 2018, [Joy Buolamwini](https://www.media.mit.edu/people/joyab/overview/) [paper link](https://www.media.mit.edu/publications/gender-shades-intersectional-accuracy-disparities-in-commercial-gender-classification/), a PhD candidate at MIT Media Lab, published a thesis on gender and racial biases in facial recognition in algorithms. In her paper, she tested facial recongition softwares from multiple large technology companies such as Microsoft, IBM, and Amazom on its effectiveness for different demographic groups. Her research led to a surprising conclusion that most AI algorithms offer a substantially less accurate prediction for feminine/female faces, particularly those with dark skin color.
+In 2018, [Joy Buolamwini](https://www.media.mit.edu/people/joyab/overview/), a PhD candidate at MIT Media Lab, published a [thesis](https://www.media.mit.edu/publications/gender-shades-intersectional-accuracy-disparities-in-commercial-gender-classification/) on gender and racial biases in facial recognition in algorithms. In her paper, she tested facial recongition softwares from multiple large technology companies such as Microsoft, IBM, and Amazon on its effectiveness for different demographic groups. Her research led to a surprising conclusion that most AI algorithms offer a substantially less accurate prediction for feminine/female faces, particularly those with dark skin color.
 
-To determine the degree in which bias is still present in modern facial recognition models, a dataset which comprise of face images with high diversity in regards to ethinicty is required. Upon searching, UTKFace came out as the largest dataset which fit the preferred qualifications.
+To determine the degree in which bias is still present in modern facial recognition models, a dataset which comprise of face images with high diversity in regards to eethnicity is required. Upon searching, UTKFace came out as <!--the--> one of the largest datasets which fit our preferred qualifications.
 
 ### Data Collection Method
 
-The dataset utilized for this research is UTKFace dataset. It is a publicly available large scale face dataset non-commercial on Github. The dataset was created by Yang Song and Zhifei Zhang, researchers at Adobe and PhD candidates at The University of Tennessee, Knoxville. On its Github page, it is specified that the images were collected from the internet. They appear to be obtained through the application of technique such as web scrapping. The dataset contains more than 20,000 face images, representing a highly diversed demographic. However, face images are vary in pose, facial expression, lighting, and resolution.
+The dataset utilized for this research is UTKFace dataset. It is a publicly available large scale face dataset non-commercial on Github. The dataset was created by Yang Song and Zhifei Zhang, researchers at Adobe and PhD candidates at The University of Tennessee, Knoxville. On its Github page, it is specified that the images were collected from the internet. They appear to be obtained through the application of technique such as web scrapping.<!-- Where is this coming from?--> The dataset contains more than 24,000 face images, representing a highly diversified demographics. However, face images vary in pose, facial expression, lighting, and resolution.
 
 ### Sources and Influences of Bias in the Dataset
 
-* Facial datasets can be extremely hard to categorize correctly, never mind reducing bias overall. Facial features that are androgynous or defer from the average features of the set can often be misrepresented or reported incorrectly. Those with features that make them look younger or older than their actual age may also be difficult for a computer to accurately guess.
+Facial datasets can be extremely hard to categorize correctly, never mind reducing bias overall. Facial features that are androgynous or defer from the average features of the set can often be misrepresented or reported incorrectly. Those with features that make them look younger or older than their actual age may also be difficult for a computer to accurately guess.
 
-* The datasets used for analysis contain solely male/masculine and female/feminine faces. As stated above, the faces are labelled either 0, for male, or 1, for female. There are no gender non-conforming/non-binary/trans faces or people reported in the datasets, which could introduce potential bias. This absence of an entire category of facial features could also result in inaccurate guesses should these faces be added to the data later.
+The datasets used for analysis contain solely male/masculine and female/feminine faces. As stated above, the faces are labelled either 0, for male, or 1, for female. There are no gender non-conforming/non-binary/trans faces or people reported in the datasets, which could introduce potential bias. This absence of an entire category of facial features could also result in inaccurate guesses should these faces be added to the data later.
 
-* The datasets do not report nationality or ethnicity. This can introduce inaccuracy in the part of the identification, and it also may identify the face in a racial group that the person identified would consider inaccurate. This is as much a matter of potentially inaccurate data as it is social labels. There is also a level of erasure associated with simply creating a "multi-racial" category, given that it would bin all multiracial faces together with no further consideration. That is to say, there is no ideal solution to the issue at this time. However, it is always worth pointing out potential biases in data, research, and analysis.
+The datasets do not report nationality or ethnicity. This can introduce inaccuracy in the part of the identification, and it also may identify the face in a racial group that the person identified would consider inaccurate. This is as much a matter of potentially inaccurate data as it is social labels. There is also a level of erasure associated with simply creating a "multi-racial" category, given that it would bin all multiracial faces together with no further consideration. That is to say, there is no ideal solution to the issue at this time. However, it is always worth pointing out potential biases in data, research, and analysis.
 
-* The data given in the UTK dataset is composed purely of people who have their faces on the internet. This introduces a potential sampling bias. Given the topic, it is also likely to come from populations well-versed in technology. This can often exclude rural populations. Thus, the facial data present can be skewed towards urban residents or other characteristics, which can potentially create "lurking variables" that we aren't aware of within the data. This is a common problem that many Anthropological and Sociological studies face when collecting and analyzing data. Being aware of the possibility is often the first, and most crucial, step towards reducing it.
+The data given in the UTK dataset is composed purely of people who have their faces on the internet. This introduces a potential sampling bias. Given the topic, it is also likely to come from populations well-versed in technology. This can often exclude rural populations. Thus, the facial data present can be skewed towards urban residents or other characteristics, which can potentially create "lurking variables" that we aren't aware of within the data. This is a common problem that many Anthropological and Sociological studies face when collecting and analyzing data. Being aware of the possibility is often the first, and most crucial, step towards reducing it.
 
-Overall, all of the given potential biases listed above are simply the largest and most easily identified. It is possible that other sources of bias are present in the data that we haven't noticed. And identifying these biases does not mean that the data is not sound, or that any conclusions drawn from it are invalid. It simply indicates that further research should be done and that this data is far from the most complete picture of human facial features and identification.
+<!--If it was indeed web-scraped-->Our source dataset, and thus our results and conclusions, are dependent on the correctness of labeling of images within the UTK dataset.  Given that the dataset was web-scraped, we do not know the degree of care placed on dataset labeling during web-scraping.  Any incorrect labels present in the data can skew our results.
 
-## Selected Models (LN DV)
+Overall, all the given potential biases listed above are simply the largest and most easily identified. It is possible that other sources of bias are present in the data that we haven't noticed. And identifying these biases does not mean that the data is not sound, or that any conclusions drawn from it are invalid. It simply indicates that further research should be done and that this data is far from the most complete picture of human facial features and identification.
+
+## Selected Models
 
 ### FairFace 
 
@@ -202,7 +208,7 @@ Developed by researchers at University of California, Los Angeles, FairFace was 
 
 ### DeepFace
 
-DeepFace is a lightweight open-source model developed and used by Meta (Facebook). Since the model is used by one of the largest social media company, it is widely known among developers. Therefore, its popularity prompts us to evaluate its performance. It should be noted that this model of DeepFace is a [free open source version](https://github.com/serengil/deepface). It is highly likely that this version is less advanced than what Meta is actually utilizing. Thus, we should not view the result of this model as a representative of Meta's algorithm.
+DeepFace is a lightweight open-source model developed and used by Meta (Facebook). Being developed by one of the largest social media companies, it is widely known among developers. Therefore, its popularity prompts us to evaluate its performance. It should be noted that the DeepFace model we leverage in our evaluation is a [free open source version](https://github.com/serengil/deepface). It is highly unlikely that this version is as advanced as any model Meta uses internally for proprietary purposes. We should not view the resulting output of this model as being representative of algorithms internal to Meta.
 
 ## Dataset Features 
 
@@ -218,15 +224,15 @@ The input dataset, being UTKFace, provided feature information natively in each 
 
 * "[age] is an integer from 0 to 116, indicating the age"
 
-We processed each image to extract these features from each image and create a table of source information (link to source data file here).
+We processed each image to extract these features from each image and create a table of source information [here](https://github.com/CUBoulder-DS/5301-5000-Final-Report/blob/main/data/uncropped_UTK_dataset.csv).
 
 As our work is focused in potential biases in protected classes such as race, gender, and age, the features of UTKFace are sufficient to meet the needs for an input dataset for category prediction in our selected models.
 
 ### FairFace Outputs
 
-FairFace outputs provided predictions age and race, and two different predictions for race - one based upon their "Fair4" model, and the other based upon their "Fair7" model.  In addition to these predictions, the output included scores for each category.  With the nature of our planned analyses, the scores are of less import to us in our evaluation.
+FairFace outputs provided predictions age and race, and two different predictions for race - one based upon their "Fair4" model, and the other based upon their "Fair7" model.  In addition to these predictions, the output included scores for each category.  With the nature of our planned analyses, the scores are of less importance to us in our evaluation.
 
-To examine more in detail on "Fair" and "Fair4" models, the latter provided predictions of race in the following categories:  [White, Black, Asian, Indian].  Of key note, the "Fair4" model omitted "Other" categories as listed in the race category for the UTK dataset.  However, the "Fair7" model provides predictions across [White, Black, Latino_Hispanic, East Asian, Southeast Asian, Indian, Middle Eastern].  We elected to use the the Fair7 model, and to refactor the output categories to match those of the UTK dataset. Namely, we refactored instances of Middle Eastern and Latino_Hispanic as "Other" and instances of "East Asian" and "Southeast Asian" as "Asian" to match the categories explicitly listed in UTKFace.
+To examine more in detail on "Fair" and "Fair4" models, the latter provided predictions of race in the following categories:  [White, Black, Asian, Indian].  Of note, the "Fair4" model omitted "Other" categories as listed in the race category for the UTK dataset.  However, the "Fair7" model provides predictions across [White, Black, Latino_Hispanic, East Asian, Southeast Asian, Indian, Middle Eastern].  We elected to use the Fair7 model, and to refactor the output categories to match those of the UTK dataset. Namely, we refactored instances of Middle Eastern and Latino_Hispanic as "Other" and instances of "East Asian" and "Southeast Asian" as "Asian" to match the categories explicitly listed in UTKFace.
 
 Additionally, FairFace only provides a predicted age range as opposed to a specific, single, predicted age as a string.  To enable comparison of actual values to the predicted values, we maintained this column as a categorical variable, and split it into a lower and upper bound of predicted age as an integer in the event we require it for our analyses.
 
@@ -234,9 +240,9 @@ With the above considerations in mind, the following output features are of impo
 
 ```{r tbl-FF-output-format}
 #| label: tbl-FF-output-format
-#| tbl-cap: Fairface Output Format
+#| tbl-cap: FairFace Output Format
 # PC
-columns<-c("name_face_align","race_preds_fair","gender_preds_fair7","age_preds_fair")
+columns<-c("name_face_align","race_preds_fair7","gender_preds_fair","age_preds_fair")
 defs<-c("The name and path of the file upon which FairFace made predictions","The predicted race of the image subject","The predicted gender of the image subject","The predicted age range of the image subject")
 types<-c("String","String","String","String")
 valid<-c("[filepath]","[White|Black|Latino_Hispanic|East Asian|Southeast Asian|Middle Eastern|Indian]","[Male|Female]","['0-2'|'3-9'|'10-19'|'20-29'|'30-39'|'40-49'|'50-59'|'60-69'|'70+']")
@@ -247,13 +253,13 @@ FF_features%>% knitr::kable()
 
 ### DeepFace Outputs
 
-Default outputs have a wide-range of information for the user.  In addition to providing its predictions, DeepFace also provides scores associated with each evaluation on a per class basis (i.e. 92% for Race #1, 3% Race #2, 1% Race #3, and 4% Race #4).  For the purpose of our planned analyses, the score features are of less concern to us.
+Default outputs provide a wide range of information for the user.  In addition to providing its predictions, DeepFace also provides scores associated with each evaluation on a per-class basis (i.e. 92% for Race #1, 3% Race #2, 1% Race #3, and 4% Race #4).  For our planned analyses, the score features are of less concern to us.
 
-We hone in on the following select features from DeepFace outputs to have the ability to cross-compare between UTKFace, FairFace, and DeepFace:
+We focus on the following select features from DeepFace outputs to have the ability to cross-compare between UTKFace, FairFace, and DeepFace:
 
 ```{r tbl-DF-output-format}
 #| label: tbl-DF-output-format
-#| tbl-cap: Deepface Output Format
+#| tbl-cap: DeepFace Output Format
 columns <- c("Age","Dominant Gender","Dominant Race")
 types <- c("Integer","String","String")
 defs <- c("The predicted age of the image subject","The predicted gender of the iamge subject","The predicted race of the image subject")
@@ -269,23 +275,23 @@ DF_features%>% knitr::kable()
 
 Aside from the differences in the outputs of each model in terms of age, race, and gender, there are also substantial differences between FairFace and DeepFace in terms of their available settings when attempting to categorize and predict the features associated with an image.
 
-The need for this permutation evaluation rose from some initial scripting and testing of these models on a small sample of images from another facial dataset - the Asian Face Age Dataset (**need citation here**).  We immediately grew concerned with DeepFace's performance using default settings (namely, enforcing requirement to detect a face prior to categorization/prediction, and using OpenCV as the default detection backend).  Running these initial scripting tests, we encountered a face detection failure rate, and thus a prediction failure rate, in DeepFace of approximately 70%.
+The need for this permutation evaluation rose from some initial scripting and testing of these models on a small sample of images from another facial dataset.  We immediately grew concerned with DeepFace's performance using default settings (namely, enforcing requirement to detect a face prior to categorization/prediction, and using OpenCV as the default detection backend).  Running these initial scripting tests, we encountered a face detection failure rate, and thus a prediction failure rate, in DeepFace of approximately 70%.
 
-We performed further exploratory analysis on both models in light of these facts, and sought some specific permutations of settings to determine what settings may provide the most fair and equitable comparison of the models prior to proceeding to further analysis.
+We performed further exploratory analysis on both models in light of these facts, and sought some specific permutations of settings to determine which may provide the most fair and equitable comparison of the models prior to proceeding to analysis.
 
-The ultimate goal for us in performing this exploration was to identify the settings for each model that might best increase the likelihood that the model's output would result in a failure to reject our null hypotheses.  In lamens terms, our tests sought out the combination of settings that give each model the benefit of the doubt, and for each to deliver the greatest accuracy in their predictions.  For simplicity's sake, we leaned solely on the proportion of true positives across each category when compared with the source information to decide which settings to use.
+The goal for us in performing this exploration was to identify the settings for each model that might best increase the likelihood that the model's output would result in a failure to reject our null hypotheses.  In layman's terms, our tests sought out the combination of settings that give each model the benefit of the doubt, and for each to deliver the greatest accuracy in their predictions.  For simplicity's sake, we leaned solely on the proportion of true positives across each category when compared with the source information to decide which settings to use.
 
 ### DeepFace Analysis Options
 
-DeepFace has a robust degree of avaialble settings when performing facial categorization and recognition.  These include enforcing facial detection prior to classification of an image, as well as 8 different facial detection models to detect a face prior to categorization.  The default of these settings is OpenCV detection with detection enabled.  Other detection backends include ssd, dlib, mtcnn, retinaface, mediapipe, yolov8, yunet, and fastmtcnn.  
+DeepFace has a robust degree of available settings when performing facial categorization and recognition.  These include enforcing facial detection prior to classification of an image, as well as 8 different facial detection models to detect a face prior to categorization.  The default of these settings is OpenCV detection with detection enabled.  Other detection backends include ssd, dlib, mtcnn, retinaface, mediapipe, yolov8, yunet, and fastmtcnn.  
     
-In a Python 3.8 environment, attempting to run detections using dlib, fastmtcnn, retinaface, mediapipe, yolov8, and yunet failed to run, or failed to install the appropriate models directly from source during exeuction.  Repairing any challenges or issues with the core functionality of DeepFace and FairFace's code is outside the scope of our work, and as such, we have excluded any of these non-functioning models from our settings permutation evaluation.
+In a Python 3.8 environment, attempting to run detections using dlib, fastmtcnn, retinaface, mediapipe, yolov8, and yunet failed to run, or failed to install the appropriate models directly from source during execution.  Repairing any challenges or issues with the core functionality of DeepFace and FairFace's code is outside the scope of our work, and as such, we have excluded any of these non-functioning models from our settings permutation evaluation.
 
 ### FairFace Analysis Options
 
-The default script from FairFace provided no options via its command line script to change runtime settings.  It uses dlib/resnet34 models for facial detection and image pre-processing, and uses its own Fair4 and Fair7 models for categorization.  There are no other options or flags that can be set by a user when processing a batch of images. 
+The default script from FairFace provided no options via its command line script to change runtime settings.  It uses dlib/resnet34 models for facial detection and image preprocessing, and uses its own Fair4 and Fair7 models for categorization.  There are no other options or flags that can be set by a user when processing a batch of images. 
     
-We converted the simple script to a class in Python without addressing any feature bugs or errors in the underlying code.  This change provided us some additional options when performing the analysis of an input image using FairFace - namely, the ability to analyze and categorize an image with or without facial detection, similar to the functionality of DeepFace.  FairFace remains limited in the fact that is only detection model backend is built in dlib, but this change from a script to a class object gave us more options when considering what type of images to use and what settings to use on both models before generating our final dataset for analysis.
+We converted the simple script to a class in Python without addressing any feature bugs or errors in the underlying code.  This change provided us some additional options when performing the analysis of an input image using FairFace - namely, the ability to analyze and categorize an image with or without facial detection, like the functionality of DeepFace.  FairFace remains limited in the fact that is only detection model backend is built in dlib, but this change from a script to a class object gave us more options when considering what type of images to use and what settings to use on both models before generating our final dataset for analysis.
 
 ### Specific Permutations
 
@@ -328,7 +334,7 @@ knitr::kable(tib)
 
 ```        
 
-We processed each of the above setting permutations against approximately 9800 images, consisting of images from part 1 of 3 from the UTK datset.  Each of the cropped images (cropped_UTK_dataset.csv) and uncropped images (uncropped_UTK_dataset.csv) came from the same underlying subject in each image; the only difference between each image was whether or not it was pre-processed before evaluation by each model.  Having the same underlying source subject enables us to perform a direct comparison of results between cropped vs. in-the-wild images, and better support a conlcusion of which settings to use.
+We processed each of the above setting permutations against approximately 9800 images, consisting of images from part 1 of 3 from the UTK dataset.  Each of the cropped images (cropped_UTK_dataset.csv) and uncropped images (uncropped_UTK_dataset.csv) came from the same underlying subject in each image; the only difference between each image was whether or not it was pre-processed before evaluation by each model.  Having the same underlying source subject enables us to perform a direct comparison of results between cropped vs. in-the-wild images, and better support a conclusion of which settings to use.
 
 ```{r tbl-Permutation-Results}
 #| label: tbl-Permutation-Results
@@ -391,17 +397,17 @@ suppressMessages({
 
 ```
 
-Examining the true positive ratios for each case, our team came to the conclusion that the settings that gave both models the best chance for success in correctly predicting the age, gender, and race of subject images are as follows:
+Examining the true positive ratios for each case, our team concluded that the settings that gave both models the best chance for success in correctly predicting the age, gender, and race of subject images are as follows:
 
 - FairFace: enforce facial detection with dlib, and use uncropped images for evaluation
 
-- DeepFace: enforce facial detection with MTCNN detection backend, and use uncropped images for evaluation. 
+- DeepFace: enforce facial detection with MTCNN detection backend and use uncropped images for evaluation. 
 
-These settings are equitable and make a degree of sense.  Using facial detection, specifically-coded for each model, should give each model the ability to isolate the portions of a face necessary for them to make a prediction, as opposed to using a pre-cropped image that could include unneeded information, or excluded needed information.
+These settings are equitable and make a degree of sense.  Using facial detection, specifically coded for each model, should give each model the ability to isolate the portions of a face necessary for them to make a prediction, as opposed to using a pre-cropped image that could include unneeded information, or exclude needed information.
 
 Having decided on these settings, our team proceeded to run the entirety of the UTK dataset through both DeepFace and FairFace models using a custom coded script [MasterScript.py](https://github.com/CUBoulder-DS/5301-5000-Final-Report/blob/main/src/sample%20code/MasterScript.py) that allowed us to apply multiprocessing across the list of images and evaluate all items in a reasonable amount of time. (cite FairFace here, may also need to reference that we rebuilt their script into a class format).
 
-Due to the resource-intensive design of FairFace, our script enables multiprocessing of FairFace to allow for multiple simultaneous instances of the FairFace class as a pool of worker threads to iterate over all of the source data.
+Due to the resource-intensive design of FairFace, our script enables multiprocessing of FairFace to allow for multiple simultaneous instances of the FairFace class as a pool of worker threads to iterate over the source data.
 
 We attempted the same multiprocessing methodology for DeepFace, but encountered issues with silent errors and halting program execution when iterating over all images using DeepFace.  To alleviate this challenge, we processed DeepFace in a single-threaded manner, and with smaller portions of the dataset vs. pursuing an all-in-one go execution.  We proceeded to store the data for each of these smaller runs in multiple output files to combine once we completed all processing requirements.
 
@@ -472,5 +478,5 @@ data_types <- c(
 
 column_defs <- tibble("Column Name"=column_names,"Definition"=definitions, "Data Type"=data_types)
 
-#knitr::kable(column_defs)
+knitr::kable(column_defs)
 ```
