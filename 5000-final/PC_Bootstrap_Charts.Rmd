@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-```{r}
+```{r, include=FALSE}
 boot <- read.csv('../data/full_bootstrap_data.csv')
 
 age_lev = factor(
@@ -19,39 +19,145 @@ age_lev = factor(
 
 df_bootstrap_data <- boot %>% filter(model=='DeepFace')
 ff_bootstrap_data <- boot %>% filter(model=='FairFace')
+
+full_results <- read.csv('../data/combined_p_val_F1_acc.csv')
 ```
 
 
 ## Single Test Condition Graphs
 
-```{r}
+```{r, echo=FALSE}
 #facet-wrapped results from bootstrapping
 #age plots
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_gender=='All',test_race=='All') %>%
   mutate(test_age=factor(test_age,levels=age_lev)) %>% 
   ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_age) + xlab('sample proportion') + ggtitle('DeepFace vs. Source Age Bootstrap Proportions')
+#age test table
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_gender=='All',
+  test_race=='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
 
 #gender plots
 df_bootstrap_data %>% filter(test_prop=='genders',test_age=='All',test_race=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_gender)+ xlab('sample proportion')+ ggtitle('DeepFace vs. Source Gender Bootstrap Proportions')
+#gender test table
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='genders',
+  test_age=='All',
+  test_race=='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
 
 #race plots
 df_bootstrap_data %>% filter(test_prop=='races',test_age=='All',test_gender=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_race)+ xlab('sample proportion')+ ggtitle('DeepFace vs. Source Race Bootstrap Proportions')
+#race test table
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='races',
+  test_gender=='All',
+  test_age=='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
 
 #age plots
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_gender=='All',test_race=='All') %>%
   mutate(test_age=factor(test_age,levels=age_lev)) %>% 
   ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_age)+ xlab('sample proportion')+ ggtitle('FairFace vs. Source Age Bootstrap Proportions')
+#age test table
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_gender=='All',
+  test_race=='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
+
 
 #gender plots
 ff_bootstrap_data %>% filter(test_prop=='genders',test_age=='All',test_race=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_gender)+  xlab('sample proportion')+ ggtitle('FairFace vs. Source Gender Bootstrap Proportions')
+#gender test table 
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='genders',
+  test_age=='All',
+  test_race=='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
+
 
 #race plots
 ff_bootstrap_data %>% filter(test_prop=='races',test_age=='All',test_gender=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_race)+ xlab('sample proportion')+ ggtitle('FairFace vs. Source Race Bootstrap Proportions')
+#race test table
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='races',
+  test_gender=='All',
+  test_age=='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
 ```
 
 ### Race proportions, given Age Group
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender=='All',test_race!='All') %>% mutate(test_age=factor(test_age,levels=age_lev)) %>% 
     ggplot()+
     geom_density(
@@ -60,6 +166,23 @@ df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender=='A
     facet_grid(test_age~test_race)+
     ggtitle("DeepFace Race Proportion Predictions, Given Age")
 
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender=='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
+
 ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender=='All',test_race!='All') %>% mutate(test_age=factor(test_age,levels=age_lev)) %>% 
     ggplot()+
     geom_density(
@@ -67,11 +190,27 @@ ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender=='A
     )+
     facet_grid(test_age~test_race)+
     ggtitle("FairFace Race Proportion Predictions, Given Age")
+
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='races',
+  test_gender=='All',
+  test_race=='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
 ```
 
 ### Race proportions, given Gender
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='races',test_age=='All', test_gender!='All',test_race!='All') %>% 
     ggplot()+
     geom_density(
@@ -80,6 +219,23 @@ df_bootstrap_data %>% filter(test_prop=='races',test_age=='All', test_gender!='A
     facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Race Proportion Predictions, Given Gender")
 
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='races',
+  test_gender!='All',
+  test_race!='All',
+  test_age=='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
+
 ff_bootstrap_data %>% filter(test_prop=='races',test_age=='All', test_gender!='All',test_race!='All') %>% 
     ggplot()+
     geom_density(
@@ -87,11 +243,28 @@ ff_bootstrap_data %>% filter(test_prop=='races',test_age=='All', test_gender!='A
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("FairFace Race Proportion Predictions, Given Gender")
+
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='races',
+  test_gender!='All',
+  test_race!='All',
+  test_age=='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
 ```
 
 ### Age proportions, Given Gender
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender!='All',test_race=='All') %>% 
   mutate(test_age=factor(test_age,levels=age_lev)) %>% 
     ggplot()+
@@ -100,6 +273,23 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender!
     )+
     facet_grid(test_gender~test_age)+
     ggtitle("DeepFace Age Proportion Predictions, Given Gender")
+
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='All'
+) %>% 
+  select(
+    test_prop,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% mutate(test_age=factor(test_age,levels=age_lev))  %>% knitr::kable()
 
 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender!='All',test_race=='All') %>% 
@@ -110,12 +300,29 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender!
     )+
     facet_grid(test_gender~test_age)+
     ggtitle("FairFace Age Proportion Predictions, Given Gender")
+
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='All'
+) %>% 
+  select(
+    test_prop,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% mutate(test_age=factor(test_age,levels=age_lev))  %>% knitr::kable()
 ```
 
 
 ### Age Proportions, Given Race
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender=='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
     ggplot()+
@@ -125,6 +332,22 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender=
     facet_grid(test_race~test_age)+
     ggtitle("DeepFace Age Proportion Predictions, Given Race")
 
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age!='All',
+  test_gender=='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% mutate(test_age=factor(test_age,levels=age_lev))  %>% knitr::kable()
 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender=='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -134,11 +357,29 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age!='All', test_gender=
     )+
     facet_grid(test_race~test_age)+
     ggtitle("FairFace Age Proportion Predictions, Given Race")
+
+
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age!='All',
+  test_gender=='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% mutate(test_age=factor(test_age,levels=age_lev))  %>% knitr::kable()
 ```
 
 ### Gender Proportions, Given Race
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='genders',test_age=='All', test_gender!='All',test_race!='All') %>% 
     ggplot()+
     geom_density(
@@ -148,6 +389,24 @@ df_bootstrap_data %>% filter(test_prop=='genders',test_age=='All', test_gender!=
     ggtitle("DeepFace Gender Proportion Predictions, Given Race")
 
 
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='genders',
+  test_age=='All',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
+
+
 ff_bootstrap_data %>% filter(test_prop=='genders',test_age=='All', test_gender!='All',test_race!='All') %>% 
     ggplot()+
     geom_density(
@@ -155,12 +414,29 @@ ff_bootstrap_data %>% filter(test_prop=='genders',test_age=='All', test_gender!=
     )+
     facet_grid(test_race~test_gender)+
     ggtitle("FairFace Gender Proportion Predictions, Given Race")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='genders',
+  test_age=='All',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
+
 ```
 
 
 ### Gender Proportions, Given Age Group
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender!='All',test_race=='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
     ggplot()+
@@ -169,6 +445,23 @@ df_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender!=
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("DeepFace Gender Proportion Predictions, Given Age")
+
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='genders',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='All'
+) %>% 
+  select(
+    test_prop,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 
 ff_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender!='All',test_race=='All') %>% 
@@ -180,6 +473,23 @@ ff_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender!=
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("FairFace Gender Proportion Predictions, Given Age")
+
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='genders',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='All'
+) %>% 
+  select(
+    test_prop,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 
@@ -189,7 +499,7 @@ ff_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender!=
 
 #### Proportion of Asian, Given Age and Gender
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='All',test_race=='Asian') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
   
@@ -199,7 +509,23 @@ df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='A
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("DeepFace Proportion of Asian, Given Age and Gender")
-
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='Asian'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='All',test_race=='Asian') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -210,11 +536,29 @@ ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='A
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("FairFace Proportion of Asian, Given Age and Gender")
+
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='Asian'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 #### Proportion of Black, Given Age and Gender
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='All',test_race=='Black') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
   
@@ -224,7 +568,23 @@ df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='A
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("DeepFace Proportion of Black, Given Age and Gender")
-
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='Black'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='All',test_race=='Black') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -235,12 +595,29 @@ ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='A
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("FairFace Proportion of Black, Given Age and Gender")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='Black'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 ```
 
 #### Proportion of Indian, Given Age and Gender
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='All',test_race=='Indian') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
   
@@ -250,6 +627,23 @@ df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='A
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("DeepFace Proportion of Indian, Given Age and Gender")
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='Indian'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 
 ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='All',test_race=='Indian') %>% 
@@ -261,12 +655,29 @@ ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='A
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("FairFace Proportion of Indian, Given Age and Gender")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='Indian'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 ```
 
 #### Proportion of Other, Given Age and Gender
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='All',test_race=='Other') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
   
@@ -276,7 +687,23 @@ df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='A
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("DeepFace Proportion of Other, Given Age and Gender")
-
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='Other'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='All',test_race=='Other') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -287,12 +714,29 @@ ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='A
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("FairFace Proportion of Other, Given Age and Gender")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='Other'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 ```
 
 #### Proportion of White, Given Age and Gender
 
-```{r}
+```{r, echo=FALSE}
 
 df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='All',test_race=='White') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -303,6 +747,23 @@ df_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='A
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("DeepFace Proportion of White, Given Age and Gender")
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='White'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 
 ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='All',test_race=='White') %>% 
@@ -314,13 +775,30 @@ ff_bootstrap_data %>% filter(test_prop=='races',test_age!='All', test_gender!='A
     )+
     facet_grid(test_age~test_gender)+
     ggtitle("FairFace Proportion of White, Given Age and Gender")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='races',
+  test_age!='All',
+  test_gender!='All',
+  test_race=='White'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 ### Genders
 
 #### Proportion of Female, Given Race and Age
 
-```{r}
+```{r, echo=FALSE}
 
 df_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender=='Female',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -331,7 +809,23 @@ df_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender==
     )+
     facet_grid(test_race~test_age)+
     ggtitle("DeepFace Proportion of Female, Given Age and Race")
-
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='genders',
+  test_age!='All',
+  test_gender=='Female',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 ff_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender=='Female',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -342,11 +836,29 @@ ff_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender==
     )+
     facet_grid(test_race~test_age)+
     ggtitle("FairFace Proportion of Female, Given Age and Race")
+
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='genders',
+  test_age!='All',
+  test_gender=='Female',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 #### Proportion of Male, Given Race and Age
 
-```{r}
+```{r, echo=FALSE}
 
 
 df_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender=='Male',test_race!='All') %>% 
@@ -358,6 +870,24 @@ df_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender==
     )+
     facet_grid(test_race~test_age)+
     ggtitle("DeepFace Proportion of Male, Given Age and Race")
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='genders',
+  test_age!='All',
+  test_gender=='Male',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
+
 
 # 
 ff_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender=='Male',test_race!='All') %>%
@@ -369,6 +899,23 @@ ff_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender==
     )+
     facet_grid(test_race~test_age)+
     ggtitle("FairFace Proportion of Male, Given Age and Race")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='genders',
+  test_age!='All',
+  test_gender=='Male',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 ```
 
@@ -377,7 +924,7 @@ ff_bootstrap_data %>% filter(test_prop=='genders',test_age!='All', test_gender==
 
 #### Proportion of 0-2, given gender and race
 
-```{r}
+```{r, echo=FALSE}
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='0-2', test_gender!='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
   
@@ -388,6 +935,23 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='0-2', test_gender!
     facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Proportion of 0-2, Given Gender and Race")
 
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age=='0-2',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 # 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='0-2', test_gender!='All',test_race!='All') %>%
     mutate(test_age=factor(test_age,levels=age_lev)) %>%
@@ -398,11 +962,28 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='0-2', test_gender!
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("FairFace Proportion of 0-2, Given Gender and Race")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age=='0-2',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 #### Proportion of 3-9, given gender and race
 
-```{r}
+```{r, echo=FALSE}
 
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='3-9', test_gender!='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -414,6 +995,24 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='3-9', test_gender!
     facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Proportion of 3-9, Given Gender and Race")
 
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age=='3-9',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
+
 # 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='3-9', test_gender!='All',test_race!='All') %>%
     mutate(test_age=factor(test_age,levels=age_lev)) %>%
@@ -424,12 +1023,30 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='3-9', test_gender!
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("FairFace Proportion of 3-9, Given Gender and Race")
+
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age=='3-9',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 
 #### Proportion of 10-19, given gender and race
 
-```{r}
+```{r, echo=FALSE}
 
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='10-19', test_gender!='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -440,6 +1057,23 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='10-19', test_gende
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Proportion of 10-19, Given Gender and Race")
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age=='10-19',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 # 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='10-19', test_gender!='All',test_race!='All') %>%
@@ -451,12 +1085,29 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='10-19', test_gende
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("FairFace Proportion of 10-19, Given Gender and Race")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age=='10-19',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 
 #### Proportion of 20-29, given gender and race
 
-```{r}
+```{r, echo=FALSE}
 
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='20-29', test_gender!='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -468,6 +1119,24 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='20-29', test_gende
     facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Proportion of 20-29, Given Gender and Race")
 
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age=='20-29',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
+
 # 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='20-29', test_gender!='All',test_race!='All') %>%
     mutate(test_age=factor(test_age,levels=age_lev)) %>%
@@ -478,12 +1147,30 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='20-29', test_gende
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("FairFace Proportion of 20-29, Given Gender and Race")
+
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age=='20-29',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 
 #### Proportion of 30-39, given gender and race
 
-```{r}
+```{r, echo=FALSE}
 
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='30-39', test_gender!='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -494,7 +1181,23 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='30-39', test_gende
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Proportion of 30-39, Given Gender and Race")
-
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age=='30-39',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 # 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='30-39', test_gender!='All',test_race!='All') %>%
     mutate(test_age=factor(test_age,levels=age_lev)) %>%
@@ -505,12 +1208,29 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='30-39', test_gende
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("FairFace Proportion of 30-39, Given Gender and Race")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age=='30-39',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 
 #### Proportion of 40-49, given gender and race
 
-```{r}
+```{r, echo=FALSE}
 
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='40-49', test_gender!='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -522,6 +1242,24 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='40-49', test_gende
     facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Proportion of 40-49, Given Gender and Race")
 
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age=='40-49',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
+
 # 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='40-49', test_gender!='All',test_race!='All') %>%
     mutate(test_age=factor(test_age,levels=age_lev)) %>%
@@ -532,11 +1270,28 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='40-49', test_gende
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("FairFace Proportion of 40-49, Given Gender and Race")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age=='40-49',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 #### Proportion of 50-59, given gender and race
 
-```{r}
+```{r, echo=FALSE}
 
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='50-59', test_gender!='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -548,6 +1303,24 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='50-59', test_gende
     facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Proportion of 50-59, Given Gender and Race")
 
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age=='50-59',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
+
 # 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='50-59', test_gender!='All',test_race!='All') %>%
     mutate(test_age=factor(test_age,levels=age_lev)) %>%
@@ -558,11 +1331,28 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='50-59', test_gende
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("FairFace Proportion of 50-59, Given Gender and Race")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age=='50-59',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 #### Proportion of 60-69, given gender and race
 
-```{r}
+```{r, echo=FALSE}
 
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='60-69', test_gender!='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -573,6 +1363,23 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='60-69', test_gende
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Proportion of 60-69, Given Gender and Race")
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age=='60-69',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 # 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='60-69', test_gender!='All',test_race!='All') %>%
@@ -584,11 +1391,28 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='60-69', test_gende
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("FairFace Proportion of 60-69, Given Gender and Race")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age=='60-69',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 ```
 
 #### Proportion of 70-130, given gender and race
 
-```{r}
+```{r, echo=FALSE}
 
 df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='70-130', test_gender!='All',test_race!='All') %>% 
     mutate(test_age=factor(test_age,levels=age_lev)) %>% 
@@ -599,6 +1423,23 @@ df_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='70-130', test_gend
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("DeepFace Proportion of 70-130, Given Gender and Race")
+full_results %>% filter(
+  model=='DeepFace',
+  test_prop=='age_bins',
+  test_age=='70-130',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  )  %>% knitr::kable()
 
 # 
 ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='70-130', test_gender!='All',test_race!='All') %>%
@@ -610,4 +1451,21 @@ ff_bootstrap_data %>% filter(test_prop=='age_bins',test_age=='70-130', test_gend
     )+
     facet_grid(test_gender~test_race)+
     ggtitle("FairFace Proportion of 70-130, Given Gender and Race")
+full_results %>% filter(
+  model=='FairFace',
+  test_prop=='age_bins',
+  test_age=='70-130',
+  test_gender!='All',
+  test_race!='All'
+) %>% 
+  select(
+    test_prop,
+    test_race,
+    test_gender,
+    test_age,
+    model_p_value,
+    model_power,
+    model_F1,
+    model_Accuracy
+  ) %>% knitr::kable()
 ```
