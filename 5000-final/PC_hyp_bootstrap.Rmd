@@ -1021,10 +1021,16 @@ df_bootstrap_data %>% write.csv(
 
 ```
 
+```{r}
+ff_bootstrap_data <- read.csv('../data/bootstrap_ff_output.csv') %>% tibble()
+```
 
 ```{r}
 
-df_bootstrap_data <- df_bootstrap_data %>% pivot_longer(cols=c(src_mean_props,pred_mean_props)) %>% separate_wider_delim(name,delim='_',names=c('datasource','rem1','rem2')) %>% select(model:datasource,value)
+df_bootstrap_data <- df_bootstrap_data %>% pivot_longer(cols=c(src_mean_props,pred_mean_props)) %>% separate_wider_delim(name,delim='_',names=c('datasource','rem1','rem2')) %>% select(model:datasource,value) %>% 
+  mutate(datasource=case_when(datasource=='src'~'UTKFace',
+                              datasource=='pred'~'DeepFace',
+                              TRUE~datasource))
 
 ff_bootstrap_data <- ff_bootstrap_data %>% pivot_longer(cols=c(src_mean_props,pred_mean_props)) %>% separate_wider_delim(name,delim='_',names=c('datasource','rem1','rem2')) %>% select(model:datasource,value)
 ```

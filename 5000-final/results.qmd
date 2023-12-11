@@ -480,3 +480,73 @@ With $p_0$ being our *assumed* population proportion (from the source dataset an
 # }
 
 ```
+
+
+
+## Population Estmate Plots - UTK Face vs. Model
+
+We used a resampling technique to produce estimated population proportion distributions for each sample.  Each resampling included 2000 samples of 500 subjects under their respective test conditions.
+
+To support our analysis and conclusions on the data, we took 2,000 samples of 500 subjects under our specified test conditions from each of the UTKFace dataset and facial recognition models.  Using these samples, we generate an estimate of the distribution of population proportion for the specified group.  We find that these plots co-incide with our p-value calculations; the greater the overlap between the plots, the higher the p-value result (the same is true for reduced overlap and lower p-value).  As such, they should support us in drawing our conclusions.
+
+```{r importBootstrap}
+age_lev = factor(c("0-2","3-9","10-19","20-29","30-39","40-49","50-59","60-69","70-130"))
+
+df_bootstrap_data <- read.csv('https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/bootstrap_df_output.csv')
+
+df_bootstrap_data <- df_bootstrap_data %>% tibble() %>% mutate(model="DeepFace") %>% pivot_longer(cols=c(src_mean_props,pred_mean_props)) %>% separate_wider_delim(name,delim='_',names=c('datasource','rem1','rem2')) %>% select(model:datasource,value) %>% 
+  mutate(datasource=case_when(datasource=='src'~'UTKFace',
+                              datasource=='pred'~'DeepFace',
+                              TRUE~datasource))
+ff_bootstrap_data <- read.csv('https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/bootstrap_ff_output.csv') %>% tibble() %>% mutate(model='FairFace') %>% pivot_longer(cols=c(src_mean_props,pred_mean_props)) 
+
+ff_bootstrap_data <- ff_bootstrap_data %>% separate_wider_delim(name,delim='_',names=c('datasource','rem1','rem2')) %>% select(model:datasource,value) %>% 
+  mutate(datasource=case_when(datasource=='src'~'UTKFace',
+                              datasource=='pred'~'FairFace',
+                              TRUE~datasource))
+```
+
+<!--### Population Proportions - Age -->
+
+```{r age_plot_charts}
+#| label: fig-p-age-plot
+#| fig-cap: Distribution Plots of Age
+#| fig-subcap: 
+#|   - DeepFace vs. UTKFace Age Distributions
+#|   - FairFace vs. UTKFace Age Distributions
+#| layout-ncol: 2
+df_bootstrap_data %>% filter(test_prop=='age_bins',test_gender=='All',test_race=='All') %>%
+  mutate(test_age=factor(test_age,levels=age_lev)) %>% 
+  ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_age) + xlab('sample proportion') + ggtitle('DeepFace')
+
+ff_bootstrap_data %>% filter(test_prop=='age_bins',test_gender=='All',test_race=='All') %>%
+  mutate(test_age=factor(test_age,levels=age_lev)) %>% 
+  ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_age)+ xlab('sample proportion')+ ggtitle('FairFace')
+```
+
+<!-- ### Population Proportion Distributions - Gender-->
+```{r gender_plot_charts}
+#| label: fig-p-gender-plot
+#| fig-cap: Distribution Plots of Gender
+#| fig-subcap: 
+#|   - DeepFace vs. UTKFace Gender Distributions
+#|   - FairFace vs. UTKFace Gender Distributions
+#| layout-ncol: 2
+df_bootstrap_data %>% filter(test_prop=='genders',test_age=='All',test_race=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_gender)+ xlab('sample proportion')+ ggtitle('DeepFace')
+
+ff_bootstrap_data %>% filter(test_prop=='genders',test_age=='All',test_race=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_gender)+  xlab('sample proportion')+ ggtitle('FairFace')
+```
+
+<!--### Population Proportion Distributions - Race-->
+
+```{r race_plot_charts}
+#| label: fig-p-race-plot
+#| fig-cap: Distribution Plots of Race
+#| fig-subcap: 
+#|   - DeepFace vs. UTKFace Race Distributions
+#|   - FairFace vs. UTKFace Race Distributions
+#| layout-ncol: 2
+df_bootstrap_data %>% filter(test_prop=='races',test_age=='All',test_gender=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_race)+ xlab('sample proportion')+ ggtitle('DeepFace')
+
+ff_bootstrap_data %>% filter(test_prop=='races',test_age=='All',test_gender=='All') %>% ggplot()+geom_density(aes(x=value,color=datasource)) + facet_wrap(~test_race)+ xlab('sample proportion')+ ggtitle('FairFace')
+```

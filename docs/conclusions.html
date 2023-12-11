@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.4.525">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Bias in Facial Classification ML Models - 6&nbsp; Conclusions</title>
+<title>Bias in Facial Classification ML Models - 5&nbsp; Conclusions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,14 +17,16 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
-.hanging div.csl-entry {
+.hanging-indent div.csl-entry {
   margin-left:2em;
   text-indent:-2em;
 }
@@ -38,8 +40,7 @@ div.csl-right-inline {
 }
 div.csl-indent {
   margin-left: 2em;
-}
-</style>
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -65,7 +66,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -74,12 +81,15 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
@@ -88,93 +98,110 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Bias in Facial Classification ML Models</span>
     </a>
   </div>
+        <div class="quarto-navbar-tools">
+    <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./STAT_5000_Final_Report.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusions</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./conclusions.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Conclusions</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-      <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-      </div>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">| include: false</span></a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Abstract</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data</span></a>
+  <a href="./data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./methods.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Methods</span></a>
+  <a href="./methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Methods</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./results.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Results</span></a>
+  <a href="./results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Results</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./conclusions.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusions</span></a>
+  <a href="./conclusions.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Conclusions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#gc" id="toc-gc" class="nav-link active" data-scroll-target="#gc"><span class="toc-section-number">7</span>  — GC —</a></li>
-  <li><a href="#gc-1" id="toc-gc-1" class="nav-link" data-scroll-target="#gc-1"><span class="toc-section-number">8</span>  — GC —</a></li>
-  <li><a href="#ln" id="toc-ln" class="nav-link" data-scroll-target="#ln"><span class="toc-section-number">9</span>  — LN —</a>
+  <li><a href="#evaluation-of-test-results" id="toc-evaluation-of-test-results" class="nav-link active" data-scroll-target="#evaluation-of-test-results"><span class="header-section-number">5.1</span> Evaluation of Test Results</a></li>
+  <li><a href="#hypothesis-testing-results" id="toc-hypothesis-testing-results" class="nav-link" data-scroll-target="#hypothesis-testing-results"><span class="header-section-number">5.2</span> Hypothesis Testing Results</a>
   <ul class="collapse">
-  <li><a href="#race---ln" id="toc-race---ln" class="nav-link" data-scroll-target="#race---ln"><span class="toc-section-number">9.1</span>  Race - LN</a>
+  <li><a href="#age-prediction" id="toc-age-prediction" class="nav-link" data-scroll-target="#age-prediction"><span class="header-section-number">5.2.1</span> Age Prediction</a></li>
+  <li><a href="#race-prediction" id="toc-race-prediction" class="nav-link" data-scroll-target="#race-prediction"><span class="header-section-number">5.2.2</span> Race Prediction</a></li>
+  <li><a href="#gender-prediction" id="toc-gender-prediction" class="nav-link" data-scroll-target="#gender-prediction"><span class="header-section-number">5.2.3</span> Gender Prediction</a></li>
+  </ul></li>
+  <li><a href="#identifying-specific-biases-with-f1-and-accuracy-scores" id="toc-identifying-specific-biases-with-f1-and-accuracy-scores" class="nav-link" data-scroll-target="#identifying-specific-biases-with-f1-and-accuracy-scores"><span class="header-section-number">5.3</span> Identifying Specific Biases with F1 and Accuracy Scores</a>
   <ul class="collapse">
-  <li><a href="#race-by-itself" id="toc-race-by-itself" class="nav-link" data-scroll-target="#race-by-itself"><span class="toc-section-number">9.1.1</span>  Race by itself</a></li>
-  <li><a href="#race-given-age" id="toc-race-given-age" class="nav-link" data-scroll-target="#race-given-age"><span class="toc-section-number">9.1.2</span>  Race given Age</a></li>
-  <li><a href="#race-given-gender" id="toc-race-given-gender" class="nav-link" data-scroll-target="#race-given-gender"><span class="toc-section-number">9.1.3</span>  Race given Gender</a></li>
-  <li><a href="#verdict" id="toc-verdict" class="nav-link" data-scroll-target="#verdict"><span class="toc-section-number">9.1.4</span>  Verdict</a></li>
+  <li><a href="#fairface-3" id="toc-fairface-3" class="nav-link" data-scroll-target="#fairface-3"><span class="header-section-number">5.3.1</span> FairFace</a></li>
+  <li><a href="#deepface-3" id="toc-deepface-3" class="nav-link" data-scroll-target="#deepface-3"><span class="header-section-number">5.3.2</span> DeepFace</a></li>
   </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">5.4</span> Summary</a></li>
+  <li><a href="#age-prediction-conclusions" id="toc-age-prediction-conclusions" class="nav-link" data-scroll-target="#age-prediction-conclusions"><span class="header-section-number">5.5</span> Age Prediction Conclusions</a></li>
+  <li><a href="#race-prediction-conclusions" id="toc-race-prediction-conclusions" class="nav-link" data-scroll-target="#race-prediction-conclusions"><span class="header-section-number">5.6</span> Race Prediction Conclusions</a>
+  <ul class="collapse">
+  <li><a href="#race-by-itself" id="toc-race-by-itself" class="nav-link" data-scroll-target="#race-by-itself"><span class="header-section-number">5.6.1</span> Race by itself</a></li>
+  <li><a href="#race-given-age" id="toc-race-given-age" class="nav-link" data-scroll-target="#race-given-age"><span class="header-section-number">5.6.2</span> Race given Age</a></li>
+  <li><a href="#race-given-gender" id="toc-race-given-gender" class="nav-link" data-scroll-target="#race-given-gender"><span class="header-section-number">5.6.3</span> Race given Gender</a></li>
+  <li><a href="#verdict" id="toc-verdict" class="nav-link" data-scroll-target="#verdict"><span class="header-section-number">5.6.4</span> Verdict</a></li>
   </ul></li>
-  <li><a href="#ln-1" id="toc-ln-1" class="nav-link" data-scroll-target="#ln-1"><span class="toc-section-number">10</span>  — LN —</a></li>
   </ul>
 </nav>
     </div>
@@ -183,12 +210,12 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusions</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Conclusions</span></h1>
 </div>
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-body">
 
     
   
@@ -196,14 +223,16 @@ div.csl-indent {
   </div>
   
 
+
 </header>
 
-<div class="callout-note callout callout-style-default callout-captioned">
+
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 From the report requirements
 </div>
 </div>
@@ -216,68 +245,124 @@ From the report requirements
 <p>Like the introduction, this section should be written with a <strong>non-expert</strong> in mind. A person should be able to read Introduction+Conclusion and get a rough idea of the meaning and significance of your paper</p>
 </div>
 </div>
-<section id="gc" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> — GC —</h1>
+<section id="evaluation-of-test-results" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="evaluation-of-test-results"><span class="header-section-number">5.1</span> Evaluation of Test Results</h2>
+<p>To evaluate our tests, we will first examine our hypothesis tests, and then move on to evaluate F1 and Accuracy scores. Our hypothesis testing can tell us where bias may exist, whereas F1 and Accuracy scores may tell us specific instances where bias exists in favor of, or against, specific protected classes.</p>
+</section>
+<section id="hypothesis-testing-results" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="hypothesis-testing-results"><span class="header-section-number">5.2</span> Hypothesis Testing Results</h2>
+<p>The design of our hypothesis testing provides us with potential indicators of bias in each model. When the test result produces a value less than 0.003 and with test power greater than or equal to 0.8, the test can be indicative of bias. Inversely, a p-value greater than or equal to 0.003 will not provide sufficient evidence to indicate bias in the given test case. The p-value alone, however, cannot tell us whether the indicated bias is in favor of, or against, the protected class group(s) in question. This is because the the hypothesis tests only tell us the probability that the source and predicted results come from the same population.</p>
+<p>Overall, for both models, our tests may are indicative of bias across the spectrum of age, gender, and race. Common threads between both FairFace and DeepFace include bias in predicting:</p>
+<ul>
+<li><p>Subject age (for specific groups)</p></li>
+<li><p>Subject race (for specific groups)</p></li>
+</ul>
+<section id="age-prediction" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="age-prediction"><span class="header-section-number">5.2.1</span> Age Prediction</h3>
+<section id="fairface" class="level4" data-number="5.2.1.1">
+<h4 data-number="5.2.1.1" class="anchored" data-anchor-id="fairface"><span class="header-section-number">5.2.1.1</span> FairFace</h4>
+<p>FairFace displays potential for bias in age prediciton with subjects in the age ranges 0-29, 40-49, and 70+. The age group 50-59 may also be included in this bias, but we do not have conclusive evidence from our tests alone to indicate such a bias.</p>
+<p>For age proportions, given gender, potential biases manifest solely for Females in age ranges 0-19, solely for Males 40-49, and all subjects 70+. Additional biases arise for any subject from 20-29.</p>
+<p>For age proportions, given race, potential biases are most prominent in the “” Category.</p>
+</section>
+<section id="deepface" class="level4" data-number="5.2.1.2">
+<h4 data-number="5.2.1.2" class="anchored" data-anchor-id="deepface"><span class="header-section-number">5.2.1.2</span> DeepFace</h4>
+<p>DeepFace displays extreme potential for bias in age prediction for young subjects (0-19) and old subjects (70+), failing to make a single prediction in any of these age ranges.</p>
+<p>For age proportions, given gender, the biases are accentuated to all age ranges.</p>
+</section>
+</section>
+<section id="race-prediction" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="race-prediction"><span class="header-section-number">5.2.2</span> Race Prediction</h3>
+<section id="fairface-1" class="level4" data-number="5.2.2.1">
+<h4 data-number="5.2.2.1" class="anchored" data-anchor-id="fairface-1"><span class="header-section-number">5.2.2.1</span> FairFace</h4>
+<p>FairFace demonstrates biases in predicting race for Black, Indian, White, and Other categories.</p>
+</section>
+<section id="deepface-1" class="level4" data-number="5.2.2.2">
+<h4 data-number="5.2.2.2" class="anchored" data-anchor-id="deepface-1"><span class="header-section-number">5.2.2.2</span> DeepFace</h4>
+<p>DeepFace demonstrates biases in predicting</p>
+</section>
+</section>
+<section id="gender-prediction" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="gender-prediction"><span class="header-section-number">5.2.3</span> Gender Prediction</h3>
+<section id="fairface-2" class="level4" data-number="5.2.3.1">
+<h4 data-number="5.2.3.1" class="anchored" data-anchor-id="fairface-2"><span class="header-section-number">5.2.3.1</span> FairFace</h4>
+<p>We lack sufficient information to conclude that FairFace, absent other test conditions, holds a bias in correct prediction of subject gender.</p>
+</section>
+<section id="deepface-2" class="level4" data-number="5.2.3.2">
+<h4 data-number="5.2.3.2" class="anchored" data-anchor-id="deepface-2"><span class="header-section-number">5.2.3.2</span> DeepFace</h4>
+<p>DeepFace, abasent other test conditions, indicates bias in correct prediction of gender.</p>
+</section>
+</section>
+</section>
+<section id="identifying-specific-biases-with-f1-and-accuracy-scores" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="identifying-specific-biases-with-f1-and-accuracy-scores"><span class="header-section-number">5.3</span> Identifying Specific Biases with F1 and Accuracy Scores</h2>
+<section id="fairface-3" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="fairface-3"><span class="header-section-number">5.3.1</span> FairFace</h3>
+</section>
+<section id="deepface-3" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="deepface-3"><span class="header-section-number">5.3.2</span> DeepFace</h3>
+</section>
+</section>
+<section id="summary" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="summary"><span class="header-section-number">5.4</span> Summary</h2>
+<!----- GC --->
+</section>
+<section id="age-prediction-conclusions" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="age-prediction-conclusions"><span class="header-section-number">5.5</span> Age Prediction Conclusions</h2>
 <p>Based on the results of evaluating both models for age prediction accuracy, given age, gender, or no particular category, there is a definite bias in both models towards differing demographics. Overall, DeepFace displayed a significantly lower accuracy rate in classifying the ages of given faces and was unable to produce predictions for faces between the ages of 0-9 and 70-130, indicating that it is unable to predict younger and older faces. However, it did display consistent test scores to evaluate the accuracy and efficacy of its results, indicating that the null hypothesis should be rejected here. FairFace, on the other hand, showed higher accuracy results, especially in Figure 4.1.b, where the only age bracket which DeepFace performed better for was 30-39. There is the possibility that a testing error resulted from our efforts with FairFace, but it is unlikely for the overall results. Things get more complicated when we include gender and/or race as given statistics for evaluating age. While DeepFace was consistent with gender overall, its results for race given no other variables were less accurate. There were noticeable discrepancies in identifying non-white faces, particularly Indian, Black, and Other faces. When specified for race and gender together, a trend of male faces being identified more accurately was observed, particularly white and Asian faces. For FairFace, there was still a higher accuracy rate of identification, but error test scores were higher overall. While DeepFace struggled to identify very young and old faces, FairFace generally struggled with faces in the range of 20-69. While the actual results show a higher rate of identification for all faces, FairFace has higher error test rates for nearly all races, save white faces. FairFace also mirrors DeepFace in a trend of lower error scores for lighter faces, although FairFace seems to have more of a bias towards female faces instead of male ones. Using the above results, as well as the tables from earlier, we can conclude that there is bias present in both the FairFace and DeepFace models when predicting age given gender or race. There is a definite trend towards white faces in both models in terms of predictive accuracy. That being said, based on the accuracy scores of FairFace, it is more likely that FairFace is less biased than DeepFace, especially given that DeepFace is unable to predict the ages of very young and very old faces with any degree of accuracy. That being said, the high error scores (p-values and power scores) indicate that perhaps FairFace requires further testing, in case the tests we created are wrong, and we should not reject the null hypothesis. Given the nature of the results, combined with the test scores, it is difficult to say whether or not one model completely outperforms the other. DeepFace is technically more accurate and less prone to rejection errors, but FairFace produces better results, even though it is less accurate over a wide age range. Overall, FairFace does seem to be the better predictor, given its accuracy rating and better age range, as it includes younger and older faces far better than DeepFace. In terms of disparate outcomes, both FairFace and DeepFace are more likely to correctly predict the race of white or Asian faces, while races with typically darker skin tones, Black, Indian, or Other, have far lower accuracy ratings across the board. In terms of what should be done in future research, further testing is required. It would be ideal to cross-reference either the models, the testing data, or both, with other predictive models and datasets to determine if any possible errors are present due to the match. The ideal goal would be to minimize any potential error scores while evaluating a multitude of models and using the results to craft better predictive models that display less disparity due to age. In the future, datasets should strive to account for a diverse range of faces from all possible races, genders, and ages.</p>
+<!--- GC --->
+<!-- --- LN --- -->
 </section>
-<section id="gc-1" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> — GC —</h1>
-</section>
-<section id="ln" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> — LN —</h1>
-<section id="race---ln" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="race---ln"><span class="header-section-number">9.1</span> Race - LN</h2>
-<section id="race-by-itself" class="level3" data-number="9.1.1">
-<h3 data-number="9.1.1" class="anchored" data-anchor-id="race-by-itself"><span class="header-section-number">9.1.1</span> Race by itself</h3>
+<section id="race-prediction-conclusions" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="race-prediction-conclusions"><span class="header-section-number">5.6</span> Race Prediction Conclusions</h2>
+<section id="race-by-itself" class="level3" data-number="5.6.1">
+<h3 data-number="5.6.1" class="anchored" data-anchor-id="race-by-itself"><span class="header-section-number">5.6.1</span> Race by itself</h3>
 <p>Both FairFace and DeepFace demonstrate potential racial bias. We filter the data across five races (Asian, Black, Indian, White, and Other) and perform statistical hypothesis testing. From the test results, there presents strong evidence suggesting potential bias for all tests but one, the FairFace’s Asian test. Upon reviewing the result data, it is highly possible that there is an error in the testing. Therefore, we cannot draw a solid conclusion for this particular test. There are multiple reasons which might lead to errors such as too small sample size. Further investigation and testing will be necessary to re-evaluate FairFace’s Asian test.</p>
 <p>(Note: CK and PC mentioned that they will ask the professor about the usage of power. So there might be some adjustment to the section above.)</p>
 <p>Next, we examine the models’ performance in how often they make correct predictions and not give out wrong positive outputs. Surprisingly, our results go against the trend that facial recognition models offer a poorer performance for dark-skinned faces compared to light skin. Both models perform the best with Asian face images. Black comes in second and then White with a slightly less performance score. Nonetheless, Indian and Other receive substantially less accurate predictions. In regards to race, a better prediction model is FairFace with a higher performance score across the board.</p>
 </section>
-<section id="race-given-age" class="level3" data-number="9.1.2">
-<h3 data-number="9.1.2" class="anchored" data-anchor-id="race-given-age"><span class="header-section-number">9.1.2</span> Race given Age</h3>
+<section id="race-given-age" class="level3" data-number="5.6.2">
+<h3 data-number="5.6.2" class="anchored" data-anchor-id="race-given-age"><span class="header-section-number">5.6.2</span> Race given Age</h3>
 <p>In most tests, FairFace and DeepFace showcase a strong potential for bias in the context of race and age group. In some cases that the tests do not imply potential bias, there presents a hypothesis testing error. This prevents us from reaching the conclusion that the models have mitigated bias. In regards to models’ performance, FairFace offers a higher score for all age groups of all races. For both models, Asian, Black, and White receive similar high test scores. Whereas, scores for Indian and Other are noticeably lower.</p>
 <p>Using FairFace, not a single test across all combinations of race and age group has shown to alleviate bias. In addition, there are numerous tests with error output. For each race, there are up to 3 testing errors with the exception of the Asian dataset. Beside the age range of 30 - 39, errors are present in all other Asian age groups. Among the errors, there does not appear to be a pattern in which age group occurs the most error.</p>
 <p>Its counterpart, DeepFace, also does not offer a better test result as most tests still signify potential bias. There are only two instances in which the model has successfully mitigated bias. Those are Indian and Black in the age range of 60 - 69. Furthermore, DeepFace is simply unable to predict face images that are younger than 9 years old and older than 70 years old. This proves that DeepFace is strongly biased against young and old people across all races.</p>
 </section>
-<section id="race-given-gender" class="level3" data-number="9.1.3">
-<h3 data-number="9.1.3" class="anchored" data-anchor-id="race-given-gender"><span class="header-section-number">9.1.3</span> Race given Gender</h3>
+<section id="race-given-gender" class="level3" data-number="5.6.3">
+<h3 data-number="5.6.3" class="anchored" data-anchor-id="race-given-gender"><span class="header-section-number">5.6.3</span> Race given Gender</h3>
 <p>With the context of race and gender, both FairFace and DeepFace also exhibit a high potential for bias. Among all tests, there are only four cases which might not showcase bias. Nevertheless, those results follow a common pattern of having hypothesis testing errors. Similarly, both models’ performance go hand-in-hand with the pattern of higher scores for Asian, Black, and White and lower for Indian and Other.</p>
 <p>With FairFace, most tests indicate a bias potential. There are three cases which come with errors. Those are White and Asian females and Asian male. As for DeepFace, there is only one error case which is Black male. In terms of performance, there is no discrepancy between male and female for any races for both models. Hence, there does not seem to be a commonly-believed pattern of bias against females.</p>
 </section>
-<section id="verdict" class="level3" data-number="9.1.4">
-<h3 data-number="9.1.4" class="anchored" data-anchor-id="verdict"><span class="header-section-number">9.1.4</span> Verdict</h3>
+<section id="verdict" class="level3" data-number="5.6.4">
+<h3 data-number="5.6.4" class="anchored" data-anchor-id="verdict"><span class="header-section-number">5.6.4</span> Verdict</h3>
 <p>FairFace and DeepFace display potential racial bias. Despite that, our test result goes against the widely believed notion that models are discriminatory towards darker-skinned faces and females. We found that Indian and Other always score the lowest in regards to both models’ performance. There also does not appear to be a difference in performance for both genders. Nevertheless, there is solid evidence that DeepFace is biased against those who are very young and very old.</p>
 <p>Overall, there are a significant number of errors in this study. This is quite detrimental to our finding as we can not draw a firm conclusion from those tests. Further study or change of methodology might be essential to reduce those errors. This would allow us to arrive at a stronger conclusion.</p>
-</section>
-</section>
-</section>
-<section id="ln-1" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> — LN —</h1>
+<!--- LN --->
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
-<div id="ref-perplineup" class="csl-entry" role="doc-biblioentry">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-perplineup" class="csl-entry" role="listitem">
 Georgetown Law. 2016. <span>“<span class="nocase">The Perpetual Line-Up: Unregulated Police Face Recognition in America</span>.”</span> <em><span>Center on Privacy <span>&amp;</span> Technology</span></em>. <a href="https://www.perpetuallineup.org">https://www.perpetuallineup.org</a>.
 </div>
-<div id="ref-mediumPerf" class="csl-entry" role="doc-biblioentry">
+<div id="ref-mediumPerf" class="csl-entry" role="listitem">
 Huilgol, Purva. 2021. <span>“<span class="nocase">Accuracy vs. F1-Score - Analytics Vidhya - Medium</span>.”</span> <em>Medium</em>, December. <a href="https://medium.com/analytics-vidhya/accuracy-vs-f1-score-6258237beca2">https://medium.com/analytics-vidhya/accuracy-vs-f1-score-6258237beca2</a>.
 </div>
-<div id="ref-fairface" class="csl-entry" role="doc-biblioentry">
+<div id="ref-fairface" class="csl-entry" role="listitem">
 Karkkainen, Kimmo, and Jungseock Joo. 2021. <span>“FairFace: Face Attribute Dataset for Balanced Race, Gender, and Age for Bias Measurement and Mitigation.”</span> In <em>Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision</em>, 1548–58.
 </div>
-<div id="ref-nytimes" class="csl-entry" role="doc-biblioentry">
+<div id="ref-nytimes" class="csl-entry" role="listitem">
 Lohr, Steve. 2018. <span>“<span class="nocase">Facial Recognition Is Accurate, if You<span>’</span>re a White Guy</span>.”</span> <em>N.Y. Times</em>, February. <a href="https://www.nytimes.com/2018/02/09/technology/facial-recognition-race-artificial-intelligence.html">https://www.nytimes.com/2018/02/09/technology/facial-recognition-race-artificial-intelligence.html</a>.
 </div>
-<div id="ref-nist" class="csl-entry" role="doc-biblioentry">
+<div id="ref-nist" class="csl-entry" role="listitem">
 NIST. 2020. <span>“<span class="nocase">NIST Study Evaluates Effects of Race, Age, Sex on Face Recognition Software <span><span class="math inline">\(\vert\)</span></span> NIST</span>.”</span> <em>NIST</em>. <a href="https://www.nist.gov/news-events/news/2019/12/nist-study-evaluates-effects-race-age-sex-face-recognition-software">https://www.nist.gov/news-events/news/2019/12/nist-study-evaluates-effects-race-age-sex-face-recognition-software</a>.
 </div>
-<div id="ref-deepface" class="csl-entry" role="doc-biblioentry">
+<div id="ref-deepface" class="csl-entry" role="listitem">
 Serengil, Sefik Ilkin, and Alper Ozpinar. 2021. <span>“HyperExtended LightFace: A Facial Attribute Analysis Framework.”</span> In <em>2021 International Conference on Engineering and Emerging Technologies (ICEET)</em>, 1–4. IEEE. <a href="https://doi.org/10.1109/ICEET53442.2021.9659697">https://doi.org/10.1109/ICEET53442.2021.9659697</a>.
 </div>
-<div id="ref-utkdataset" class="csl-entry" role="doc-biblioentry">
+<div id="ref-utkdataset" class="csl-entry" role="listitem">
 <span>“<span>UTKFace</span>.”</span> 2021. <em>UTKFace</em>. <a href="https://susanqq.github.io/UTKFace">https://susanqq.github.io/UTKFace</a>.
 </div>
 </div>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -308,9 +393,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -346,10 +445,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -359,8 +457,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -375,6 +482,248 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        typesetMath(container);
+        return container.innerHTML
+      } else {
+        typesetMath(note);
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      typesetMath(note);
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -416,17 +765,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="./results.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Results</span></span>
+      <a href="./results.html" class="pagination-link  aria-label=" &lt;span="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Results</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
+      <a href="./references.html" class="pagination-link" aria-label="References">
         <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 
