@@ -125,6 +125,7 @@ Overall, there are a significant number of errors in this study. This is quite d
 ## Gender Prediction Conclusions 
 
 ###Gender by itself
+
 When examining gender classification in isolation, a clear disparity emerges between DeepFace and FairFace. This distinction becomes evident when scrutinizing key metrics such as the p-value, statistical power, and F1 score. Our chosen threshold for the face model's acceptability necessitates a p-value below 0.003, a power exceeding 0.8, and an F1 score surpassing 0.9.
 
 Remarkably, FairFace consistently meets these stringent criteria, showcasing its robust performance. This conclusion is not only supported by numerical metrics but is also visually reinforced through meticulously crafted graphs. The juxtaposition of the actual model and the UTK Face dataset reveals an almost complete overlap, affirming the reliability of FairFace.
@@ -132,6 +133,7 @@ Remarkably, FairFace consistently meets these stringent criteria, showcasing its
 Conversely, DeepFace falls short of these benchmarks. A closer examination of the statistical measures exposes a significant deviation. The p-value, power, and F1 score collectively fail to meet the established thresholds, signifying a subpar performance. This inadequacy is further illustrated through visual representations, where the plots exhibit only a partial overlap with the UTK Face dataset.
 
 ###Gender given Age
+
 When examining gender classification across different age groups, a shared challenge becomes apparent for both models: the struggle to accurately detect toddlers in the 0 to 2 age bin. However, a stark contrast emerges when we closely analyze DeepFace's performance within specific age cohorts. Notably, DeepFace encounters difficulties not only in identifying the youngest individuals (0 to 2 years) but also in recognizing those in the age groups of 3 to 9 and 70 to 130. It's worth emphasizing that DeepFace consistently falls short of meeting the established threshold criteria across all these age brackets.
 
 An intriguing observation arises when considering the instances where DeepFace fails to meet the threshold criteria—most of these instances involve females. This hints at a potential bias of underperformance towards females in the DeepFace model, raising important questions about the model's robustness and inclusivity. On the other hand, the performance of FairFace stands out as consistently strong and well-distributed between males and females. Notably, FairFace does not exhibit any prominent bias, offering reliable results across gender categories and age groups. This conclusion is substantiated not only through numerical calculations but also by insightful visualizations.
@@ -139,6 +141,7 @@ An intriguing observation arises when considering the instances where DeepFace f
 A compelling aspect is revealed when examining the graphs comparing FairFace to the UTK Face distributions. In stark contrast to FairFace, DeepFace shows minimal overlap in these plots, with the most significant disparity occurring in the age bins of 40 to 49 and 50 to 59. This visual representation accentuates the challenges DeepFace encounters, particularly in these age ranges. Conversely, the graphs comparing FairFace to UTK Face distributions tell a different story. While there is a slight underperformance in the age group of 70 to 130, the overall graphs showcase nearly complete overlap. This suggests superior performance by FairFace, reinforcing its effectiveness across various age groups.
 
 ###Gender given Race
+
 When examining gender in relation to race, a striking initial observation is that most permutations for DeepFace do not align with the established thresholds for P-value, power, and F1 score.
 
 However, a nuanced perspective emerges when scrutinizing both DeepFace and FairFace, revealing shared struggles in accurately classifying the "other" race. Notably, DeepFace exhibits suboptimal performance with the "black" race, hinting at potential bias.
@@ -148,5 +151,6 @@ A deeper dive into the graph distributions for the models against the UTK face d
 Upon considering both numerical values and graphical representations, an additional noteworthy observation surfaces: females exhibit a slightly lower F1 score than males, potentially indicating bias in both models. Furthermore, there appears to be a trend of better performance towards the "white" race in both models, raising questions about potential biases in these gender and race classifications.
 
 ###verdict
+
 While both models exhibit a bias towards females, DeepFace displays a more substantial inclination compared to FairFace. This bias is evident in instances where our calculations indicate a failure to reject the null hypothesis, particularly more frequently in DeepFace. Despite this, FairFace outshines DeepFace in overall performance, excelling in both gender given the age and gender given the race scenarios. Additionally, a discernible trend suggests a potential bias towards the white race in both models, with this tendency being more pronounced in DeepFace. These insights underscore the need for ongoing scrutiny and refinement to address biases and enhance the inclusivity of these models.
 <!--- DV --->
