@@ -225,8 +225,9 @@ suppressMessages({
 full_results %>% filter(
   model=='FairFace',
   test_prop=='races',
+  test_age!='All',
   test_gender=='All',
-  test_race=='All'
+  test_race!='All'
 ) %>% 
   select(
     test_prop,

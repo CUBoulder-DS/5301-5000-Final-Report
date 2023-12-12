@@ -5,7 +5,7 @@
 
 library(tidyverse)
 ```
-
+<!--PC commenting out call-out
 ::: callout-note
 ## From the report requirements
 
@@ -16,45 +16,35 @@ library(tidyverse)
 -   Discuss how you would you extend this research
 
 Like the introduction, this section should be written with a **non-expert** in mind. A person should be able to read Introduction+Conclusion and get a rough idea of the meaning and significance of your paper
-:::
+::: -->
 
 ## Evaluation of Test Results
 
-To evaluate our tests, we will first examine our hypothesis tests, and then move on to evaluate F1 and Accuracy scores.  Our hypothesis testing can tell us where bias may exist, whereas F1 and Accuracy scores may tell us specific instances where bias exists in favor of, or against, specific protected classes.
+To evaluate our tests, we will first examine our hypothesis tests, and then move on to evaluate F1 and Accuracy scores.  We theorize that our hypothesis testing, specifically in cases in which we reject the null, may tell us where bias may exist in our data.  Separately, F1 and Accuracy scores may tell us specific instances where bias exists in favor of, or against, specific protected classes.  Throughout this section, we will use the language "potential bias" for any scenario in which we reject the null hypothesis.
 
 ## Hypothesis Testing Results
 
-The design of our hypothesis testing provides us with potential indicators of bias in each model.  When the test result produces a value less than 0.003 and with test power greater than or equal to 0.8, the test can be indicative of bias.  Inversely, a p-value greater than or equal to 0.003 will not provide sufficient evidence to indicate bias in the given test case.  The p-value alone, however, cannot tell us whether the indicated bias is in favor of, or against, the protected class group(s) in question. This is because the the hypothesis tests only tell us the probability that the source and predicted results come from the same population.
-
-Overall, for both models, our tests may are indicative of bias across the spectrum of age, gender, and race.  Common threads between both FairFace and DeepFace include bias in predicting: 
-
-* Subject age (for specific groups)
-
-* Subject race (for specific groups)
+The design of our hypothesis testing provides us with cases in which datum from the source population differs from that of the predicted population of each model.  This may show where biases exist.  When the hypothesis test result produces a value less than 0.003 and with test power greater than or equal to 0.8, the test could be indicative of bias.  Inversely, a p-value greater than or equal to 0.003 will not provide sufficient evidence to indicate bias in the given test case.  The p-value alone, however, cannot tell us whether the indicated bias is in favor of, or against, the protected class group(s) in question. This is because the the hypothesis tests only tell us the probability that the source and predicted results come from the same population.
 
 ### Age Prediction
 
 #### FairFace
-FairFace displays potential for bias in age prediciton with subjects in the age ranges 0-29, 40-49, and 70+.  The age group 50-59 may also be included in this bias, but we do not have conclusive evidence from our tests alone to indicate such a bias.
-
-For age proportions, given gender, potential biases manifest solely for Females in age ranges 0-19, solely for Males 40-49, and all subjects 70+.  Additional biases arise for any subject from 20-29.  
-
-For age proportions, given race, potential biases are most prominent in the "" Category.
+FairFace displays potential for bias in age prediciton with subjects in the age ranges 0-29, 40-49, and 70-130  For age proportions, given gender, potential biases manifest solely for Females in age ranges 0-19, all subjects 20-29, solely for Males 40-49, and all subjects 70+.  For age proportions, given race, potential biases are most prominent against the Other, Asian, and White categories, between them spanning age groups from 0-69.
 
 #### DeepFace
-DeepFace displays extreme potential for bias in age prediction for young subjects (0-19) and old subjects (70+), failing to make a single prediction in any of these age ranges.
-
-For age proportions, given gender, the biases are accentuated to all age ranges.
+DeepFace displays extreme potential for bias in age prediction for subjects in all age groups, with incredibly small p-values.  This holds true for all age groups, given any gender.  Age given race, however, potential bias does not manifest for 20-29 and 40-49, given they are Black or Indian, and for 50-59 year olds, given they are Asian or Other.
 
 ### Race Prediction
 
 #### FairFace
 
-FairFace demonstrates biases in predicting race for Black, Indian, White, and Other categories.
+FairFace demonstrates potential biases in predicting race for Black, Indian, White, and Other categories.  Given either gender, this holds true only for Black, Indian, and Other categories, with more specific potential biases for White, given they are male.
+
+Interestingly, given age, potential biases manifest for Asians, given they are 30-39, with little to no changes for the other races across every age category.
 
 #### DeepFace
 
-DeepFace demonstrates biases in predicting 
+DeepFace demonstrates potential biases in predicting 
 
 ### Gender Prediction
 
@@ -67,33 +57,164 @@ We lack sufficient information to conclude that FairFace, absent other test cond
 DeepFace, abasent other test conditions, indicates bias in correct prediction of gender.
 
 ## Identifying Specific Biases with F1 and Accuracy Scores
+<!-- PC-->
+When examining p-values for potential areas of bias, our hypothesis testing results did not align with our F1 score calculations.  E.g. a rejection of the null hypothesis did not directly translate to a low F1 score, with the inverse also being true.  We proceeded to examine F1 scores, separate of p-value and power results from our hypothesis tests.
 
---- GC & LN --- 
-When examining the results of the f1 tests for age, no categories for DeepFace passed an f1 score of 0.9. This implies a lack of performance on the part of DeepFace. As DeepFace is unable to detect faces between the ages of 0-9 and 70-130, there is a bias against very young and very old faces. Additionally, The group with the highest f1 performance is 20-29, implying a favorable bias towards adults, but not older adults. 
+General trends for both models: many categories and sub-categories of protected classes fail to meet our selected definition of excellence (F1 score of 0.9 or more).  FairFace had more results meeting our definition of excellence compared to DeepFace. Both models demonstrate preference in classification for specific age groups, races, and genders, and both seem to display biases against Indian and Other racial categories.  Examining a particular class of subjects, given additional controlling variables, reveal nested biases for and against various classes.
+<!--PC-->
 
-	FairFace’s overall data, without input for race or gender, failed to produce any category that passed the f1 threshold of 0.9. This implies an overall lack of correct predictions for any one age group. However, the categories that did perform the best had a preferential bias towards the very young and very old faces, almost in opposition to DeepFace. The overall data for FairFace held a positive bias towards the ages of 0-9 and 70-130. When looking at specific categories, FairFace had a notable bias to identify male faces between the ages of 0-2 in the White, Asian, and Other categories, as only those categories passed the f1 threshold of 0.9. 
+<!--- GC & LN --->
+### Age 
+When examining the results of the F1 scores for age, no categories for DeepFace met our specification for excellence. This <!--PC implies a lack of performance on the-->identifies potential points of improvement in age categorization on part of DeepFace. As DeepFace is unable to detect faces between the ages of 0-9 and 70-130, there is a bias against very young and very old faces. Additionally, The group with the highest F1 performance is 20-29, implying a favorable bias towards subjects in early adulthood.<!--PC-->  
 
-	Race performs significantly worse for both DeepFace and FairFace, due to the fact that no overall category reaches above the 0.9 f1 cutoff for significance. Both models show preference for certain races. DeepFace shows a preferential bias for classifying White, Black, and Asian faces, and FairFace shows a similar bias for classifying Asian, Black and White faces, in that order. Indian and Other faces perform the worst overall for both models. Their f1 scores were significantly lower than the other three categories, by at least 0.2 for FairFace and 0.3 for DeepFace.
+FairFace’s overall age calculations, <!--without input for race or gender-->absent other conditional variables, failed to produce any category that met our F1 threshold,<!--. This implies an overall--> implying lack of excellence in correct predictions for any one age group. However, the categories that did perform the best had a preferential bias towards the very young and very old faces, almost in opposition to DeepFace<!--. The overall data for -->; FairFace <!--held-->displayed a <!--positive-->preferential bias towards the ages of 0-9 and 70-130. When examining specific sub-categories, FairFace presented notable favorable bias to identify male faces between the ages of 0-2 in the White, Asian, and Other categories, as only those categories passed the F1 threshold.
 
-	In terms of more specific preferences, DeepFace performs exceedingly poorly overall. No category for race given age scores over 0.9 for the f1 score. And overall, White faces score the highest, provided the identified faces are not 0-9. For FairFace, the only noted bias was a preference for Asian faces younger than 20, and White faces in the ranges of 0-9 and 60-130. For gender-specific biases, there are also no categories that score over 0.9, but it should be emphasized that DeepFace identified female faces for all races better than male faces. FairFace had a similar performance, except for Indian faces, where male faces scored above female ones.
+<!--PC-->These findings suggest that, were either model to be used in a decision-making process, it could result in age discrimination in accordance with United States Laws.  Both FairFace and DeepFace have challenges with various age groups over 40 years old.  In the case of employment, the Age Discrimination in Employment Act of 1967 (ADEA) protects certain applicants and employees 40 years of age and older from discrimination on the basis of age in hiring, promotion, discharge, compensation, or terms, conditions or privileges of employment. If used in law enforcement, DeepFace could misidentify an individual as being a suspect, if the suspects specifications fell in the age range ()
+<!--PC-->
 
-	Gender shows a similar pattern as race for overall evaluation. DeepFace fails to have any category pass the 0.9 f1 barrier, but male faces do show a slightly higher score than female ones. FairFace had both male and female faces score above 0.9, showing a notably positive performance, with little to no difference between males and females. 
+### Race
+Compared to age results, race performs significantly worse for both DeepFace and FairFace, due to the fact that no racial category on its own reaches our F1 threshold<!--for significance-->. Both models show preference for certain races. In order of preference, DeepFace shows a preferential bias for classifying White, Black, and Asian faces, and FairFace shows a similar bias for classifying Asian, Black and White faces.<!--, in that order.--> Indian and Other faces perform the worst overall for both models<!--. Their F1 scores were -->, with significantly lower F1 scores than the <!--other three-->preferred categories, by at least 0.2 for FairFace and 0.3 for DeepFace. As such, these preferences are substantial.
 
-	DeepFace did show preference for certain genders given age, with the range of 30-69 performing above 0.9 for male faces, but only females age 20-29 were significant. This implies a positive bias towards identifying older male faces, as well as bias towards younger adult women. FairFace was more balanced, with significant scores for most age groups except for females age 0-2, and males 0-9. This showcases a negative bias against very young people in general, and particularly male children. For Gender given race, DeepFace had no statistically significant f1 scores, but did show a positive bias towards White faces, and negative biases towards Asian faces of all genders, and Black female faces. FairFace was far better in all categories, with f1 scores over 0.9 for all categories except Asian male faces. Therefore, it shows a significant negative bias against identifying Asian male faces.
---- GC & LN ---
+In terms of race with additional control variables, DeepFace<!--more specific preferences, DeepFace performs exceedingly poorly overall--> demonstrates exceedlingly poor performance. No category for race given age scores surpassed our F1 threshold<!--PC - how bad was it? -->. Overall, White faces score the highest, provided the identified faces are not 0-9. For FairFace, the only noted bias was a preference for Asian faces younger than 20, and White faces in the ranges of 0-9 and 60-130. For gender-specific biases, there are also no categories that <!--score over 0.9--> meet or surpass our F1 threshold, but it should be emphasized that DeepFace identified female faces for all races better than male faces. FairFace had a similar performance, except for Indian faces, where male faces scored above female ones.
+
+### Gender
+Gender shows a similar pattern as race for overall evaluation. DeepFace fails to have any category meet or exceed our F1 threshold, but male faces do show a slightly higher score than female ones. FairFace had both male and female faces score above 0.9, showing a notably positive performance, with little to no difference between males and females. 
+
+DeepFace did show preference for certain genders given age, with the range of 30-69 performing above 0.9 for male faces, but only females age 20-29 were significant. This implies a positive bias towards identifying older male faces, as well as bias towards younger adult women. FairFace was more balanced, with significant scores for most age groups except for females age 0-2, and males 0-9. This showcases a negative bias against very young people in general, and particularly male children. For Gender given race, DeepFace had no statistically significant f1 scores, but did show a positive bias towards White faces, and negative biases towards Asian faces of all genders, and Black female faces. FairFace was far better in all categories, with f1 scores over 0.9 for all categories except Asian male faces. Therefore, it shows a significant negative bias against identifying Asian male faces.
+<!--- GC & LN --->
+
+## So What?
+Respective of our statistical hypothesis tests and bootstrap population proportion distributions, we can conclude that the models and the source data, in many cases and conditions, have differing source populations, as listed in the earlier portions of this section.  Such differences in source population do not appear to be directly indiciative of bias against protected classes.  
+
+Some specific examples, but not all examples, include:
+
+* FairFace
+
+	* The proportion of 60-69 year olds, with a p-value of nearly 1, but with an F1 score of 0.354, and an accuracy score of 0.671.  This shows that high p-values do not translate to high F1 scores for FairFace.
+
+	* The proportion of Females, given they are "Other" for race, with a p-value of $2.58\cdot 10^{-13}$, with an F1 score of 0.922, and accuracy of 0.914.  This shows that low p-values do not translate to low F1 scores for FairFace.
+
+* DeepFace
+
+	* The proportion of 20-29 year olds, given they are Black, with a p-value of 0.10, with an F1 score of 0.588.  This shows that a high p-value does not directly translate to a high F1 score for DeepFace.  
+
+	* The proportions of males age 40-49, 50-59, 60-69 with respective p-values of $2.01\cdot 10^{-12}$, $9.43\cdot 10^{-12}$ and $1.23\cdot 10^{-5}$, but holding respective F1 scores of 0.946, 0.937, and 0.928.  Showing that low p-values do not necessarily indicate a low F1 score for DeepFace.
+
+However, the cases in which we reject the null hypothesis could be indicative that the training data for the facial recognition models, and the data we provided to them from UTKFace, have little to no overlap between one another (in terms of features and qualities of the images).  This could be a topic for further research - i.e. are the differences in source population a result of feature differences between a model's training data and the models classification predictions on novel images?
+
+Absent further research, with Accuracy and F1 scores accepted as best practice - the results of our two-sample hypothesis tests can only truly tell us that there is a difference in the source populations for each of our samples.
+
+On the examination of F1 scores, we find that 
+
+* FairFace displays preferential biases in classifying:
+
+	* correct race, given the subject is male, in almost every racial group.
+
+	* Asian race, given they are under 20.
+
+* DeepFace displays preferential bias in classifying:
+
+	* correct age, given the subject is White, for nearly every age group.
+
+	* correct gender, given the subject is generally an adult (30-69)
+
+These preferential biases can result in discrimination:
+
+* FairFace combination of racial prediction given a male subject could result in a combination of racial discrimination against Indians, and gender discrimination against females, if used in decision-making processess.
+
+* DeepFace's combination of correct age given White as race could result in a combination of racial and age discrimination if used in decision-making processes.
 
 
-<!----- GC --->
+## Areas for Further Research
+
+* 
+
+* 
+
+## More Conclusions, for the Mathematically Inclined
+<!--PC regarding 2-sample hypothesis tests--> 
+F1 and Accuracy scores are generally accepted as best practice in evaluating the efficacy of machine learning models.  From our tests, we saw contradictions between two-sample proportion tests and F1/Accuracy scores with respect to each model.  This is directly evident from @fig-f1-p-val and @fig-acc-p-val with a clear lack of correlation of any type between the variables, for all our 432 hypothesis tests.
+
+We can examine this further.  An Accuracy or F1-score of 0.9 is a reasonable threshold for an "excellent" peforming model. We could set this this threshold as analogous to the outcomes of a hypothesis test. If a model is performing well, we would expect there wouldn't be enough evidence to reject the null hypothesis (i.e. equal proportions between the source and model could not be statistically rejected). If a model is is not peforming well, we would expect there to be enough evidence suggesting we should reject the null hypothesis in favor of the alternative hypothesis (i.e. there was enough evidence the proportions between the source and model were not equal).
+
+In that perspective, if we assume that the sample outputs' F1 scores should reject the null hypotheses when below a certain threshold, and fail to reject when above 0.9, we can build a confusion matrix of "prediction" to reject or fail to reject the null using two-sample proportion tests, in comparison to a "correct" result using sample out F1 scores.  We should use this same threshold, as it's the same that we set for each model in evaluating protected classes.
+
+Pursuing such an evaulation is an appropriate approach, because the methods we've leveraged for attempting to examine bias using proportionality testing is a model, just as classification of inputs and outputs using confusion matrices is a model.  A standard method of evaluating model performance is via confusion matrices.
+
+Such matrices produce the following results when evaluating our sample outputs:
+
+```{r refute-correlation-functions}
+library(caret)
+stats_results <- read_csv('https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/combined_p_val_F1_acc.csv')
+
+fac_lev <- factor(c("Reject null","Fail to reject null","Unknown"))
+
+test_result <- function(pval){
+  if(is.na(pval) | is.nan(pval)){
+    factor("Unknown",levels=fac_lev)
+  } else if (pval<.003){
+    factor("Reject null",levels=fac_lev)
+  } else {
+    factor("Fail to reject null",levels=fac_lev)
+  }
+}
+
+result_confusion <- function(score,threshold){
+  if (!is.numeric(score) | is.nan(score) | is.na(score)){
+    factor("Unknown",levels=fac_lev )
+  } else {
+    if (score >= threshold){
+       factor("Fail to reject null",levels=fac_lev)
+    } else {
+      factor("Reject null",levels=fac_lev)
+    }
+  }
+}
+
+get_model_scores <- function(threshold) {
+	res <- stats_results %>%
+	rowwise %>%
+		mutate(
+			p_value_classification=factor(test_result(model_p_value),levels=fac_lev),
+			f1_classification=factor(result_confusion(model_F1,0.8),levels=fac_lev),
+			acc_classification=factor(result_confusion(model_Accuracy,0.8),levels=fac_lev)
+		) 
+}
+
+extract_scores <- function(cm1,cm2,name1,name2,thresh){
+	tibble(
+		model=c(replicate(3,name1),replicate(3,name2)),
+		accuracy=c(cm_df[,'Balanced Accuracy'],cm_ff[,'Balanced Accuracy'])%>% unname(),
+		F1=c(cm_df[,'F1'],cm_ff[,'F1']) %>% unname(),
+		threshold=thresh
+	)
+}
+
+```
+
+```{r fig-point9-f1-acc}
+categorized_results <- get_model_scores(.9)
+ff_tests <- categorized_results %>% filter(model=='FairFace')
+# ff_results_conf <- confusionMatrix(data=ff_tests$p_value_classification,reference=ff_tests$f1_classification)
+df_tests <- categorized_results%>% filter(model=='DeepFace')
+cm_ff <- confusionMatrix(data=ff_tests$p_value_classification,reference=ff_tests$f1_classification,mode='everything')[['byClass']]
+cm_df <- confusionMatrix(data=df_tests$p_value_classification,reference=df_tests$f1_classification,mode='everything')[['byClass']]
+extract_scores(cm_df,cm_ff,"DeepFace","FairFace",0.9) %>% knitr::kable()
+```
+
+Assuming that a correct decision to reject or fail to reject the null should be based upon an F1 and Accuracy scores at multiple thresholds (0.9, 0.8, or 0.7), we see substantially low accuracy and F1 scores for two-sample proportionality tests as a model for predicting machine learning model performance.  This highlights the contradictions we witnessed in our results for two-sample proportion tests vs. leveraging accuracy and F1 scores.  Given These results, we find that two-sample proportionality testing is likely not a strong indicator to identify issues and errors in machine learning models. 
+
+<!----- GC --
 ## Age Prediction Conclusions 
 
 Based on the results of evaluating both models for age prediction accuracy, given age, gender, or no particular category, there is a definite bias in both models towards differing demographics. Overall, DeepFace displayed a significantly lower accuracy rate in classifying the ages of given faces and was unable to produce predictions for faces between the ages of 0-9 and 70-130, indicating that it is unable to predict younger and older faces. However, it did display consistent test scores to evaluate the accuracy and efficacy of its results, indicating that the null hypothesis should be rejected here. FairFace, on the other hand, showed higher accuracy results, especially in Figure 4.1.b, where the only age bracket which DeepFace performed better for was 30-39. There is the possibility that a testing error resulted from our efforts with FairFace, but it is unlikely for the overall results. Things get more complicated when we include gender and/or race as given statistics for evaluating age. While DeepFace was consistent with gender overall, its results for race given no other variables were less accurate. There were noticeable discrepancies in identifying non-white faces, particularly Indian, Black, and Other faces. When specified for race and gender together, a trend of male faces being identified more accurately was observed, particularly white and Asian faces. For FairFace, there was still a higher accuracy rate of identification, but error test scores were higher overall. While DeepFace struggled to identify very young and old faces, FairFace generally struggled with faces in the range of 20-69. While the actual results show a higher rate of identification for all faces, FairFace has higher error test rates for nearly all races, save white faces. FairFace also mirrors DeepFace in a trend of lower error scores for lighter faces, although FairFace seems to have more of a bias towards female faces instead of male ones.
 	Using the above results, as well as the tables from earlier, we can conclude that there is bias present in both the FairFace and DeepFace models when predicting age given gender or race. There is a definite trend towards white faces in both models in terms of predictive accuracy. That being said, based on the accuracy scores of FairFace, it is more likely that FairFace is less biased than DeepFace, especially given that DeepFace is unable to predict the ages of very young and very old faces with any degree of accuracy. That being said, the high error scores (p-values and power scores) indicate that perhaps FairFace requires further testing, in case the tests we created are wrong, and we should not reject the null hypothesis. Given the nature of the results, combined with the test scores, it is difficult to say whether or not one model completely outperforms the other. DeepFace is technically more accurate and less prone to rejection errors, but FairFace produces better results, even though it is less accurate over a wide age range. Overall, FairFace does seem to be the better predictor, given its accuracy rating and better age range, as it includes younger and older faces far better than DeepFace. In terms of disparate outcomes, both FairFace and DeepFace are more likely to correctly predict the race of white or Asian faces, while races with typically darker skin tones, Black, Indian, or Other, have far lower accuracy ratings across the board. 
 	In terms of what should be done in future research, further testing is required. It would be ideal to cross-reference either the models, the testing data, or both, with other predictive models and datasets to determine if any possible errors are present due to the match. The ideal goal would be to minimize any potential error scores while evaluating a multitude of models and using the results to craft better predictive models that display less disparity due to age. In the future, datasets should strive to account for a diverse range of faces from all possible races, genders, and ages.
 	
-<!--- GC --->
+--- GC --->
 
 
-<!-- --- LN --- -->
+<!-- --- LN --- 
 
 ## Race Prediction Conclusions
 
@@ -128,8 +249,8 @@ FairFace and DeepFace display potential racial bias. Despite that, our test resu
 
 Overall, there are a significant number of errors in this study. This is quite detrimental to our finding as we can not draw a firm conclusion from those tests. Further study or change of methodology might be essential to reduce those errors. This would allow us to arrive at a stronger conclusion.
 
-<!--- LN --->
-<!----- DV --->
+-- LN --->
+<!----- DV --
 ## Gender Prediction Conclusions 
 
 ###Gender by itself
@@ -161,4 +282,4 @@ Upon considering both numerical values and graphical representations, an additio
 ###verdict
 
 While both models exhibit a bias towards females, DeepFace displays a more substantial inclination compared to FairFace. This bias is evident in instances where our calculations indicate a failure to reject the null hypothesis, particularly more frequently in DeepFace. Despite this, FairFace outshines DeepFace in overall performance, excelling in both gender given the age and gender given the race scenarios. Additionally, a discernible trend suggests a potential bias towards the white race in both models, with this tendency being more pronounced in DeepFace. These insights underscore the need for ongoing scrutiny and refinement to address biases and enhance the inclusivity of these models.
-<!--- DV --->
+--- DV --->

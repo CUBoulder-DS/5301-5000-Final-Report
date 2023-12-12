@@ -312,15 +312,50 @@ ggplot(stats_results) +
   labs(x="F1 Score", y="Accuracy")
 ```
 
+In @fig-f1-p-val and @fig-acc-p-val we explore our research question of whether or not two-sample proportion tests can approximate or predict the performance of a machine learning model.  In each plot, we transform the p-value to 0 in cases where we would reject the null hypothesis, and 1 in cases for which we would fail to reject.
+
+```{r fig-pval-vs-F1}
+#| label: fig-f1-p-val
+#| fig-cap: p-value vs F1 score for all hypothesis tests performed.
+#| layout-ncol: 2
+#| fig-subcap:
+#|   - "FairFace: two-sample proportion p-value vs F1"
+#|   - "DeepFace: two-sample proportion p-value vs F1"
+# PC
+stats_results %>% filter(model=='FairFace') %>% drop_na() %>%
+  ggplot()+
+    geom_point(aes(x=as.numeric(model_p_value>=0.003),y=model_F1))+
+  xlab("p-value pass(1)/fail(0)")+ylab("F1-score")
+
+stats_results %>% filter(model=='DeepFace') %>% drop_na() %>%
+  ggplot()+
+    geom_point(aes(x=as.numeric(model_p_value>=0.003),y=model_F1))+
+  xlab("p-value pass(1)/fail(0)")+ylab("F1-score")
+
+```
+
+```{r fig-pval-vs-acc}
+#| label: fig-acc-p-val
+#| fig-cap: p-value vs accuracy score for all hypothesis tests performed.
+#| layout-ncol: 2
+#| fig-subcap:
+#|   - "FairFace: two-sample proportion p-value vs accuracy"
+#|   - "DeepFace: two-sample proportion p-value vs accuracy"
+# PC
+
+stats_results %>% filter(model=='FairFace')%>% drop_na() %>%
+  ggplot()+
+  geom_point(aes(x=as.numeric(model_p_value >= 0.003),y=model_Accuracy))+
+  xlab("p-value pass(1)/fail(0)")+ylab("accuracy")
+stats_results %>% filter(model=='DeepFace')%>% drop_na() %>%
+  ggplot()+
+  geom_point(aes(x=as.numeric(model_p_value >= 0.003),y=model_Accuracy))+
+  xlab("p-value pass(1)/fail(0)")+ylab("accuracy")
+
+```
+
 ```{r, warning=F}
 # BJ
-
-#PC - commented out, we decided this plot didn't make sense.
-# ggplot(stats_results) +
-#   geom_point(aes(x=model_F1, y=model_p_value, color=model, fill=model_power), shape=21)
-
-# ggplot(stats_results) +
-#   geom_point(aes(x=model_F1, y=model_p_value, color=model))
 
 
 #classify our test results as TP,TN,FP,FN or unknown.
@@ -335,9 +370,9 @@ classify <- function(p_val,power,F1){
     } else {
       "Unknown"
     }
-	} else if(p_val >=0.003 & F1 >= 0.9 & power < 0.8){
+	} else if(p_val >=0.003 &  power < 0.8){#&F1 >= 0.9}){
 		"True Negative" #TN = fail to reject the null when we shouldn't
-	} else if (p_val < 0.003 & F1 < 0.9 & power >= 0.8) {
+	} else if (p_val < 0.003 & power >= 0.8){
 		"True Positive" #TP = reject the null, and we should
 	} else if (p_val >= 0.003 & F1 < 0.9 & power < 0.8) {
 		"False Negative" #FN = fail to reject the null when it's false 
@@ -358,36 +393,49 @@ test_result <- function(pval){
   }
 }
 
-result_confusion <- function(p_val,power,F1){
-    #handle NAs...
-	if (!is.numeric(p_val) | !is.numeric(F1) | is.nan(p_val) | is.nan(F1)){
-			"Unknown"
-  #assume cases where we have no F1 or P-value
-	} else if (is.na(F1) | is.na(p_val)) {
-    if (!is.na(p_val)&p_val < 0.003){
-		"Reject null"  #TP = reject the null, and we should
+result_confusion <- function(score,threshold){
+  if (!is.numeric(score) | is.nan(score) | is.na(score)){
+    "Unknown"
+  } else {
+    if (score >= threshold){
+      "Fail to reject null"
     } else {
-      "Unknown"
+      "Reject null"
     }
-	} else if(p_val >=0.003 & F1 >= 0.9 & power < 0.8){
-		"Fail to reject null" #TN = fail to reject the null when we shouldn't
-	} else if (p_val < 0.003 & F1 < 0.9 & power >= 0.8) {
-		"Reject null" #TP = reject the null, and we should
-	} else if (p_val >= 0.003 & F1 < 0.9 & power < 0.8) {
-		"Reject null" #FN = fail to reject the null when it's false 
-	} else if (p_val < 0.003 & F1 > 0.9 & power >= 0.8) {
-		"Fail to reject null" #FP = reject the null when it's true 
-	} else {
-		"Unknown" #not sure how we should classify the case.
-	}
+  }
 }
+
+# result_confusion <- function(p_val,power,F1){
+#     #handle NAs...
+# 	if (!is.numeric(p_val) | !is.numeric(F1) | is.nan(p_val) | is.nan(F1)){
+# 			"Unknown"
+#   #assume cases where we have no F1 or P-value
+# 	} else if (is.na(F1) | is.na(p_val)) {
+#     if (!is.na(p_val)&p_val < 0.003){
+# 		"Reject null"  #TP = reject the null, and we should
+#     } else {
+#       "Unknown"
+#     }
+# 	} else if(p_val >=0.003 & F1 >= 0.9 & power < 0.8){
+# 		"Fail to reject null" #TN = fail to reject the null when we shouldn't
+# 	} else if (p_val < 0.003 & F1 < 0.9 & power >= 0.8) {
+# 		"Reject null" #TP = reject the null, and we should
+# 	} else if (p_val >= 0.003 & F1 < 0.9 & power < 0.8) {
+# 		"Reject null" #FN = fail to reject the null when it's false 
+# 	} else if (p_val < 0.003 & F1 > 0.9 & power >= 0.8) {
+# 		"Fail to reject null" #FP = reject the null when it's true 
+# 	} else {
+# 		"Unknown" #not sure how we should classify the case.
+# 	}
+# }
 
 categorized_results <- stats_results %>% 
   rowwise %>%
   mutate(
     result_category=classify(model_p_value,model_power,model_F1),
     p_value_classification=test_result(model_p_value),
-    f1_classification=result_confusion(model_p_value,model_power,model_F1)
+    f1_classification=result_confusion(model_F1,0.9),#result_confusion(model_p_value,model_power,model_F1)
+    acc_classification=result_confusion(model_Accuracy,0.9)
   ) %>%
   mutate(
     F1_pass = as.numeric(model_F1>=.9),
@@ -418,7 +466,13 @@ ff_tests <- plot_cm %>% filter(model=='FairFace')
 df_tests <- plot_cm %>% filter(model=='DeepFace')
 # df_results_conf <- confusionMatrix(data=df_tests$p_value_classification,reference=df_tests$f1_classification,)$table
 
+cm_ff <- confusionMatrix(data=ff_tests$p_value_classification,reference=ff_tests$f1_classification,mode='everything')[['byClass']]
 
+#cm_ff
+
+cm_df <- confusionMatrix(data=df_tests$p_value_classification,reference=df_tests$f1_classification,mode='everything')[['byClass']]
+
+#cm_df
 ```
 
 In @fig-p-conf, we display confusion matrices of our null hypothesis rejections. We define the true/false positive/negative as follows:

@@ -70,6 +70,9 @@ We evaluate the output of the 2 models in order to answer the following question
 <!--PC
 Below - some of these research questions can't be answered with hypothesis testing.  Commented those out and changed to new questions.
 -->
+
+-   Is it possible to identify, detect, and classify biases in machine learning models using proportionality testing?
+
 -   Is bias prevalent in facial recognition machine learning models?
 <!---   Can one model be shown to have statistically significant less bias than the other?
 -   Does one model outperform the other in a statistically significant manner, in all aspects?
