@@ -54,7 +54,7 @@ Should we change "also perform" to "we plan to perform?" by this point in the pa
 
 May need some insight here before making changes.
 -->
-Our EDA performed on the source UTK dataset can be seen in the previous section in @fig-data-eda. The EDA performed on the output from the models can be summarized as follows, and is presented in the Results section:
+Our EDA performed on the source UTK dataset can be seen in the previous section in Figure 2.2. The EDA performed on the output from the models can be summarized as follows, and is presented in the Results section:
 
 -   Visualization of the histograms of distributions of predictions, per each category, per each model
 

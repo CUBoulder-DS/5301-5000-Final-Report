@@ -187,10 +187,7 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a>
-  <ul class="collapse">
-  <li><a href="#how-we-should-write-this-report-todo-remove" id="toc-how-we-should-write-this-report-todo-remove" class="nav-link" data-scroll-target="#how-we-should-write-this-report-todo-remove">How we should write this report TODO: REMOVE</a></li>
-  </ul></li>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
   </ul>
 </nav>
     </div>
@@ -236,8 +233,10 @@ div.csl-indent {
 
 <section id="abstract" class="level1 unnumbered">
 <h1 class="unnumbered">Abstract</h1><p><img src="images/cover.png" title="Bias in Facial Classification ML Models" class="quarto-cover-image img-fluid"></p>
-<p>In this study, our research team examines the performance of two facial recognition models, FairFace and DeepFace, for potential biases against the protected classes of age, gender, and race. Our objective is to determine whether the source data and model outputs originate from the same population and determine if any such difference is indicative of bias in one or both models. We employ two-sample proportionality tests to evaluate the parent populations for the input data and each model’s output in terms of gender, race, and age, incorporating model F1 and Accuracy scores in tandem with our test results to evaluate presence of bias. Our goal in this effort is to contribute to ongoing research and discourse on ethics in computing and machine learning, and to share any insights or significant findings we encounter. Further details on our source data and models, methods, results, and implications are detailed in the subsequent sections of this paper.</p>
-<hr>
+<!-- BJ -->
+<p>Bias in how facial classification machine learning (ML) models label faces is a burgeoning problem; as the use of such models becomes widespread, it is more important than ever to identify the weaknesses in the models and how they could potentially discriminate against various class, like race, gender, or age. In this study, we run two widely used facial classification models (FairFace and DeepFace) on a popular face dataset (the UTKFace Dataset) and perform two sample proportion hypothesis tests – as well as evaluating model output using common ML performance metrics – in order to highlight and identify potential bias in the aforementioned classes. We found that DeepFace had significant bias in age and race, with white males being classified more accurately than other factor categories; FairFace performed significantly better with less detected bias, affirming the intended goal of FairFace being built specifically to be more “fair” (less biased) on various categories. The implications lead us to recommend more work to be done on improving facial classification ML models, in order for them to be equitable and fair to all humans they are run on.</p>
+<!-- PC -->
+<!-- In this study, our research team examines the performance of two facial recognition models, FairFace and DeepFace, for potential biases against the protected classes of age, gender, and race. Our objective is to determine whether the source data and model outputs originate from the same population and determine if any such difference is indicative of bias in one or both models. We employ two-sample proportionality tests to evaluate the parent populations for the input data and each model’s output in terms of gender, race, and age, incorporating model F1 and Accuracy scores in tandem with our test results to evaluate presence of bias. Our goal in this effort is to contribute to ongoing research and discourse on ethics in computing and machine learning, and to share any insights or significant findings we encounter.  Further details on our source data and models, methods, results, and implications are detailed in the subsequent sections of this paper. -->
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -248,60 +247,14 @@ Report PDF and Code Location
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A link to download the <a href="https://cuboulder-ds.github.io/5301-5000-Final-Report/STAT_5000_Final_Report.pdf">PDF version</a> of this report, and a link to the <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report">Github source code</a> for this report, are both available as icons in the top right corner of this website.</p>
+<p>A link to download the <a href="https://cuboulder-ds.github.io/5301-5000-Final-Report/STAT_5000_Final_Report.pdf">PDF version</a> of this report, and a link to the <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report">Github source code</a> for this report, are both available as icons in the top bar of this website.</p>
 </div>
 </div>
-<!-- BJ !-->
-<section id="how-we-should-write-this-report-todo-remove" class="level2">
-<h2 class="anchored" data-anchor-id="how-we-should-write-this-report-todo-remove">How we should write this report TODO: REMOVE</h2>
-<!-- PC -->
-<ul>
-<li>See <span class="citation" data-cites="fairface">Karkkainen and Joo (<a href="references.html#ref-fairface" role="doc-biblioref">2021</a>)</span> , that is an example on how to cite a bibliography.</li>
-<li>Sections/title headings are automatically numbered.</li>
-<li>Any changes you make, make sure to make a comment of your initials at the top of your work (INCLUDING written text) like so:</li>
-</ul>
-<pre><code>&lt;!-- BJ !--&gt;
-Blah blah etc ....
-
-OR
-#BJ
-r_var &lt;- ...</code></pre>
-<ul>
-<li>Make sure to add a unique name to all code cells, and to also enable the following (the quarto way) (In order for a figure to be cross-referenceable, its label must start with the fig- prefix):</li>
-</ul>
-<div class="cell">
-<div class="cell-output-display">
-<div id="fig-sec1-unique-name" class="quarto-figure quarto-figure-center anchored" width="672">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-sec1-unique-name-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-sec1-unique-name-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sec1-unique-name-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: A caption for generated figure
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li><p>You can then refer to figures like this <code>@fig-sec1-unique-name</code> <a href="#fig-sec1-unique-name" class="quarto-xref">Figure&nbsp;<span>A caption for generated figure</span></a></p></li>
-<li><p>Format tables doing the following <a href="https://quarto.org/docs/reference/cells/cells-knitr.html#tables">Link here</a></p></li>
-<li><p>Do all your r work initially in your own custom <code>.rmd</code> file in this directory, so that it can be copy-pasted over later into the appropriate section (written descriptions/words can go straight into the <code>.qmd</code> files though). For example, Bhav’s work is in <code>5000-final/BJ_work.rmd</code>.</p></li>
-</ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-From the report requirements
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>A 3-5 summary of the paper. It should address the research question, the methods, and the conclusions of your analysis.</p>
-<p><em>“A good recipe for an abstract is: first sentence: specify the general area of the paper and encourage the reader; second sentence: specify the dataset and methods at a general level; third sentence: specify the headline result; and a fourth sentence about implications.”</em></p>
-</div>
-</div>
+<!-- ::: callout-note -->
+<!-- ## From the report requirements -->
+<!-- A 3-5 summary of the paper. It should address the research question, the methods, and the conclusions of your analysis. -->
+<!-- *"A good recipe for an abstract is: first sentence: specify the general area of the paper and encourage the reader; second sentence: specify the dataset and methods at a general level; third sentence: specify the headline result; and a fourth sentence about implications."* -->
+<!-- ::: -->
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -327,7 +280,6 @@ Serengil, Sefik Ilkin, and Alper Ozpinar. 2021. <span>“HyperExtended LightFace
 <span>“<span>UTKFace</span>.”</span> 2021. <em>UTKFace</em>. <a href="https://susanqq.github.io/UTKFace">https://susanqq.github.io/UTKFace</a>.
 </div>
 </div>
-</section>
 </section>
 
 </main> <!-- /main -->

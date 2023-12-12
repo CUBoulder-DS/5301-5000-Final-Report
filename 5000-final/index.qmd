@@ -1,60 +1,24 @@
-
-
-```{r setup, include=FALSE}
-#| include: false
-
-library(tidyverse)
-```
-
 # Abstract {.unnumbered}
 
+<!-- BJ -->
+Bias in how facial classification machine learning (ML) models label faces is a burgeoning problem; as the use of such models becomes widespread, it is more important than ever to identify the weaknesses in the models and how they could potentially discriminate against various class, like race, gender, or age. In this study, we run two widely used facial classification models (FairFace and DeepFace) on a popular face dataset (the UTKFace Dataset) and perform two sample proportion hypothesis tests -- as well as evaluating model output using common ML performance metrics -- in order to highlight and identify potential bias in the aforementioned classes. We found that DeepFace had significant bias in age and race, with white males being classified more accurately than other factor categories; FairFace performed significantly better with less detected bias, affirming the intended goal of FairFace being built specifically to be more "fair" (less biased) on various categories. The implications lead us to recommend more work to be done on improving facial classification ML models, in order for them to be equitable and fair to all humans they are run on.
 
-In this study, our research team examines the performance of two facial recognition models, FairFace and DeepFace, for potential biases against the protected classes of age, gender, and race. Our objective is to determine whether the source data and model outputs originate from the same population and determine if any such difference is indicative of bias in one or both models. We employ two-sample proportionality tests to evaluate the parent populations for the input data and each model’s output in terms of gender, race, and age, incorporating model F1 and Accuracy scores in tandem with our test results to evaluate presence of bias. Our goal in this effort is to contribute to ongoing research and discourse on ethics in computing and machine learning, and to share any insights or significant findings we encounter.  Further details on our source data and models, methods, results, and implications are detailed in the subsequent sections of this paper.
----
+<!-- PC -->
+
+<!-- In this study, our research team examines the performance of two facial recognition models, FairFace and DeepFace, for potential biases against the protected classes of age, gender, and race. Our objective is to determine whether the source data and model outputs originate from the same population and determine if any such difference is indicative of bias in one or both models. We employ two-sample proportionality tests to evaluate the parent populations for the input data and each model’s output in terms of gender, race, and age, incorporating model F1 and Accuracy scores in tandem with our test results to evaluate presence of bias. Our goal in this effort is to contribute to ongoing research and discourse on ethics in computing and machine learning, and to share any insights or significant findings we encounter.  Further details on our source data and models, methods, results, and implications are detailed in the subsequent sections of this paper. -->
 
 ::: callout-tip
 ## Report PDF and Code Location
 
-A link to download the [PDF version](https://cuboulder-ds.github.io/5301-5000-Final-Report/STAT_5000_Final_Report.pdf) of this report, and a link to the [Github source code](https://github.com/CUBoulder-DS/5301-5000-Final-Report) for this report, are both available as icons in the top right corner of this website.
+A link to download the [PDF version](https://cuboulder-ds.github.io/5301-5000-Final-Report/STAT_5000_Final_Report.pdf) of this report, and a link to the [Github source code](https://github.com/CUBoulder-DS/5301-5000-Final-Report) for this report, are both available as icons in the top bar of this website.
 :::
 
-<!-- BJ !-->
-## How we should write this report  TODO: REMOVE
-<!-- PC -->
--   See @fairface , that is an example on how to cite a bibliography.
--   Sections/title headings are automatically numbered.
--   Any changes you make, make sure to make a comment of your initials at the top of your work (INCLUDING written text) like so:
+<!-- ::: callout-note -->
 
-```
-<!-- BJ !-->
-Blah blah etc ....
+<!-- ## From the report requirements -->
 
-OR
-#BJ
-r_var <- ...
-```
+<!-- A 3-5 summary of the paper. It should address the research question, the methods, and the conclusions of your analysis. -->
 
--   Make sure to add a unique name to all code cells, and to also enable the following  (the quarto way) (In order for a figure to be cross-referenceable, its label must start with the fig- prefix):
+<!-- *"A good recipe for an abstract is: first sentence: specify the general area of the paper and encourage the reader; second sentence: specify the dataset and methods at a general level; third sentence: specify the headline result; and a fourth sentence about implications."* -->
 
-```{r}
-#| label: fig-sec1-unique-name
-#| fig-cap: A caption for generated figure
-
-ggplot() +
-  geom_line(aes(x=1:10, y = (1:10)^2))
-```
-
-- You can then refer to figures like this `@fig-sec1-unique-name` @fig-sec1-unique-name
-
-- Format tables doing the following [Link here](https://quarto.org/docs/reference/cells/cells-knitr.html#tables)
-
-- Do all your r work initially in your own custom `.rmd` file in this directory, so that it can be copy-pasted over later into the appropriate section (written descriptions/words can go straight into the `.qmd` files though). For example, Bhav's work is in `5000-final/BJ_work.rmd`.
-
-
-::: callout-note
-## From the report requirements
-
-A 3-5 summary of the paper. It should address the research question, the methods, and the conclusions of your analysis.
-
-*"A good recipe for an abstract is: first sentence: specify the general area of the paper and encourage the reader; second sentence: specify the dataset and methods at a general level; third sentence: specify the headline result; and a fourth sentence about implications."*
-:::
+<!-- ::: -->

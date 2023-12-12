@@ -128,22 +128,18 @@ view_results = stats_results %>%
 
 For each factor category and model, we calculate the F1 score, accuracy, p-value, and power, as described in section 3. Cell values are colored according to the strength of the metric; p-value is colored as to whether it crosses the significance value threshold of 0.003. We calculate these metrics and hypothesis tests across all categories of each factor, but also with conditional filtering on other factors; the value "All" indicates we did not filter/condition on that factor. The column `Test Factor` indicates which factor we are calculating the proportion for that hypothesis test. For example, the following column value subsets would indicate the given hypothesis test:
 
-| **Test Factor** | **Age** | **Gender** | **Race** | Model    | Null Hypothesis                      | Description                                                                                  |
-|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Test Factor | Age | Gender | Race | Model    | Null Hypothesis                      | Description                                                                                  |
+|---|---|---|---|---|--------|--------------|
 | gender          | 0-2     | Female     | All      | FairFace | $p_{F, D_f | A_1} = p_{F,D_0 | A_1}$ | $H_0$ : The proportions of Female labels, given that the source age label is 0-2, are equal. |
 | race            | All     | All        | Black    | DeepFace | $p_{R_B, D_d} = p_{R_B, D_0}$        | $H_0$: The proportions of Black labels are equal.                                            |
 
 ::: {.content-visible when-format="html"}
 The results are summarized in @tbl-perf-pvalue, which is interactive and filterable.
 
-<!-- ::: {#tbl-perf-pvalue} -->
-
 ```{r perf-pvalue}
 #| label: tbl-perf-pvalue
 #| tbl-cap: Table of F1 score, accuracy, p-value, and power, by each factor and category evaluated by the models, with a potential filtering condition.
 # BJ
-# Note: For some reason, making the table interactive (aka HTML) breaks Quarto table labeling/captioning/crossref
-# That's why we use a combination of table div and label.
 
 colnames = setNames(c("**Test Factor**", "**Age**", "**Gender**", "**Race**", "**p-Value**", "**Power**", "**F1 Score**", "**Accuracy**", "**Model**"),
                     names(view_results))
@@ -158,14 +154,12 @@ view_results %>%
   data_color(columns=6:8, palette="PiYG", domain=c(0, 1), alpha=0.75) %>%
   data_color(columns=5, method="bin", palette = c("#B1DC96", "#F2B8D2"), bins=c(0, 0.003, 1))
 ```
-
-<!-- ::: -->
 :::
 
 ::: {.content-visible when-format="pdf"}
 The results are summarized in @fig-perf-pvalue-pdf.
 
-![Screenshot of the interactive table showing TODO. To see and interact with this table, go to [the website link](https://cuboulder-ds.github.io/5301-5000-Final-Report/results.html)](%22images/table_interactive.png%22){#fig-perf-pvalue-pdf}
+![Screenshot of the interactive table showing F1 score, accuracy, p-value, and power, by each factor and category evaluated by the models, with a potential filtering condition. To see and interact with this table, go to [the website link](https://cuboulder-ds.github.io/5301-5000-Final-Report/results.html)](%22images/table_interactive.png%22){#fig-perf-pvalue-pdf}
 :::
 
 ### p-value Critical Values
@@ -238,7 +232,7 @@ From the previous table, we extract and highlight key values; namely, where we r
 -   Power threshold of 0.8
 -   F1-Score of 0.9
 
-Which come from the rationale described in @sec-methods. We show the test values where there is no sub-filtering/conditions by another category; then, we also highlight the reverse null hypothesis decisions made with filtering for a sub-condition and for the specific rows as described in the table captions. The coloring of cells is the same as in @tbl-perf-pvalue. The values are displayed in @tbl-reject-nulls. There is only a Fairface table for not rejecting the null hypothesis (with no condition subfiltering) because no DeepFace values passed our given thresholds for not rejecting; the same reasoning is why there is no table for FairFace rejecting the null hypothesis with condition subfiltering.
+Which come from the rationale described in @sec-methods. We show the test values where there is no sub-filtering/conditions by another category; then, we also highlight the reverse null hypothesis decisions made with filtering for a sub-condition and for the specific rows as described in the table captions. The values are displayed in @tbl-reject-nulls. There is only a Fairface table for not rejecting the null hypothesis (with no condition subfiltering) because no DeepFace values passed our given thresholds for not rejecting; the same reasoning is why there is no table for FairFace rejecting the null hypothesis with condition subfiltering.
 
 ```{r reject-nulls}
 #| label: tbl-reject-nulls
@@ -453,41 +447,13 @@ autoplot(conf_mat(df_tests, p_value_classification, f1_classification), type = "
   labs(title="DeepFace")
 ```
 
-<!-- ### Statistical Power - TODO REMOVE -->
-
-```{=html}
-<!-- $$
-\beta = P\bigg(\bigg|\frac{\sqrt{n}\cdot\hat{p}-p_a}{\sqrt{p_a(1-p_a)}}\bigg|\geq\frac{\sqrt{n}\cdot p_0-p_a}{\sqrt{p_0(1-p_0)}}\bigg)
-$$ -->
-```
-```{=html}
-<!-- Our selected level of significance is 99.7% (3-sigma). Type-II error is denoted by $\beta$ above, and Power will be $1-\beta$
-
-With $p_0$ being our *assumed* population proportion (from the source dataset and what we used in our tests), $p_a$ being the *actual* population proportion (from one or more of the below methods), $n$ being the number of predicted members of a racial group (i.e. "Indian"),
-
--   For Gender - assume that sex at birth is a bernoulli trial, over time, the proportion for both genders should be 0.5
-
--   For age groups - assume that age has a true normal distribution. Each race may have different means and standard deviations for their distribution of age, but still adhere to a normal distribution. The "population" proportions may be a bit more challenging to calculate, but under this framework, we may be able to get there.
-
-    -   May be able to get via bootstrapping the source dataset, average age by race - I think that's what we did in our last project?
-
-    -   Could look at external data? May not have time to look through everything. -->
-```
-```{r PowerCalcs}
-#can be removed.
-# TypeII <- function(p0,pa,n){
-#   z <- (sqrt(n)*(p0-pa))/(sqrt(p0*(1-p0)))
-# }
-
-```
-
 
 
 ## Population Estmate Plots - UTK Face vs. Model
 
 We used a resampling technique to produce estimated population proportion distributions for each sample.  Each resampling included 2000 samples of 500 subjects under their respective test conditions.
 
-To support our analysis and conclusions, we leveraged a resampling technique (bootstrap sampling) to build approximations of each sample’s parent population.  The resampling took 2000 samples of 500 random subjects, with replacement, to build the estimated distribution of proportions in the population under specified test conditions.  We find that these plots coincide with our hypothesis testing results – namely, that higher p-values result in greater overlap between the predicted and actual distributions, and lower p-values result in less overlap between the distributions.  As such, these distributions will support us in drawing our conclusions.
+To support our analysis and conclusions, we leveraged a resampling technique (bootstrap sampling) to build approximations of each sample’s parent population.  The resampling took 2000 samples of 500 random subjects, with replacement, to build the estimated distribution of proportions in the population under specified test conditions. The plots can be seen in @fig-p-age-plot to @fig-p-race-plot.  We find that these plots coincide with our hypothesis testing results – namely, that higher p-values result in greater overlap between the predicted and actual distributions, and lower p-values result in less overlap between the distributions.  As such, these distributions will support us in drawing our conclusions.
 
 ```{r importBootstrap}
 age_lev = factor(c("0-2","3-9","10-19","20-29","30-39","40-49","50-59","60-69","70-130"))
