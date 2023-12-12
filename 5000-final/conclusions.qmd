@@ -68,11 +68,19 @@ DeepFace, abasent other test conditions, indicates bias in correct prediction of
 
 ## Identifying Specific Biases with F1 and Accuracy Scores
 
-### FairFace
+--- GC & LN --- 
+When examining the results of the f1 tests for age, no categories for DeepFace passed an f1 score of 0.9. This implies a lack of performance on the part of DeepFace. As DeepFace is unable to detect faces between the ages of 0-9 and 70-130, there is a bias against very young and very old faces. Additionally, The group with the highest f1 performance is 20-29, implying a favorable bias towards adults, but not older adults. 
 
-### DeepFace
+	FairFace’s overall data, without input for race or gender, failed to produce any category that passed the f1 threshold of 0.9. This implies an overall lack of correct predictions for any one age group. However, the categories that did perform the best had a preferential bias towards the very young and very old faces, almost in opposition to DeepFace. The overall data for FairFace held a positive bias towards the ages of 0-9 and 70-130. When looking at specific categories, FairFace had a notable bias to identify male faces between the ages of 0-2 in the White, Asian, and Other categories, as only those categories passed the f1 threshold of 0.9. 
 
-## Summary
+	Race performs significantly worse for both DeepFace and FairFace, due to the fact that no overall category reaches above the 0.9 f1 cutoff for significance. Both models show preference for certain races. DeepFace shows a preferential bias for classifying White, Black, and Asian faces, and FairFace shows a similar bias for classifying Asian, Black and White faces, in that order. Indian and Other faces perform the worst overall for both models. Their f1 scores were significantly lower than the other three categories, by at least 0.2 for FairFace and 0.3 for DeepFace.
+
+	In terms of more specific preferences, DeepFace performs exceedingly poorly overall. No category for race given age scores over 0.9 for the f1 score. And overall, White faces score the highest, provided the identified faces are not 0-9. For FairFace, the only noted bias was a preference for Asian faces younger than 20, and White faces in the ranges of 0-9 and 60-130. For gender-specific biases, there are also no categories that score over 0.9, but it should be emphasized that DeepFace identified female faces for all races better than male faces. FairFace had a similar performance, except for Indian faces, where male faces scored above female ones.
+
+	Gender shows a similar pattern as race for overall evaluation. DeepFace fails to have any category pass the 0.9 f1 barrier, but male faces do show a slightly higher score than female ones. FairFace had both male and female faces score above 0.9, showing a notably positive performance, with little to no difference between males and females. 
+
+	DeepFace did show preference for certain genders given age, with the range of 30-69 performing above 0.9 for male faces, but only females age 20-29 were significant. This implies a positive bias towards identifying older male faces, as well as bias towards younger adult women. FairFace was more balanced, with significant scores for most age groups except for females age 0-2, and males 0-9. This showcases a negative bias against very young people in general, and particularly male children. For Gender given race, DeepFace had no statistically significant f1 scores, but did show a positive bias towards White faces, and negative biases towards Asian faces of all genders, and Black female faces. FairFace was far better in all categories, with f1 scores over 0.9 for all categories except Asian male faces. Therefore, it shows a significant negative bias against identifying Asian male faces.
+--- GC & LN ---
 
 
 <!----- GC --->
