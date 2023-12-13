@@ -288,7 +288,7 @@ These outcomes can be visualized in a confusion matrix. In @fig-confusion, green
 
 **Accuracy** is the ratio of correct predictions to all predictions. In other words, the total of the green squares divided by the entire matrix. This is arguably the most common concept of measuring performance. It ranges from 0-1 with 1 being the best performance.
 
-$Acccuracy = \frac{TP+TN}{TP + TN + FN}$
+$Acccuracy = \frac{TP+TN}{TP + TN + FP + FN}$
 
 ### Precision
 
