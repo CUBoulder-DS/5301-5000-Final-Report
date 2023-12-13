@@ -163,7 +163,11 @@ With the p-value being calculated by:
 
 $P(|Z| > z | H_0)$
 
-$= P(|Z| > \dfrac{(\hat p_1 - \hat p_2)}{\sqrt{ \hat p (1 - \hat p) (\dfrac{1}{n_{p_1}} + \dfrac{1}{n_{p_2}}})}$,
+$= P\bigg(|Z| > \dfrac{(\hat p_1 - \hat p_2)}{\sqrt{ \hat p (1 - \hat p) (\dfrac{1}{n_{p_1}} + \dfrac{1}{n_{p_2}}})}\bigg)$,
+
+With
+
+$\hat p = \dfrac{\hat p_1 * n_{p_1} + \hat p_2 * n_{p_2}}{n_{p_1} + n_{p_2}}$
 
 Where:
 
@@ -210,7 +214,7 @@ $H_A: p_{F, D_f} \neq p_{F,D_0}$
 
 P-value Calculation:
 
-$P(|Z| > \dfrac{(\hat p_1 - \hat p_2)}{\sqrt{ \hat p (1 - \hat p) (\dfrac{1}{n_{p_1}} + \dfrac{1}{n_{p_2}}})})$,
+$P\bigg(|Z| > \dfrac{(\hat p_1 - \hat p_2)}{\sqrt{ \hat p (1 - \hat p) (\dfrac{1}{n_{p_1}} + \dfrac{1}{n_{p_2}}})}\bigg)$,
 
 where
 
