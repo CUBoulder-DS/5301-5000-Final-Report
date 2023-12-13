@@ -37,7 +37,9 @@ nocite: |
 ## Controls for each output format
 format:
   html:
-    theme: flatly
+    theme: 
+      - flatly
+      - custom.scss
     page-layout: full
     smooth-scroll: true
     number-sections: true

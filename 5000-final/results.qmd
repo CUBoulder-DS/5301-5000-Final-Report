@@ -133,7 +133,7 @@ For each factor category and model, we calculate the F1 score, accuracy, p-value
 | gender          | 0-2     | Female     | All      | FairFace | $p_{F, D_f | A_1} = p_{F,D_0 | A_1}$ | $H_0$ : The proportions of Female labels, given that the source age label is 0-2, are equal. |
 | race            | All     | All        | Black    | DeepFace | $p_{R_B, D_d} = p_{R_B, D_0}$        | $H_0$: The proportions of Black labels are equal.                                            |
 
-::: {.content-visible when-format="html"}
+::: {.column-body-outset .content-visible when-format="html"}
 The results are summarized in @tbl-perf-pvalue, which is interactive and filterable.
 
 ```{r perf-pvalue}
