@@ -232,7 +232,7 @@ div.csl-indent {
 <p>As described in the previous section, the two selected models (DeepFace and FairFace) are run on the UTK face dataset in order to generate output of classification across 3 categories (age, race, and gender). We evaluate the performance of this classification, and perform hypothesis testing in order to answer the key research questions.</p>
 <section id="data-cleaning-standardizing-model-outputs" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="data-cleaning-standardizing-model-outputs"><span class="header-section-number">3.1</span> Data Cleaning: Standardizing Model Outputs</h2>
-<p>As can be seen in <a href="data.html" class="quarto-xref"><span>Chapter&nbsp;2</span></a>, there are some key differences between the outputs of both models as well as the source data that we needed to resolve to enable comparison of each dataset to one another. We’ll focus on the primary features of age, gender, and race from each dataset.</p>
+<p>As can be seen in <span class="quarto-unresolved-ref">?sec-data</span>, there are some key differences between the outputs of both models as well as the source data that we needed to resolve to enable comparison of each dataset to one another. We’ll focus on the primary features of age, gender, and race from each dataset.</p>
 <section id="fairface-output-modifications" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="fairface-output-modifications"><span class="header-section-number">3.1.1</span> FairFace Output Modifications</h3>
 <p>We’ll discuss FairFace first, as it introduces a requirement for modification to both our input information as well as the outputs for DeepFace.</p>
@@ -464,7 +464,7 @@ Figure&nbsp;3.1: Confusion_matrix
 <section id="accuracy" class="level3" data-number="3.5.1">
 <h3 data-number="3.5.1" class="anchored" data-anchor-id="accuracy"><span class="header-section-number">3.5.1</span> Accuracy</h3>
 <p><strong>Accuracy</strong> is the ratio of correct predictions to all predictions. In other words, the total of the green squares divided by the entire matrix. This is arguably the most common concept of measuring performance. It ranges from 0-1 with 1 being the best performance.</p>
-<p><span class="math inline">\(Acccuracy = \frac{TP+TN}{TP + TN + FN}\)</span></p>
+<p><span class="math inline">\(Acccuracy = \frac{TP+TN}{TP + TN + FP + FN}\)</span></p>
 </section>
 <section id="precision" class="level3" data-number="3.5.2">
 <h3 data-number="3.5.2" class="anchored" data-anchor-id="precision"><span class="header-section-number">3.5.2</span> Precision</h3>
