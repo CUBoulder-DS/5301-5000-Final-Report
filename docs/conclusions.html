@@ -256,30 +256,29 @@ Like the introduction, this section should be written with a **non-expert** in m
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="race-prediction"><span class="header-section-number">5.2.2</span> Race Prediction</h3>
 <section id="fairface-1" class="level4" data-number="5.2.2.1">
 <h4 data-number="5.2.2.1" class="anchored" data-anchor-id="fairface-1"><span class="header-section-number">5.2.2.1</span> FairFace</h4>
-<p>FairFace demonstrates potential biases in predicting race for Black, Indian, White, and Other categories. Given either gender, this holds true only for Black, Indian, and Other categories, with more specific potential biases for White, given they are male.</p>
-<p>Interestingly, given age, potential biases manifest for Asians, given they are 30-39, with little to no changes for the other races across every age category.</p>
+<p>FairFace demonstrates potential biases in predicting race for Black, Indian, White, and Other categories. Given either gender, this holds true only for Black, Indian, and Other categories, with more specific potential biases for White, given they are male. Interestingly, given age, potential biases manifest for Asians, given they are 30-39, with little to no changes for the other races across every age category.</p>
 </section>
 <section id="deepface-1" class="level4" data-number="5.2.2.2">
 <h4 data-number="5.2.2.2" class="anchored" data-anchor-id="deepface-1"><span class="header-section-number">5.2.2.2</span> DeepFace</h4>
-<p>DeepFace demonstrates potential biases in predicting</p>
+<p>DeepFace demonstrates potential biases in predicting race for all racial groups, absent other test conditions. Given gender, the potential remains for all categories except for Black subjects, given they are male. Given age, the potential remains for all racial categories, given they are between the ages of 10 and 69.</p>
 </section>
 </section>
 <section id="gender-prediction" class="level3" data-number="5.2.3">
 <h3 data-number="5.2.3" class="anchored" data-anchor-id="gender-prediction"><span class="header-section-number">5.2.3</span> Gender Prediction</h3>
 <section id="fairface-2" class="level4" data-number="5.2.3.1">
 <h4 data-number="5.2.3.1" class="anchored" data-anchor-id="fairface-2"><span class="header-section-number">5.2.3.1</span> FairFace</h4>
-<p>We lack sufficient information to conclude that FairFace, absent other test conditions, holds a bias in correct prediction of subject gender.</p>
+<p>We lack sufficient information in our hypothesis tests to conclude that FairFace, absent other test conditions, presents potential bias in correct prediction of subject gender. Given race, potential bias manifests for any gender, given they are White or Other. Given age, they manifest for every gender, given age ranges of 0-2 and 20-39, and 60-130.</p>
 </section>
 <section id="deepface-2" class="level4" data-number="5.2.3.2">
 <h4 data-number="5.2.3.2" class="anchored" data-anchor-id="deepface-2"><span class="header-section-number">5.2.3.2</span> DeepFace</h4>
-<p>DeepFace, abasent other test conditions, indicates bias in correct prediction of gender.</p>
+<p>DeepFace, absent other test conditions, indicates potential bias in prediction of either gender. This potential remains, given race. Given age, the potential only remains in the age range of 10-69.</p>
 </section>
 </section>
 </section>
 <section id="identifying-specific-biases-with-f1-and-accuracy-scores" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="identifying-specific-biases-with-f1-and-accuracy-scores"><span class="header-section-number">5.3</span> Identifying Specific Biases with F1 and Accuracy Scores</h2>
 <!-- PC-->
-<p>When examining p-values for potential areas of bias, our hypothesis testing results did not align with our F1 score calculations. E.g. a rejection of the null hypothesis did not directly translate to a low F1 score, with the inverse also being true. We proceeded to examine F1 scores, separate of p-value and power results from our hypothesis tests.</p>
+<p>When examining p-values for potential areas of bias, our hypothesis testing results did not well-align with our F1 score calculations. E.g. a rejection of the null hypothesis did not directly translate to a low F1 score, with the inverse also being true. We proceeded to examine F1 scores, separate of p-value and power results from our hypothesis tests.</p>
 <p>General trends for both models: many categories and sub-categories of protected classes fail to meet our selected definition of excellence (F1 score of 0.9 or more). FairFace had more results meeting our definition of excellence compared to DeepFace. Both models demonstrate preference in classification for specific age groups, races, and genders, and both seem to display biases against Indian and Other racial categories. Examining a particular class of subjects, given additional controlling variables, reveal nested biases for and against various classes. <!--PC--></p>
 <!--- GC & LN --->
 <section id="age" class="level3" data-number="5.3.1">
@@ -340,8 +339,8 @@ Like the introduction, this section should be written with a **non-expert** in m
 <section id="areas-for-further-research" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="areas-for-further-research"><span class="header-section-number">5.5</span> Areas for Further Research</h2>
 <ul>
-<li></li>
-<li></li>
+<li><p>As mentioned previously - Are differences in source populations between an evaluated dataset and a facial recognition model a result of feature differences between a model’s training data and the model’s classification predictions on novel images?</p></li>
+<li><!--DOES ANYONE HAVE ANY OTHER IDEAS? --></li>
 </ul>
 </section>
 <section id="more-conclusions-for-the-mathematically-inclined" class="level2" data-number="5.6">

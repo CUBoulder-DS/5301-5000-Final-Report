@@ -38,27 +38,25 @@ DeepFace displays extreme potential for bias in age prediction for subjects in a
 
 #### FairFace
 
-FairFace demonstrates potential biases in predicting race for Black, Indian, White, and Other categories.  Given either gender, this holds true only for Black, Indian, and Other categories, with more specific potential biases for White, given they are male.
-
-Interestingly, given age, potential biases manifest for Asians, given they are 30-39, with little to no changes for the other races across every age category.
+FairFace demonstrates potential biases in predicting race for Black, Indian, White, and Other categories.  Given either gender, this holds true only for Black, Indian, and Other categories, with more specific potential biases for White, given they are male.  Interestingly, given age, potential biases manifest for Asians, given they are 30-39, with little to no changes for the other races across every age category.
 
 #### DeepFace
 
-DeepFace demonstrates potential biases in predicting 
+DeepFace demonstrates potential biases in predicting race for all racial groups, absent other test conditions.  Given gender, the potential remains for all categories except for Black subjects, given they are male.  Given age, the potential remains for all racial categories, given they are between the ages of 10 and 69.
 
 ### Gender Prediction
 
 #### FairFace
 
-We lack sufficient information to conclude that FairFace, absent other test conditions, holds a bias in correct prediction of subject gender.
+We lack sufficient information in our hypothesis tests to conclude that FairFace, absent other test conditions, presents potential bias in correct prediction of subject gender.  Given race, potential bias manifests for any gender, given they are White or Other.  Given age, they manifest for every gender, given age ranges of 0-2 and 20-39, and 60-130.
 
 #### DeepFace
 
-DeepFace, abasent other test conditions, indicates bias in correct prediction of gender.
+DeepFace, absent other test conditions, indicates potential bias in prediction of either gender.  This potential remains, given race.  Given age, the potential only remains in the age range of 10-69.
 
 ## Identifying Specific Biases with F1 and Accuracy Scores
 <!-- PC-->
-When examining p-values for potential areas of bias, our hypothesis testing results did not align with our F1 score calculations.  E.g. a rejection of the null hypothesis did not directly translate to a low F1 score, with the inverse also being true.  We proceeded to examine F1 scores, separate of p-value and power results from our hypothesis tests.
+When examining p-values for potential areas of bias, our hypothesis testing results did not well-align with our F1 score calculations.  E.g. a rejection of the null hypothesis did not directly translate to a low F1 score, with the inverse also being true.  We proceeded to examine F1 scores, separate of p-value and power results from our hypothesis tests.
 
 General trends for both models: many categories and sub-categories of protected classes fail to meet our selected definition of excellence (F1 score of 0.9 or more).  FairFace had more results meeting our definition of excellence compared to DeepFace. Both models demonstrate preference in classification for specific age groups, races, and genders, and both seem to display biases against Indian and Other racial categories.  Examining a particular class of subjects, given additional controlling variables, reveal nested biases for and against various classes.
 <!--PC-->
@@ -127,9 +125,9 @@ These preferential biases can result in discrimination:
 
 ## Areas for Further Research
 
-* 
+* As mentioned previously - Are differences in source populations between an evaluated dataset and a facial recognition model a result of feature differences between a model's training data and the model's classification predictions on novel images?
 
-* 
+* <!--DOES ANYONE HAVE ANY OTHER IDEAS? -->
 
 ## More Conclusions, for the Mathematically Inclined
 <!--PC regarding 2-sample hypothesis tests--> 
