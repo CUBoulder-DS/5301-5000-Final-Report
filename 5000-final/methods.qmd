@@ -16,16 +16,37 @@ We'll discuss FairFace first, as it introduces a requirement for modification to
 
 -   **Race**: the source data from UTKFace has 5 categories "White" "Black" "Asian" "Indian" and "Other". Using the definitions from UTKFace, we collapse the output categories of FairFace's Fair7 model as follows:
 
+```{r}
+library(tidyverse)
+old <-c("Southeast Asian, East Asian","Middle Eastern, Latino_Hispanic") 
+new <-c('Asian','Other')
+tibble(
+    `Model Classification`=old,
+    `Refactored Classification`=new
+) %>% knitr::kable()
+```
+<!--
 \["Southeast Asian","East Asian"\] =\> "Asian" \["Middle Eastern" , "Latino_Hispanic\] =\>"Other"
-
+-->
 ### DeepFace Output Modifications
 
 -   **Age**: Cut the predicted age into bins based upon the same prediction ranges provided by FairFace. If the DeepFace predicted age falls into a range provided by FairFace, provide that as the predicted age range for DeepFace.
 
--   **Gender**: we adjust the DeepFace gender prediction outputs to match that of the source and FairFace data with the following refactoring: "Man" =\> "Male" "Woman" =\> "Female"
+-   **Gender**: we adjust the DeepFace gender prediction outputs to match that of the source and FairFace data.
 
--   **Race**: we adjust the DeepFace race prediction outputs to match that of the source dataset with the following refactoring:
+-   **Race**: we adjust the DeepFace race prediction outputs to match that of the source dataset.
 
+Our refactoring is as follows for DeepFace:
+
+```{r}
+old <-c("woman","man","white","black",'indian','asian','middle eastern, latino hispanic') 
+new <-c("Female","Male",'White','Black','Indian','Asian','Other')
+tibble(
+    `Model Classification`=old,
+    `Refactored Classification`=new
+) %>% knitr::kable()
+```
+<!--
 -   "white" =\> "White"
 
 -   "black" =\> "Black"
@@ -35,7 +56,7 @@ We'll discuss FairFace first, as it introduces a requirement for modification to
 -   "asian" =\> "Asian"
 
 -   \["middle eastern", "latino hispanic"\] =\> "Other"
-
+-->
 ### Source Data Modifications
 
 -   **Age:** We cut the predicted age into bins based upon the same prediction ranges provided by FairFace. If the input / source data age falls into a range provided by FairFace, provide that is the source age range for the image subject.
@@ -63,20 +84,20 @@ We also perform some meta-analysis on the statistics and performance metrics cal
 -   Visualization of the p-values vs F1-score across all hypothesis tests across both models
 -   Confusion matrix of whether we reject or fail to reject the null hypothesis based on power and F1 score
 
-## Research Questions
+<!---## Research Questions 
 
 We evaluate the output of the 2 models in order to answer the following questions:
 
 <!--PC
 Below - some of these research questions can't be answered with hypothesis testing.  Commented those out and changed to new questions.
--->
+->
 
 -   Is it possible to identify, detect, and classify biases in machine learning models using proportionality testing?
 
 -   Is bias prevalent in facial recognition machine learning models?
-<!---   Can one model be shown to have statistically significant less bias than the other?
+   Can one model be shown to have statistically significant less bias than the other?
 -   Does one model outperform the other in a statistically significant manner, in all aspects?
--   Does one model outperform the other in a statistically significant manner, in certain aspects? --> 
+-   Does one model outperform the other in a statistically significant manner, in certain aspects? -> 
 
 -   Can one model be shown to have a greater quantity of statistically significant biases than the other?
 
@@ -85,7 +106,7 @@ Below - some of these research questions can't be answered with hypothesis testi
     - In specific/certain aspects? 
 
 -   Are there disparate outcomes (i.e. higher chance of incorrect predictions) for one racial group vs. another?
-
+-->
 ## Hypothesis Testing
 
 Our data consists of three main sets: the source input data, the Fairface output data, and the Deepface output data.
@@ -154,12 +175,12 @@ Where:
 
 We also calculate the power of each test performed, and use a power level threshold of 0.8 in order to assess the strength of the p-value calculated.
 
-We believe that using two-sample proportion testing is an appropriate means by which we can evaluate the outputs of the two facial recognition models in comparison to the source data. In leveraging two-sample proportion tests, we can infer whether or not the proportions of age, gender, or race (or some combination thereof) from the UTKFace dataset (i.e. 1st sample) originate from the same population as the outputs from each facial recognition model (i.e. 2nd dataset).
+Our research explores the possiblity of using two-sample proportion testing as a means by which one could evaluate the performance of a machine learning model; we are uncertain as to whether or not it is appropriate. In leveraging two-sample proportion tests, we can infer whether the proportions of age, gender, or race (or some combination thereof) from the UTKFace dataset (i.e. 1st sample) originate from the same population as the outputs from each facial recognition model (i.e. 2nd dataset).
 
-In theory, similar proportions of protected classes between the two datasets could suggest that the source data and predicted data originate from the same population (pictures of people), and would thus indicate an absence of bias against the protected class in question. Vastly different proportions, however, could indicate that the source data and predicted data are from differing populations and indicate a bias against the protected classes in question.
+In theory, substantial differences in proportions of protected classes between the two datasets could suggest that the source data and predicted data originate from differing populations (pictures of people on the internet), and could thus indicate an absence of bias against the protected class in question.
 
-Leveraging p-values and powers calculated on our samples for our protected classes of age, gender, and race, should enable us to provide a clear picture of any biases that may manifest from one or both models. Leveraging F1 scores (as described below) will help us identify the specific cases of bias, and whether it is in favor of or against a specific group.<!--in cases of inconclusive results from p-value and power should assist us in identifying potential error.-->
-
+Leveraging p-values and powers calculated on our samples for our protected classes of age, gender, and race, may enable us to identify biases that may manifest from one or both models. Leveraging F1 scores (as described below) will help us identify specific cases of bias, and whether they are in favor of or against a specific group. 
+<!-- updated language to focus in on cases of rejecting the null-->
 <!-- end PC-->
 
 ### Notation
@@ -206,59 +227,23 @@ These were two specific hypothesis tests, however, we'll be testing all combinat
 
 <!--PC-->
 
-In the above, we've outlined our methods for examining a total of 432 hypothesis tests per recognition model on the totality of, and smaller samples of, our overall dataset. We have elected to sub-divide our source and predicted samples by these protected classes to inspect and investigate whether or not there may be bias against groupings of protected classes.
+In the above, we've outlined our methods for examining a total of 432 hypothesis tests per recognition model on the totality of, and smaller samples of, our overall dataset. We have elected to sub-divide our source and predicted samples by these protected classes to inspect and investigate bias against groupings of protected classes.
 
-For instance, in the performance of our hypothesis tests, we may find an absence of bias when only examining proportions of gender between samples. However, by examining a subset of our samples, such as subject gender given the subject's membership in a specific racial category, we may find biases in predictions of subject gender given their membership in a specific racial group.
+For instance, in the performance of our hypothesis tests, we may find lack of evidence for a bias when only examining proportions of gender between samples. However, by examining a subset of our samples, such as subject gender given the subject's membership in a specific racial category, we may find biases in predictions of subject gender given their membership in a specific racial group.
 
 This could help us answer questions and draw conclusions about such groups. For example:
 
-<!--"Model X demonstrates bias in favor of correctly predicting race, given the subject is young." - which also suggests a bias against correctly predicting the race of older subjects in a model. Such a bias, if used in a decision making process, could result in age discrimination.
-
-"Model Y demonstrates bias against predicting correct gender, given the subject image is Black, Asian, or Other." - which also suggests a bias for correctly predicting gender, given the subject is White or Indian. Such a bias, if used in a decision making process, could result in racial discrimination.
--->
 "Model X demonstrates bias in predicting the race of older subjects."  Such a statement is not one of bias for or against the target group, but that a bias exists.  A bias in either direction, if used in a decision-making process, could result in age discrimination.
 
 "Model Y demonstrates bias in predicting gender, given the subject is Black, Asian, or Other."  Such a statement is not one of bias for or against the target groups, but a statement that a bias exists. Such a bias, if used in a decision-making process, could result in gender or racial discrimination.
 
-Structuring our tests in this manner will enable us to quickly analyze and report on the results of our tests.
+Structuring our tests in this manner enables us to quickly analyze and report on the results of our tests.
 
 <!--end PC-->
 
 ## Performance Measurement
 
 We evaluate the performance of the models in order to choose which models to use (as described in the Data section), to ensure data integrity, and to evaluate the hypothesis testing in context of performance. These measures are not used in the calculation of the statistical/hypothesis testing.
-
-<!-- ::: callout-note -->
-
-<!-- This performance section is important in choosing the correct models to ensure data integrity, however for the actual statistical tests, we'll focused on more common statistics like mean and proportion. -->
-
-<!-- PC -->
-
-<!-- NOTE: From Rubric - May need to relocate sub-sections from data back to here: -->
-
-<!-- -   Exploratory data analysis -->
-
-<!-- -   what modifications were necessary to make the dataset ready for analysis? -->
-
-<!-- Separate of those two - may need explanations on the analyses we performed and **why we think they are appropriate.** We have part of that regarding the F1 use to possibly identify errors, may need more on two-prop tests and the like -->
-
-<!-- end PC-->
-
-<!-- PC -->
-
-<!-- These are PC's recommendations on how we can look at the additional values: -->
-
-<!-- For cases in which we reject the statistical null hypothesis, we plan to evaluate the below metrics for the same output category. Should we reject a null hypothesis for, let's say, the proportion of females, given that they are asian, we will examine the accuracy and F-1 scores for the same category. We will consider the following range of values: -->
-
-<!-- -   F1 Score \< .9 vs F1 Score \>= 0.9 -->
-
-<!-- -   Power \< .8 vs Power \>= .8 -->
-
-<!-- -   p-value \< .003 vs pvalue \>= .003 -->
-
-<!-- PC -->
-
-<!-- ::: -->
 
 There are four main measures of performance when evaluating a model:
 
@@ -306,22 +291,4 @@ F1-Score $= \frac{2 * Precision * Recall}{Precision + Recall}$
 
 When considering the classification of a subject by protected classes of age, gender, and race, we believe that stronger penalties should be assigned in making an improper classification decision. Due to F1 being the harmonic mean of precision and recall, incorrect classification will more directly impact the score of each model in its prediction of protected classes, and do so more strongly than an accuracy calculation [@mediumPerf].
 
-We calculate F1 score as a measure of performance of our selected machine learning models. This was not used in the calculation or results of the hypothesis tests, but will be used for when we draw conclusions of our tests based upon p-value and statistical power. Namely, we do not plan to control for statistical power / Type-II error when running our 432 hypothesis tests, so statistical power may vary from test to test. Using F1 and Accuracy scores can support us in identifying specific cases of bias (and whether it is for or against) one or more protected classes.  We elect to use an F1 score threshold of 0.9 to make this determination.<!--Using F1 scores to assess p-values in cases of low statistical power should assist us in identifying potential Type-II Errors. We set a F1 score threshold of 0.9 to make this determination.--> 
-
-<!-- ::: callout-note -->
-
-<!-- ## From the report requirements -->
-
-<!-- Also can be called "Analyses" -->
-
-<!-- This section might contain several subsections as needed. -->
-
-<!-- -   At least one subsection should describe the exploratory data analysis you did. -->
-
-<!-- -   What modifications were necessary to make the dataset ready for analysis? (e.g. dealing with missing values, removing certain rows, replacing/cleaning text values, binning, etc) -->
-
-<!-- -   Describe the analyses you did to answer the question of interest. **Explain why you believe these methods are appropriate.** -->
-
-<!-- Some methods we learn in this class include distribution comparison, correlation analysis, and hypothesis testing. You are required to include hypothesis tests into the project, but feel free to use additional methods to tell a good story about the data. -->
-
-<!-- ::: -->
+We calculate F1 score as a measure of performance of our selected machine learning models. F1 scores will not be considered when evaluating the results of our hypothesis testing or impact them in any way. We will compare our results for F1 score against our hypothesis test results to examine possibility of correlation or fit of proportionality tests as a means for predicting model performance. Separately, we will leverage F1 scores to examine biases for or against protected classes.
