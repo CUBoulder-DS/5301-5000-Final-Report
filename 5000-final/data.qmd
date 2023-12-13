@@ -1,13 +1,30 @@
 # Data {#sec-data}
 
-Pursuant to the study, the team sought out multiple datasets on which we could evaluate the performance of two selected recognition models (Facebook's DeepFace and K. Karkkainen & J. Joo's Fair Face models) to generate performance data and perform statistical analysis on their ability to accurately identify race, age, and gender of a subject in a photograph.
+Pursuant to the study, the team sought out multiple datasets on which we could evaluate the performance of two selected recognition models [@fairface; @deepface] to generate performance data and perform statistical analysis on their ability to accurately identify race, age, and gender of a subject in a photograph.
 
-Collectively, we landed on the UTK dataset to perform our evaluation:
-[https://susanqq.github.io/UTKFace/](https://susanqq.github.io/UTKFace/)
+Collectively, we landed on the UTK dataset to perform our evaluation [@utkdataset]. The dataset has three main sets available for download from the main page: A set of "in-the-wild" faces, which are the raw unprocessed images. The second set is the Aligned & Cropped Faces, which have been cut down to allow facial algorithms to read them more easily. The final file is the Landmarks (68 points) dataset, which contains the major facial landmark points that algorithms use and process to examine the images.
 
-The dataset has three main sets available for download from the main page: A set of "in-the-wild" faces, which are the raw unprocessed images. The second set is the Aligned & Cropped Faces, which have been cut down to allow facial algorithms to read them more easily. The final file is the Landmarks (68 points) dataset, which contains the major facial landmark points that algorithms use and process to examine the images.
+## Data Selection
 
-## Exploration of Source Data
+### Motivation
+
+Joy Buolamwini, a PhD candidate at MIT Media Lab, published a paper on gender and racial biases in facial recognition in algorithms [@joyGender]. In her paper, she tested facial recongition softwares from multiple large technology companies such as Microsoft, IBM, and Amazon on its effectiveness for different demographic groups. Her research led to a surprising conclusion that most AI algorithms offer a substantially less accurate prediction for feminine/female faces, particularly those with dark skin color.
+
+To determine the degree in which bias is still present in modern facial recognition models, a dataset which comprise of face images with high diversity in regards to eethnicity is required. Upon searching, UTKFace came out as one of the largest datasets which fit our preferred qualifications.
+
+### Data Collection Method
+
+The dataset utilized for this research is UTKFace dataset. It is a publicly available large scale face dataset non-commercial on Github. The dataset was created by Yang Song and Zhifei Zhang, researchers at Adobe and PhD candidates at The University of Tennessee, Knoxville. On its Github page, it is specified that the images were collected from the internet. They appear to be obtained through the application of technique such as web scraping.<!-- Where is this coming from?--> The dataset contains more than 24,000 face images, representing a highly diversified demographics. However, face images vary in pose, facial expression, lighting, and resolution.
+
+### Dataset Features 
+
+The input dataset provided feature information natively in each filename without additional external data.  The features contained therein include the following items for each image's subject.  They are defined as follows:
+
+* "[race] is an integer from 0 to 4, denoting White, Black, Asian, Indian, and Others (like Hispanic, Latino, Middle Eastern)."
+* "[gender] is either 0 (male) or 1 (female)"
+* "[age] is an integer from 0 to 116, indicating the age"
+
+As our work is focused in potential biases in protected classes such as race, gender, and age, the features of UTKFace are sufficient to meet the needs for an input dataset for category prediction in our selected models. Examples of the source dataset images are in @fig-faces.
 
 ::: {#fig-faces layout-ncol=3}
 
@@ -20,11 +37,31 @@ The dataset has three main sets available for download from the main page: A set
 Example face images from the UTK dataset [@utkdataset] with their associated given labels.
 :::
 
+### Sources and Influences of Bias in the Dataset
+
+Facial datasets can be extremely hard to categorize correctly, never mind reducing bias overall. Facial features that are androgynous or defer from the average features of the set can often be misrepresented or reported incorrectly. Those with features that make them look younger or older than their actual age may also be difficult for a computer to accurately guess.
+
+The datasets used for analysis contain solely male/masculine and female/feminine faces. As stated above, the faces are labelled either 0, for male, or 1, for female. There are no gender non-conforming/non-binary/trans faces or people reported in the datasets, which could introduce potential bias. This absence of an entire category of facial features could also result in inaccurate guesses should these faces be added to the data later.
+
+The datasets do not report nationality or ethnicity. This can introduce inaccuracy in the part of the identification, and it also may identify the face in a racial group that the person identified would consider inaccurate. This is as much a matter of potentially inaccurate data as it is social labels. There is also a level of erasure associated with simply creating a "multi-racial" category, given that it would bin all multiracial faces together with no further consideration. That is to say, there is no ideal solution to the issue at this time. However, it is always worth pointing out potential biases in data, research, and analysis.
+
+The data given in the UTK dataset is composed purely of people who have their faces on the internet. This introduces a potential sampling bias. Given the topic, it is also likely to come from populations well-versed in technology. This can often exclude rural populations. Thus, the facial data present can be skewed towards urban residents or other characteristics, which can potentially create "lurking variables" that we aren't aware of within the data. This is a common problem that many Anthropological and Sociological studies face when collecting and analyzing data. Being aware of the possibility is often the first, and most crucial, step towards reducing it.
+
+Our source dataset, and thus our results and conclusions, are dependent on the correctness of labeling of images within the UTK dataset.  Given that the dataset was web-scraped, we do not know the degree of care placed on dataset labeling during web-scraping.  Any incorrect labels present in the data can skew our results.
+
+Overall, all the given potential biases listed above are simply the largest and most easily identified. It is possible that other sources of bias are present in the data that we haven't noticed. And identifying these biases does not mean that the data is not sound, or that any conclusions drawn from it are invalid. It simply indicates that further research should be done and that this data is far from the most complete picture of human facial features and identification. Examples of what is in the data, as well as a visualization of the bias present in the data, can be seen in @fig-data-eda.
+
+
+### Exploration of Source Data
+
+<!--  PC -->
+For initial exploration of the UTKFace dataset, we sought to determine the distribution of age, given other categorical variables. To support hypothesis testing, such as z-tests, t-tests, it is important for us to inspect our data for a normal distribution.  In our case, we are only able to initially inspect age, as it is the only numerical variable from our data available.
+
+Examining the data in @fig-data-eda, we have a somewhat normal distribution of age with heavy tails, centered between the ages of 30 and 35.  To examine distributions of race and gender, we will perform a bootstrapped sampling of proportions of these variables, and include them in our results section.  Having such distributions will provide normal distributions and support us in evaluating our results.
+
+**A note on sample independence**.  For each of the selected facial recognition models, we assume that each model's training dataset is independent of the content of the UTKFace dataset.  Independence between each model's output and the source data is a requirement for performing our testing.  We have no means or methods to verify whether or not any UTKFace images were used in the training of either model, and must make this assumption before moving forward in our methods and results.
+
 <!-- CK -->
-
-
-
-
 ::: {.content-visible when-format="html"}
 ::: {#fig-data-eda}
 ```{=html}
@@ -75,13 +112,7 @@ Feel free to add anything else that you think is necessary for understanding the
 :::
 -->
 
-<!--  PC -->
 
-For initial exploration of the UTKFace dataset, we sought to determine the distribution of age, given other categorical variables. To support hypothesis testing, such as z-tests, t-tests, it is important for us to inspect our data for a normal distribution.  In our case, we are only able to initially inspect age, as it is the only numerical variable from our data available.
-
-Examining the data, we have a somewhat normal distribution of age with heavy tails, centered between the ages of 30 and 35.  To examine distributions of race and gender, we will perform a bootstrapped sampling of proportions of these variables, and include them in our results section.  Having such distributions will provide normal distributions and support us in evaluating our results.
-
-**A note on sample independence**.  For each of the selected facial recognition models, we assume that each model's training dataset is independent of the content of the UTKFace dataset.  Independence between each model's output and the source data is a requirement for performing our testing.  We have no means or methods to verify whether or not any UTKFace images were used in the training of either model, and must make this assumption before moving forward in our methods and results.
 
 ```{r extraCodeOnOurData}
 suppressPackageStartupMessages(library(tidyverse))
@@ -173,59 +204,18 @@ t <- tibble(filenames=f,purpose=p,recommendations=r)
 #knitr::kable(t)
 ```
 
-## Data Selection (UTK Dataset)
 
-### Motivation for the Selection of UTKFace Dataset
-
-In 2018, [Joy Buolamwini](https://www.media.mit.edu/people/joyab/overview/), a PhD candidate at MIT Media Lab, published a [thesis](https://www.media.mit.edu/publications/gender-shades-intersectional-accuracy-disparities-in-commercial-gender-classification/) on gender and racial biases in facial recognition in algorithms. In her paper, she tested facial recongition softwares from multiple large technology companies such as Microsoft, IBM, and Amazon on its effectiveness for different demographic groups. Her research led to a surprising conclusion that most AI algorithms offer a substantially less accurate prediction for feminine/female faces, particularly those with dark skin color.
-
-To determine the degree in which bias is still present in modern facial recognition models, a dataset which comprise of face images with high diversity in regards to eethnicity is required. Upon searching, UTKFace came out as <!--the--> one of the largest datasets which fit our preferred qualifications.
-
-### Data Collection Method
-
-The dataset utilized for this research is UTKFace dataset. It is a publicly available large scale face dataset non-commercial on Github. The dataset was created by Yang Song and Zhifei Zhang, researchers at Adobe and PhD candidates at The University of Tennessee, Knoxville. On its Github page, it is specified that the images were collected from the internet. They appear to be obtained through the application of technique such as web scrapping.<!-- Where is this coming from?--> The dataset contains more than 24,000 face images, representing a highly diversified demographics. However, face images vary in pose, facial expression, lighting, and resolution.
-
-### Sources and Influences of Bias in the Dataset
-
-Facial datasets can be extremely hard to categorize correctly, never mind reducing bias overall. Facial features that are androgynous or defer from the average features of the set can often be misrepresented or reported incorrectly. Those with features that make them look younger or older than their actual age may also be difficult for a computer to accurately guess.
-
-The datasets used for analysis contain solely male/masculine and female/feminine faces. As stated above, the faces are labelled either 0, for male, or 1, for female. There are no gender non-conforming/non-binary/trans faces or people reported in the datasets, which could introduce potential bias. This absence of an entire category of facial features could also result in inaccurate guesses should these faces be added to the data later.
-
-The datasets do not report nationality or ethnicity. This can introduce inaccuracy in the part of the identification, and it also may identify the face in a racial group that the person identified would consider inaccurate. This is as much a matter of potentially inaccurate data as it is social labels. There is also a level of erasure associated with simply creating a "multi-racial" category, given that it would bin all multiracial faces together with no further consideration. That is to say, there is no ideal solution to the issue at this time. However, it is always worth pointing out potential biases in data, research, and analysis.
-
-The data given in the UTK dataset is composed purely of people who have their faces on the internet. This introduces a potential sampling bias. Given the topic, it is also likely to come from populations well-versed in technology. This can often exclude rural populations. Thus, the facial data present can be skewed towards urban residents or other characteristics, which can potentially create "lurking variables" that we aren't aware of within the data. This is a common problem that many Anthropological and Sociological studies face when collecting and analyzing data. Being aware of the possibility is often the first, and most crucial, step towards reducing it.
-
-<!--If it was indeed web-scraped-->Our source dataset, and thus our results and conclusions, are dependent on the correctness of labeling of images within the UTK dataset.  Given that the dataset was web-scraped, we do not know the degree of care placed on dataset labeling during web-scraping.  Any incorrect labels present in the data can skew our results.
-
-Overall, all the given potential biases listed above are simply the largest and most easily identified. It is possible that other sources of bias are present in the data that we haven't noticed. And identifying these biases does not mean that the data is not sound, or that any conclusions drawn from it are invalid. It simply indicates that further research should be done and that this data is far from the most complete picture of human facial features and identification.
 
 ## Selected Models
 
 ### FairFace 
 
-Developed by researchers at University of California, Los Angeles, FairFace was specifically designed to mitigate gender and racial biases. The [model](https://github.com/dchen236/FairFace) was trained on 100K+ face images of people of various ethnicities with approximately equal stratification across all groups. Beside facial recognition model, FairFace also provided the [dataset](https://github.com/joojs/fairface) which it was trained on. The dataset is immensely popular among facial recognition algorithm developers. Owing to its reputation in bias mitigation, FairFace appears to be a valuable piece for the objective of this research.
+Developed by researchers at University of California, Los Angeles, FairFace was specifically designed to mitigate gender and racial biases. The model [@fairface] was trained on 100K+ face images of people of various ethnicities with approximately equal stratification across all groups. Beside facial recognition model, FairFace also provided the dataset [@fairface] which it was trained on. The dataset is immensely popular among facial recognition algorithm developers. Owing to its reputation in bias mitigation, FairFace appears to be a valuable piece for the objective of this research.
 
 ### DeepFace
 
-DeepFace is a lightweight open-source model developed and used by Meta (Facebook). Being developed by one of the largest social media companies, it is widely known among developers. Therefore, its popularity prompts us to evaluate its performance. It should be noted that the DeepFace model we leverage in our evaluation is a [free open source version](https://github.com/serengil/deepface). It is highly unlikely that this version is as advanced as any model Meta uses internally for proprietary purposes. We should not view the resulting output of this model as being representative of algorithms internal to Meta.
+DeepFace is a lightweight open-source model developed and used by Meta (Facebook). Being developed by one of the largest social media companies, it is widely known among developers. Therefore, its popularity prompts us to evaluate its performance. It should be noted that the DeepFace model we leverage in our evaluation is a free open source version [@deepface]. It is highly unlikely that this version is as advanced as any model Meta uses internally for proprietary purposes. We should not view the resulting output of this model as being representative of algorithms internal to Meta.
 
-## Dataset Features 
-
-Understanding and selecting the appropriate features for our data is key to success in analysis.  Furthermore, understanding feature differences and planning standardization across datasets is key in making sound comparisons and analyses upon the dataset.  
-
-### Input data set
-
-The input dataset, being UTKFace, provided feature information natively in each filename without additional external data.  The features contained therein include the following items for each image's subject.  They are defined as follows in the UTKFace Readme:
-
-* "[race] is an integer from 0 to 4, denoting White, Black, Asian, Indian, and Others (like Hispanic, Latino, Middle Eastern)."
-
-* "[gender] is either 0 (male) or 1 (female)"
-
-* "[age] is an integer from 0 to 116, indicating the age"
-
-We processed each image to extract these features from each image and create a table of source information [here](https://github.com/CUBoulder-DS/5301-5000-Final-Report/blob/main/data/uncropped_UTK_dataset.csv).
-
-As our work is focused in potential biases in protected classes such as race, gender, and age, the features of UTKFace are sufficient to meet the needs for an input dataset for category prediction in our selected models.
 
 ### FairFace Outputs
 
@@ -278,7 +268,7 @@ The need for this permutation evaluation rose from some initial scripting and te
 
 We performed further exploratory analysis on both models in light of these facts, and sought some specific permutations of settings to determine which may provide the most fair and equitable comparison of the models prior to proceeding to analysis.
 
-The goal for us in performing this exploration was to identify the settings for each model that might best increase the likelihood that the model's output would result in a failure to reject our null hypotheses.  In layman's terms, our tests sought out the combination of settings that give each model the benefit of the doubt, and for each to deliver the greatest accuracy in their predictions.  For simplicity's sake, we leaned solely on the proportion of true positives across each category when compared with the source information to decide which settings to use.
+The goal for us in performing this exploration was to identify the settings for each model that might best increase the likelihood that the model's output would result in a failure to reject our null hypotheses; our tests sought out the combination of settings that give each model the benefit of the doubt, and for each to deliver the greatest accuracy in their predictions.  For simplicity's sake, we leaned solely on the proportion of true positives across each category when compared with the source information to decide which settings to use.
 
 ### DeepFace Analysis Options
 
@@ -404,16 +394,16 @@ Examining the true positive ratios for each case, our team concluded that the se
 
 These settings are equitable and make a degree of sense.  Using facial detection, specifically coded for each model, should give each model the ability to isolate the portions of a face necessary for them to make a prediction, as opposed to using a pre-cropped image that could include unneeded information, or exclude needed information.
 
-Having decided on these settings, our team proceeded to run the entirety of the UTK dataset through both DeepFace and FairFace models using a custom coded script [MasterScript.py](https://github.com/CUBoulder-DS/5301-5000-Final-Report/blob/main/src/sample%20code/MasterScript.py) that allowed us to apply multiprocessing across the list of images and evaluate all items in a reasonable amount of time. (cite FairFace here, may also need to reference that we rebuilt their script into a class format).
+Having decided on these settings, our team proceeded to run the entirety of the UTK dataset through both DeepFace and FairFace models using a custom coded script <!-- [MasterScript.py](https://github.com/CUBoulder-DS/5301-5000-Final-Report/blob/main/src/sample%20code/MasterScript.py) !--> that allowed us to apply multiprocessing across the list of images and evaluate all items in a reasonable amount of time.
 
 Due to the resource-intensive design of FairFace, our script enables multiprocessing of FairFace to allow for multiple simultaneous instances of the FairFace class as a pool of worker threads to iterate over the source data.
 
 We attempted the same multiprocessing methodology for DeepFace, but encountered issues with silent errors and halting program execution when iterating over all images using DeepFace.  To alleviate this challenge, we processed DeepFace in a single-threaded manner, and with smaller portions of the dataset vs. pursuing an all-in-one go execution.  We proceeded to store the data for each of these smaller runs in multiple output files to combine once we completed all processing requirements.
 
 
-## Model Evaluation Data
+## Model Evaluation Data Format
 
-The final listing of all inputs and outputs from each model, with standardization methods discussed in this section applied, are stored here: [MasterDataFrame.csv](https://raw.githubusercontent.com/CUBoulder-DS/5301-5000-Final-Report/main/data/MasterDataFrame.csv)
+The final listing of all inputs and outputs from each model, with standardization methods discussed in this section applied, are summarized in @tbl-All-Output-Data.
 
 ```{r}
 ## Result Output Format
