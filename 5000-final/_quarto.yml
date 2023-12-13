@@ -28,6 +28,10 @@ book:
   page-navigation: true
   navbar:
     pinned: true
+    right:
+      - icon: youtube
+        href: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+        aria-label: Youtube
   date: today
 
 bibliography: references.bib
