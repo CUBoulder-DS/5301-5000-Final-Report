@@ -97,19 +97,19 @@ g_potential_bias <- c(
 	"All races"
 )
 sub_g_potential_bias <-c(
-	"0-19 (given Female); 40-49 (given Male); 20-29 (any gender);0-69 (given Other, Asian, or White)",
-	"any gender (given White or Other); any gender (given 0-2, 20-39,60-130)",
+	"0-19 (given Female), 40-49 (given Male); varying potential biases against sub-groups such as 0-2 (given Asian, Indian, Other, or White), 3-9 (Given Asian), 10-19 (Other,White), 20-29 (Asian, Black), 30-39 (Asian), 40-49 (White, Other), 50-59 (Other), 70-130 (Other, White, Black)",
+	"any gender (given 0-2, 20-39, or 70-130); any gender (given White or Other)",
 	"Black, Indian, Other (given any gender), White (given male); Asian (given 30-39)",
-	"All age groups (given gender), (revisit given age)",
-	"Male (given Black); both genders (given 10-69)",
-	"Asian, White, Indian, Other (both genders), Black (given male); all races (given 10-29 or 40-69)"
+	"All age groups (given gender);",
+	"All genders (given Asian, Black, Indian, Other - [White didn't meet power threshold]); All genders (given age 10-69)",
+	"All races (except Black, given Male); All races (given 10-49), Black (givne 50-69), and Indian (given 60-69)"
 )
 tibble(
 	"Model"=m,
 	"Test Category"=cat,
 	"Potentially Effected Categories"=g_potential_bias,
 	"Potentially Effected Sub-Categories"=sub_g_potential_bias
-)%>% knitr::kable()
+) %>% knitr::kable()
 ```
 
 
@@ -149,6 +149,40 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 When examining p-values for potential areas of bias, our hypothesis testing results did not well-align with our F1 score calculations.  E.g. a rejection of the null hypothesis did not directly translate to a low F1 score, with the inverse also being true.  We proceeded to examine F1 scores, separate of p-value and power results from our hypothesis tests.
 
 General trends for both models: many categories and sub-categories of protected classes fail to meet our selected definition of excellence (F1 score of 0.9 or more).  FairFace had more results meeting our definition of excellence compared to DeepFace. Both models demonstrate preference in classification for specific age groups, races, and genders, and both seem to display biases against Indian and Other racial categories.  Examining a particular class of subjects, given additional controlling variables, reveal nested biases for and against various classes.
+
+
+```{r}
+m <- c("FairFace","FairFace","FairFace","DeepFace","DeepFace","DeepFace")
+cat <- c("Age","Gender","Race","Age","Gender","Race")
+
+### Age 
+# When examining the results of the F1 scores for age, no categories for DeepFace met our specification for excellence. This <!--PC implies a lack of performance on the-->identifies potential points of improvement in age categorization on part of DeepFace. As DeepFace is unable to detect faces between the ages of 0-9 and 70-130, there is a bias against very young and very old faces. Additionally, The group with the highest F1 performance is 20-29, implying a favorable bias towards subjects in early adulthood.<!--PC-->  
+
+#FairFace’s overall age calculations, <!--without input for race or gender-->absent other conditional variables, failed to produce any category that met our F1 threshold,<!--. This implies an overall--> implying lack of excellence in correct predictions for any one age group. However, the categories that did perform the best had a preferential bias towards the very young and very old faces, almost in opposition to DeepFace<!--. The overall data for -->; FairFace <!--held-->displayed a <!--positive-->preferential bias towards the ages of 0-9 and 70-130. When examining specific sub-categories, FairFace presented notable favorable bias to identify male faces between the ages of 0-2 in the White, Asian, and Other categories, as only those categories passed the F1 threshold.
+
+g_potential_bias <- c(
+	" ",
+	" ",
+	" ",
+	" ",
+	" ",
+	" "
+)
+sub_g_potential_bias <-c(
+	" ",
+	" ",
+	" ",
+	" ",
+	" ",
+	" "
+)
+tibble(
+	"Model"=m,
+	"Test Category"=cat,
+	"Potentially Effected Categories"=g_potential_bias,
+	"Potentially Effected Sub-Categories"=sub_g_potential_bias
+)%>% knitr::kable()
+```
 <!--PC-->
 
 <!--- GC & LN --->

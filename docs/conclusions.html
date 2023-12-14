@@ -294,10 +294,10 @@ Like the introduction, this section should be written with a **non-expert** in m
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
-<col style="width: 4%">
-<col style="width: 7%">
-<col style="width: 36%">
-<col style="width: 51%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 18%">
+<col style="width: 75%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -312,13 +312,13 @@ Like the introduction, this section should be written with a **non-expert** in m
 <td style="text-align: left;">FairFace</td>
 <td style="text-align: left;">Age</td>
 <td style="text-align: left;">0-29, 40-49, and 70-130</td>
-<td style="text-align: left;">0-19 (given Female); 40-49 (given Male); 20-29 (any gender);0-69 (given Other, Asian, or White)</td>
+<td style="text-align: left;">0-19 (given Female), 40-49 (given Male); varying potential biases against sub-groups such as 0-2 (given Asian, Indian, Other, or White), 3-9 (Given Asian), 10-19 (Other,White), 20-29 (Asian, Black), 30-39 (Asian), 40-49 (White, Other), 50-59 (Other), 70-130 (Other, White, Black)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FairFace</td>
 <td style="text-align: left;">Gender</td>
 <td style="text-align: left;">No evidence supports a conclusion of potential bias for gender alone</td>
-<td style="text-align: left;">any gender (given White or Other); any gender (given 0-2, 20-39,60-130)</td>
+<td style="text-align: left;">any gender (given 0-2, 20-39, or 70-130); any gender (given White or Other)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FairFace</td>
@@ -330,19 +330,19 @@ Like the introduction, this section should be written with a **non-expert** in m
 <td style="text-align: left;">DeepFace</td>
 <td style="text-align: left;">Age</td>
 <td style="text-align: left;">All age groups</td>
-<td style="text-align: left;">All age groups (given gender), (revisit given age)</td>
+<td style="text-align: left;">All age groups (given gender);</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">DeepFace</td>
 <td style="text-align: left;">Gender</td>
 <td style="text-align: left;">Both genders</td>
-<td style="text-align: left;">Male (given Black); both genders (given 10-69)</td>
+<td style="text-align: left;">All genders (given Asian, Black, Indian, Other - [White didn’t meet power threshold]); All genders (given age 10-69)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DeepFace</td>
 <td style="text-align: left;">Race</td>
 <td style="text-align: left;">All races</td>
-<td style="text-align: left;">Asian, White, Indian, Other (both genders), Black (given male); all races (given 10-29 or 40-69)</td>
+<td style="text-align: left;">All races (except Black, given Male); All races (given 10-49), Black (givne 50-69), and Indian (given 60-69)</td>
 </tr>
 </tbody>
 </table>
@@ -382,7 +382,66 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 <section id="examination-of-potential-biases-using-f1-scores" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="examination-of-potential-biases-using-f1-scores"><span class="header-section-number">5.4</span> Examination of Potential Biases using F1 Scores</h2>
 <p>When examining p-values for potential areas of bias, our hypothesis testing results did not well-align with our F1 score calculations. E.g. a rejection of the null hypothesis did not directly translate to a low F1 score, with the inverse also being true. We proceeded to examine F1 scores, separate of p-value and power results from our hypothesis tests.</p>
-<p>General trends for both models: many categories and sub-categories of protected classes fail to meet our selected definition of excellence (F1 score of 0.9 or more). FairFace had more results meeting our definition of excellence compared to DeepFace. Both models demonstrate preference in classification for specific age groups, races, and genders, and both seem to display biases against Indian and Other racial categories. Examining a particular class of subjects, given additional controlling variables, reveal nested biases for and against various classes. <!--PC--></p>
+<p>General trends for both models: many categories and sub-categories of protected classes fail to meet our selected definition of excellence (F1 score of 0.9 or more). FairFace had more results meeting our definition of excellence compared to DeepFace. Both models demonstrate preference in classification for specific age groups, races, and genders, and both seem to display biases against Indian and Other racial categories. Examining a particular class of subjects, given additional controlling variables, reveal nested biases for and against various classes.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 15%">
+<col style="width: 35%">
+<col style="width: 39%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Test Category</th>
+<th style="text-align: left;">Potentially Effected Categories</th>
+<th style="text-align: left;">Potentially Effected Sub-Categories</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">FairFace</td>
+<td style="text-align: left;">Age</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FairFace</td>
+<td style="text-align: left;">Gender</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FairFace</td>
+<td style="text-align: left;">Race</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DeepFace</td>
+<td style="text-align: left;">Age</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DeepFace</td>
+<td style="text-align: left;">Gender</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DeepFace</td>
+<td style="text-align: left;">Race</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!--PC-->
 <!--- GC & LN --->
 <section id="age" class="level3" data-number="5.4.1">
 <h3 data-number="5.4.1" class="anchored" data-anchor-id="age"><span class="header-section-number">5.4.1</span> Age</h3>
