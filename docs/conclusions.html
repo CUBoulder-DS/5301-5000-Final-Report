@@ -270,7 +270,8 @@ Like the introduction, this section should be written with a **non-expert** in m
 <li><p>DeepFace displays preferential bias in classifying:</p>
 <ul>
 <li><p>correct age, given the subject is White, for nearly every age group.</p></li>
-<li><p>correct gender, given the subject is generally an adult (30-69).</p></li>
+<li><p>age incorrectly, given the subject is very old or young.</p></li>
+<li><p>gender, given the subject is generally an adult (30-69).</p></li>
 </ul></li>
 </ul>
 <p>These preferential biases can result in discrimination if used for decision-making processes:</p>
@@ -387,10 +388,10 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
-<col style="width: 9%">
-<col style="width: 15%">
-<col style="width: 35%">
-<col style="width: 39%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 32%">
+<col style="width: 61%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -416,26 +417,26 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 <tr class="odd">
 <td style="text-align: left;">FairFace</td>
 <td style="text-align: left;">Race</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Indian, Other</td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DeepFace</td>
 <td style="text-align: left;">Age</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">All ages perform poorly (max F1 0.51). 0-9,70-130 (0 detections) and 10-19, 50-69 (very few detections at F1 &lt; 0.1)</td>
+<td style="text-align: left;">All groups (given gender), male performance slightly surprasses female performance in every age category. Additional age groups fail detection (0 count) for 60-69, given White, Asian, or Indian.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">DeepFace</td>
 <td style="text-align: left;">Gender</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Near equal performance on both genders, male preferred over female.</td>
+<td style="text-align: left;">No racial classifications meet excellence for gender, given race. Preference for Male over Female for near all races (excluding Other).Preference for stronger male classification, given 40-69, and female, given 10-39.</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DeepFace</td>
 <td style="text-align: left;">Race</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Indian, Other</td>
+<td style="text-align: left;">Poor for all races (given gender), with slightly lower performance for race classificaiton given a female subject.</td>
 </tr>
 </tbody>
 </table>

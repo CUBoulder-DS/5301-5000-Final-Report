@@ -54,7 +54,10 @@ On the examination of F1 scores, we find that
 
 	* correct age, given the subject is White, for nearly every age group.
 
-	* correct gender, given the subject is generally an adult (30-69).
+	* age incorrectly, given the subject is very old or young.
+
+	* gender, given the subject is generally an adult (30-69).
+
 
 These preferential biases can result in discrimination if used for decision-making processes:
 
@@ -161,20 +164,20 @@ cat <- c("Age","Gender","Race","Age","Gender","Race")
 #FairFace’s overall age calculations, <!--without input for race or gender-->absent other conditional variables, failed to produce any category that met our F1 threshold,<!--. This implies an overall--> implying lack of excellence in correct predictions for any one age group. However, the categories that did perform the best had a preferential bias towards the very young and very old faces, almost in opposition to DeepFace<!--. The overall data for -->; FairFace <!--held-->displayed a <!--positive-->preferential bias towards the ages of 0-9 and 70-130. When examining specific sub-categories, FairFace presented notable favorable bias to identify male faces between the ages of 0-2 in the White, Asian, and Other categories, as only those categories passed the F1 threshold.
 
 g_potential_bias <- c(
+	"",
 	" ",
-	" ",
-	" ",
-	" ",
-	" ",
-	" "
+	"Indian, Other",
+	"All ages perform poorly (max F1 0.51). 0-9,70-130 (0 detections) and 10-19, 50-69 (very few detections at F1 < 0.1)",
+	"Near equal performance on both genders, male preferred over female.",
+	"Indian, Other"
 )
 sub_g_potential_bias <-c(
 	" ",
 	" ",
 	" ",
-	" ",
-	" ",
-	" "
+	"All groups (given gender), male performance slightly surprasses female performance in every age category. Additional age groups fail detection (0 count) for 60-69, given White, Asian, or Indian. ",
+	"No racial classifications meet excellence for gender, given race. Preference for Male over Female for near all races (excluding Other).Preference for stronger male classification, given 40-69, and female, given 10-39.",
+	"Poor for all races (given gender), with slightly lower performance for race classificaiton given a female subject."
 )
 tibble(
 	"Model"=m,
