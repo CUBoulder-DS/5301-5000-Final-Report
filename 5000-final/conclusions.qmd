@@ -18,7 +18,7 @@ library(tidyverse)
 Like the introduction, this section should be written with a **non-expert** in mind. A person should be able to read Introduction+Conclusion and get a rough idea of the meaning and significance of your paper
 ::: -->
 
-## So What?
+## Summary of Conclusions
 
 Before we proceed to more detailed analyses, we will provide our summarized conclusions and impactful findings.
 
@@ -26,6 +26,28 @@ Respective of our statistical hypothesis tests and bootstrap population proporti
 
 Some specific examples, but not all examples, include:
 
+```{r}
+m<-c("FairFace","FairFace","DeepFace","DeepFace")
+group<-c("60-69","Female, Given 'Other'","20-29, Given 'Black'","40-69")
+p<-c("~1","2.58e-13","0.10","<=1.23e-5")
+f<-c("0.354","0.922","0.588",">0.928")
+#a<-c("0.671","0.914","","")
+conc<-c(
+	"High p-value != High F1 score",
+	"Low p-value != Low F1 score",
+	"High p-value != High F1 score",
+	"Low p-value != Low F1 score"
+)
+tibble(
+	"Model"=m,
+	"Test Group"=group,
+	"p-value"=p,
+	"F1 score"=f,
+	"Conclusion"=conc
+)%>%knitr::kable()
+```
+
+<!--
 * FairFace
 
 	* The proportion of 60-69 year olds, with a p-value of nearly 1, but with an F1 score of 0.354, and an accuracy score of 0.671.  This shows that high p-values do not translate to high F1 scores for FairFace.
@@ -37,13 +59,27 @@ Some specific examples, but not all examples, include:
 	* The proportion of 20-29 year olds, given they are Black, with a p-value of 0.10, with an F1 score of 0.588.  This shows that a high p-value does not directly translate to a high F1 score for DeepFace.  
 
 	* The proportions of males age 40-49, 50-59, 60-69 with respective p-values of $2.01\cdot 10^{-12}$, $9.43\cdot 10^{-12}$ and $1.23\cdot 10^{-5}$, but holding respective F1 scores of 0.946, 0.937, and 0.928.  Showing that low p-values do not necessarily indicate a low F1 score for DeepFace.
+-->
 
 However, the cases in which we reject the null hypothesis could be indicative that the training data for the facial recognition models, and the data we provided to them from UTKFace, have little to no overlap between one another (in terms of features and qualities of the images).  This could be a topic for further research - i.e. are the differences in source population a result of feature differences between a model's training data and the models classification predictions on novel images?
 
 Absent further research, with Accuracy and F1 scores accepted as best practice - the results of our two-sample hypothesis tests can only truly tell us that there is a difference in the source populations for each of our samples.
 
-On the examination of F1 scores, we find that 
+On the examination of F1 scores, we have the following top findings per-model:
 
+```{r}
+m<-c("FairFace","DeepFace")
+findings<-c(
+"Preference in classifying the very young and old correctly.  Excellence in classifying gender given almost any other test categories.  Lack of excellence in racial classifications; preference in classification of Asian, White, and Black over Indian and Other.",
+"Poor performance in 75% of test categories. Preference of Male Classification over Female. Substantially poor performance in classifying Indian and Other subjects.  Failure to detect the very young and old (0-9, 70-130) and generally poor in every age category, but more correct predictions of age given the subject is White."
+)
+tibble(
+	"Model"=m,
+	"Findings"=findings
+)%>% knitr::kable()
+```
+
+<!--
 * FairFace displays preferential biases in classifying:
 
 	* correct race, given the subject is male, in almost every racial group.
@@ -57,15 +93,15 @@ On the examination of F1 scores, we find that
 	* age incorrectly, given the subject is very old or young.
 
 	* gender, given the subject is generally an adult (30-69).
-
+-->
 
 These preferential biases can result in discrimination if used for decision-making processes:
 
-* FairFace combination of racial prediction given a male subject could result in a combination of racial discrimination against Indians, and gender discrimination against females.
+* FairFace's poorer performance for Indian and Other categories is concerning.  Especially considering that "Other" includes groups such as Middle Eastern, Latino Hispanic, and more.  With low F1 and accuracy hovering at 0.7, this could be impactful on multiple racial groups.  If used to make decisions, it could generate disparate impact against Indian and Other.
 
 * DeepFace's combination of correct age given White as race could result in a combination of racial and age discrimination against people of color.
 
-<!--PC-->Should either model to be used in a decision-making process, it could result in age discrimination in accordance with United States Laws.  Both FairFace and DeepFace have challenges with various age groups over 40 years old.  In the case of employment, the Age Discrimination in Employment Act of 1967 (ADEA) protects certain applicants and employees 40 years of age and older from discrimination on the basis of age in hiring, promotion, discharge, compensation, or terms, conditions or privileges of employment.  
+<!--PC--Should either model to be used in a decision-making process, it could result in age discrimination in accordance with United States Laws.  Both FairFace and DeepFace have challenges with various age groups over 40 years old.  In the case of employment, the Age Discrimination in Employment Act of 1967 (ADEA) protects certain applicants and employees 40 years of age and older from discrimination on the basis of age in hiring, promotion, discharge, compensation, or terms, conditions or privileges of employment.  
 
 <!--Do we need other examples?-->
 
@@ -107,6 +143,7 @@ sub_g_potential_bias <-c(
 	"All genders (given Asian, Black, Indian, Other - [White didn't meet power threshold]); All genders (given age 10-69)",
 	"All races (except Black, given Male); All races (given 10-49), Black (givne 50-69), and Indian (given 60-69)"
 )
+
 tibble(
 	"Model"=m,
 	"Test Category"=cat,
@@ -164,26 +201,26 @@ cat <- c("Age","Gender","Race","Age","Gender","Race")
 #FairFace’s overall age calculations, <!--without input for race or gender-->absent other conditional variables, failed to produce any category that met our F1 threshold,<!--. This implies an overall--> implying lack of excellence in correct predictions for any one age group. However, the categories that did perform the best had a preferential bias towards the very young and very old faces, almost in opposition to DeepFace<!--. The overall data for -->; FairFace <!--held-->displayed a <!--positive-->preferential bias towards the ages of 0-9 and 70-130. When examining specific sub-categories, FairFace presented notable favorable bias to identify male faces between the ages of 0-2 in the White, Asian, and Other categories, as only those categories passed the F1 threshold.
 
 g_potential_bias <- c(
-	"",
-	" ",
-	"Indian, Other",
+	"No groups meet 0.9 threshold. Preference in classifying the young and old correctly (0-9, 20-29, and 70-130); all other categories fall below 0.7, and between 0.1 to 0.4 below these top groups",
+	"Both genders meet standard for excellence.",
+	"None reach excellence. Preference for Asian, Black, White (Other, Indian fall 0.2-0.3 less than these groups)",
 	"All ages perform poorly (max F1 0.51). 0-9,70-130 (0 detections) and 10-19, 50-69 (very few detections at F1 < 0.1)",
 	"Near equal performance on both genders, male preferred over female.",
-	"Indian, Other"
+	"None meet excellence. Bias against Indian, Other with F1 <= 0.4"
 )
 sub_g_potential_bias <-c(
-	" ",
-	" ",
-	" ",
-	"All groups (given gender), male performance slightly surprasses female performance in every age category. Additional age groups fail detection (0 count) for 60-69, given White, Asian, or Indian. ",
-	"No racial classifications meet excellence for gender, given race. Preference for Male over Female for near all races (excluding Other).Preference for stronger male classification, given 40-69, and female, given 10-39.",
+	"Given gender, the top performing groups remain, with a preference for Female classification over Male in the groups. Given race, the very young meet excellence for 0-2, given Other, Asian, or White. 10-69 fall far behind given any racial group",
+	"Given race, all genders meet excellence, except male, given Asian at 0.89. Given age, all genders meet excellence, less males given 0-9, and females given 0-2",
+	"Given gender, model retains preference for classifying for Asian, White, Black. Given Age, excellence reached for White (given 3-9,60-69,)",
+	"All groups (given gender), male performance slightly surprasses female performance in every age category. Additional age groups fail detection (0 count) for 60-69, given White, Asian, or Indian.",
+	"No racial classifications meet excellence for gender, given race. Preference for Male over Female for near all races (excluding Other). Preference for stronger male classification, given 40-69, and female, given 10-39.",
 	"Poor for all races (given gender), with slightly lower performance for race classificaiton given a female subject."
 )
 tibble(
 	"Model"=m,
 	"Test Category"=cat,
-	"Potentially Effected Categories"=g_potential_bias,
-	"Potentially Effected Sub-Categories"=sub_g_potential_bias
+	"Impacted Categories"=g_potential_bias,
+	"Impacted Sub-Categories"=sub_g_potential_bias
 )%>% knitr::kable()
 ```
 <!--PC-->
@@ -241,24 +278,27 @@ stats_results <- read_csv('https://raw.githubusercontent.com/CUBoulder-DS/5301-5
 
 fac_lev <- factor(c("Reject null","Fail to reject null","Unknown"))
 
-test_result <- function(pval){
-  if(is.na(pval) | is.nan(pval)){
-    factor("Unknown",levels=fac_lev)
-  } else if (pval<.003){
-    factor("Reject null",levels=fac_lev)
-  } else {
-    factor("Fail to reject null",levels=fac_lev)
+test_result <- function(pval,pwr){
+  if(is.na(pval) | is.nan(pval) | is.na(pwr) | is.nan(pwr)){
+    "Unknown"
+  } else if (pval<.003 & pwr >= 0.8){ #added pwr to include in calculation
+    "Reject null"
+  } #adding pwr < 0.8 to account for additional unknowns (i.e. could be Type-II error)
+  else if (pval<0.003 & pwr < 0.8) {
+    "Unknown"
+  } else { #cases where the pval exceeds the threshold
+    "Fail to reject null"
   }
 }
 
 result_confusion <- function(score,threshold){
   if (!is.numeric(score) | is.nan(score) | is.na(score)){
-    factor("Unknown",levels=fac_lev )
+    "Unknown"
   } else {
     if (score >= threshold){
-       factor("Fail to reject null",levels=fac_lev)
+      "Fail to reject null"
     } else {
-      factor("Reject null",levels=fac_lev)
+      "Reject null"
     }
   }
 }
@@ -267,7 +307,7 @@ get_model_scores <- function(threshold) {
 	res <- stats_results %>%
 	rowwise %>%
 		mutate(
-			p_value_classification=factor(test_result(model_p_value),levels=fac_lev),
+			p_value_classification=factor(test_result(model_p_value,model_power),levels=fac_lev),
 			f1_classification=factor(result_confusion(model_F1,0.8),levels=fac_lev),
 			acc_classification=factor(result_confusion(model_Accuracy,0.8),levels=fac_lev)
 		) 
@@ -320,7 +360,7 @@ tibble(
 ) %>% knitr::kable()
 ```
 
-Assuming that a correct decision to reject or fail to reject the null should be based upon an F1 and Accuracy scores at multiple thresholds (0.9, 0.8, or 0.7), we see substantially low accuracy and F1 scores for two-sample proportionality tests as a model for predicting machine learning model performance.  This highlights the contradictions we witnessed in our results for two-sample proportion tests vs. leveraging accuracy and F1 scores.  Given These results, we find that two-sample proportionality testing is likely not a strong indicator to identify issues and errors in machine learning models. 
+Assuming that a correct decision to reject or fail to reject the null should be based upon an F1 and Accuracy scores at multiple thresholds (0.9, 0.8, or 0.7), we see substantially low accuracy and F1 scores for two-sample proportionality tests as a model for predicting machine learning model performance.  Examining any type of Pearson correlation between the p-values and F1 scores, we see similar results.  This highlights the contradictions we witnessed in our results for two-sample proportion tests vs. leveraging accuracy and F1 scores.  Given These results, we find that two-sample proportionality testing is likely not a strong indicator to identify issues and errors in machine learning models. 
 
 <!----- GC --
 ## Age Prediction Conclusions 

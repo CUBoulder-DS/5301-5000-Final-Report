@@ -182,13 +182,15 @@ get_hyp_results = function(full_df, reject_null, noconds=TRUE) {
                   filter(model_p_value < pvalue_thresh,
                          model_power >= power_thresh,
                          model_F1 < f1_thresh | is.na(model_F1)
+                         #modifying table -only look at rejecting the null (PC)?
+                         
                          )
   } else {
       filtered = full_df %>% 
                   filter(model_p_value >= pvalue_thresh,
-                         model_power < power_thresh,
+                         model_power < power_thresh, 
                          model_F1 >= f1_thresh
-                         )
+                         )#modify table - only focus on rejecting the null (PC)?
   }
 
   if (noconds) {
@@ -231,6 +233,9 @@ From the previous table, we extract and highlight key values; namely, where we r
 -   Significance level of 99.7%
 -   Power threshold of 0.8
 -   F1-Score of 0.9
+
+<!--PC-->
+**Disclaimer** - we are not claiming that F1-scores and and p-values are directly tied to one another, but exploring its use here as a means by which we can more confidently reject the null hypothesis. <!--End PC-->
 
 Which come from the rationale described in @sec-methods. We show the test values where there is no sub-filtering/conditions by another category; then, we also highlight the reverse null hypothesis decisions made with filtering for a sub-condition and for the specific rows as described in the table captions. The values are displayed in @tbl-reject-nulls. There is only a Fairface table for not rejecting the null hypothesis (with no condition subfiltering) because no DeepFace values passed our given thresholds for not rejecting; the same reasoning is why there is no table for FairFace rejecting the null hypothesis with condition subfiltering.
 
@@ -347,6 +352,7 @@ stats_results %>% filter(model=='FairFace')%>% drop_na() %>%
   ggplot()+
   geom_point(aes(x=as.numeric(model_p_value >= 0.003),y=model_Accuracy))+
   xlab("p-value pass(1)/fail(0)")+ylab("accuracy")
+
 stats_results %>% filter(model=='DeepFace')%>% drop_na() %>%
   ggplot()+
   geom_point(aes(x=as.numeric(model_p_value >= 0.003),y=model_Accuracy))+
@@ -383,12 +389,15 @@ classify <- function(p_val,power,F1){
 	}
 }
 
-test_result <- function(pval){
-  if(is.na(pval) | is.nan(pval)){
+test_result <- function(pval,pwr){
+  if(is.na(pval) | is.nan(pval) | is.na(pwr) | is.nan(pwr)){
     "Unknown"
-  } else if (pval<.003){
+  } else if (pval<.003 & pwr >= 0.8){ #added pwr to include in calculation
     "Reject null"
-  } else {
+  } #adding pwr < 0.8 to account for additional unknowns (i.e. could be Type-II error)
+  else if (pval<0.003 & pwr < 0.8) {
+    "Unknown"
+  } else { #cases where the pval exceeds the threshold
     "Fail to reject null"
   }
 }
@@ -432,8 +441,8 @@ result_confusion <- function(score,threshold){
 categorized_results <- stats_results %>% 
   rowwise %>%
   mutate(
-    result_category=classify(model_p_value,model_power,model_F1),
-    p_value_classification=test_result(model_p_value),
+    #result_category=classify(model_p_value,model_power,model_F1),
+    p_value_classification=test_result(model_p_value,model_power),
     f1_classification=result_confusion(model_F1,0.9),#result_confusion(model_p_value,model_power,model_F1)
     acc_classification=result_confusion(model_Accuracy,0.9)
   ) %>%
@@ -475,13 +484,39 @@ cm_df <- confusionMatrix(data=df_tests$p_value_classification,reference=df_tests
 #cm_df
 ```
 
-In @fig-p-conf, we display confusion matrices of our null hypothesis rejections. We define the true/false positive/negative as follows:
+In @fig-p-conf, we display confusion matrices of our null hypothesis rejections. We define the true/false positive/negatives as follows:
 
--   Reject null when we should reject null: p-value \< 0.003, F1 \< 0.9, power \>= 0.8
+<!--PC
+Need to double-check and verify this against the table(s)
+
+p_value classification currently mapped off of test_result function, which only looks at p-Value, no power.
+F1 classification only looks at F1 value.
+
+* I think these should remain separate and that F1 should NOT be incorporated into the calculation
+
+As such, I think the below wording needs to be updated.
+
+For the functions, I think that the p-value classification should be updated to include power.
+ -->
+
+```{r}
+pred <-c("p-value < 0.003 & pwr >= 0.8", "p-value >= 0.003", "p-value < 0.003 & pwr < 0.8;  pval is NA; pwr is NA") 
+act <- c("F1 < 0.9 ", "F1 >= 0.9", "F1 is NA")
+class <- c("Reject Null","Fail to Reject Null","Unknown/Further Inspection Needed")
+tibble(
+  "Predicted Classification"=pred,
+  "Actual Classification"=act,
+  "Classification"=class
+) %>%knitr::kable()
+```
+
+Using the above, the confusion matrices for FairFace and DeepFace are as follows:
+
+<!-- -   Reject null when we should reject null: p-value \< 0.003, F1 \< 0.9, power \>= 0.8
 -   Reject null when we should fail to reject null: p-value \< 0.003, F1 \> 0.9, power \>= 0.8
 -   Fail to reject null, when we should reject null: p-value \>= 0.003, F1 \< 0.9, power \< 0.8
 -   Fail to reject null, when we should fail to reject null: p-value \>=0.003, F1 \>= 0.9, power \< 0.8
--   Uknown: One of the values was NaN.
+-   Unknown: One of the values was NaN. -->
 
 ```{r, warning=F}
 #| label: fig-p-conf
