@@ -114,7 +114,7 @@ div.csl-indent {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"> <i class="bi bi-youtube" role="img" aria-label="Youtube">
+    <a class="nav-link" href="https://www.youtube.com/watch?v=7r1z2yU4LuQ"> <i class="bi bi-youtube" role="img" aria-label="Youtube">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -122,7 +122,7 @@ div.csl-indent {
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
     <a href="https://github.com/CUBoulder-DS/5301-5000-Final-Report" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="./STAT_5000_Final_Report.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="./ML_Bias_Final_Report.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -332,9 +332,10 @@ Figure&nbsp;2.1: Example face images from the UTK dataset <span class="citation"
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-data-eda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <iframe id="Shiny App" src="https://carlklein.shinyapps.io/5000-final/" style="border: none; width: 100%; height: 820px" frameborder="0"></iframe>
+<p>An interactive figure showcasing the distributions of various data factors in the image dataset, and showcasing the underlying data.</p>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-data-eda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.2: An interactive figure showcasing the distributions of various data factors in the image dataset, and showcasing the underlying data.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-data-eda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2
 </figcaption>
 </figure>
 </div>
@@ -392,48 +393,44 @@ Table&nbsp;2.1: FairFace Output Format
 </figcaption>
 <div aria-describedby="tbl-FF-output-format-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="cell table table-sm table-striped small">
-<colgroup>
-<col style="width: 8%">
-<col style="width: 4%">
-<col style="width: 32%">
-<col style="width: 53%">
-</colgroup>
+<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Column Name</th>
-<th style="text-align: left;">Data Type</th>
-<th style="text-align: left;">Significance</th>
-<th style="text-align: left;">Valid Values</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Column Name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Data Type</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Significance</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Valid Values</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">name_face_align</td>
 <td style="text-align: left;">String</td>
-<td style="text-align: left;">The name and path of the file upon which FairFace made predictions</td>
-<td style="text-align: left;">[filepath]</td>
+<td style="text-align: left; width: 4cm;">The name and path of the file upon which FairFace made predictions</td>
+<td style="text-align: left; width: 4cm;">[filepath]</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">race_preds_fair7</td>
 <td style="text-align: left;">String</td>
-<td style="text-align: left;">The predicted race of the image subject</td>
-<td style="text-align: left;">[White|Black|Latino_Hispanic|East Asian|Southeast Asian|Middle Eastern|Indian]</td>
+<td style="text-align: left; width: 4cm;">The predicted race of the image subject</td>
+<td style="text-align: left; width: 4cm;">[White|Black|Latino_Hispanic|East Asian|Southeast Asian|Middle Eastern|Indian]</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">gender_preds_fair</td>
 <td style="text-align: left;">String</td>
-<td style="text-align: left;">The predicted gender of the image subject</td>
-<td style="text-align: left;">[Male|Female]</td>
+<td style="text-align: left; width: 4cm;">The predicted gender of the image subject</td>
+<td style="text-align: left; width: 4cm;">[Male|Female]</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">age_preds_fair</td>
 <td style="text-align: left;">String</td>
-<td style="text-align: left;">The predicted age range of the image subject</td>
-<td style="text-align: left;">[‘0-2’|‘3-9’|‘10-19’|‘20-29’|‘30-39’|‘40-49’|‘50-59’|‘60-69’|‘70+’]</td>
+<td style="text-align: left; width: 4cm;">The predicted age range of the image subject</td>
+<td style="text-align: left; width: 4cm;">['0-2'|'3-9'|'10-19'|'20-29'|'30-39'|'40-49'|'50-59'|'60-69'|'70+']</td>
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
 </figure>
@@ -452,42 +449,38 @@ Table&nbsp;2.2: DeepFace Output Format
 </figcaption>
 <div aria-describedby="tbl-DF-output-format-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="cell table table-sm table-striped small">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 6%">
-<col style="width: 27%">
-<col style="width: 54%">
-</colgroup>
+<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Column Name</th>
-<th style="text-align: left;">Data Type</th>
-<th style="text-align: left;">Significance</th>
-<th style="text-align: left;">Valid Values</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Column Name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Data Type</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Significance</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Valid Values</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">Integer</td>
-<td style="text-align: left;">The predicted age of the image subject</td>
-<td style="text-align: left;">Any Integer</td>
+<td style="text-align: left; width: 2cm;">Age</td>
+<td style="text-align: left; width: 2cm;">Integer</td>
+<td style="text-align: left; width: 4cm;">The predicted age of the image subject</td>
+<td style="text-align: left; width: 4cm;">Any Integer</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Dominant Gender</td>
-<td style="text-align: left;">String</td>
-<td style="text-align: left;">The predicted gender of the iamge subject</td>
-<td style="text-align: left;">[Man|Woman]</td>
+<td style="text-align: left; width: 2cm;">Dominant Gender</td>
+<td style="text-align: left; width: 2cm;">String</td>
+<td style="text-align: left; width: 4cm;">The predicted gender of the iamge subject</td>
+<td style="text-align: left; width: 4cm;">[Man|Woman]</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Dominant Race</td>
-<td style="text-align: left;">String</td>
-<td style="text-align: left;">The predicted race of the image subject</td>
-<td style="text-align: left;">[middle eastern|asian|white|latino hispanic|black|indian]</td>
+<td style="text-align: left; width: 2cm;">Dominant Race</td>
+<td style="text-align: left; width: 2cm;">String</td>
+<td style="text-align: left; width: 4cm;">The predicted race of the image subject</td>
+<td style="text-align: left; width: 4cm;">[middle eastern|asian|white|latino hispanic|black|indian]</td>
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
 </figure>
@@ -522,12 +515,12 @@ Table&nbsp;2.3: List of Permutation Evaluations
 </figcaption>
 <div aria-describedby="tbl-Permutation-Listing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="cell table table-sm table-striped small">
+<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Detection</th>
-<th style="text-align: left;">Detection Model</th>
-<th style="text-align: left;">Image Source</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Detection</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Detection Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Image Source</th>
 </tr>
 </thead>
 <tbody>
@@ -563,6 +556,8 @@ Table&nbsp;2.3: List of Permutation Evaluations
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
 </figure>
@@ -581,7 +576,6 @@ Table&nbsp;2.4: Results of Permutation Evaluation
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">pred_model</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">detection_enabled</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">detection_model</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">image_type</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">all_rate</th>
@@ -593,103 +587,93 @@ Table&nbsp;2.4: Results of Permutation Evaluation
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">False</td>
 <td style="text-align: left;">None</td>
 <td style="text-align: left;">cropped</td>
-<td style="text-align: right;">0.0724949</td>
-<td style="text-align: right;">0.1601227</td>
-<td style="text-align: right;">0.6667689</td>
-<td style="text-align: right;">0.6951943</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">0.70</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">False</td>
 <td style="text-align: left;">None</td>
 <td style="text-align: left;">uncropped</td>
-<td style="text-align: right;">0.0834356</td>
-<td style="text-align: right;">0.1522495</td>
-<td style="text-align: right;">0.7326176</td>
-<td style="text-align: right;">0.6457055</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.73</td>
+<td style="text-align: right;">0.65</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">True</td>
 <td style="text-align: left;">mtcnn</td>
 <td style="text-align: left;">cropped</td>
-<td style="text-align: right;">0.0889571</td>
-<td style="text-align: right;">0.1534765</td>
-<td style="text-align: right;">0.7249489</td>
-<td style="text-align: right;">0.6807771</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">0.68</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">True</td>
 <td style="text-align: left;">mtcnn</td>
 <td style="text-align: left;">uncropped</td>
-<td style="text-align: right;">0.1023517</td>
-<td style="text-align: right;">0.1615542</td>
-<td style="text-align: right;">0.7834356</td>
-<td style="text-align: right;">0.6665644</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: right;">0.67</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">True</td>
 <td style="text-align: left;">opencv</td>
 <td style="text-align: left;">cropped</td>
-<td style="text-align: right;">0.0267894</td>
-<td style="text-align: right;">0.0765849</td>
-<td style="text-align: right;">0.1887526</td>
-<td style="text-align: right;">0.1983640</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.20</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">True</td>
 <td style="text-align: left;">opencv</td>
 <td style="text-align: left;">uncropped</td>
-<td style="text-align: right;">0.0806748</td>
-<td style="text-align: right;">0.1455010</td>
-<td style="text-align: right;">0.6619632</td>
-<td style="text-align: right;">0.5855828</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">0.59</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">False</td>
 <td style="text-align: left;">None</td>
 <td style="text-align: left;">cropped</td>
-<td style="text-align: right;">0.4015337</td>
-<td style="text-align: right;">0.6101227</td>
-<td style="text-align: right;">0.8921268</td>
-<td style="text-align: right;">0.7689162</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">0.61</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">0.77</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">False</td>
 <td style="text-align: left;">None</td>
 <td style="text-align: left;">uncropped</td>
-<td style="text-align: right;">0.1031697</td>
-<td style="text-align: right;">0.2671779</td>
-<td style="text-align: right;">0.7599182</td>
-<td style="text-align: right;">0.4477505</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">0.45</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">True</td>
 <td style="text-align: left;">dlib</td>
 <td style="text-align: left;">cropped</td>
-<td style="text-align: right;">0.4015337</td>
-<td style="text-align: right;">0.6101227</td>
-<td style="text-align: right;">0.8921268</td>
-<td style="text-align: right;">0.7689162</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">0.61</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">0.77</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">True</td>
 <td style="text-align: left;">dlib</td>
 <td style="text-align: left;">uncropped</td>
-<td style="text-align: right;">0.4353783</td>
-<td style="text-align: right;">0.6230061</td>
-<td style="text-align: right;">0.9155419</td>
-<td style="text-align: right;">0.7914110</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.62</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">0.79</td>
 </tr>
 </tbody>
 </table>
@@ -722,7 +706,7 @@ Table&nbsp;2.5: Data Format for All Inputs and Outputs
 </figcaption>
 <div aria-describedby="tbl-All-Output-Data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Column Name</th>
@@ -732,74 +716,74 @@ Table&nbsp;2.5: Data Format for All Inputs and Outputs
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">img_path</td>
-<td style="text-align: left;">Relative path location of the file within the UTK dataset</td>
-<td style="text-align: left;">character vector</td>
+<td style="text-align: left; width: 3cm;">img_path</td>
+<td style="text-align: left; width: 8cm;">Relative path location of the file within the UTK dataset</td>
+<td style="text-align: left; width: 3cm;">character vector</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">file</td>
-<td style="text-align: left;">The filename of each file within the UTK dataset</td>
-<td style="text-align: left;">character vector</td>
+<td style="text-align: left; width: 3cm;">file</td>
+<td style="text-align: left; width: 8cm;">The filename of each file within the UTK dataset</td>
+<td style="text-align: left; width: 3cm;">character vector</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">src_age</td>
-<td style="text-align: left;">The age of the subject in each image from the UTK dataset</td>
-<td style="text-align: left;">integer</td>
+<td style="text-align: left; width: 3cm;">src_age</td>
+<td style="text-align: left; width: 8cm;">The age of the subject in each image from the UTK dataset</td>
+<td style="text-align: left; width: 3cm;">integer</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">src_gender</td>
-<td style="text-align: left;">The gender of the subject in each image from the UTK dataset</td>
-<td style="text-align: left;">character vector</td>
+<td style="text-align: left; width: 3cm;">src_gender</td>
+<td style="text-align: left; width: 8cm;">The gender of the subject in each image from the UTK dataset</td>
+<td style="text-align: left; width: 3cm;">character vector</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">src_race</td>
-<td style="text-align: left;">The race of the subject in each image from the UTK datset</td>
-<td style="text-align: left;">character vector</td>
+<td style="text-align: left; width: 3cm;">src_race</td>
+<td style="text-align: left; width: 8cm;">The race of the subject in each image from the UTK datset</td>
+<td style="text-align: left; width: 3cm;">character vector</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">src_timestamp</td>
-<td style="text-align: left;">The time at which the image was submitted to the UTK dataset</td>
-<td style="text-align: left;">character vector</td>
+<td style="text-align: left; width: 3cm;">src_timestamp</td>
+<td style="text-align: left; width: 8cm;">The time at which the image was submitted to the UTK dataset</td>
+<td style="text-align: left; width: 3cm;">character vector</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">src_age_grp</td>
-<td style="text-align: left;">The age group (matching the predicted age ranges from the FairFace outputs) for each image in the UTK dataset</td>
-<td style="text-align: left;">character vector</td>
+<td style="text-align: left; width: 3cm;">src_age_grp</td>
+<td style="text-align: left; width: 8cm;">The age group (matching the predicted age ranges from the FairFace outputs) for each image in the UTK dataset</td>
+<td style="text-align: left; width: 3cm;">character vector</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">pred_model</td>
-<td style="text-align: left;">The model used to produce the predicted output (FairFace or DeepFace)</td>
-<td style="text-align: left;">character vector</td>
+<td style="text-align: left; width: 3cm;">pred_model</td>
+<td style="text-align: left; width: 8cm;">The model used to produce the predicted output (FairFace or DeepFace)</td>
+<td style="text-align: left; width: 3cm;">character vector</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">pred_race</td>
-<td style="text-align: left;">The race of the subject in the image, predicted by the given prediction model under the pred_model column</td>
-<td style="text-align: left;">character vector</td>
+<td style="text-align: left; width: 3cm;">pred_race</td>
+<td style="text-align: left; width: 8cm;">The race of the subject in the image, predicted by the given prediction model under the pred_model column</td>
+<td style="text-align: left; width: 3cm;">character vector</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">pred_gender</td>
-<td style="text-align: left;">The gender of the subject in the image, predicted by the given prediction model under the pred_model column</td>
-<td style="text-align: left;">character vector</td>
+<td style="text-align: left; width: 3cm;">pred_gender</td>
+<td style="text-align: left; width: 8cm;">The gender of the subject in the image, predicted by the given prediction model under the pred_model column</td>
+<td style="text-align: left; width: 3cm;">character vector</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">pred_age_DF_only</td>
-<td style="text-align: left;">The integer-predicted age by DeepFace of the subject in the image</td>
-<td style="text-align: left;">integer</td>
+<td style="text-align: left; width: 3cm;">pred_age_DF_only</td>
+<td style="text-align: left; width: 8cm;">The integer-predicted age by DeepFace of the subject in the image</td>
+<td style="text-align: left; width: 3cm;">integer</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">pred_age_grp</td>
-<td style="text-align: left;">The age group of the subject in the image, predicted by the given prediction model under the pred_model column</td>
-<td style="text-align: left;">character vector</td>
+<td style="text-align: left; width: 3cm;">pred_age_grp</td>
+<td style="text-align: left; width: 8cm;">The age group of the subject in the image, predicted by the given prediction model under the pred_model column</td>
+<td style="text-align: left; width: 3cm;">character vector</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">pred_age_lower</td>
-<td style="text-align: left;">The integer lower bound of the predicted age group</td>
-<td style="text-align: left;">integer</td>
+<td style="text-align: left; width: 3cm;">pred_age_lower</td>
+<td style="text-align: left; width: 8cm;">The integer lower bound of the predicted age group</td>
+<td style="text-align: left; width: 3cm;">integer</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">pred_age_upper</td>
-<td style="text-align: left;">The integer upper bound of the predicted age group</td>
-<td style="text-align: left;">integer</td>
+<td style="text-align: left; width: 3cm;">pred_age_upper</td>
+<td style="text-align: left; width: 8cm;">The integer upper bound of the predicted age group</td>
+<td style="text-align: left; width: 3cm;">integer</td>
 </tr>
 </tbody>
 </table>

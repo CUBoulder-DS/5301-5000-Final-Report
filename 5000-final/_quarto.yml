@@ -22,7 +22,7 @@ book:
     - references.qmd
   downloads: [pdf]
   references: references.bib # Unsure if needed
-  output-file: STAT_5000_Final_Report # PDF filename
+  output-file: ML_Bias_Final_Report #STAT_5000_Final_Report # PDF filename
   cover-image: "images/cover.png"
   repo-url: "https://github.com/CUBoulder-DS/5301-5000-Final-Report"
   page-navigation: true
@@ -30,7 +30,7 @@ book:
     pinned: true
     right:
       - icon: youtube
-        href: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+        href: https://www.youtube.com/watch?v=7r1z2yU4LuQ
         aria-label: Youtube
   date: today
 
