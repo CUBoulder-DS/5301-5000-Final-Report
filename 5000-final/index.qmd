@@ -10,7 +10,7 @@ Bias in how facial classification machine learning (ML) models label faces is a 
 ::: callout-tip
 ## Report PDF and Code Location
 
-A link to download the [PDF version](https://cuboulder-ds.github.io/5301-5000-Final-Report/STAT_5000_Final_Report.pdf) of this report, a link to the [Github source code](https://github.com/CUBoulder-DS/5301-5000-Final-Report) for this report, and the [Youtube presention](https://www.youtube.com/watch?v=dQw4w9WgXcQ) are available as icons in the top nav bar of this website.
+A link to download the [PDF version](https://cuboulder-ds.github.io/5301-5000-Final-Report/ML_Bias_Final_Report.pdf) of this report, a link to the [Github source code](https://github.com/CUBoulder-DS/5301-5000-Final-Report) for this report, and the [Youtube presention](https://www.youtube.com/watch?v=7r1z2yU4LuQ) are available as icons in the top nav bar of this website.
 :::
 
 <!-- ::: callout-note -->
