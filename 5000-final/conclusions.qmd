@@ -4,27 +4,22 @@
 #| include: false
 
 library(tidyverse)
+library(caret)
+library(kableExtra)
+library(gt)
+library(broom)
+library(yardstick)
 ```
-<!--PC commenting out call-out
-::: callout-note
-## From the report requirements
-
--   Summarize what the paper has done, and discuss the implications of your Results.
-
--   Explicitly connect the results to the research question.
-
--   Discuss how you would you extend this research
-
-Like the introduction, this section should be written with a **non-expert** in mind. A person should be able to read Introduction+Conclusion and get a rough idea of the meaning and significance of your paper
-::: -->
 
 ## Summary of Conclusions
 
 Before we proceed to more detailed analyses, we will provide our summarized conclusions and impactful findings.
 
-Respective of our statistical hypothesis tests and bootstrap population proportion distributions, we can conclude that the models and the source data, in many cases and conditions, have differing source populations, as listed in the earlier portions of this section.  Such differences in source population do not appear to be directly indiciative of bias against protected classes.  
+Summarizing the answer to a key research question: We find that two-sample proportionality testing is not a good fit for analyzing the performance of a machine learning model in our use case. Drawing conclusions on model performance or bias using this method might be akin to judging the performance of a vehicle based solely upon its fuel economy (without taking into account other factors like weight, torque, horsepower, and so forth).
 
-Some specific examples, but not all examples, include:
+To have a strong conclusion, we'd expect to find a strong connection between F1/Accuracy score and the results of our proportionality testing. Generally, we do not see such a connection.
+
+Some examples include:
 
 ```{r}
 m<-c("FairFace","FairFace","DeepFace","DeepFace")
@@ -44,26 +39,16 @@ tibble(
 	"p-value"=p,
 	"F1 score"=f,
 	"Conclusion"=conc
-)%>%knitr::kable()
+)%>%kable()
 ```
 
-<!--
-* FairFace
+However, the cases in which the proportion testing produces a significant result could be indicative that the training data for the facial recognition models, and the data we provided to them from UTKFace, have little to no overlap between one another (in terms of features and qualities of the images). This could be a topic for further research - i.e.: 
 
-	* The proportion of 60-69 year olds, with a p-value of nearly 1, but with an F1 score of 0.354, and an accuracy score of 0.671.  This shows that high p-values do not translate to high F1 scores for FairFace.
+* Are the differences a result of feature differences (lighting in the image, centering of the subject in the image) between a model's training data and the models' classification predictions on novel images?  
 
-	* The proportion of Females, given they are "Other" for race, with a p-value of $2.58\cdot 10^{-13}$, with an F1 score of 0.922, and accuracy of 0.914.  This shows that low p-values do not translate to low F1 scores for FairFace.
+* Could the source population differences be a result of over or under representation of those categories in the training data for each model? 
 
-* DeepFace
-
-	* The proportion of 20-29 year olds, given they are Black, with a p-value of 0.10, with an F1 score of 0.588.  This shows that a high p-value does not directly translate to a high F1 score for DeepFace.  
-
-	* The proportions of males age 40-49, 50-59, 60-69 with respective p-values of $2.01\cdot 10^{-12}$, $9.43\cdot 10^{-12}$ and $1.23\cdot 10^{-5}$, but holding respective F1 scores of 0.946, 0.937, and 0.928.  Showing that low p-values do not necessarily indicate a low F1 score for DeepFace.
--->
-
-However, the cases in which we reject the null hypothesis could be indicative that the training data for the facial recognition models, and the data we provided to them from UTKFace, have little to no overlap between one another (in terms of features and qualities of the images).  This could be a topic for further research - i.e. are the differences in source population a result of feature differences between a model's training data and the models classification predictions on novel images?
-
-Absent further research, with Accuracy and F1 scores accepted as best practice - the results of our two-sample hypothesis tests can only truly tell us that there is a difference in the source populations for each of our samples.
+Simply put, there are differences in the data and considerations used to train each model vs. the images we evaluated on each model from UTKFace. Absent further research, with Accuracy and F1 scores accepted as best practice - the results of our two-sample proportion hypothesis tests can only truly tell us that there is a difference in the source populations for each of our samples.
 
 On the examination of F1 scores, we have the following top findings per-model:
 
@@ -76,34 +61,22 @@ findings<-c(
 tibble(
 	"Model"=m,
 	"Findings"=findings
-)%>% knitr::kable()
+) %>% kable() %>% column_spec(1,width="2cm")%>%column_spec(2,width="13cm") #%>% knitr::kable()
 ```
-
-<!--
-* FairFace displays preferential biases in classifying:
-
-	* correct race, given the subject is male, in almost every racial group.
-
-	* Asian race, given they are under 20.
-
-* DeepFace displays preferential bias in classifying:
-
-	* correct age, given the subject is White, for nearly every age group.
-
-	* age incorrectly, given the subject is very old or young.
-
-	* gender, given the subject is generally an adult (30-69).
--->
 
 These preferential biases can result in discrimination if used for decision-making processes:
 
-* FairFace's poorer performance for Indian and Other categories is concerning.  Especially considering that "Other" includes groups such as Middle Eastern, Latino Hispanic, and more.  With low F1 and accuracy hovering at 0.7, this could be impactful on multiple racial groups.  If used to make decisions, it could generate disparate impact against Indian and Other.
+* FairFace's poorer performance for Indian and Other categories is concerning.  Especially considering that "Other" includes groups such as Middle Eastern, Latino Hispanic, and more.  With low F1 scoring, this could be impactful on multiple racial groups.  If used to make decisions, it could generate disparate impact against Indian and Other.
 
 * DeepFace's combination of correct age given White as race could result in a combination of racial and age discrimination against people of color.
 
-<!--PC--Should either model to be used in a decision-making process, it could result in age discrimination in accordance with United States Laws.  Both FairFace and DeepFace have challenges with various age groups over 40 years old.  In the case of employment, the Age Discrimination in Employment Act of 1967 (ADEA) protects certain applicants and employees 40 years of age and older from discrimination on the basis of age in hiring, promotion, discharge, compensation, or terms, conditions or privileges of employment.  
+These models freely available to the public. Were a developer to incorporate these models into a business product to enable decision-making by stakeholders and/or customers, it opens the door to risk of discrimination on the basis of protected classes. Having accountability, well-documented findings, and disclaimers in open-source models is important. 
 
-<!--Do we need other examples?-->
+DeepFace does note some of its shortcomings in its paper, and providing these disclaimers is necessary so that users know both the capabilities and limiations of open-source systems before deciding where and how to use them.
+
+FairFace's improvements show progress over the last few years in open-source ML models accounting for race/age/gender gaps in prediction. That being said, there's still further progress to be made. While it had great performance in the young and old, and for both genders, the disparity in performance for Indian and Other races is concerning. 
+
+We should, collectively, uphold standards for excellent, not just okay or good, performance, and these standards should be upheld for all protected classes.
 
 <!--PC-->
 
@@ -149,7 +122,7 @@ tibble(
 	"Test Category"=cat,
 	"Potentially Effected Categories"=g_potential_bias,
 	"Potentially Effected Sub-Categories"=sub_g_potential_bias
-) %>% knitr::kable()
+) %>% kable() %>% column_spec(c(1:2),width="2cm")%>%column_spec(c(3:4),width="6cm") #%>% knitr::kable()
 ```
 
 
@@ -221,7 +194,7 @@ tibble(
 	"Test Category"=cat,
 	"Impacted Categories"=g_potential_bias,
 	"Impacted Sub-Categories"=sub_g_potential_bias
-)%>% knitr::kable()
+)%>%kable() %>% column_spec(c(1:2),width="2cm")%>%column_spec(c(3:4),width="6cm") #%>% knitr::kable()
 ```
 <!--PC-->
 
@@ -320,20 +293,22 @@ extract_scores <- function(cm1,cm2,name1,name2,thresh){
 		accuracy=c(cm1[,'Balanced Accuracy'],cm2[,'Balanced Accuracy'])%>% unname(),
 		F1=c(cm1[,'F1'],cm2[,'F1']) %>% unname(),
 		threshold=thresh
-	)
+	) %>% kable()
 }
 
 ```
 
-```{r fig-point9-f1-acc}
+```{r}
 categorized_results <- get_model_scores(.9)
 ff_tests <- categorized_results %>% filter(model=='FairFace')
 # ff_results_conf <- confusionMatrix(data=ff_tests$p_value_classification,reference=ff_tests$f1_classification)
 df_tests <- categorized_results%>% filter(model=='DeepFace')
 cm_ff <- confusionMatrix(data=ff_tests$p_value_classification,reference=ff_tests$f1_classification,mode='everything')[['byClass']]
 cm_df <- confusionMatrix(data=df_tests$p_value_classification,reference=df_tests$f1_classification,mode='everything')[['byClass']]
-extract_scores(cm_df,cm_ff,"DeepFace","FairFace",0.9) %>% knitr::kable()
+extract_scores(cm_df,cm_ff,"DeepFace","FairFace",0.9) #%>% kable()
+#kable(x)%>% kable_styling()
 ```
+
 
 ```{r}
 get_corr <- function(m){
@@ -352,12 +327,17 @@ models <- c('FairFace','DeepFace')
 p_values <- c(FF_correlation$p.value,DF_correlation$p.value)
 ests <- c(DF_correlation$estimate,FF_correlation$estimate)
 
-tibble(
+x<-tibble(
 	"Model"=models,
 	"p-values"=p_values,
 	"Pearson Correlation Coefficient"=ests,
 	"Confidence Level"=c(0.95,0.95)
-) %>% knitr::kable()
+) #%>% kable()
+#kable(x) %>% kable_styling()
+```
+
+```{r}
+kable(x)
 ```
 
 Assuming that a correct decision to reject or fail to reject the null should be based upon an F1 and Accuracy scores at multiple thresholds (0.9, 0.8, or 0.7), we see substantially low accuracy and F1 scores for two-sample proportionality tests as a model for predicting machine learning model performance.  Examining any type of Pearson correlation between the p-values and F1 scores, we see similar results.  This highlights the contradictions we witnessed in our results for two-sample proportion tests vs. leveraging accuracy and F1 scores.  Given These results, we find that two-sample proportionality testing is likely not a strong indicator to identify issues and errors in machine learning models. 

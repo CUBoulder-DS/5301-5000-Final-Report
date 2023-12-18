@@ -88,6 +88,8 @@ div.csl-indent {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -229,40 +231,22 @@ div.csl-indent {
 </header>
 
 
-<!--PC commenting out call-out
-::: callout-note
-## From the report requirements
-
--   Summarize what the paper has done, and discuss the implications of your Results.
-
--   Explicitly connect the results to the research question.
-
--   Discuss how you would you extend this research
-
-Like the introduction, this section should be written with a **non-expert** in mind. A person should be able to read Introduction+Conclusion and get a rough idea of the meaning and significance of your paper
-::: -->
 <section id="summary-of-conclusions" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="summary-of-conclusions"><span class="header-section-number">5.1</span> Summary of Conclusions</h2>
 <p>Before we proceed to more detailed analyses, we will provide our summarized conclusions and impactful findings.</p>
-<p>Respective of our statistical hypothesis tests and bootstrap population proportion distributions, we can conclude that the models and the source data, in many cases and conditions, have differing source populations, as listed in the earlier portions of this section. Such differences in source population do not appear to be directly indiciative of bias against protected classes.</p>
-<p>Some specific examples, but not all examples, include:</p>
+<p>Summarizing the answer to a key research question: We find that two-sample proportionality testing is not a good fit for analyzing the performance of a machine learning model in our use case. Drawing conclusions on model performance or bias using this method might be akin to judging the performance of a vehicle based solely upon its fuel economy (without taking into account other factors like weight, torque, horsepower, and so forth).</p>
+<p>To have a strong conclusion, we’d expect to find a strong connection between F1/Accuracy score and the results of our proportionality testing. Generally, we do not see such a connection.</p>
+<p>Some examples include:</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 27%">
-<col style="width: 12%">
-<col style="width: 11%">
-<col style="width: 37%">
-</colgroup>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: left;">Test Group</th>
-<th style="text-align: left;">p-value</th>
-<th style="text-align: left;">F1 score</th>
-<th style="text-align: left;">Conclusion</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Test Group</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">p-value</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">F1 score</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Conclusion</th>
 </tr>
 </thead>
 <tbody>
@@ -275,14 +259,14 @@ Like the introduction, this section should be written with a **non-expert** in m
 </tr>
 <tr class="even">
 <td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">Female, Given ‘Other’</td>
+<td style="text-align: left;">Female, Given 'Other'</td>
 <td style="text-align: left;">2.58e-13</td>
 <td style="text-align: left;">0.922</td>
 <td style="text-align: left;">Low p-value != Low F1 score</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">20-29, Given ‘Black’</td>
+<td style="text-align: left;">20-29, Given 'Black'</td>
 <td style="text-align: left;">0.10</td>
 <td style="text-align: left;">0.588</td>
 <td style="text-align: left;">High p-value != High F1 score</td>
@@ -296,73 +280,50 @@ Like the introduction, this section should be written with a **non-expert** in m
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
-<!--
-* FairFace
-
-    * The proportion of 60-69 year olds, with a p-value of nearly 1, but with an F1 score of 0.354, and an accuracy score of 0.671.  This shows that high p-values do not translate to high F1 scores for FairFace.
-
-    * The proportion of Females, given they are "Other" for race, with a p-value of $2.58\cdot 10^{-13}$, with an F1 score of 0.922, and accuracy of 0.914.  This shows that low p-values do not translate to low F1 scores for FairFace.
-
-* DeepFace
-
-    * The proportion of 20-29 year olds, given they are Black, with a p-value of 0.10, with an F1 score of 0.588.  This shows that a high p-value does not directly translate to a high F1 score for DeepFace.  
-
-    * The proportions of males age 40-49, 50-59, 60-69 with respective p-values of $2.01\cdot 10^{-12}$, $9.43\cdot 10^{-12}$ and $1.23\cdot 10^{-5}$, but holding respective F1 scores of 0.946, 0.937, and 0.928.  Showing that low p-values do not necessarily indicate a low F1 score for DeepFace.
--->
-<p>However, the cases in which we reject the null hypothesis could be indicative that the training data for the facial recognition models, and the data we provided to them from UTKFace, have little to no overlap between one another (in terms of features and qualities of the images). This could be a topic for further research - i.e.&nbsp;are the differences in source population a result of feature differences between a model’s training data and the models classification predictions on novel images?</p>
-<p>Absent further research, with Accuracy and F1 scores accepted as best practice - the results of our two-sample hypothesis tests can only truly tell us that there is a difference in the source populations for each of our samples.</p>
+<p>However, the cases in which the proportion testing produces a significant result could be indicative that the training data for the facial recognition models, and the data we provided to them from UTKFace, have little to no overlap between one another (in terms of features and qualities of the images). This could be a topic for further research - i.e.:</p>
+<ul>
+<li><p>Are the differences a result of feature differences (lighting in the image, centering of the subject in the image) between a model’s training data and the models’ classification predictions on novel images?</p></li>
+<li><p>Could the source population differences be a result of over or under representation of those categories in the training data for each model?</p></li>
+</ul>
+<p>Simply put, there are differences in the data and considerations used to train each model vs.&nbsp;the images we evaluated on each model from UTKFace. Absent further research, with Accuracy and F1 scores accepted as best practice - the results of our two-sample proportion hypothesis tests can only truly tell us that there is a difference in the source populations for each of our samples.</p>
 <p>On the examination of F1 scores, we have the following top findings per-model:</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<colgroup>
-<col style="width: 2%">
-<col style="width: 97%">
-</colgroup>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: left;">Findings</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Findings</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">Preference in classifying the very young and old correctly. Excellence in classifying gender given almost any other test categories. Lack of excellence in racial classifications; preference in classification of Asian, White, and Black over Indian and Other.</td>
+<td style="text-align: left; width: 2cm;">FairFace</td>
+<td style="text-align: left; width: 13cm;">Preference in classifying the very young and old correctly. Excellence in classifying gender given almost any other test categories. Lack of excellence in racial classifications; preference in classification of Asian, White, and Black over Indian and Other.</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">Poor performance in 75% of test categories. Preference of Male Classification over Female. Substantially poor performance in classifying Indian and Other subjects. Failure to detect the very young and old (0-9, 70-130) and generally poor in every age category, but more correct predictions of age given the subject is White.</td>
+<td style="text-align: left; width: 2cm;">DeepFace</td>
+<td style="text-align: left; width: 13cm;">Poor performance in 75% of test categories. Preference of Male Classification over Female. Substantially poor performance in classifying Indian and Other subjects. Failure to detect the very young and old (0-9, 70-130) and generally poor in every age category, but more correct predictions of age given the subject is White.</td>
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
-<!--
-* FairFace displays preferential biases in classifying:
-
-    * correct race, given the subject is male, in almost every racial group.
-
-    * Asian race, given they are under 20.
-
-* DeepFace displays preferential bias in classifying:
-
-    * correct age, given the subject is White, for nearly every age group.
-
-    * age incorrectly, given the subject is very old or young.
-
-    * gender, given the subject is generally an adult (30-69).
--->
 <p>These preferential biases can result in discrimination if used for decision-making processes:</p>
 <ul>
-<li><p>FairFace’s poorer performance for Indian and Other categories is concerning. Especially considering that “Other” includes groups such as Middle Eastern, Latino Hispanic, and more. With low F1 and accuracy hovering at 0.7, this could be impactful on multiple racial groups. If used to make decisions, it could generate disparate impact against Indian and Other.</p></li>
+<li><p>FairFace’s poorer performance for Indian and Other categories is concerning. Especially considering that “Other” includes groups such as Middle Eastern, Latino Hispanic, and more. With low F1 scoring, this could be impactful on multiple racial groups. If used to make decisions, it could generate disparate impact against Indian and Other.</p></li>
 <li><p>DeepFace’s combination of correct age given White as race could result in a combination of racial and age discrimination against people of color.</p></li>
 </ul>
-<!--PC--Should either model to be used in a decision-making process, it could result in age discrimination in accordance with United States Laws.  Both FairFace and DeepFace have challenges with various age groups over 40 years old.  In the case of employment, the Age Discrimination in Employment Act of 1967 (ADEA) protects certain applicants and employees 40 years of age and older from discrimination on the basis of age in hiring, promotion, discharge, compensation, or terms, conditions or privileges of employment.  
-
-<!--Do we need other examples?-->
+<p>These models freely available to the public. Were a developer to incorporate these models into a business product to enable decision-making by stakeholders and/or customers, it opens the door to risk of discrimination on the basis of protected classes. Having accountability, well-documented findings, and disclaimers in open-source models is important.</p>
+<p>DeepFace does note some of its shortcomings in its paper, and providing these disclaimers is necessary so that users know both the capabilities and limiations of open-source systems before deciding where and how to use them.</p>
+<p>FairFace’s improvements show progress over the last few years in open-source ML models accounting for race/age/gender gaps in prediction. That being said, there’s still further progress to be made. While it had great performance in the young and old, and for both genders, the disparity in performance for Indian and Other races is concerning.</p>
+<p>We should, collectively, uphold standards for excellent, not just okay or good, performance, and these standards should be upheld for all protected classes.</p>
 <!--PC-->
 </section>
 <section id="evaluation-of-test-results" class="level2" data-number="5.2">
@@ -374,60 +335,56 @@ Like the introduction, this section should be written with a **non-expert** in m
 <p>The design of our hypothesis testing provides us with cases in which datum from the source population differs from that of the predicted population of each model. This may show where biases exist. When the hypothesis test result produces a value less than 0.003 and with test power greater than or equal to 0.8, the test could be indicative of bias. Inversely, a p-value greater than or equal to 0.003 will not provide sufficient evidence to indicate bias in the given test case. The p-value alone, however, cannot tell us whether the indicated bias is in favor of, or against, the protected class group(s) in question. This is because the the hypothesis tests only tell us the probability that the source and predicted results come from the same population.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<colgroup>
-<col style="width: 2%">
-<col style="width: 3%">
-<col style="width: 18%">
-<col style="width: 75%">
-</colgroup>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: left;">Test Category</th>
-<th style="text-align: left;">Potentially Effected Categories</th>
-<th style="text-align: left;">Potentially Effected Sub-Categories</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Test Category</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Potentially Effected Categories</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Potentially Effected Sub-Categories</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">0-29, 40-49, and 70-130</td>
-<td style="text-align: left;">0-19 (given Female), 40-49 (given Male); varying potential biases against sub-groups such as 0-2 (given Asian, Indian, Other, or White), 3-9 (Given Asian), 10-19 (Other,White), 20-29 (Asian, Black), 30-39 (Asian), 40-49 (White, Other), 50-59 (Other), 70-130 (Other, White, Black)</td>
+<td style="text-align: left; width: 2cm;">FairFace</td>
+<td style="text-align: left; width: 2cm;">Age</td>
+<td style="text-align: left; width: 6cm;">0-29, 40-49, and 70-130</td>
+<td style="text-align: left; width: 6cm;">0-19 (given Female), 40-49 (given Male); varying potential biases against sub-groups such as 0-2 (given Asian, Indian, Other, or White), 3-9 (Given Asian), 10-19 (Other,White), 20-29 (Asian, Black), 30-39 (Asian), 40-49 (White, Other), 50-59 (Other), 70-130 (Other, White, Black)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">Gender</td>
-<td style="text-align: left;">No evidence supports a conclusion of potential bias for gender alone</td>
-<td style="text-align: left;">any gender (given 0-2, 20-39, or 70-130); any gender (given White or Other)</td>
+<td style="text-align: left; width: 2cm;">FairFace</td>
+<td style="text-align: left; width: 2cm;">Gender</td>
+<td style="text-align: left; width: 6cm;">No evidence supports a conclusion of potential bias for gender alone</td>
+<td style="text-align: left; width: 6cm;">any gender (given 0-2, 20-39, or 70-130); any gender (given White or Other)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">Race</td>
-<td style="text-align: left;">Black, Indian, White, Other</td>
-<td style="text-align: left;">Black, Indian, Other (given any gender), White (given male); Asian (given 30-39)</td>
+<td style="text-align: left; width: 2cm;">FairFace</td>
+<td style="text-align: left; width: 2cm;">Race</td>
+<td style="text-align: left; width: 6cm;">Black, Indian, White, Other</td>
+<td style="text-align: left; width: 6cm;">Black, Indian, Other (given any gender), White (given male); Asian (given 30-39)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">All age groups</td>
-<td style="text-align: left;">All age groups (given gender);</td>
+<td style="text-align: left; width: 2cm;">DeepFace</td>
+<td style="text-align: left; width: 2cm;">Age</td>
+<td style="text-align: left; width: 6cm;">All age groups</td>
+<td style="text-align: left; width: 6cm;">All age groups (given gender);</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">Gender</td>
-<td style="text-align: left;">Both genders</td>
-<td style="text-align: left;">All genders (given Asian, Black, Indian, Other - [White didn’t meet power threshold]); All genders (given age 10-69)</td>
+<td style="text-align: left; width: 2cm;">DeepFace</td>
+<td style="text-align: left; width: 2cm;">Gender</td>
+<td style="text-align: left; width: 6cm;">Both genders</td>
+<td style="text-align: left; width: 6cm;">All genders (given Asian, Black, Indian, Other - [White didn't meet power threshold]); All genders (given age 10-69)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">Race</td>
-<td style="text-align: left;">All races</td>
-<td style="text-align: left;">All races (except Black, given Male); All races (given 10-49), Black (givne 50-69), and Indian (given 60-69)</td>
+<td style="text-align: left; width: 2cm;">DeepFace</td>
+<td style="text-align: left; width: 2cm;">Race</td>
+<td style="text-align: left; width: 6cm;">All races</td>
+<td style="text-align: left; width: 6cm;">All races (except Black, given Male); All races (given 10-49), Black (givne 50-69), and Indian (given 60-69)</td>
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
 <!--### Age Prediction
@@ -467,60 +424,56 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 <p>General trends for both models: many categories and sub-categories of protected classes fail to meet our selected definition of excellence (F1 score of 0.9 or more). FairFace had more results meeting our definition of excellence compared to DeepFace. Both models demonstrate preference in classification for specific age groups, races, and genders, and both seem to display biases against Indian and Other racial categories. Examining a particular class of subjects, given additional controlling variables, reveal nested biases for and against various classes.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<colgroup>
-<col style="width: 1%">
-<col style="width: 3%">
-<col style="width: 41%">
-<col style="width: 53%">
-</colgroup>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: left;">Test Category</th>
-<th style="text-align: left;">Impacted Categories</th>
-<th style="text-align: left;">Impacted Sub-Categories</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Test Category</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Impacted Categories</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Impacted Sub-Categories</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">No groups meet 0.9 threshold. Preference in classifying the young and old correctly (0-9, 20-29, and 70-130); all other categories fall below 0.7, and between 0.1 to 0.4 below these top groups</td>
-<td style="text-align: left;">Given gender, the top performing groups remain, with a preference for Female classification over Male in the groups. Given race, the very young meet excellence for 0-2, given Other, Asian, or White. 10-69 fall far behind given any racial group</td>
+<td style="text-align: left; width: 2cm;">FairFace</td>
+<td style="text-align: left; width: 2cm;">Age</td>
+<td style="text-align: left; width: 6cm;">No groups meet 0.9 threshold. Preference in classifying the young and old correctly (0-9, 20-29, and 70-130); all other categories fall below 0.7, and between 0.1 to 0.4 below these top groups</td>
+<td style="text-align: left; width: 6cm;">Given gender, the top performing groups remain, with a preference for Female classification over Male in the groups. Given race, the very young meet excellence for 0-2, given Other, Asian, or White. 10-69 fall far behind given any racial group</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">Gender</td>
-<td style="text-align: left;">Both genders meet standard for excellence.</td>
-<td style="text-align: left;">Given race, all genders meet excellence, except male, given Asian at 0.89. Given age, all genders meet excellence, less males given 0-9, and females given 0-2</td>
+<td style="text-align: left; width: 2cm;">FairFace</td>
+<td style="text-align: left; width: 2cm;">Gender</td>
+<td style="text-align: left; width: 6cm;">Both genders meet standard for excellence.</td>
+<td style="text-align: left; width: 6cm;">Given race, all genders meet excellence, except male, given Asian at 0.89. Given age, all genders meet excellence, less males given 0-9, and females given 0-2</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">FairFace</td>
-<td style="text-align: left;">Race</td>
-<td style="text-align: left;">None reach excellence. Preference for Asian, Black, White (Other, Indian fall 0.2-0.3 less than these groups)</td>
-<td style="text-align: left;">Given gender, model retains preference for classifying for Asian, White, Black. Given Age, excellence reached for White (given 3-9,60-69,)</td>
+<td style="text-align: left; width: 2cm;">FairFace</td>
+<td style="text-align: left; width: 2cm;">Race</td>
+<td style="text-align: left; width: 6cm;">None reach excellence. Preference for Asian, Black, White (Other, Indian fall 0.2-0.3 less than these groups)</td>
+<td style="text-align: left; width: 6cm;">Given gender, model retains preference for classifying for Asian, White, Black. Given Age, excellence reached for White (given 3-9,60-69,)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">All ages perform poorly (max F1 0.51). 0-9,70-130 (0 detections) and 10-19, 50-69 (very few detections at F1 &lt; 0.1)</td>
-<td style="text-align: left;">All groups (given gender), male performance slightly surprasses female performance in every age category. Additional age groups fail detection (0 count) for 60-69, given White, Asian, or Indian.</td>
+<td style="text-align: left; width: 2cm;">DeepFace</td>
+<td style="text-align: left; width: 2cm;">Age</td>
+<td style="text-align: left; width: 6cm;">All ages perform poorly (max F1 0.51). 0-9,70-130 (0 detections) and 10-19, 50-69 (very few detections at F1 &lt; 0.1)</td>
+<td style="text-align: left; width: 6cm;">All groups (given gender), male performance slightly surprasses female performance in every age category. Additional age groups fail detection (0 count) for 60-69, given White, Asian, or Indian.</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">Gender</td>
-<td style="text-align: left;">Near equal performance on both genders, male preferred over female.</td>
-<td style="text-align: left;">No racial classifications meet excellence for gender, given race. Preference for Male over Female for near all races (excluding Other). Preference for stronger male classification, given 40-69, and female, given 10-39.</td>
+<td style="text-align: left; width: 2cm;">DeepFace</td>
+<td style="text-align: left; width: 2cm;">Gender</td>
+<td style="text-align: left; width: 6cm;">Near equal performance on both genders, male preferred over female.</td>
+<td style="text-align: left; width: 6cm;">No racial classifications meet excellence for gender, given race. Preference for Male over Female for near all races (excluding Other). Preference for stronger male classification, given 40-69, and female, given 10-39.</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DeepFace</td>
-<td style="text-align: left;">Race</td>
-<td style="text-align: left;">None meet excellence. Bias against Indian, Other with F1 &lt;= 0.4</td>
-<td style="text-align: left;">Poor for all races (given gender), with slightly lower performance for race classificaiton given a female subject.</td>
+<td style="text-align: left; width: 2cm;">DeepFace</td>
+<td style="text-align: left; width: 2cm;">Race</td>
+<td style="text-align: left; width: 6cm;">None meet excellence. Bias against Indian, Other with F1 &lt;= 0.4</td>
+<td style="text-align: left; width: 6cm;">Poor for all races (given gender), with slightly lower performance for race classificaiton given a female subject.</td>
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
 <!--PC-->
@@ -566,15 +519,15 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 <p>Pursuing such an evaulation is an appropriate approach, because the methods we’ve leveraged for attempting to examine bias using proportionality testing is a model, just as classification of inputs and outputs using confusion matrices is a model. A standard method of evaluating model performance is via confusion matrices.</p>
 <p>Such matrices produce the following results when evaluating our sample outputs:</p>
 <div class="cell">
-<div id="fig-point9-f1-acc" class="cell-output-display">
-<table class="table table-sm table-striped small">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;">model</th>
-<th style="text-align: left;">test categorization</th>
-<th style="text-align: right;">accuracy</th>
-<th style="text-align: right;">F1</th>
-<th style="text-align: right;">threshold</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">test categorization</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">accuracy</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">F1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">threshold</th>
 </tr>
 </thead>
 <tbody>
@@ -622,23 +575,19 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<colgroup>
-<col style="width: 13%">
-<col style="width: 14%">
-<col style="width: 47%">
-<col style="width: 25%">
-</colgroup>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: right;">p-values</th>
-<th style="text-align: right;">Pearson Correlation Coefficient</th>
-<th style="text-align: right;">Confidence Level</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p-values</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Pearson Correlation Coefficient</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Confidence Level</th>
 </tr>
 </thead>
 <tbody>
@@ -656,6 +605,8 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
 <p>Assuming that a correct decision to reject or fail to reject the null should be based upon an F1 and Accuracy scores at multiple thresholds (0.9, 0.8, or 0.7), we see substantially low accuracy and F1 scores for two-sample proportionality tests as a model for predicting machine learning model performance. Examining any type of Pearson correlation between the p-values and F1 scores, we see similar results. This highlights the contradictions we witnessed in our results for two-sample proportion tests vs.&nbsp;leveraging accuracy and F1 scores. Given These results, we find that two-sample proportionality testing is likely not a strong indicator to identify issues and errors in machine learning models.</p>
