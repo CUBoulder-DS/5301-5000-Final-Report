@@ -238,8 +238,14 @@ div.csl-indent {
 <p>To have a strong conclusion, we’d expect to find a strong connection between F1/Accuracy score and the results of our proportionality testing. Generally, we do not see such a connection.</p>
 <p>Some examples include:</p>
 <div class="cell">
+<div id="tbl-hyp-vs-cm" class="cell anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-hyp-vs-cm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.1: Proportionality Testing vs.&nbsp;Confusion Matrix Results
+</figcaption>
+<div aria-describedby="tbl-hyp-vs-cm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table class="cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -284,6 +290,9 @@ div.csl-indent {
 
 </div>
 </div>
+</figure>
+</div>
+</div>
 <p>However, the cases in which the proportion testing produces a significant result could be indicative that the training data for the facial recognition models, and the data we provided to them from UTKFace, have little to no overlap between one another (in terms of features and qualities of the images). This could be a topic for further research - i.e.:</p>
 <ul>
 <li><p>Are the differences a result of feature differences (lighting in the image, centering of the subject in the image) between a model’s training data and the models’ classification predictions on novel images?</p></li>
@@ -292,8 +301,14 @@ div.csl-indent {
 <p>Simply put, there are differences in the data and considerations used to train each model vs.&nbsp;the images we evaluated on each model from UTKFace. Absent further research, with Accuracy and F1 scores accepted as best practice - the results of our two-sample proportion hypothesis tests can only truly tell us that there is a difference in the source populations for each of our samples.</p>
 <p>On the examination of F1 scores, we have the following top findings per-model:</p>
 <div class="cell">
+<div id="tbl-conf-mat-sum" class="cell anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-conf-mat-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.2: Evaluation of Model Performance Using F1 Scores
+</figcaption>
+<div aria-describedby="tbl-conf-mat-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table class="cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -307,12 +322,15 @@ div.csl-indent {
 </tr>
 <tr class="even">
 <td style="text-align: left; width: 2cm;">DeepFace</td>
-<td style="text-align: left; width: 13cm;">Poor performance in 75% of test categories. Preference of Male Classification over Female. Substantially poor performance in classifying Indian and Other subjects. Failure to detect the very young and old (0-9, 70-130) and generally poor in every age category, but more correct predictions of age given the subject is White.</td>
+<td style="text-align: left; width: 13cm;">Poor performance in approx. 75% of tested categories. Preference of Male Classification over Female. Highest preference is to correctly classify White subjects. Substantially poor performance in classifying Indian and Other subjects. Failure to detect the very young and old (0-9, 70-130) and generally poor in every age category, but more correct predictions of age given the subject is White.</td>
 </tr>
 </tbody>
 </table>
 
 
+</div>
+</div>
+</figure>
 </div>
 </div>
 <p>These preferential biases can result in discrimination if used for decision-making processes:</p>
@@ -334,8 +352,14 @@ div.csl-indent {
 <h2 data-number="5.3" class="anchored" data-anchor-id="hypothesis-testing-results"><span class="header-section-number">5.3</span> Hypothesis Testing Results</h2>
 <p>The design of our hypothesis testing provides us with cases in which datum from the source population differs from that of the predicted population of each model. This may show where biases exist. When the hypothesis test result produces a value less than 0.003 and with test power greater than or equal to 0.8, the test could be indicative of bias. Inversely, a p-value greater than or equal to 0.003 will not provide sufficient evidence to indicate bias in the given test case. The p-value alone, however, cannot tell us whether the indicated bias is in favor of, or against, the protected class group(s) in question. This is because the the hypothesis tests only tell us the probability that the source and predicted results come from the same population.</p>
 <div class="cell">
+<div id="tbl-hyp-test-detail" class="cell anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-hyp-test-detail-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.3: Detailed Proportionality Testing Results
+</figcaption>
+<div aria-describedby="tbl-hyp-test-detail-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table class="cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -387,6 +411,9 @@ div.csl-indent {
 
 </div>
 </div>
+</figure>
+</div>
+</div>
 <!--### Age Prediction
 
 #### FairFace
@@ -423,8 +450,14 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 <p>When examining p-values for potential areas of bias, our hypothesis testing results did not well-align with our F1 score calculations. E.g. a rejection of the null hypothesis did not directly translate to a low F1 score, with the inverse also being true. We proceeded to examine F1 scores, separate of p-value and power results from our hypothesis tests.</p>
 <p>General trends for both models: many categories and sub-categories of protected classes fail to meet our selected definition of excellence (F1 score of 0.9 or more). FairFace had more results meeting our definition of excellence compared to DeepFace. Both models demonstrate preference in classification for specific age groups, races, and genders, and both seem to display biases against Indian and Other racial categories. Examining a particular class of subjects, given additional controlling variables, reveal nested biases for and against various classes.</p>
 <div class="cell">
+<div id="tbl-conf-mat-detail" class="cell anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-conf-mat-detail-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.4: Confusion Matrix - F1 Scoring Results
+</figcaption>
+<div aria-describedby="tbl-conf-mat-detail-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table class="cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -462,7 +495,7 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 <td style="text-align: left; width: 2cm;">DeepFace</td>
 <td style="text-align: left; width: 2cm;">Gender</td>
 <td style="text-align: left; width: 6cm;">Near equal performance on both genders, male preferred over female.</td>
-<td style="text-align: left; width: 6cm;">No racial classifications meet excellence for gender, given race. Preference for Male over Female for near all races (excluding Other). Preference for stronger male classification, given 40-69, and female, given 10-39.</td>
+<td style="text-align: left; width: 6cm;">No gender classifications meet excellence, given race. Preference for Male over Female for near all races (excluding Other). Preference for stronger male classification, given 40-69, and female, given 10-39.</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; width: 2cm;">DeepFace</td>
@@ -474,6 +507,9 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 </table>
 
 
+</div>
+</div>
+</figure>
 </div>
 </div>
 <!--PC-->
@@ -519,8 +555,14 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 <p>Pursuing such an evaulation is an appropriate approach, because the methods we’ve leveraged for attempting to examine bias using proportionality testing is a model, just as classification of inputs and outputs using confusion matrices is a model. A standard method of evaluating model performance is via confusion matrices.</p>
 <p>Such matrices produce the following results when evaluating our sample outputs:</p>
 <div class="cell">
+<div id="tbl-meta-scoring" class="cell anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-meta-scoring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.5: F1 and Accuracy Scores for Proportionality Tests as a Performance Measurer
+</figcaption>
+<div aria-describedby="tbl-meta-scoring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table class="cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
@@ -579,9 +621,18 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 
 </div>
 </div>
+</figure>
+</div>
+</div>
 <div class="cell">
+<div id="tbl-pearson-correlation-pval-f1" class="cell anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pearson-correlation-pval-f1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.6: Pearson Correlation Between F1 Scores and Proportionality p-values
+</figcaption>
+<div aria-describedby="tbl-pearson-correlation-pval-f1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table class="cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -607,6 +658,9 @@ DeepFace, absent other test conditions, indicates potential bias in prediction o
 </table>
 
 
+</div>
+</div>
+</figure>
 </div>
 </div>
 <p>Assuming that a correct decision to reject or fail to reject the null should be based upon an F1 and Accuracy scores at multiple thresholds (0.9, 0.8, or 0.7), we see substantially low accuracy and F1 scores for two-sample proportionality tests as a model for predicting machine learning model performance. Examining any type of Pearson correlation between the p-values and F1 scores, we see similar results. This highlights the contradictions we witnessed in our results for two-sample proportion tests vs.&nbsp;leveraging accuracy and F1 scores. Given These results, we find that two-sample proportionality testing is likely not a strong indicator to identify issues and errors in machine learning models.</p>

@@ -10,7 +10,7 @@ Collectively, we landed on the UTK dataset to perform our evaluation [@utkdatase
 
 Joy Buolamwini, a PhD candidate at MIT Media Lab, published a paper on gender and racial biases in facial recognition in algorithms [@joyGender]. In her paper, she tested facial recongition softwares from multiple large technology companies such as Microsoft, IBM, and Amazon on its effectiveness for different demographic groups. Her research led to a surprising conclusion that most AI algorithms offer a substantially less accurate prediction for feminine/female faces, particularly those with dark skin color.
 
-To determine the degree in which bias is still present in modern facial recognition models, a dataset which comprise of face images with high diversity in regards to eethnicity is required. Upon searching, UTKFace came out as one of the largest datasets which fit our preferred qualifications.
+To determine the degree in which bias is still present in modern facial recognition models, a dataset which comprise of face images with high diversity in regards to ethnicity is required. Upon searching, UTKFace came out as one of the largest datasets which fit our preferred qualifications.
 
 ### Data Collection Method
 
@@ -55,11 +55,9 @@ Overall, all the given potential biases listed above are simply the largest and 
 ### Exploration of Source Data
 
 <!--  PC -->
-For initial exploration of the UTKFace dataset, we sought to determine the distribution of age, given other categorical variables. To support hypothesis testing, such as z-tests, t-tests, it is important for us to inspect our data for a normal distribution.  In our case, we are only able to initially inspect age, as it is the only numerical variable from our data available.
+For initial exploration of the UTKFace dataset, we sought to determine the distribution of age, given other categorical variables. To support hypothesis testing, such as z-tests, t-tests, or proportionality tests, it is important for us to inspect our data for a normal distribution.  In our case, we are only able to initially inspect age, as it is the only numerical variable from our data available.
 
-Examining the data in @fig-data-eda, we have a somewhat normal distribution of age with heavy tails, centered between the ages of 30 and 35.  To examine distributions of race and gender, we will perform a bootstrapped sampling of proportions of these variables, and include them in our results section.  Having such distributions will provide normal distributions and support us in evaluating our results.
-
-**A note on sample independence**.  For each of the selected facial recognition models, we assume that each model's training dataset is independent of the content of the UTKFace dataset.  Independence between each model's output and the source data is a requirement for performing our testing.  We have no means or methods to verify whether or not any UTKFace images were used in the training of either model, and must make this assumption before moving forward in our methods and results.
+Examining the data in @fig-data-eda, we have a somewhat normal distribution of age with heavy tails, centered between the ages of 30 and 35.  To examine distributions of categorical variables, we will perform a bootstrapped sampling of proportions of such variables, and include them in our results section.  Having such distributions will provide normal distributions and support us in evaluating our results.
 
 <!-- CK -->
 ::: {#fig-data-eda}
@@ -80,6 +78,10 @@ An interactive figure showcasing the distributions of various data factors in th
 Screenshots of the interactive figure showcasing the distributions of various data factors in the image dataset, and showcasing the underlying data. To see and interact with this figure, go to [the website link](https://cuboulder-ds.github.io/5301-5000-Final-Report/data.html)
 :::
 :::
+
+### Assumption of Sample Independence
+
+For each of the selected facial recognition models, we assume that each model's training dataset is independent of the content of the UTKFace dataset.  Independence between each model's output and the source data is a requirement for performing our testing.  We have no means or methods to verify whether or not any UTKFace images were used in the training of either model, and must make this assumption before moving forward in our methods and results.
 
 <!--
 ::: callout-note
@@ -472,5 +474,5 @@ data_types <- c(
 column_defs <- tibble("Column Name"=column_names,"Definition"=definitions, "Data Type"=data_types)
 
 #knitr::kable(column_defs)
-kbl(column_defs)%>% column_spec(2,width="8cm")%>% column_spec(c(1,3),width="3cm") %>%kable_styling() #knitr::kable()
+kbl(column_defs)%>% column_spec(2,width="7cm")%>% column_spec(c(1,3),width="5cm") %>%kable_styling() #knitr::kable()
 ```

@@ -111,7 +111,9 @@ Below - some of these research questions can't be answered with hypothesis testi
 
 Our data consists of three main sets: the source input data, the Fairface output data, and the Deepface output data.
 
-We'll be creating our hypothesis tests by running as two-sample proportion tests. The population is the set of all labels (of race, age, and gender as defined below) for a given image, for all face images. The first sample will be the source dataset "correct" labels of the images, and the 2nd sample will be the output of a given model between FairFace and DeepFace, respectively. The base null hypothesis will produce no difference in sample proportions. Gaining a statistically significant result would allow us to reject our *null hypothesis* in favor of the *alternative hypothesis*. In other words, rejecting the original assumption means there is a statistically large enough difference between the source data and output data, and could indicate that the source and predicted information originate from differing populations, which is a potential indicator of bias for or against the protected classes in question<!--a bias in a model-->. We use a significance level of 99.7% to mitigate the risk of rejecting the the null hypothesis when it is true. <!--accurately judge the strength of the test statistic.-->
+We'll be creating our hypothesis tests by running as two-sample proportion tests. The population is the set of all labels (of race, age, and gender as defined below) for a given image, for all face images. The first sample will be the source dataset "correct" labels of the images, and the 2nd sample will be the output of a given model between FairFace and DeepFace, respectively. The base null hypothesis will produce no difference in sample proportions. Gaining a statistically significant result would allow us to reject our *null hypothesis* in favor of the *alternative hypothesis*. 
+
+In other words, rejecting the original assumption means there is a statistically large enough difference between the source data and output data, and could indicate that the source and predicted information originate from differing populations, which is a potential indicator of bias for or against the protected classes in question<!--a bias in a model-->. We use a significance level of 99.7% to mitigate the risk of rejecting the the null hypothesis when it is true. <!--accurately judge the strength of the test statistic.-->
 
 We'll be testing across different subsets contained within the data, as listed below:
 
@@ -181,7 +183,7 @@ We also calculate the power of each test performed, and use a power level thresh
 
 Our research explores the possiblity of using two-sample proportion testing as a means by which one could evaluate the performance of a machine learning model; we are uncertain as to whether or not it is appropriate. In leveraging two-sample proportion tests, we can infer whether the proportions of age, gender, or race (or some combination thereof) from the UTKFace dataset (i.e. 1st sample) originate from the same population as the outputs from each facial recognition model (i.e. 2nd dataset).
 
-In theory, substantial differences in proportions of protected classes between the two datasets could suggest that the source data and predicted data originate from differing populations (pictures of people on the internet), and could thus indicate an absence of bias against the protected class in question.
+In theory, substantial differences in proportions of protected classes between the two datasets could suggest that the source data and predicted data originate from differing populations (pictures of people on the internet), and could thus indicate presence of bias against the protected class in question.
 
 Leveraging p-values and powers calculated on our samples for our protected classes of age, gender, and race, may enable us to identify biases that may manifest from one or both models. Leveraging F1 scores (as described below) will help us identify specific cases of bias, and whether they are in favor of or against a specific group. 
 <!-- updated language to focus in on cases of rejecting the null-->
@@ -235,7 +237,7 @@ In the above, we've outlined our methods for examining a total of 432 hypothesis
 
 For instance, in the performance of our hypothesis tests, we may find lack of evidence for a bias when only examining proportions of gender between samples. However, by examining a subset of our samples, such as subject gender given the subject's membership in a specific racial category, we may find biases in predictions of subject gender given their membership in a specific racial group.
 
-This could help us answer questions and draw conclusions about such groups. For example:
+This could help us answer questions and draw conclusions about such groups. Examples of conclusions could include:
 
 "Model X demonstrates bias in predicting the race of older subjects."  Such a statement is not one of bias for or against the target group, but that a bias exists.  A bias in either direction, if used in a decision-making process, could result in age discrimination.
 

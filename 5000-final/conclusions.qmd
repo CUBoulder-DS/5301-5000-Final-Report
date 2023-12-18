@@ -21,7 +21,10 @@ To have a strong conclusion, we'd expect to find a strong connection between F1/
 
 Some examples include:
 
-```{r}
+```{r hyp-vs-CM}
+#| label: tbl-hyp-vs-cm
+#| tbl-cap: Proportionality Testing vs. Confusion Matrix Results
+#| 
 m<-c("FairFace","FairFace","DeepFace","DeepFace")
 group<-c("60-69","Female, Given 'Other'","20-29, Given 'Black'","40-69")
 p<-c("~1","2.58e-13","0.10","<=1.23e-5")
@@ -52,11 +55,15 @@ Simply put, there are differences in the data and considerations used to train e
 
 On the examination of F1 scores, we have the following top findings per-model:
 
-```{r}
+```{r tbl-conf-mat-sum}
+#| label: tbl-conf-mat-sum
+#| tbl-cap: Evaluation of Model Performance Using F1 Scores
+
+
 m<-c("FairFace","DeepFace")
 findings<-c(
 "Preference in classifying the very young and old correctly.  Excellence in classifying gender given almost any other test categories.  Lack of excellence in racial classifications; preference in classification of Asian, White, and Black over Indian and Other.",
-"Poor performance in 75% of test categories. Preference of Male Classification over Female. Substantially poor performance in classifying Indian and Other subjects.  Failure to detect the very young and old (0-9, 70-130) and generally poor in every age category, but more correct predictions of age given the subject is White."
+"Poor performance in approx. 75% of tested categories. Preference of Male Classification over Female. Highest preference is to correctly classify White subjects.  Substantially poor performance in classifying Indian and Other subjects.  Failure to detect the very young and old (0-9, 70-130) and generally poor in every age category, but more correct predictions of age given the subject is White."
 )
 tibble(
 	"Model"=m,
@@ -89,7 +96,10 @@ To evaluate our tests, we will first examine our hypothesis tests, and then move
 The design of our hypothesis testing provides us with cases in which datum from the source population differs from that of the predicted population of each model.  This may show where biases exist.  When the hypothesis test result produces a value less than 0.003 and with test power greater than or equal to 0.8, the test could be indicative of bias.  Inversely, a p-value greater than or equal to 0.003 will not provide sufficient evidence to indicate bias in the given test case.  The p-value alone, however, cannot tell us whether the indicated bias is in favor of, or against, the protected class group(s) in question. This is because the the hypothesis tests only tell us the probability that the source and predicted results come from the same population.
 
 
-```{r}
+```{r tbl-hyp-test-det}
+#| label: tbl-hyp-test-detail
+#| tbl-cap: Detailed Proportionality Testing Results
+ 
 m <- c("FairFace","FairFace","FairFace","DeepFace","DeepFace","DeepFace")
 cat <- c("Age","Gender","Race","Age","Gender","Race")
 # findings <- c(
@@ -164,7 +174,10 @@ When examining p-values for potential areas of bias, our hypothesis testing resu
 General trends for both models: many categories and sub-categories of protected classes fail to meet our selected definition of excellence (F1 score of 0.9 or more).  FairFace had more results meeting our definition of excellence compared to DeepFace. Both models demonstrate preference in classification for specific age groups, races, and genders, and both seem to display biases against Indian and Other racial categories.  Examining a particular class of subjects, given additional controlling variables, reveal nested biases for and against various classes.
 
 
-```{r}
+```{r tbl-conf-mat-det}
+#| label: tbl-conf-mat-detail
+#| tbl-cap: Confusion Matrix - F1 Scoring Results
+
 m <- c("FairFace","FairFace","FairFace","DeepFace","DeepFace","DeepFace")
 cat <- c("Age","Gender","Race","Age","Gender","Race")
 
@@ -186,7 +199,7 @@ sub_g_potential_bias <-c(
 	"Given race, all genders meet excellence, except male, given Asian at 0.89. Given age, all genders meet excellence, less males given 0-9, and females given 0-2",
 	"Given gender, model retains preference for classifying for Asian, White, Black. Given Age, excellence reached for White (given 3-9,60-69,)",
 	"All groups (given gender), male performance slightly surprasses female performance in every age category. Additional age groups fail detection (0 count) for 60-69, given White, Asian, or Indian.",
-	"No racial classifications meet excellence for gender, given race. Preference for Male over Female for near all races (excluding Other). Preference for stronger male classification, given 40-69, and female, given 10-39.",
+	"No gender classifications meet excellence, given race. Preference for Male over Female for near all races (excluding Other). Preference for stronger male classification, given 40-69, and female, given 10-39.",
 	"Poor for all races (given gender), with slightly lower performance for race classificaiton given a female subject."
 )
 tibble(
@@ -298,7 +311,10 @@ extract_scores <- function(cm1,cm2,name1,name2,thresh){
 
 ```
 
-```{r}
+```{r tbl-meta-score}
+#| label: tbl-meta-scoring
+#| tbl-cap: F1 and Accuracy Scores for Proportionality Tests as a Performance Measurer
+
 categorized_results <- get_model_scores(.9)
 ff_tests <- categorized_results %>% filter(model=='FairFace')
 # ff_results_conf <- confusionMatrix(data=ff_tests$p_value_classification,reference=ff_tests$f1_classification)
@@ -311,6 +327,7 @@ extract_scores(cm_df,cm_ff,"DeepFace","FairFace",0.9) #%>% kable()
 
 
 ```{r}
+
 get_corr <- function(m){
 	fields <- categorized_results %>% filter(model==m) %>% select(model_p_value,model_F1)
 	p <- fields %>% pull(model_p_value)
@@ -336,7 +353,10 @@ x<-tibble(
 #kable(x) %>% kable_styling()
 ```
 
-```{r}
+```{r tbl-pearson-corr}
+#| label: tbl-pearson-correlation-pval-f1
+#| tbl-cap: Pearson Correlation Between F1 Scores and Proportionality p-values
+
 kable(x)
 ```
 
